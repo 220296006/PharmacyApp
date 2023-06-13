@@ -1,4 +1,5 @@
 package za.ac.cput.service.implementation;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,8 +30,10 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     public Customer read(Long s) {
-        log.info("Reading Customer:{}", s);
-        return customerRepository.findById(s).get();
+        log.info("Reading Customer By ID:{}", s);
+        if (customerRepository.findById(s).isPresent()) {
+            return customerRepository.findById(s).get();
+        } else return customerRepository.findById(s).orElse(null);
     }
 
     @Override

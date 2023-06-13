@@ -1,12 +1,9 @@
 package za.ac.cput.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,7 +13,7 @@ import static jakarta.persistence.GenerationType.AUTO;
 @AllArgsConstructor
 public class Medication implements Serializable {
     @Id
-    @GeneratedValue(strategy = AUTO, generator="system-uuid")
+    @GeneratedValue(strategy = AUTO)
     private Long medicationId;
     private String medicationName;
     private String medicationManufacturer;

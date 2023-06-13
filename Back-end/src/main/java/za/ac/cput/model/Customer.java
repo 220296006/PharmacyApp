@@ -15,7 +15,7 @@ import static jakarta.persistence.GenerationType.AUTO;
 public class Customer implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = AUTO, generator="system-uuid")
+    @GeneratedValue(strategy = AUTO)
     private Long customerId;
     @Embedded
     private Name name;
@@ -73,9 +73,9 @@ public class Customer implements Serializable {
             return this;
         }
 
-        public Builder copy(Customer Customer) {
-            this.customerId = Customer.customerId;
-            this.name = Customer.name;
+        public Builder copy(Customer customer) {
+            this.customerId = customer.customerId;
+            this.name = customer.name;
             return this;
         }
 

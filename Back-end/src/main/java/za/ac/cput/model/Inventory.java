@@ -12,7 +12,7 @@ import static jakarta.persistence.GenerationType.AUTO;
 public class Inventory implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = AUTO, generator="system-uuid")
+    @GeneratedValue(strategy = AUTO)
     private Long inventoryID;
     private String tabletStockAmount;
     private String medicineStockAmount;

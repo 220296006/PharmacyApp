@@ -12,7 +12,7 @@ import static jakarta.persistence.GenerationType.AUTO;
 public class Pharmacy implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = AUTO, generator="system-uuid")
+    @GeneratedValue(strategy = AUTO)
     private Long pharmacyId;
     private String pharmacyName;
     private String medicationId;
@@ -31,32 +31,16 @@ public class Pharmacy implements Serializable {
         return pharmacyId;
     }
 
-    private void setPharmacyId(Long pharmacyId) {
-        this.pharmacyId = pharmacyId;
-    }
-
     public String getPharmacyName() {
         return pharmacyName;
-    }
-
-    private void setPharmacyName(String pharmacyName) {
-        this.pharmacyName = pharmacyName;
     }
 
     public String getMedicationId() {
         return medicationId;
     }
 
-    private void setMedicationId(String medicationId) {
-        this.medicationId = medicationId;
-    }
-
     public String getInventoryId() {
         return inventoryId;
-    }
-
-    private void setInventoryId(String inventoryId) {
-        this.inventoryId = inventoryId;
     }
 
     @Override
