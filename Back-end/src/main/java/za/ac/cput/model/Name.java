@@ -69,12 +69,6 @@ public class Name implements Serializable {
             return this;
         }
 
-        public Builder copy(Name name) {
-            this.firstName = name.firstName;
-            this.middleName = name.middleName;
-            this.lastName = name.lastName;
-            return this;
-        }
 
         public Name build() {
             return new Name(this);

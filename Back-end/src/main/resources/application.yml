@@ -7,13 +7,17 @@ spring:
 
  jpa:
    hibernate:
-    ddl-auto: create
+    ddl-auto: update
    properties:
      hibernate:
      dialect: org.hibernate.dialect.MySQL8Dialect
      format_sql: true
+     globally_quoted_identifiers: true
    show-sql: true
-
+ sql:
+    init:
+      mode: always
+      continue-on-error: false
 
 
 

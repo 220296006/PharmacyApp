@@ -20,9 +20,9 @@ public class Customer implements Serializable {
     @Embedded
     private Name name;
 
-    private Customer(Builder builder) {
-        this.customerId = builder.customerId;
-        this.name = builder.name;
+    private Customer(CustomerBuilder customerBuilder) {
+        this.customerId = customerBuilder.customerId;
+        this.name = customerBuilder.name;
     }
 
     protected Customer() {
@@ -36,21 +36,19 @@ public class Customer implements Serializable {
         return name;
     }
 
-
     @Override
     public String toString() {
         return "Customer{" +
-                "customerId='" + customerId + '\'' +
+                "customerId=" + customerId +
                 ", name=" + name +
-                '}';
+                 '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Customer customer)) return false;
-        return Objects.equals(getCustomerId(), customer.getCustomerId())
-                && Objects.equals(getName(), customer.getName());
+        return Objects.equals(getCustomerId(), customer.getCustomerId()) && Objects.equals(getName(), customer.getName());
     }
 
     @Override
@@ -58,24 +56,17 @@ public class Customer implements Serializable {
         return Objects.hash(getCustomerId(), getName());
     }
 
-    public static class Builder {
-
+    public static class CustomerBuilder {
         private Long customerId;
         private Name name;
 
-        public Builder setCustomerId(Long customerId) {
+        public CustomerBuilder setCustomerId(Long customerId) {
             this.customerId = customerId;
             return this;
         }
 
-        public Builder setName(Name name) {
+        public CustomerBuilder setName(Name name) {
             this.name = name;
-            return this;
-        }
-
-        public Builder copy(Customer customer) {
-            this.customerId = customer.customerId;
-            this.name = customer.name;
             return this;
         }
 

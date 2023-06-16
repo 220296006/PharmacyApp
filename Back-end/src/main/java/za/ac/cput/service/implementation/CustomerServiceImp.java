@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.model.Customer;
 import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.service.CustomerService;
+
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -16,16 +18,18 @@ import java.util.List;
 public class CustomerServiceImp implements CustomerService {
 
     private final CustomerRepository customerRepository;
-    @Override
-    public List<Customer> getAll() {
-        log.info("Get All Customers");
-        return customerRepository.findAll();
-    }
 
     @Override
     public Customer save(Customer customer) {
         log.info("Saving Customer:{}", customer);
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public Collection<Customer> list(int page, int pageSize) {
+                log.info("Get All Customers");
+
+        return null;
     }
 
     @Override

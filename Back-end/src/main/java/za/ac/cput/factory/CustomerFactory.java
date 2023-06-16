@@ -5,9 +5,10 @@ import za.ac.cput.utils.StringHelper;
 
 public class CustomerFactory {
 
-    public static Customer createCustomer(Long customerId, String firstName, String middleName, String lastName){
+    public static Customer createCustomer(Long customerId, String firstName, String middleName,
+                                          String lastName){
 
-        //Checks if ID or firstName is empty
+        //Checks if  firstName is empty
         if( StringHelper.isNullorEmpty(firstName))
             throw new IllegalArgumentException("Name is null or empty");
 
@@ -16,7 +17,8 @@ public class CustomerFactory {
         if (name == null)
             throw new IllegalArgumentException("Name is Null or empty");
 
-        return new Customer.Builder().setCustomerId(customerId)
+        return new Customer.CustomerBuilder().setCustomerId(
+                 customerId)
                 .setName(name)
                 .build();
     }
