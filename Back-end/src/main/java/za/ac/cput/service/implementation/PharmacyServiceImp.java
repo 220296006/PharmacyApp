@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.model.Pharmacy;
 import za.ac.cput.repository.PharmacyRepository;
 import za.ac.cput.service.PharmacyService;
+
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +21,11 @@ public class PharmacyServiceImp implements PharmacyService {
     public Pharmacy save(Pharmacy pharmacy) {
         log.info("Saving Pharmacy:{}", pharmacy);
         return pharmacyRepository.save(pharmacy);
+    }
+
+    @Override
+    public Collection<Pharmacy> list(int page, int pageSize) {
+        return null;
     }
 
     @Override

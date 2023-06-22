@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 
 public class UserFactory {
 
-    public static User createUser(Long id, Name name, String email,
+   /* public static User createUser(Long id, Name name, String email,
                                   String password, String phone, String imageUrl,
-                                  boolean enabled, boolean isUsingMfa, LocalDateTime createdAt){
+                                  boolean enabled, boolean isUsingMfa, LocalDateTime createdAt, boolean isNotLocked){
 
         return new User.UserBuilder().
                  id(id)
@@ -19,6 +19,7 @@ public class UserFactory {
                 .enabled(enabled)
                 .usingMfa(isUsingMfa)
                 .createdAt(createdAt)
+                .isNotLocked(isNotLocked)
                 .build();
-    }
+    }*/
 }

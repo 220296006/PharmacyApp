@@ -8,6 +8,7 @@ import za.ac.cput.model.Medication;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.service.MedicationService;
 
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,6 +22,11 @@ public class MedicationServiceImp implements MedicationService {
     public Medication save(Medication medication) {
         log.info("Saving Medication:{}", medication);
         return medicationRepository.save(medication);
+    }
+
+    @Override
+    public Collection<Medication> list(int page, int pageSize) {
+        return null;
     }
 
     @Override

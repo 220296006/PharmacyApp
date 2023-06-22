@@ -26,7 +26,7 @@ public class CustomerController  {
         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("customers", customerService.getAll()))
+                        .data(Map.of("customers", customerService.list(1, 2)))
                         .message("Customers Retrieved")
                         .status(OK)
                         .statusCode(OK.value())

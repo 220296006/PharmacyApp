@@ -1,19 +1,18 @@
 package za.ac.cput.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import static jakarta.persistence.GenerationType.AUTO;
+
+@Data
+@SuperBuilder
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-@Entity
+@NoArgsConstructor
 public class User {
-     @Id
-    @GeneratedValue(strategy = AUTO)
     private Long id;
     @Embedded
     private Name name;
@@ -24,10 +23,10 @@ public class User {
     private boolean enabled;
     private boolean isUsingMfa;
     private LocalDateTime createdAt;
+    private boolean isNotLocked;
+  /*  protected User(){}*/
 
-    protected User(){}
-
-    private User(UserBuilder userBuilder){
+   /* private User(UserBuilder userBuilder){
         this.id = userBuilder.id;
         this.name = userBuilder.name;
         this.email = userBuilder.email;
@@ -37,9 +36,10 @@ public class User {
         this.enabled = userBuilder.enabled;
         this.isUsingMfa = userBuilder.isUsingMfa;
         this.createdAt = userBuilder.createdAt;
-    }
+        this.isNotLocked = userBuilder.isNotLocked;
+    }*/
 
-    public Long getId() {
+    /*public Long getId() {
         return id;
     }
 
@@ -75,6 +75,8 @@ public class User {
         return createdAt;
     }
 
+    public boolean isNotLocked(){ return isNotLocked;}
+
     public User setId(Long id ) {
         this.id = id;
         return this;
@@ -92,6 +94,7 @@ public class User {
                 ", enabled=" + enabled +
                 ", isUsingMfa=" + isUsingMfa +
                 ", createdAt=" + createdAt +
+                ", isNotLocked=" + isNotLocked +
                 '}';
     }
 
@@ -105,9 +108,9 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getEmail(), getPassword(), getPhone(), getImageUrl(), isEnabled(), isUsingMfa(), getCreatedAt());
-    }
+    }*/
 
-    public static class UserBuilder{
+    /*public static class UserBuilder{
     private Long id;
     private Name name;
     private String email;
@@ -117,6 +120,8 @@ public class User {
     private boolean enabled;
     private boolean isUsingMfa;
     private LocalDateTime createdAt;
+
+    private boolean isNotLocked;
 
         public UserBuilder id(Long id) {
             this.id = id;
@@ -163,8 +168,13 @@ public class User {
             return this;
         }
 
+        public  UserBuilder isNotLocked(boolean isNotLocked){
+            this.isNotLocked = isNotLocked;
+            return this;
+        }
+
         public User build() {
             return new User(this);
         }
-    }
+    }*/
 }

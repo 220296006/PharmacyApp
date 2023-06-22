@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.model.Inventory;
 import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.service.InventoryService;
+
+import java.util.Collection;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +21,11 @@ public class InventoryServiceImp implements InventoryService {
     public Inventory save(Inventory inventory) {
         log.info("Saving Inventory:{}", inventory);
         return inventoryRepository.save(inventory);
+    }
+
+    @Override
+    public Collection<Inventory> list(int page, int pageSize) {
+        return null;
     }
 
     @Override
