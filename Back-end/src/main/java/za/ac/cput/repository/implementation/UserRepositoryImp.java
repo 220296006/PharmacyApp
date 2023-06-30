@@ -57,12 +57,21 @@ public class UserRepositoryImp implements UserRepository<User> {
             return user;
             // If any errors, throw exception with proper message
         }  catch (Exception exception){
+            log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
         }
     }
     @Override
-    public Collection<User> list(int page, int pageSize) {
-        return null;
+    public Collection<User> list(String name, int page, int pageSize) {
+         log.info("Fetch All Users");
+        try {
+            // Query database for users
+            jdbc.queryForList(FETCH_ALL_USERS_FROM_DATABASE_QUERY, Map.of("page", 0, "size", 5));
+            return null;
+        } catch (Exception exception){
+            log.error(exception.getMessage());
+            throw new ApiException("No users found. Please try again.");
+        }
     }
 
     @Override
@@ -86,14 +95,14 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     private SqlParameterSource getSqlParameterSource(User user) {
         return  new MapSqlParameterSource()
-                .addValue("FirstName", user.getName().getFirstName())
-                .addValue("MiddleName", user.getName().getMiddleName())
-                .addValue("LastName", user.getName().getLastName())
+                .addValue("firstName", user.getFirstName())
+                .addValue("middleName", user.getMiddleName())
+                .addValue("lastName", user.getLastName())
                 .addValue("email", user.getEmail())
                 .addValue("password", encoder.encode(user.getPassword()));
     }
 
     private String getVerificationUrl(String key, String type) {
-         return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + "/" + key).toUriString();
+         return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + "/" + key + type).toUriString();
     }
 }

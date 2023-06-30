@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface UserRepository <T extends User> {
       T save(T t);
-      Collection<T> list(int page, int pageSize);
+      Collection<T> list(String name, int page, int pageSize);
 
       T read(Long id);
 

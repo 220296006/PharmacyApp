@@ -1,24 +1,27 @@
 package za.ac.cput.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.User;
 import za.ac.cput.service.UserService;
 
+import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 /**
- * @author : Thabiso Matsba
+ * @author : Thabiso Matsaba
  * @Project : PharmacyApp
  * @Date :  2023/06/22
  * @Time : 17:22
@@ -26,22 +29,41 @@ import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@Slf4j
+@RequestMapping(path = "/user")
 public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Response> saveUser(@RequestBody @Validated User user){
+    public ResponseEntity<Response> save(@RequestBody @Validated User user){
+         log.info("Saving A user");
          UserDTO userDTO = userService.createUser(user);
-         return  ResponseEntity.ok(
+         return  ResponseEntity.created(getUri()).body(
                     Response.builder()
                         .timeStamp(now())
                         .data(Map.of("user", userDTO))
                         .message("User Created")
-                        .status(OK)
-                        .statusCode(OK.value())
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
                         .build());
 
     }
+    @GetMapping("/all")
+    public ResponseEntity<Response> getAllUsers(@RequestParam Optional<String> name, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
+        log.info("Fetching users for page {} of size {}:", page, pageSize);
+    return ResponseEntity.ok().body(
+            Response.builder()
+                    .timeStamp(now())
+                    .data(Map.of("page", userService.getAllUsers(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
+                    .message("Users retrieved")
+                    .status(HttpStatus.OK)
+                    .statusCode(OK.value())
+                    .build()
 
+    );
+    }
+
+    private URI getUri(){
+        return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());
+    }
 }

@@ -15,8 +15,7 @@ import java.util.Map;
 
 import static java.util.Objects.requireNonNull;
 import static za.ac.cput.enumeration.RoleType.ROLE_USER;
-import static za.ac.cput.query.RoleQuery.INSERT_ROLE_TO_USER;
-import static za.ac.cput.query.RoleQuery.SELECT_ROLE_BY_NAME_QUERY;
+import static za.ac.cput.query.RoleQuery.*;
 
 @RequiredArgsConstructor
 @Repository
@@ -53,12 +52,13 @@ public class RoleRepositoryImp implements RoleRepository<Role> {
     public void addRoleToUser(Long userId, String roleName) {
         log.info("Adding  role {} to user id: {}", roleName, userId);
       try{
-         Role role = jdbc.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("roleName", roleName), new RoleRowMapper());
-         jdbc.update(INSERT_ROLE_TO_USER, Map.of("userId", userId, "roleId", requireNonNull(role).getId()));
+         Role role = jdbc.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName), new RoleRowMapper());
+         jdbc.update(INSERT_ROLE_TO_USER_QUERY, Map.of("userId", userId, "roleId", requireNonNull(role).getId()));
 
         } catch (EmptyResultDataAccessException exception){
               throw new ApiException("No role found by name" + ROLE_USER.name());
         } catch (Exception exception){
+          log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
 
         }
