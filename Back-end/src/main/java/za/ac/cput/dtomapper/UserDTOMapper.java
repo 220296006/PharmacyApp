@@ -13,7 +13,7 @@ public class UserDTOMapper {
         return userDTO;
     }
 
-      public static User toUser(UserDTO userDTO){
+      public static User toUser(User userDTO){
         User user = new User();
         BeanUtils.copyProperties(userDTO, user);
         return user;

@@ -28,6 +28,7 @@ public class User {
     private String email;
     @NotEmpty(message = "Password cannot be empty")
     private String password;
+    private String address;
     private String phone;
     private String imageUrl;
     private boolean enabled;

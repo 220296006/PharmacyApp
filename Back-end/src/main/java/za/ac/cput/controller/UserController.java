@@ -1,5 +1,6 @@
 package za.ac.cput.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -39,28 +40,70 @@ public class UserController {
          log.info("Saving A user");
          UserDTO userDTO = userService.createUser(user);
          return  ResponseEntity.created(getUri()).body(
-                    Response.builder()
+                     Response.builder()
                         .timeStamp(now())
                         .data(Map.of("user", userDTO))
                         .message("User Created")
                         .status(CREATED)
                         .statusCode(CREATED.value())
-                        .build());
+                        .build()
+         );
 
     }
     @GetMapping("/all")
     public ResponseEntity<Response> getAllUsers(@RequestParam Optional<String> name, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
         log.info("Fetching users for page {} of size {}:", page, pageSize);
-    return ResponseEntity.ok().body(
-            Response.builder()
+           return ResponseEntity.ok().body(
+                   Response.builder()
                     .timeStamp(now())
                     .data(Map.of("page", userService.getAllUsers(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
                     .message("Users retrieved")
                     .status(HttpStatus.OK)
                     .statusCode(OK.value())
                     .build()
+           );
+    }
+    @GetMapping("/read/{id}")
+    public ResponseEntity<Response> read(@PathVariable  Long id){
+        log.info("Fetching A User By Id: {}", id);
+        return  ResponseEntity.ok().body(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("user",  userService.findUserById(id)))
+                        .message("User Fetched")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 
-    );
+    @PutMapping("/update")
+    public ResponseEntity<Response> updateUser(@Valid @RequestBody User user){
+           log.info("Update User: {}", user);
+           UserDTO userDTO = userService.updateUser(user);
+           return  ResponseEntity.created(getUri()).body(
+                    Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("user", userDTO))
+                        .message("User Updated")
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
+                        .build()
+          );
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Response> delete(@PathVariable Long id){
+        log.info("Delete User: {}", id);
+         return ResponseEntity.ok(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("deleted", userService.deleteUser(id)))
+                        .message("Customer Deleted")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
     }
 
     private URI getUri(){

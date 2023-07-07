@@ -22,6 +22,7 @@ public class UserDTO {
     private String lastName;
     private String email;
     private String phone;
+    private String address;
     private String imageUrl;
     private boolean enabled;
     private boolean isUsingMfa;

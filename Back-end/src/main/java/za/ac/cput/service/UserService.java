@@ -1,7 +1,4 @@
 package za.ac.cput.service;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.model.User;
 
@@ -19,7 +16,9 @@ public interface UserService {
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
-    UserDTO findById(Long id);
+    UserDTO updateUser(User user);
+
+    User findUserById(Long id);
 
     boolean deleteUser(Long id);
 }

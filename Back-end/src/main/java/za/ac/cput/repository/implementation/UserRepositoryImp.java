@@ -23,7 +23,12 @@ import java.util.UUID;
 import static za.ac.cput.enumeration.RoleType.ROLE_USER;
 import static za.ac.cput.enumeration.VerificationType.ACCOUNT;
 import static za.ac.cput.query.UserQuery.*;
-
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date :  2023/05/10
+ * @Time : 13:00
+ **/
 @RequiredArgsConstructor
 @Repository
 @Slf4j
@@ -53,41 +58,92 @@ public class UserRepositoryImp implements UserRepository<User> {
             // emailService.sendVerificationUrl(user.getName().getFirstName(), user.getEmail(), verificationUrl, ACCOUNT);
             user.setEnabled(false);
             user.setNotLocked(true);
-            // Return newly created user
             return user;
-            // If any errors, throw exception with proper message
         }  catch (Exception exception){
             log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
         }
     }
-    @Override
-    public Collection<User> list(String name, int page, int pageSize) {
-         log.info("Fetch All Users");
-        try {
-            // Query database for users
-            jdbc.queryForList(FETCH_ALL_USERS_FROM_DATABASE_QUERY, Map.of("page", 0, "size", 5));
-            return null;
-        } catch (Exception exception){
-            log.error(exception.getMessage());
-            throw new ApiException("No users found. Please try again.");
-        }
+@Override
+public Collection<User> list(String name, int page, int pageSize) {
+    log.info("Fetch All Users");
+    try {
+        // Query database for users
+        String query = FETCH_ALL_USERS_FROM_DATABASE_QUERY + " LIMIT :size OFFSET :page";
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("size", pageSize)
+                .addValue("page", (page - 1) * pageSize);
+        return jdbc.query(query, parameters, (resultSet, rowNum) -> {
+            User user = new User();
+            // Populate the user object from the resultSet
+             user.setId(resultSet.getLong("id"));
+             user.setFirstName(resultSet.getString("first_name"));
+             user.setMiddleName(resultSet.getString("middle_name"));
+             user.setLastName(resultSet.getString("last_name"));
+             user.setEmail(resultSet.getString("email"));
+             user.setPhone(resultSet.getString("phone"));
+             user.setAddress(resultSet.getString("address"));
+            return user;
+        });
+    } catch (Exception exception) {
+        log.error(exception.getMessage());
+        throw new ApiException("No users found. Please try again.");
     }
+}
 
-    @Override
-    public User read(Long id) {
-        return null;
+  @Override
+public User read(Long id) {
+    log.info("Fetch User by Id");
+    try {
+        return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), (resultSet, rowNum) -> {
+            User user = new User();
+            user.setId(resultSet.getLong("id"));
+             user.setFirstName(resultSet.getString("first_name"));
+             user.setMiddleName(resultSet.getString("middle_name"));
+             user.setLastName(resultSet.getString("last_name"));
+             user.setEmail(resultSet.getString("email"));
+             user.setPhone(resultSet.getString("phone"));
+             user.setAddress(resultSet.getString("address"));
+            return user;
+        });
+    } catch (Exception exception) {
+        log.error(exception.getMessage());
+        throw new ApiException("No user with ID" + id + "found. Please try again.");
     }
+}
 
-    @Override
-    public User update(User user) {
-        return null;
+ @Override
+public User update(User user) {
+    log.info("Updating user");
+    try {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("id", user.getId())
+                .addValue("firstName", user.getFirstName())
+                .addValue("middleName", user.getMiddleName())
+                .addValue("lastName", user.getLastName())
+                .addValue("email", user.getEmail())
+                .addValue("password", user.getPassword())
+                .addValue("phone", user.getPhone())
+                .addValue("address", user.getAddress());
+        jdbc.update(UPDATE_USER_QUERY, parameters);
+        return user;
+    } catch (Exception exception) {
+        log.error(exception.getMessage());
+        throw new ApiException("An error occurred while updating the user. Please try again.");
     }
+}
 
-    @Override
-    public boolean delete(Long id) {
-        return false;
+ @Override
+public void delete(Long id) {
+    log.info("Deleting user by Id");
+    try {
+        jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
+    } catch (Exception exception) {
+        log.error(exception.getMessage());
+        throw new ApiException("An error occurred while deleting the user. Please try again.");
     }
+}
+
 
     private Integer getEmailCount(String email){
         return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
@@ -99,6 +155,8 @@ public class UserRepositoryImp implements UserRepository<User> {
                 .addValue("middleName", user.getMiddleName())
                 .addValue("lastName", user.getLastName())
                 .addValue("email", user.getEmail())
+                .addValue("phone", user.getPhone())
+                .addValue("address", user.getAddress())
                 .addValue("password", encoder.encode(user.getPassword()));
     }
 

@@ -1,7 +1,6 @@
 package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
@@ -24,18 +23,26 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO createUser(User user) {
+
         return UserDTOMapper.fromUser(userRepository.save(user));
     }
 
     @Override
     public Collection<User> getAllUsers(String name, int page, int pageSize) {
-        return userRepository.list(name, 1, 5);
+
+        return userRepository.list("users", 1, 5);
     }
 
+    @Override
+    public UserDTO updateUser(User user) {
+
+        return UserDTOMapper.fromUser(userRepository.update(user));
+    }
 
     @Override
-    public UserDTO findById(Long id) {
-        return UserDTOMapper.fromUser(userRepository.read(id));
+    public User findUserById(Long id) {
+
+        return UserDTOMapper.toUser(userRepository.read(id));
     }
 
     @Override
