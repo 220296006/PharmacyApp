@@ -1,14 +1,16 @@
 package za.ac.cput.repository;
-import za.ac.cput.model.User;
+
+import za.ac.cput.model.Customer;
+
 import java.util.Collection;
 
- /**
+/**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp
- * @Date : 2023/07/08
- * @Time : 15:00
+ * @Date : 2023/07/07
+ * @Time : 17:57
  **/
-public interface UserRepository <T extends User> {
+public interface CustomerRepository <T extends Customer> {
       T save(T t);
       Collection<T> list(String name, int page, int pageSize);
       T read(Long id);

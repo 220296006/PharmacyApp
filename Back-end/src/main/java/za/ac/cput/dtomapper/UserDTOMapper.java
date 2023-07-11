@@ -5,6 +5,12 @@ import org.springframework.stereotype.Component;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.model.User;
 
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 17:13
+ **/
 @Component
 public class UserDTOMapper {
     public static UserDTO fromUser(User user){

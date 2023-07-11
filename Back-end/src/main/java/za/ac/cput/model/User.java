@@ -1,6 +1,6 @@
 package za.ac.cput.model;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Embedded;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
@@ -8,6 +8,12 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 16:57
+ **/
 
 @Data
 @SuperBuilder
@@ -36,3 +42,4 @@ public class User {
     private LocalDateTime createdAt;
     private boolean isNotLocked;
 }
+

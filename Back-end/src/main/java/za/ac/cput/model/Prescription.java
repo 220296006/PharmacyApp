@@ -1,26 +1,30 @@
 package za.ac.cput.model;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
-import static jakarta.persistence.GenerationType.AUTO;
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 16:50
+ **/
 
 @Data
 @SuperBuilder
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class Prescription implements Serializable {
+public class Prescription {
     @Id
-    private Long prescriptionId;
-    private String prescriptionType;
-    private String prescriptionDose;
-
+    private Long id;
+    private String doctorName;
+    private String doctorAddress;
+    private LocalDateTime issue_date;
 }

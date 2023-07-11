@@ -1,15 +1,16 @@
 package za.ac.cput.model;
-/*Customer.java
- * Entity for the Customer
- * Thabiso Matsaba
- * 18 April 2023
- */
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 17:33
+ **/
 
 @Data
 @SuperBuilder
@@ -18,19 +19,12 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class Customer {
+public class Customer{
     @Id
-    private Long customerId;
-    @NotEmpty(message = "firstName cannot be empty ")
-    private String firstName;
-    private String middleName;
-    @NotEmpty(message = "lastName cannot be empty ")
-    private String lastName;
-    @NotEmpty(message = "Email  cannot be empty ")
-    @Email(message = "Email Invalid !!. Please enter valid email ")
-    private String email;
-    @NotEmpty(message = "Password cannot be empty")
-    private String phone;
-
+    private Long id;
+    private String address;
+    private String city;
+    private String state;
+    private String zipCode;
+    private User user;
 }
-

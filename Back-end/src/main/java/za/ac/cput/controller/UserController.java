@@ -36,12 +36,12 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<Response> save(@RequestBody @Validated User user){
-         log.info("Saving A user");
+    public ResponseEntity<Response> createUser(@RequestBody @Validated User user){
+         log.info("Saving A user: {}", user);
          UserDTO userDTO = userService.createUser(user);
          return  ResponseEntity.created(getUri()).body(
                      Response.builder()
-                        .timeStamp(now())
+                         .timeStamp(now())
                         .data(Map.of("user", userDTO))
                         .message("User Created")
                         .status(CREATED)
@@ -64,7 +64,7 @@ public class UserController {
            );
     }
     @GetMapping("/read/{id}")
-    public ResponseEntity<Response> read(@PathVariable  Long id){
+    public ResponseEntity<Response> findUserById(@PathVariable  Long id){
         log.info("Fetching A User By Id: {}", id);
         return  ResponseEntity.ok().body(
                 Response.builder()
@@ -93,7 +93,7 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Response> delete(@PathVariable Long id){
+    public ResponseEntity<Response> deleteUser(@PathVariable Long id){
         log.info("Delete User: {}", id);
          return ResponseEntity.ok(
                 Response.builder()

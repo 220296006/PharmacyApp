@@ -1,5 +1,10 @@
 package za.ac.cput.query;
-
+ /**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 18:00
+ **/
 public class UserQuery {
      public static final String COUNT_USER_EMAIL_QUERY = "SELECT COUNT(*) FROM Users WHERE email = :email";
      public static final String INSERT_USER_QUERY = "INSERT INTO Users (first_name, middle_name, last_name, email, password, phone, address) VALUES (:firstName, :middleName, :lastName, :email, :password, :phone, :address)" ;

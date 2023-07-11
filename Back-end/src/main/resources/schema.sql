@@ -113,6 +113,7 @@ CREATE TABLE Customers
     state       VARCHAR(100) NOT NULL,
     zip_code    VARCHAR(20) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
+    --CONSTRAINT UQ_User_Id UNIQUE (user_id)
 );
 
 -- Table Inventory

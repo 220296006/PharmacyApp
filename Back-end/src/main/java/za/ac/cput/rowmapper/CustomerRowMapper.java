@@ -1,0 +1,35 @@
+package za.ac.cput.rowmapper;
+
+import org.springframework.jdbc.core.RowMapper;
+import za.ac.cput.model.Customer;
+import za.ac.cput.model.User;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/10
+ * @Time : 20:19
+ **/
+public class CustomerRowMapper implements RowMapper<Customer> {
+    @Override
+    public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Customer customer = new Customer();
+        customer.setId(rs.getLong("id"));
+        customer.setAddress(rs.getString("address"));
+        customer.setCity(rs.getString("city"));
+        customer.setState(rs.getString("state"));
+        customer.setZipCode(rs.getString("zip_code"));
+
+        // Assuming that the User object is also mapped in the result set
+        User user = new User();
+        user.setId(rs.getLong("user_id"));
+        // Set other properties of the User object if available in the result set
+        customer.setUser(user);
+
+        return customer;
+    }
+}
+

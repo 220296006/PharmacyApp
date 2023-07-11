@@ -1,5 +1,10 @@
 package za.ac.cput.enumeration;
-
+ /**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/06/06
+ * @Time : 11:00
+ **/
 public enum VerificationType {
     ACCOUNT("ACCOUNT"),
     PASSWORD("PASSWORD");
@@ -12,3 +17,4 @@ public enum VerificationType {
         return this.type.toLowerCase();
     }
 }
+

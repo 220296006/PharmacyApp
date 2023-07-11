@@ -1,6 +1,7 @@
 package za.ac.cput.repository.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -36,6 +37,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     private final NamedParameterJdbcTemplate jdbc;
     private final RoleRepository<Role> roleRepository;
     private final BCryptPasswordEncoder encoder;
+
     @Override
     public User save(User user) {
         log.info("Saving A User");
@@ -96,8 +98,8 @@ public User read(Long id) {
     log.info("Fetch User by Id");
     try {
         return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), (resultSet, rowNum) -> {
-            User user = new User();
-            user.setId(resultSet.getLong("id"));
+             User user = new User();
+             user.setId(resultSet.getLong("id"));
              user.setFirstName(resultSet.getString("first_name"));
              user.setMiddleName(resultSet.getString("middle_name"));
              user.setLastName(resultSet.getString("last_name"));
@@ -127,6 +129,8 @@ public User update(User user) {
                 .addValue("address", user.getAddress());
         jdbc.update(UPDATE_USER_QUERY, parameters);
         return user;
+    } catch (EmptyResultDataAccessException exception) {
+        return null;
     } catch (Exception exception) {
         log.error(exception.getMessage());
         throw new ApiException("An error occurred while updating the user. Please try again.");
@@ -143,7 +147,6 @@ public void delete(Long id) {
         throw new ApiException("An error occurred while deleting the user. Please try again.");
     }
 }
-
 
     private Integer getEmailCount(String email){
         return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);

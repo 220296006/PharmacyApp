@@ -1,14 +1,19 @@
 package za.ac.cput.model;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
 
-import java.io.Serializable;
-import java.util.Objects;
-import static jakarta.persistence.GenerationType.AUTO;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 16:33
+ **/
 
 @Data
 @SuperBuilder
@@ -17,12 +22,13 @@ import static jakarta.persistence.GenerationType.AUTO;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class Inventory implements Serializable {
-
+public class Inventory {
     @Id
-    @GeneratedValue(strategy = AUTO)
-    private Long inventoryID;
-    private String tabletStockAmount;
-    private String medicineStockAmount;
+    private Long id;
+    private String name;
+    private String description;
+    private int quantity;
+    private BigDecimal price;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
 }
-
