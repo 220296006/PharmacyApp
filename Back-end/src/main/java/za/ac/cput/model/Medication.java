@@ -24,4 +24,5 @@ public class Medication {
     private String name;
     private String dosage;
     private String frequency;
+    private Prescription prescription;
 }

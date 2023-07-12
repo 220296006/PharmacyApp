@@ -21,6 +21,7 @@ public class CustomerServiceImp implements CustomerService {
     private final CustomerRepository<Customer> customerRepository;
     @Override
     public void createCustomer(Customer customer) {
+
         customerRepository.save(customer);
     }
 
@@ -29,13 +30,12 @@ public class CustomerServiceImp implements CustomerService {
         return customerRepository.list("customers", 1, 5);
     }
     @Override
-    public Customer findCustomerById(Long id) {
-        return customerRepository.read(id);
+    public Customer findCustomerById(Long id) {return customerRepository.read(id);
     }
 
     @Override
-    public Customer updateCustomer(Customer customer) {
-        return customerRepository.update(customer);
+    public void updateCustomer(Customer customer) {
+        customerRepository.update(customer);
     }
 
     @Override

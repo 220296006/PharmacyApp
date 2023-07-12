@@ -137,7 +137,7 @@ CREATE TABLE Prescriptions
     customer_id      INT UNSIGNED NOT NULL,
     doctor_name      VARCHAR(100) NOT NULL,
     doctor_address   VARCHAR(255) NOT NULL,
-    issue_date       DATE NOT NULL,
+    issue_date        DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

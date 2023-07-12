@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author : Thabiso Matsaba
@@ -26,5 +27,6 @@ public class Prescription {
     private Long id;
     private String doctorName;
     private String doctorAddress;
-    private LocalDateTime issue_date;
+    private Date issue_date;
+    private Customer customer;
 }

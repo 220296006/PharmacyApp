@@ -56,7 +56,7 @@ public class CustomerRepositoryImp implements CustomerRepository<Customer> {
             linkUserParams.put("user_id", user.getId());
             linkUserParams.put("id", customer.getId());
             jdbc.update(UPDATE_CUSTOMER_LINKED_TO_USER_QUERY, linkUserParams);
-            customer.setUser(user);
+            //customer.setUser(user);
             return customer;
 
         } catch (Exception exception) {

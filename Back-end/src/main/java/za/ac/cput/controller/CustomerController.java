@@ -67,7 +67,7 @@ public class CustomerController {
         return  ResponseEntity.ok().body(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("user",  customerService.findCustomerById(id)))
+                        .data(Map.of("customer",  customerService.findCustomerById(id)))
                         .message("Customer Fetched")
                         .status(OK)
                         .statusCode(OK.value())
@@ -76,12 +76,12 @@ public class CustomerController {
     }
    @PutMapping("/update")
     public ResponseEntity<Response> updateCustomer(@Valid @RequestBody Customer customer){
-           log.info("Update User: {}", customer);
+           log.info("Updating Customer: {}", customer);
            customerService.updateCustomer(customer);
            return  ResponseEntity.created(getUri()).body(
                     Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("user", customer))
+                        .data(Map.of("customer", customer))
                         .message("Customer Updated")
                         .status(CREATED)
                         .statusCode(CREATED.value())
@@ -89,13 +89,13 @@ public class CustomerController {
           );
     }
 
-        @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteCustomer(@PathVariable Long id){
-        log.info("Delete Customer: {}", id);
+        log.info("Deleting Customer: {}", id);
          return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("deleted", customerService.deleteCustomer(id)))
+                        .data(Map.of("customer", customerService.deleteCustomer(id)))
                         .message("Customer Deleted")
                         .status(OK)
                         .statusCode(OK.value())

@@ -27,7 +27,7 @@ public class CustomerRowMapper implements RowMapper<Customer> {
         User user = new User();
         user.setId(rs.getLong("user_id"));
         // Set other properties of the User object if available in the result set
-        customer.setUser(user);
+        //customer.setUser(user);
 
         return customer;
     }
