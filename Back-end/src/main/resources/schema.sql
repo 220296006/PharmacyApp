@@ -40,16 +40,17 @@ CREATE TABLE UserRoles
     CONSTRAINT UQ_UserRole_User_Id UNIQUE (user_id)
 );
 
--- Table AccountVerifications
-DROP TABLE IF EXISTS AccountVerifications;
-CREATE TABLE AccountVerifications
+-- Table Confirmations
+DROP TABLE IF EXISTS Confirmations;
+CREATE TABLE Confirmations
 (
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    url        VARCHAR(200) NOT NULL,
+    token        VARCHAR(200) NOT NULL,
     user_id    INT UNSIGNED NOT NULL,
+    created_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    CONSTRAINT UQ_AccountVerifications_User_Id UNIQUE (user_id),
-    CONSTRAINT UQ_AccountVerifications_Url UNIQUE (url)
+    CONSTRAINT UQ_Confirmations_User_Id UNIQUE (user_id),
+    CONSTRAINT UQ_Confirmations_Token UNIQUE (token)
 );
 
 -- Table TwoFactorVerifications
@@ -113,7 +114,6 @@ CREATE TABLE Customers
     state       VARCHAR(100) NOT NULL,
     zip_code    VARCHAR(20) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
-    --CONSTRAINT UQ_User_Id UNIQUE (user_id)
 );
 
 -- Table Inventory
@@ -121,12 +121,14 @@ DROP TABLE IF EXISTS Inventory;
 CREATE TABLE Inventory
 (
     id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    medication_id INT UNSIGNED NOT NULL,
     name        VARCHAR(100) NOT NULL,
     description TEXT DEFAULT NULL,
     quantity    INT UNSIGNED NOT NULL,
     price       DECIMAL(10, 2) NOT NULL,
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Table Prescriptions

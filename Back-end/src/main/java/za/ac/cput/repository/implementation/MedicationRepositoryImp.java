@@ -67,7 +67,7 @@ public Medication save(Medication medication) {
         try{
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                .addValue("size", pageSize)
-                .addValue("page", (page - 1) * pageSize);
+               .addValue("page", (page - 1) * pageSize);
         return jdbc.query(FETCH_ALL_MEDICATIONS_QUERY, parameters, new MedicationRowMapper());
         } catch (Exception exception) {
         log.error(exception.getMessage());

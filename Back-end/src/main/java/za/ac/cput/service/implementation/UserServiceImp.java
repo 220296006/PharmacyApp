@@ -4,7 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
+import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
+import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.service.UserService;
 
@@ -20,6 +22,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
+    private final ConfirmationRepository confirmationRepository;
 
     @Override
     public UserDTO createUser(User user) {
@@ -49,6 +52,16 @@ public class UserServiceImp implements UserService {
     public boolean deleteUser(Long id) {
         userRepository.delete(id);
         return true;
+    }
+
+    @Override
+    public Boolean verifyToken(String token) {
+        Confirmation confirmation = confirmationRepository.findByToken(token);
+        User user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
+        user.setEnabled(true);
+        userRepository.save(user);
+        confirmationRepository.findByToken(token);
+         return Boolean.TRUE;
     }
 
 }

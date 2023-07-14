@@ -22,4 +22,5 @@ public interface UserService {
     User findUserById(Long id);
 
     boolean deleteUser(Long id);
+    Boolean verifyToken(String token);
 }

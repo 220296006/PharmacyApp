@@ -38,27 +38,21 @@ public class CustomerRepositoryImp implements CustomerRepository<Customer> {
 
     @Override
     public Customer save(Customer customer) {
-        log.info("Saving A Customer");
-        //Check if the user exists
+    log.info("Saving A Customer");
     User user = userRepository.read(customer.getUser().getId());
     if (user == null || user.getId() == null) {
         throw new ApiException("Associated user not found. Please provide a valid user ID");
     }
-        //Save customer
-        try {
-            KeyHolder holder = new GeneratedKeyHolder();
-            SqlParameterSource parameters = getSqlParameterSource(customer);
-            jdbc.update(INSERT_CUSTOMER_QUERY, parameters, holder );
-            customer.setId(Objects.requireNonNull(holder.getKey()).longValue());
-
-        // Link the customer with the user
-            Map<String, Object> linkUserParams = new HashMap<>();
-            linkUserParams.put("user_id", user.getId());
-            linkUserParams.put("id", customer.getId());
-            jdbc.update(UPDATE_CUSTOMER_LINKED_TO_USER_QUERY, linkUserParams);
-            //customer.setUser(user);
-            return customer;
-
+    try {
+         KeyHolder holder = new GeneratedKeyHolder();
+         SqlParameterSource parameters = getSqlParameterSource(customer);
+         jdbc.update(INSERT_CUSTOMER_QUERY, parameters, holder );
+         customer.setId(Objects.requireNonNull(holder.getKey()).longValue());
+         Map<String, Object> linkUserParams = new HashMap<>();
+         linkUserParams.put("user_id", user.getId());
+         linkUserParams.put("id", customer.getId());
+         jdbc.update(UPDATE_CUSTOMER_LINKED_TO_USER_QUERY, linkUserParams);
+         return customer;
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while saving the customer. Please try again.");
@@ -69,11 +63,10 @@ public class CustomerRepositoryImp implements CustomerRepository<Customer> {
 public Collection<Customer> list(String name, int page, int pageSize) {
          log.info("Fetch Customers");
     try {
-        String query = FETCH_ALL_CUSTOMERS_QUERY + " LIMIT :size OFFSET :page";
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("size", pageSize)
                 .addValue("page", (page - 1) * pageSize);
-        return jdbc.query(query, parameters, new CustomerRowMapper());
+        return jdbc.query(FETCH_ALL_CUSTOMERS_QUERY, parameters, new CustomerRowMapper());
     } catch (Exception exception) {
         log.error(exception.getMessage());
         throw new ApiException("An error occurred while retrieving the list of customers. Please try again.");
@@ -84,17 +77,9 @@ public Collection<Customer> list(String name, int page, int pageSize) {
 public Customer read(Long id) {
         log.info("Fetch Customer by Id");
     try {
-        return jdbc.queryForObject(FETCH_CUSTOMER_BY_ID_QUERY,Map.of("id", id), (resultSet, rowNum) -> {
-            Customer customer = new Customer();
-            customer.setId(resultSet.getLong("id"));
-            customer.setAddress(resultSet.getString("address"));
-            customer.setCity(resultSet.getString("city"));
-            customer.setState(resultSet.getString("state"));
-            customer.setZipCode(resultSet.getString("zip_code"));
-            return customer;
-        });
+        return jdbc.queryForObject(FETCH_CUSTOMER_BY_ID_QUERY,Map.of("id", id), new CustomerRowMapper());
     } catch (EmptyResultDataAccessException exception) {
-        return null; // Customer with the given ID not found
+        return null;
     } catch (Exception exception) {
         log.error(exception.getMessage());
         throw new ApiException("An error occurred while retrieving the customer. Please try again.");
@@ -103,13 +88,12 @@ public Customer read(Long id) {
 @Override
 public Customer update(Customer customer) {
         log.info("Updating Customer");
+          User user = userRepository.read(customer.getUser().getId());
+        if (user == null) {
+            throw new ApiException("Associated user not found. Please provide a valid customer ID");
+        }
     try {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", customer.getId())
-                .addValue("address", customer.getAddress())
-                .addValue("city", customer.getCity())
-                .addValue("state", customer.getState())
-                .addValue("zipCode", customer.getZipCode());
+        SqlParameterSource parameters = getSqlParameterSource(customer);
         jdbc.update(UPDATE_CUSTOMER_QUERY, parameters);
         return customer;
     } catch (Exception exception) {
@@ -130,6 +114,7 @@ public void delete(Long id) {
 
     private SqlParameterSource getSqlParameterSource(Customer customer) {
         return  new MapSqlParameterSource()
+                .addValue("id", customer.getId())
                 .addValue("address", customer.getAddress())
                 .addValue("city",customer.getCity())
                 .addValue("state", customer.getState())

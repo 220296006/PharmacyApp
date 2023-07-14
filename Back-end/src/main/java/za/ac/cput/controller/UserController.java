@@ -14,6 +14,7 @@ import za.ac.cput.model.User;
 import za.ac.cput.service.UserService;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -102,6 +103,19 @@ public class UserController {
                         .message("User Deleted")
                         .status(OK)
                         .statusCode(OK.value())
+                        .build()
+        );
+    }
+    @GetMapping("/confirm")
+    public ResponseEntity<Response> confirmUserAccount(@RequestParam("token") String token) {
+        Boolean isSuccess = userService.verifyToken(token);
+        return ResponseEntity.ok().body(
+                Response.builder()
+                        .timeStamp(LocalDateTime.parse(LocalDateTime.now().toString()))
+                        .data(Map.of("Success", isSuccess))
+                        .message("Account Verified")
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
                         .build()
         );
     }

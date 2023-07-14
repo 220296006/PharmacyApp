@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static za.ac.cput.query.CustomerQuery.UPDATE_CUSTOMER_LINKED_TO_USER_QUERY;
 import static za.ac.cput.query.PrescriptionQuery.*;
 
 /**
@@ -52,10 +51,10 @@ public class PrescriptionRepositoryImp implements PrescriptionRepository<Prescri
             jdbc.update(INSERT_PRESCRIPTION_QUERY, parameters, holder);
             prescription.setId(Objects.requireNonNull(holder.getKey()).longValue());
         // Link the prescription with customer
-             Map<String, Object> linkUserParams = new HashMap<>();
-            linkUserParams.put("id", prescription.getId());
-            linkUserParams.put("customerId", customer.getId());
-            jdbc.update(UPDATE_CUSTOMER_LINKED_TO_PRESCRIPTION_QUERY, linkUserParams);
+            Map<String, Object> linkCustomerParams = new HashMap<>();
+            linkCustomerParams.put("id", prescription.getId());
+            linkCustomerParams.put("customerId", customer.getId());
+            jdbc.update(UPDATE_PRESCRIPTION_QUERY_LINKED_TO_CUSTOMER, linkCustomerParams);
             return prescription;
         } catch (Exception exception) {
             log.error(exception.getMessage());

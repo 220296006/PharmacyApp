@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/PharmacyApp.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/InventoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/InvoiceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Confirmation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/ConfirmationQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/InventoryQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/InvoiceQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/ConfirmationRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/InventoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/InvoiceRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/ConfirmationRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/InventoryRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/InvoiceRepositoryImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/ConfirmationRowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/InventoryRowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/InvoiceRowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/UserRowMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/EmailService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/InventoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/InvoiceService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/EmailServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/InventoryServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/InvoiceServiceImp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/utils/EmailUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PharmacyApp-System-Design.drawio.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/MedicationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/MedicationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Inventory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Invoice.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Invoice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/CustomerQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/CustomerQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/MedicationQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/MedicationQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/PrescriptionQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/PrescriptionQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/UserQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/UserQuery.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/CustomerRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/CustomerRepositoryImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/MedicationRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/MedicationRepositoryImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/PrescriptionRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/PrescriptionRepositoryImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/utils/StringHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/schema.sql" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2SVBCBzcl1RUvUvi2s6zOsnCA84" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="" />
+      <created>1689221739621</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1689221739621</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PharmacyApp$PharmacyApp.ic" NAME="PharmacyApp Coverage Results" MODIFIED="1689315002522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
+      <FILTER>za.ac.cput.*</FILTER>
+    </SUITE>
+  </component>
+</project>

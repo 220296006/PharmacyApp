@@ -31,4 +31,5 @@ public class Inventory {
     private BigDecimal price;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
+    private Medication medication;
 }

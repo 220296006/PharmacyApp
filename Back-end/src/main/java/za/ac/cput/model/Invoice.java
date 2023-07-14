@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @author : Thabiso Matsaba
@@ -26,6 +27,7 @@ public class Invoice {
     @Id
     private Long id;
     private BigDecimal amount;
-    private LocalDateTime dueDate;
+    private Date dueDate;
     private boolean paid;
+    private Customer customer;
 }

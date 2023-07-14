@@ -22,8 +22,36 @@ spring:
       mode: always
       continue-on-error: true
 
+ mail:
+   host: ${EMAIL_HOST}
+   port: ${EMAIL_PORT}
+   username: ${EMAIL_ID}
+   password: ${EMAIL_PASSWORD}
+   default-encoding: UTF-8
+   properties:
+     mail:
+       mime:
+         charset: UTF
+       smtp:
+         writetimeout: 10000
+         connectiontimeout: 10000
+         timeout: 10000
+         auth: true
+         starttls:
+           enable: true
+           required: true
+   verify:
+     host: ${VERIFY_EMAIL_HOST}
 
+#Email Config
+EMAIL_HOST: smtp.gmail.com
+EMAIL_PORT: 587
+EMAIL_ID: thabisomatsaba96@gmail.com
+EMAIL_PASSWORD: ysjqkbfnhvpnfzwo
+VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
 
+#Server
+SERVER_PORT: 8080
 
 
 

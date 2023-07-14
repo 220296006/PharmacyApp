@@ -35,7 +35,7 @@ public class MedicationController {
 
     @PostMapping("/create")
     public ResponseEntity<Response> createCustomer(@RequestBody @Validated Medication medication){
-        log.info("Saving a Customer {}:", medication);
+        log.info("Saving a Medication {}:", medication);
         medicationService.createMedication(medication);
         return ResponseEntity.created(getUri()).body(
                 Response.builder()
@@ -68,14 +68,14 @@ public class MedicationController {
                 Response.builder()
                         .timeStamp(now())
                         .data(Map.of("medication",  medicationService.findMedicationById(id)))
-                        .message("Medication Fetched")
+                        .message("Medication Retrieved")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
         );
     }
 
-       @PutMapping("/update")
+    @PutMapping("/update")
     public ResponseEntity<Response> updateMedication(@Valid @RequestBody Medication medication){
            log.info("Updating Customer: {}", medication);
            medicationService.updateMedication(medication);
@@ -90,7 +90,7 @@ public class MedicationController {
           );
     }
 
-       @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteMedication(@PathVariable Long id){
         log.info("Deleting Medication: {}", id);
          return ResponseEntity.ok(
