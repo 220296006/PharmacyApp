@@ -3,9 +3,11 @@ package za.ac.cput.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.apache.catalina.startup.Bootstrap;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 /**
@@ -18,8 +20,7 @@ import java.time.LocalDateTime;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
 public class Inventory {
@@ -27,7 +28,7 @@ public class Inventory {
     private Long id;
     private String name;
     private String description;
-    private int quantity;
+    private BigInteger quantity;
     private BigDecimal price;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;

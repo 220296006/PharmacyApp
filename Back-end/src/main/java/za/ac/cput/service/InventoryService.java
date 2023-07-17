@@ -1,7 +1,6 @@
 package za.ac.cput.service;
 
 import za.ac.cput.model.Inventory;
-import za.ac.cput.model.Invoice;
 
 import java.util.Collection;
 
@@ -13,7 +12,7 @@ import java.util.Collection;
  **/
 public interface InventoryService {
     void createInventory(Inventory inventory);
-    Collection<Inventory> findAllInvoices(String name, int page, int pageSize);
+    Collection<Inventory> findAllInventory (String name, int page, int pageSize);
     Inventory findByInventoryId(Long id);
     void updateInventory(Inventory inventory);
     boolean deleteInventory(Long id);

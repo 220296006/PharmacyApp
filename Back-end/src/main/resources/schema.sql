@@ -18,7 +18,7 @@ CREATE TABLE Users
     CONSTRAINT UQ_Users_Email UNIQUE (email)
 );
 
--- Table Roles
+--- Table Roles
 DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles
 (
@@ -45,7 +45,7 @@ DROP TABLE IF EXISTS Confirmations;
 CREATE TABLE Confirmations
 (
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    token        VARCHAR(200) NOT NULL,
+    token      VARCHAR(200) NOT NULL,
     user_id    INT UNSIGNED NOT NULL,
     created_date  DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -120,14 +120,14 @@ CREATE TABLE Customers
 DROP TABLE IF EXISTS Inventory;
 CREATE TABLE Inventory
 (
-    id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     medication_id INT UNSIGNED NOT NULL,
-    name        VARCHAR(100) NOT NULL,
-    description TEXT DEFAULT NULL,
-    quantity    INT UNSIGNED NOT NULL,
-    price       DECIMAL(10, 2) NOT NULL,
-    created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at  DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    name          VARCHAR(100) NOT NULL,
+    description   TEXT DEFAULT NULL,
+    quantity      INT UNSIGNED NOT NULL,
+    price         DECIMAL(10, 2) NOT NULL,
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -135,11 +135,11 @@ CREATE TABLE Inventory
 DROP TABLE IF EXISTS Prescriptions;
 CREATE TABLE Prescriptions
 (
-    id               INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    customer_id      INT UNSIGNED NOT NULL,
-    doctor_name      VARCHAR(100) NOT NULL,
-    doctor_address   VARCHAR(255) NOT NULL,
-    issue_date        DATETIME DEFAULT CURRENT_TIMESTAMP,
+    id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    customer_id    INT UNSIGNED NOT NULL,
+    doctor_name    VARCHAR(100) NOT NULL,
+    doctor_address VARCHAR(255) NOT NULL,
+    issue_date     DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -159,11 +159,11 @@ CREATE TABLE Medications
 DROP TABLE IF EXISTS Invoices;
 CREATE TABLE Invoices
 (
-    id               INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    customer_id      INT UNSIGNED NOT NULL,
-    amount           DECIMAL(10, 2) NOT NULL,
-    due_date         DATE NOT NULL,
-    paid             BOOLEAN DEFAULT FALSE,
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    customer_id   INT UNSIGNED NOT NULL,
+    amount        DECIMAL(10, 2) NOT NULL,
+    due_date      DATE NOT NULL,
+    paid          BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

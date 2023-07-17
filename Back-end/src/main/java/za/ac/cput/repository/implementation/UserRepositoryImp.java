@@ -1,4 +1,5 @@
 package za.ac.cput.repository.implementation;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -14,7 +15,6 @@ import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
-import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.rowmapper.UserRowMapper;

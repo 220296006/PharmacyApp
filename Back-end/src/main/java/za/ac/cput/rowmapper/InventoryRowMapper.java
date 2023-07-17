@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.RowMapper;
 import za.ac.cput.model.Inventory;
 import za.ac.cput.model.Medication;
 
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -20,7 +21,7 @@ public class InventoryRowMapper implements RowMapper<Inventory> {
         inventory.setId(rs.getLong("id"));
         inventory.setName(rs.getString("name"));
         inventory.setDescription(rs.getString("description"));
-        inventory.setQuantity(rs.getInt("quantity"));
+        inventory.setQuantity(BigInteger.valueOf(rs.getInt("quantity")));
         inventory.setPrice(rs.getBigDecimal("price"));
 
         Medication medication = new Medication();

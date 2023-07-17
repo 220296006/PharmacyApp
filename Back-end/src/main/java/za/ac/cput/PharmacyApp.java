@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @EnableAsync
 public class PharmacyApp {
 
-     public static void main(String[] args) {
-        SpringApplication.run(PharmacyApp.class, args);
+    public static void main(String[] args) {SpringApplication.run(PharmacyApp.class, args);
     }
 
      private static final int STRENGTH = 12;

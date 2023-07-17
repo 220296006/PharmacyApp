@@ -15,8 +15,7 @@ import java.util.UUID;
  * @Time : 18:42
  **/
 @NoArgsConstructor
-@Setter
-@Getter
+@Setter @Getter
 @AllArgsConstructor
 @Data
 public class Confirmation {

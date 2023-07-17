@@ -13,7 +13,6 @@ import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Inventory;
 import za.ac.cput.model.Medication;
 import za.ac.cput.repository.InventoryRepository;
-import za.ac.cput.repository.InvoiceRepository;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.rowmapper.InventoryRowMapper;
 
@@ -23,7 +22,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import static za.ac.cput.query.InventoryQuery.*;
-import static za.ac.cput.query.InvoiceQuery.*;
 
 /**
  * @author : Thabiso Matsaba
@@ -67,10 +65,10 @@ public class InventoryRepositoryImp implements InventoryRepository<Inventory> {
          SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("size", pageSize)
                 .addValue("page", (page - 1) * pageSize);
-        return jdbc.query(SELECT_ALL_INVENTORY_QUERY, new InventoryRowMapper());
+        return jdbc.query(SELECT_ALL_INVENTORY_QUERY, parameters, new InventoryRowMapper());
         } catch (Exception exception) {
         log.error(exception.getMessage());
-        throw new ApiException("An error occurred while retrieving the list of invoices. Please try again.");
+        throw new ApiException("An error occurred while retrieving the list of inventory. Please try again.");
     }
     }
 

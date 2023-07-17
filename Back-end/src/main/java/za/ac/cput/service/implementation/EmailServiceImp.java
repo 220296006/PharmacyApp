@@ -87,13 +87,15 @@ public class EmailServiceImp implements EmailService {
             emailSender.send(message);
         } catch (Exception exception) {
             log.error(exception.getMessage());
+            log.info("Confirmation email sent to: {}", name);
             throw new ApiException(exception.getMessage());
         }
     }
 
     @Override
-     @Async
+    @Async
     public void sendMimeMessageWithEmbeddedFiles(String name, String to, String token) {
+        log.info("Sending Verification email from {} to {} with token {}:", name, to, token);
         try {
             MimeMessage message = getMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
@@ -109,8 +111,8 @@ public class EmailServiceImp implements EmailService {
             helper.addInline(getContentId(ID.getFilename()), ID);
             emailSender.send(message);
         } catch (Exception exception) {
-            System.out.println(exception.getMessage());
-            throw new RuntimeException(exception.getMessage());
+            log.error(exception.getMessage());
+            throw new ApiException(exception.getMessage());
         }
     }
 
@@ -162,7 +164,7 @@ public class EmailServiceImp implements EmailService {
 //            // Add HTML email body
 //            MimeMultipart = new MimeMultipart("related");
 //            BodyPart messageBodyPart = new MimeBodyPart();
-//            messageBodyPart.setContent(text, TEXT_HTML_ENCONDING);
+//            messageBodyPart.setContent(text, TEXT_HTML_ENCODING);
 //            mimeMultipart.addBodyPart(messageBodyPart);
 //
 //            // Add images to the email body

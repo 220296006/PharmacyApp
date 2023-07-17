@@ -10,7 +10,7 @@ public class EmailUtils {
         public static String getEmailMessage(String name, String host, String token) {
         return "Dear " + name + ",\n\n"
                 + "Thank you for registering an account with us. Please click on the link below to confirm your account:\n\n"
-                + "Confirmation Link: http://example.com/confirm?token=" + token + "\n\n"
+                + "Confirmation Link: http://pharmacyapp.com/confirm?token=" + token + "\n\n"
                 + "If you did not register an account, please ignore this email.\n\n"
                 + "Best regards,\n"
                 + "Your App Team, \n" +

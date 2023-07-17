@@ -61,7 +61,7 @@ public class UserServiceImp implements UserService {
         user.setEnabled(true);
         userRepository.save(user);
         confirmationRepository.findByToken(token);
-         return Boolean.TRUE;
+        return Boolean.TRUE;
     }
 
 }

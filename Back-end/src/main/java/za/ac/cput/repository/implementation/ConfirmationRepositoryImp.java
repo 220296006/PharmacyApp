@@ -21,6 +21,7 @@ import za.ac.cput.rowmapper.ConfirmationRowMapper;
 import java.util.Collection;
 import java.util.Objects;
 
+import static za.ac.cput.query.ConfirmationQuery.FETCH_ALL_CONFIRMATIONS_QUERY;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
 
 /**
@@ -58,7 +59,16 @@ public class ConfirmationRepositoryImp implements ConfirmationRepository<Confirm
 
     @Override
     public Collection<Confirmation> list(String name, int page, int pageSize) {
-        return null;
+               log.info("Fetch Confirmations");
+    try {
+        SqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("size", pageSize)
+                .addValue("page", (page - 1) * pageSize);
+        return jdbc.query(FETCH_ALL_CONFIRMATIONS_QUERY, parameters, new ConfirmationRowMapper());
+    } catch (Exception exception) {
+        log.error(exception.getMessage());
+        throw new ApiException("An error occurred while retrieving the list of confirmations. Please try again.");
+    }
     }
 
     @Override

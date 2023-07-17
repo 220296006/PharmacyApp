@@ -53,7 +53,7 @@ public class InventoryController {
         return ResponseEntity.ok().body(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("inventory", inventoryService.findAllInvoices(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
+                        .data(Map.of("inventory", inventoryService.findAllInventory(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
                         .message("Inventory items retrieved")
                         .status(HttpStatus.OK)
                         .statusCode(HttpStatus.OK.value())
