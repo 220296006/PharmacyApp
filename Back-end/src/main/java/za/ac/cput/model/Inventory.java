@@ -3,7 +3,6 @@ package za.ac.cput.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.apache.catalina.startup.Bootstrap;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;

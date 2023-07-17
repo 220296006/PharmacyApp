@@ -22,7 +22,7 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
-    private final ConfirmationRepository confirmationRepository;
+    private final ConfirmationRepository<Confirmation> confirmationRepository;
 
     @Override
     public UserDTO createUser(User user) {
