@@ -24,7 +24,7 @@ import java.util.function.Function;
  **/
 @Component
 public class JwtUtil {
-    private String SECRET_KEY = "secret";
+    private final String SECRET_KEY;
     public JwtUtil() {
         this.SECRET_KEY = String.valueOf(generateSecretKey());
     }
