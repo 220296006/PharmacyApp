@@ -4,28 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
+    <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="I am done with the domain CRUD operations.">
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/AuthenticationController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/dao/UserDao.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/dto/AuthenticationRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/security/JwtAuthFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/security/JwtUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/security/SecurityConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/InventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Confirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Confirmation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Inventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/ConfirmationQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/ConfirmationQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/InventoryQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/InventoryQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/ConfirmationRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/ConfirmationRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/InventoryRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/InventoryRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/InventoryRowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/InventoryRowMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/InventoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/EmailServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/EmailServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/InventoryServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/InventoryServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/utils/EmailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/utils/EmailUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/application.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +58,7 @@
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "ToolWindowRun.ShowToolbar": "false",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "settings.editor.selected.configurable": "preferences.pluginManager"
@@ -103,10 +93,37 @@
       <option name="presentableId" value="Default" />
       <updated>1689221739621</updated>
     </task>
+    <task id="LOCAL-00001" summary="I am done with the domain CRUD operations.">
+      <option name="closed" value="true" />
+      <created>1689609251550</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1689609251550</updated>
+    </task>
+    <task id="LOCAL-00002" summary="I am done with the domain CRUD operations.">
+      <option name="closed" value="true" />
+      <created>1689609286485</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1689609286485</updated>
+    </task>
+    <task id="LOCAL-00003" summary="I am done with the domain CRUD operations.">
+      <option name="closed" value="true" />
+      <created>1689609410990</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1689609410990</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="I am done with the domain CRUD operations." />
+    <option name="LAST_COMMIT_MESSAGE" value="I am done with the domain CRUD operations." />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PharmacyApp$PharmacyApp.ic" NAME="PharmacyApp Coverage Results" MODIFIED="1689380236335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false">
