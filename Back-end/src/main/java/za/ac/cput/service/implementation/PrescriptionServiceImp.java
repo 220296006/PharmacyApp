@@ -1,48 +1,48 @@
 package za.ac.cput.service.implementation;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import za.ac.cput.model.Prescription;
 import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.service.PrescriptionService;
-import java.util.List;
 
-@RequiredArgsConstructor
+import java.util.Collection;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/11
+ * @Time : 21:20
+ **/
+
 @Service
-@Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class PrescriptionServiceImp implements PrescriptionService {
+    private final PrescriptionRepository<Prescription> prescriptionRepository;
 
-    private final PrescriptionRepository prescriptionRepository;
     @Override
-    public Prescription save(Prescription prescription) {
-        log.info("Saving Prescription: {}", prescription);
-        return prescriptionRepository.save(prescription);
+    public void createPrescription(Prescription prescription) {
+        prescriptionRepository.save(prescription);
     }
 
     @Override
-    public Prescription read(Long s) {
-        log.info("Read Prescription By ID: {}", s);
-        return prescriptionRepository.findById(s).get();
+    public Collection<Prescription> getAllPrescriptions(String name, int page, int pageSize) {
+        return prescriptionRepository.list("customers", 1, 5);
     }
 
     @Override
-    public Prescription update(Prescription prescription) {
-        log.info("Updating Prescription By ID: {}", prescription);
-        return prescriptionRepository.save(prescription);
+    public Prescription findPrescriptionById(Long id) {
+        return prescriptionRepository.read(id);
     }
 
     @Override
-    public boolean delete(Long s) {
-        log.info("Deleting Prescription By ID: {}", s);
-        prescriptionRepository.deleteById(s);
+    public void updatePrescription(Prescription prescription) {
+     prescriptionRepository.update(prescription);
+    }
+
+    @Override
+    public boolean deletePrescription(Long id) {
+        prescriptionRepository.delete(id);
         return true;
-    }
-
-    @Override
-    public List<Prescription> getAll() {
-        log.info("Get All Prescription");
-        return prescriptionRepository.findAll();
     }
 }

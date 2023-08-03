@@ -1,87 +1,35 @@
 package za.ac.cput.model;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import java.io.Serializable;
-import java.util.Objects;
-import static jakarta.persistence.GenerationType.AUTO;
 
-@Entity
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import org.springframework.data.annotation.Id;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.LocalDateTime;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 16:33
+ **/
+
+@Data
+@SuperBuilder
 @AllArgsConstructor
-public class Inventory implements Serializable {
-
+@Getter @Setter
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@NoArgsConstructor
+public class Inventory {
     @Id
-    @GeneratedValue(strategy = AUTO, generator="system-uuid")
-    private Long inventoryID;
-    private String tabletStockAmount;
-    private String medicineStockAmount;
-
-
-    protected Inventory(){}
-
-    private Inventory(Builder builder) {
-        this.inventoryID = builder.inventoryID;
-        this.tabletStockAmount = builder.tabletStockAmount;
-        this.medicineStockAmount = builder.medicineStockAmount;
-    }
-
-    public Long getInventoryID() {
-        return inventoryID;
-    }
-
-    public String getTabletStockAmount() {
-        return tabletStockAmount;
-    }
-
-    public String getMedicineStockAmount() {
-        return medicineStockAmount;
-    }
-
-
-    @Override
-    public String toString() {
-        return "Inventory{" +
-                "inventoryID=" + inventoryID +
-                ", tabletStockAmount=" + tabletStockAmount +
-                ", medicineStockAmount=" + medicineStockAmount +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Inventory inventory)) return false;
-        return Objects.equals(getInventoryID(), inventory.getInventoryID()) && Objects.equals(getTabletStockAmount(), inventory.getTabletStockAmount()) && Objects.equals(getMedicineStockAmount(), inventory.getMedicineStockAmount());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getInventoryID(), getTabletStockAmount(), getMedicineStockAmount());
-    }
-
-    public static class Builder{
-        private Long inventoryID;
-                String tabletStockAmount, medicineStockAmount;
-
-        public Builder setInventoryID(Long inventoryID){
-            this.inventoryID = inventoryID;
-            return this;
-        }
-
-        public Builder setTabletStockAmount(String tabletStockAmount){
-            this.tabletStockAmount = tabletStockAmount;
-            return this;
-        }
-
-        public Builder setMedicineStockAmount(String medicineStockAmount){
-            this.medicineStockAmount = medicineStockAmount;
-            return this;
-        }
-
-
-        public Inventory build(){
-            return new Inventory(this);
-        }
-    }}
-
+    private Long id;
+    private String name;
+    private String description;
+    private BigInteger quantity;
+    private BigDecimal price;
+    private LocalDateTime created_at;
+    private LocalDateTime updated_at;
+    private Medication medication;
+}

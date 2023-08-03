@@ -1,48 +1,42 @@
 package za.ac.cput.service.implementation;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import za.ac.cput.model.Inventory;
 import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.service.InventoryService;
-import java.util.List;
 
-@RequiredArgsConstructor
+import java.util.Collection;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/13
+ * @Time : 15:26
+ **/
 @Service
-@Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class InventoryServiceImp implements InventoryService {
-
-    private final InventoryRepository inventoryRepository;
+    private final InventoryRepository<Inventory> inventoryRepository;
     @Override
-    public Inventory save(Inventory inventory) {
-        log.info("Saving Inventory:{}", inventory);
-        return inventoryRepository.save(inventory);
+    public void createInventory(Inventory inventory) {
+        inventoryRepository.save(inventory);
     }
-
     @Override
-    public Inventory read(Long s) {
-        log.info("Read Inventory By ID:{}", s);
-        return inventoryRepository.findById(s).get();
+    public Collection<Inventory> findAllInventory(String name, int page, int pageSize) {
+        return inventoryRepository.list("inventory", 1, 5);
     }
-
     @Override
-    public Inventory update(Inventory inventory) {
-        log.info("Updating Inventory:{}", inventory);
-        return inventoryRepository.save(inventory);
+    public Inventory findByInventoryId(Long id) {
+        return inventoryRepository.read(id);
     }
-
     @Override
-    public boolean delete(Long s) {
-        log.info("Deleting Inventory By ID:{}", s);
-        inventoryRepository.deleteById(s);
+    public void updateInventory(Inventory inventory) {
+    inventoryRepository.update(inventory);
+    }
+    @Override
+    public boolean deleteInventory(Long id) {
+        inventoryRepository.delete(id);
         return true;
-    }
-
-    @Override
-    public List<Inventory> getAll() {
-        log.info("Get All Inventory:");
-        return inventoryRepository.findAll();
     }
 }

@@ -1,48 +1,46 @@
 package za.ac.cput.service.implementation;
-import jakarta.transaction.Transactional;
+
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import za.ac.cput.model.Customer;
 import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.service.CustomerService;
-import java.util.List;
 
-@RequiredArgsConstructor
+import java.util.Collection;
+
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/07
+ * @Time : 19:02
+ **/
 @Service
-@Transactional
-@Slf4j
+@RequiredArgsConstructor
 public class CustomerServiceImp implements CustomerService {
 
-    private final CustomerRepository customerRepository;
+    private final CustomerRepository<Customer> customerRepository;
     @Override
-    public List<Customer> getAll() {
-        log.info("Get All Customers");
-        return customerRepository.findAll();
+    public void createCustomer(Customer customer) {
+
+        customerRepository.save(customer);
     }
 
     @Override
-    public Customer save(Customer customer) {
-        log.info("Saving Customer:{}", customer);
-        return customerRepository.save(customer);
+    public Collection<Customer> getAllCustomers(String name, int page, int pageSize) {
+        return customerRepository.list("customers", 1, 5);
+    }
+    @Override
+    public Customer findCustomerById(Long id) {return customerRepository.read(id);
     }
 
     @Override
-    public Customer read(Long s) {
-        log.info("Reading Customer:{}", s);
-        return customerRepository.findById(s).get();
+    public void updateCustomer(Customer customer) {
+        customerRepository.update(customer);
     }
 
     @Override
-    public Customer update(Customer customer) {
-        log.info("Updating Customer:{}", customer);
-        return customerRepository.save(customer);
-    }
-
-    @Override
-    public boolean delete(Long s) {
-        log.info("Deleting Customer by ID:{}", s);
-        customerRepository.deleteById(s);
+    public boolean deleteCustomer(Long id) {
+        customerRepository.delete(id);
         return true;
     }
 }

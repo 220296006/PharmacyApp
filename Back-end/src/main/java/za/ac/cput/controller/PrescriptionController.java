@@ -1,92 +1,105 @@
 package za.ac.cput.controller;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.model.Prescription;
 import za.ac.cput.model.Response;
-import za.ac.cput.service.implementation.PrescriptionServiceImp;
+import za.ac.cput.service.PrescriptionService;
+
+import java.net.URI;
 import java.util.Map;
+import java.util.Optional;
+
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
+/**
+ * @author : Thabiso Matsaba
+ * @Project : PharmacyApp
+ * @Date : 2023/07/11
+ * @Time : 21:26
+ **/
 @RestController
-@RequestMapping("/prescription")
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping(path = "/prescription")
 public class PrescriptionController {
-
-    private final PrescriptionServiceImp prescriptionService;
-
-    @GetMapping("/list")
-    public ResponseEntity<Response> getAll(){
-        log.info("Get All Prescriptions");
-        return ResponseEntity.ok(
+    private final PrescriptionService prescriptionService;
+    @PostMapping("/create")
+    public ResponseEntity<Response> createPrescription(@RequestBody @Validated Prescription prescription){
+        log.info("Saving a Prescription {}:", prescription);
+        prescriptionService.createPrescription(prescription);
+        return ResponseEntity.created(getUri()).body(
                 Response.builder()
-                        .timeStamp(now())
-                        .data(Map.of("pharmacy", this.prescriptionService.getAll()))
-                        .message("Pharmacy Retrieved")
-                        .status(OK)
-                        .statusCode(OK.value())
-                        .build()
-        );
-    }
-
-    @PostMapping("/save")
-    public ResponseEntity<Response> save(@Validated @RequestBody Prescription prescription) {
-        log.info("Save Prescription: {}", prescription);
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(now())
-                        .data(Map.of("pharmacy", this.prescriptionService.save(prescription)))
-                        .message("Pharmacy Saved")
+                        .timeStamp( now())
+                        .data(Map.of("prescription", prescription))
+                        .message("Prescription Created")
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .build()
         );
     }
-
-    @GetMapping("/read/{prescriptionId}")
-    public ResponseEntity<Response> read(@Validated @RequestBody Long prescriptionId) {
-        log.info("Read Prescription By ID: {}", prescriptionId);
-        return ResponseEntity.ok(
+    @GetMapping("/all")
+    public ResponseEntity<Response> getAllPrescription(@RequestParam Optional<String> name, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
+        log.info("Fetching prescriptions for page {} of size {}:", page, pageSize);
+          return ResponseEntity.ok().body(
+                   Response.builder()
+                    .timeStamp(now())
+                    .data(Map.of("page",prescriptionService.getAllPrescriptions(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
+                    .message("Prescriptions retrieved")
+                    .status(HttpStatus.OK)
+                    .statusCode(OK.value())
+                    .build()
+           );
+    }
+     @GetMapping("/read/{id}")
+    public ResponseEntity<Response> findPrescriptionById(@PathVariable Long id){
+        log.info("Fetching A Prescription By Id: {}", id);
+        return  ResponseEntity.ok().body(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("pharmacy", this.prescriptionService.read(prescriptionId)))
-                        .message("Pharmacy Read")
+                        .data(Map.of("prescription",  prescriptionService.findPrescriptionById(id)))
+                        .message("Prescription Retrieved")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
         );
     }
-
-    @PutMapping("/update/{prescriptionId}")
-    public ResponseEntity<Response> update(@Validated @RequestBody Prescription prescriptionId){
-        log.info("Update Prescription: {}", prescriptionId);
-        return ResponseEntity.ok(
+      @PutMapping("/update")
+    public ResponseEntity<Response> updatePrescription(@Valid @RequestBody Prescription prescription){
+           log.info("Updating Prescription: {}", prescription);
+           prescriptionService.updatePrescription(prescription);
+           return  ResponseEntity.created(getUri()).body(
+                    Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("prescription", prescription))
+                        .message("Prescription Updated")
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
+                        .build()
+          );
+    }
+         @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Response> deletePrescription(@PathVariable Long id){
+        log.info("Deleting Prescription: {}", id);
+         return ResponseEntity.ok(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("pharmacy", this.prescriptionService.update(prescriptionId)))
-                        .message("Pharmacy Updated")
+                        .data(Map.of("prescription", prescriptionService.deletePrescription(id)))
+                        .message("Prescription Deleted")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
         );
     }
-
-    @DeleteMapping("/delete/{prescriptionId}")
-    public ResponseEntity<Response> delete(@PathVariable Long prescriptionId){
-        log.info("Delete Prescription: {}", prescriptionId);
-        return ResponseEntity.ok(
-                Response.builder()
-                        .timeStamp(now())
-                        .data(Map.of("pharmacy",  this.prescriptionService.delete(prescriptionId)))
-                        .message("Pharmacy Deleted")
-                        .status(OK)
-                        .statusCode(OK.value())
-                        .build()
-        );
+     private URI getUri(){
+        return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/prescription/get/<prescriptionId>").toUriString());
     }
 }
