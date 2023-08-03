@@ -58,6 +58,7 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.28</version>
         </dependency>
+
 <dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-config</artifactId>
@@ -66,25 +67,18 @@
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-core</artifactId>
 </dependency>
+
         <dependency>
     <groupId>org.springframework.security</groupId>
     <artifactId>spring-security-crypto</artifactId>
-    <version>5.6.0</version>
+    <version>5.6.5</version>
 </dependency>
-
-
 
         <dependency>
         <groupId>com.twilio.sdk</groupId>
         <artifactId>twilio</artifactId>
         <version>9.9.0</version>
         <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt-api</artifactId>
-    <version>0.11.2</version>
         </dependency>
 
      <dependency>
@@ -94,19 +88,10 @@
     <scope>runtime</scope>
     </dependency>
 
-<dependency>
-    <groupId>io.jsonwebtoken</groupId>
-    <artifactId>jjwt-jackson</artifactId>
-    <version>0.11.2</version>
-    <scope>runtime</scope>
-</dependency>
-
-          <dependency>
+        <dependency>
     <groupId>org.glassfish.jaxb</groupId>
     <artifactId>jaxb-runtime</artifactId>
 </dependency>
-
-
     </dependencies>
 
       <profiles>

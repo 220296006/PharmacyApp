@@ -5,9 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-@SpringBootApplication
+@SpringBootApplication()
 @EnableAsync
 public class PharmacyApp {
 
@@ -16,7 +17,7 @@ public class PharmacyApp {
 private static final int STRENGTH = 12;
 
      @Bean
-     public BCryptPasswordEncoder appPasswordEncoder() {
+     public PasswordEncoder appPasswordEncoder() {
         return new BCryptPasswordEncoder(STRENGTH);
     }
 

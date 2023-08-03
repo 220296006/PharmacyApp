@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import za.ac.cput.dao.UserDao;
+import za.ac.cput.utils.JwtUtil;
 
 import java.io.IOException;
 
@@ -28,31 +29,38 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDao userDao;
 
-    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response,@NonNull  FilterChain filterChain) throws ServletException, IOException {
-        final String AUTHORIZATION = "Authorization";
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
+        final String AUTHORIZATION_HEADER = "Authorization";
         final String BEARER_PREFIX = "Bearer ";
 
-        final String authHeader = request.getHeader(AUTHORIZATION);
-        String userEmail = null;
         String jwtToken = null;
+        String userEmail = null;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer")) {
-            filterChain.doFilter(request, response);
-            if (authHeader != null && authHeader.startsWith(BEARER_PREFIX)) {
-                jwtToken = authHeader.substring(BEARER_PREFIX.length());
+        String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        if (authHeader != null && authHeader.startsWith(BEARER_PREFIX)) {
+            jwtToken = authHeader.substring(BEARER_PREFIX.length());
+            try {
                 userEmail = jwtUtil.extractUsername(jwtToken);
+            } catch (Exception e) {
+                // Handle token parsing or validation exceptions here
+                // For example, log the error and send an error response
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid or expired token");
+                return;
             }
-            if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = userDao.findUserByEmail(userEmail);
-
-                if (jwtUtil.validateToken(jwtToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails, null, userDetails.getAuthorities());
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
-            }
-            filterChain.doFilter(request, response);
         }
+
+        if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = userDao.findUserByEmail(userEmail);
+            if (userDetails != null && jwtUtil.validateToken(jwtToken, userDetails)) {
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+        }
+
+        filterChain.doFilter(request, response);
     }
 }

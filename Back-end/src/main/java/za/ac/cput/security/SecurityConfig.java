@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,9 +14,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import za.ac.cput.dao.UserDao;
 
@@ -29,23 +30,29 @@ import za.ac.cput.dao.UserDao;
 @Slf4j
 @RequiredArgsConstructor
 @EnableWebSecurity
-public class SecurityConfig  {
+public class SecurityConfig {
+    private static final int STRENGTH = 12;
     private final JwtAuthFilter jwtAuthFilter;
     private final UserDao userDao;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeHttpRequests()
-         .dispatcherTypeMatchers(HttpMethod.valueOf("/**/auth/**"))
-         .permitAll()
-         .anyRequest()
-         .authenticated()
-         .and()
-         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-         .and()
-         .authenticationProvider(authenticationProvider())
-         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-         .httpBasic();
+    protected DefaultSecurityFilterChain configure(HttpSecurity http) throws Exception {
+        http
+            .cors()
+            .and()
+            .csrf()
+            .disable()
+            .authorizeHttpRequests()
+            .dispatcherTypeMatchers(HttpMethod.valueOf("/**/auth/**"))
+            .permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            .httpBasic();
         return http.build();
     }
 
@@ -57,6 +64,7 @@ public class SecurityConfig  {
         return authenticationProvider;
     }
 
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
@@ -66,8 +74,12 @@ public class SecurityConfig  {
     public UserDetailsService userDetailsService() {
         return userDao::findUserByEmail;
     }
-        public PasswordEncoder passwordEncoder (){
-       return NoOpPasswordEncoder.getInstance();
-        }
+
+    @Bean
+    @Primary
+    public PasswordEncoder passwordEncoder() {
+       return new BCryptPasswordEncoder(STRENGTH);
+    }
 }
+
 
