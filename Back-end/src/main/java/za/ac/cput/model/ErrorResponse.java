@@ -7,10 +7,8 @@ package za.ac.cput.model;
  * @Time : 22:10
  **/
 public class ErrorResponse {
- private final String message;
 
     public ErrorResponse(String message) {
-        this.message = message;
     }
 
 }

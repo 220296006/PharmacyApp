@@ -136,9 +136,9 @@ public void delete(Long id) {
 
     private SqlParameterSource getSqlParameterSource(User user) {
         return  new MapSqlParameterSource()
-                .addValue("id", user.getId())
+               .addValue("id", user.getId())
                 .addValue("firstName", user.getFirstName())
-                .addValue("middleName", user.getMiddleName())
+                 .addValue("middleName", user.getMiddleName())
                 .addValue("lastName", user.getLastName())
                 .addValue("email", user.getEmail())
                 .addValue("phone", user.getPhone())
