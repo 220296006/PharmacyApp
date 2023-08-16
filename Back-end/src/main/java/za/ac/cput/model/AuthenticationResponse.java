@@ -7,10 +7,8 @@ package za.ac.cput.model;
  * @Time : 22:09
  **/
 public class AuthenticationResponse {
-        private final String token;
 
     public AuthenticationResponse(String token) {
-        this.token = token;
     }
 
 }

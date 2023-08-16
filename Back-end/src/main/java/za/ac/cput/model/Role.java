@@ -14,8 +14,7 @@ import org.springframework.data.annotation.Id;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
 public class Role {

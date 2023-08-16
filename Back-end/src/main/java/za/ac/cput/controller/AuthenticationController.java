@@ -8,14 +8,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import za.ac.cput.dao.UserDao;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.model.AuthenticationResponse;
 import za.ac.cput.model.ErrorResponse;
 import za.ac.cput.utils.JwtUtil;
-
-import java.security.InvalidKeyException;
 
 /**
  * @author : Thabiso Matsaba
@@ -28,7 +29,7 @@ import java.security.InvalidKeyException;
 @Slf4j
 @RequestMapping(path = "/auth")
 public class AuthenticationController {
-       private final AuthenticationManager authenticationManager;
+   private final AuthenticationManager authenticationManager;
     private final UserDao userDao;
     private final JwtUtil jwtUtil;
 
