@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './shared/navigation/navigation/navigation.component';
 import { AngularMaterialModule } from './modules/material.module';
 import { UserComponent } from './components/user/user/user.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -16,7 +19,10 @@ import { UserComponent } from './components/user/user/user.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

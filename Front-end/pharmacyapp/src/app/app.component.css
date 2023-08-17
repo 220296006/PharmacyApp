@@ -1,1 +1,9 @@
 /*# sourceMappingURL=app.component.css.map */
+.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.pointer {
+    cursor: pointer;
+}
