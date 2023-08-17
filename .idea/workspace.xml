@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/AuthenticationController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/dao/UserDao.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/security/JwtAuthFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/security/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/angular.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,6 +121,7 @@
       <workItem from="1692105775260" duration="1100000" />
       <workItem from="1692187504353" duration="18000" />
       <workItem from="1692260816113" duration="1252000" />
+      <workItem from="1692264571412" duration="1660000" />
     </task>
     <servers />
   </component>
