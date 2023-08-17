@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../model/api-response';
 import { Page } from '../model/page';
+import { User } from '../model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,13 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
+  getAllUserData(name: string = '', page: number = 0, size: number = 5): Observable<ApiResponse<Page>> {
+    return this.http.get<ApiResponse<Page>>(`${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`);
+
+  }
+
     // Make call to the back end API to retrieve page of users
-    users$ = (name: string = '', page: number = 0, size: number = 10): Observable<ApiResponse<Page>> => 
-    this.http.get<ApiResponse<Page>>(`${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`);
+    // users$ = (name: string = '', page: number = 0, size: number = 10): Observable<ApiResponse<Page>> => 
+    // this.http.get<ApiResponse<Page>>(`${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`);
 
 }

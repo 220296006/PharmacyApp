@@ -9,6 +9,7 @@ import { UserComponent } from './components/user/user/user.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     AngularMaterialModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTableModule,
+    AngularMaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
