@@ -18,7 +18,7 @@ public class PharmacyApp {
 private static final int STRENGTH = 12;
 
      @Bean
-     public PasswordEncoder appPasswordEncoder() {
+     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(STRENGTH);
     }
 

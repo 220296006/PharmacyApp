@@ -58,7 +58,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             String verificationToken = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", verificationToken));
             Confirmation confirmation = new Confirmation(user);
-            emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), confirmation.getToken());
+            emailService.sendSimpleMailMessage(user.getFirstName(), user.getEmail(), confirmation.getToken());
             user.setEnabled(false);
             user.setNotLocked(true);
             return user;
