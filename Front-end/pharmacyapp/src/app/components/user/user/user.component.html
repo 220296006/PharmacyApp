@@ -6,96 +6,72 @@
     <title>Users</title>
 </head>
 <body>
-    <ng-container *ngIf="(usersState$ | async) as state" [ngSwitch]="state.appState">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="container">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-               aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-              </ul>
-              <form #searchForm="ngForm" (ngSubmit)="gotToPage(searchForm.value.name)" class="d-flex" role="search">
-                <input type="search" name="name" ngModel class="form-control me-2" placeholder="Search users" aria-label="Search">
-                <button class="btn btn-success" type="submit">Search</button>
-              </form>
-            </div>
-          </div>
-        </nav>
-        <div class="container">
-          <div class="row">
-              <div class="col-md-12 mt-3">
-                <ng-container *ngSwitchCase="'APP_ERROR'">{{ state.error | json }}</ng-container>
-                <ng-container *ngSwitchCase="'APP_LOADING'">
-                  <div class="d-flex justify-content-center mt-4">
-                    <div class="spinner-border" role="status">
-                      <span class="visually-hidden">Loading...</span>
-                    </div>
-                  </div>
-                </ng-container>
-                
-                <ng-container *ngSwitchCase="'APP_LOADED'">
-                  <h3>User List</h3>
-                  <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th scope="col">ID</th>
-                          <th scope="col">Image</th>
-                          <th scope="col">First Name</th>
-                          <th scope="col">Middle Name</th>
-                          <th scope="col">Last Name</th>
-                          <th scope="col">Email</th>
-                          <th scope="col">Pasword</th>
-                          <th scope="col">Phone</th>
-                          <th scope="col">Address</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let user of state.appData.data.page.content; let i = index;">
-                          <th scope="row">{{ user.id }}</th>
-                          <td><img [src]="user.imageUrl" width="42" height="42" class="rounded-circle"
-                          [alt]="user.firstName + ' \'s photo'"></td>
-                          <td>{{ user.middleName }}</td>
-                          <td>{{ user.lastName }}</td>
-                          <td>{{ user.email }}</td>
-                          <td> {{user.password}}</td> 
-                          <td>{{ user.phone }}</td>
-                          <td>{{ user.address }}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div *ngIf="state.appData.data.page.content.length < 1" class="alert alert-secondary" role="alert">
-                      No users found
-                    </div>
-                    <nav *ngIf="state.appData.data.page.content.length > 0" aria-label="Page navigation example">
-                      <ul class="pagination justify-content-end">
-                        <li class="page-item pointer" [ngClass]="0 == (currentPage$ | async) ? ' disabled' : ''">
-                          <a (click)="goToNextOrPreviousPage('backward', searchForm.value.name)" class="page-link" aria-label="Previous">
-                            <span aria-hidden="true">&laquo; Previous</span>
-                          </a>
-                        </li>
-                        <li *ngFor="let pageNumber of [].constructor(state.appData.data.page.totalPages); let i = index;" 
-                            class="page-item pointer" [ngClass]="i == (currentPage$ | async) ? ' active' : ''">
-                          <a (click)="gotToPage(searchForm.value.name, i)" class="page-link">
-                            {{ i + 1 }}
-                          </a>
-                        </li>
-                        <li class="page-item pointer" [ngClass]="(state.appData.data.page.totalPages - 1) == (currentPage$ | async) ? ' disabled' : ''">
-                          <a (click)="goToNextOrPreviousPage('forward', searchForm.value.name)" class="page-link" aria-label="Next">
-                            <span aria-hidden="true">Next &raquo;</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                </ng-container>
-              </div>
-          </div>
-        </div>
-        </ng-container>
+  <h4>Users</h4>
+  <table mat-table [dataSource]="tableDataSource" mat-sort class="mat-elevation-z8">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
+      <!-- Image Column -->
+      <ng-container matColumnDef="imageUrl">
+        <th mat-header-cell *matHeaderCellDef> Image </th>
+        <td mat-cell *matCellDef="let row"> {{row.imageUrl}} </td>
+      </ng-container>
+  
+    <!-- First Name Column -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef> First Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
+    </ng-container>
+  
+    <!-- Middle Name Column -->
+    <ng-container matColumnDef="middleName">
+      <th mat-header-cell *matHeaderCellDef> Middle Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.middleName}} </td>
+    </ng-container>
+  
+    <!-- Last Name Column -->
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef> Last Name </th>
+      <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
+    </ng-container>
+
+    <!-- Email Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+    </ng-container>
+
+    <!-- Password Column-->
+    <ng-container matColumnDef="password">
+      <th mat-header-cell *matHeaderCellDef> Password </th>
+      <td mat-cell *matCellDef="let row"> {{row.passsword}} </td>
+    </ng-container>
+
+    <!-- Phone Column -->
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef> Phone </th>
+      <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
+    </ng-container>
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+    </ng-container>
+
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    <mat-paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]"
+              aria-label="Select page">
+    </mat-paginator>
+  </table>
 </body>
 </html>
