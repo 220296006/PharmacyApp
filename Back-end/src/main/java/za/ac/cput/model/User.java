@@ -24,10 +24,10 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     private Long id;
-    @NotEmpty(message = "firstName cannot be empty ")
+    @NotEmpty(message = "First Name cannot be empty ")
     private String firstName;
     private String middleName;
-    @NotEmpty(message = "lastName cannot be empty ")
+    @NotEmpty(message = "Last Name cannot be empty ")
     private String lastName;
     @NotEmpty(message = "Email  cannot be empty ")
     @Email(message = "Email Invalid !!. Please enter valid email ")
