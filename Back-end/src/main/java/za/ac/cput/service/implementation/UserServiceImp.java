@@ -33,7 +33,7 @@ public class UserServiceImp implements UserService {
     @Override
     public Collection<User> getAllUsers(String name, int page, int pageSize) {
 
-        return userRepository.list("users", 1, 5);
+        return userRepository.list("users", 1, 10);
     }
 
     @Override

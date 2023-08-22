@@ -3,21 +3,20 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './shared/navigation/navigation/navigation.component';
+import { NavigationComponent } from './shared/navigation/navigation.component';
 import { AngularMaterialModule } from './modules/material.module';
-import { UserComponent } from './components/user/user/user.component';
+import { UserComponent } from './components/user/user.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
-    UserComponent
+    UserComponent,
+    CustomerComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,10 +27,8 @@ import { MatSortModule } from '@angular/material/sort';
     BrowserAnimationsModule,
     MatTableModule,
     AngularMaterialModule,
-    MatSortModule,
-    MatPaginatorModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
