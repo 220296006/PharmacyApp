@@ -18,7 +18,7 @@ CREATE TABLE Users
     CONSTRAINT UQ_Users_Email UNIQUE (email)
 );
 
---- Table Roles
+-- Table Roles
 DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles
 (

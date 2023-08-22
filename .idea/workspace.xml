@@ -6,26 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/InventoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/controller/InventoryController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Confirmation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Confirmation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Inventory.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/Inventory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/ConfirmationQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/ConfirmationQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/InventoryQuery.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/query/InventoryQuery.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/ConfirmationRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/ConfirmationRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/InventoryRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/InventoryRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/repository/implementation/UserRepositoryImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/InventoryRowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/InventoryRowMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/InventoryService.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/InventoryService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/EmailServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/EmailServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/InventoryServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/InventoryServiceImp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/UserRowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/UserRowMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/utils/EmailUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/utils/EmailUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/services/userservice.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/services/userservice.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation/navigation.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation/navigation.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,6 +31,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="JpbToolWindowState">
@@ -49,32 +44,46 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="useMavenConfig" value="true" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2SVBCBzcl1RUvUvi2s6zOsnCA84" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Thabiso-Matsaba&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;72a5ea7c09b2b279169bb6a73ad7fde8&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  },
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
+    ]
   }
-}]]></component>
-  <component name="RunManager">
+}</component>
+  <component name="RunManager" selected="Application.PharmacyApp">
     <configuration name="PharmacyApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="za.ac.cput.PharmacyApp" />
       <module name="PharmacyApp" />
@@ -88,9 +97,34 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PharmacyApp" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="PharmacyApp" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="za.ac.cput.PharmacyApp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="za.ac.cput.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.PharmacyApp" />
+        <item itemvalue="Spring Boot.PharmacyApp" />
       </list>
     </recent_temporary>
   </component>
@@ -102,8 +136,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1689221739621</updated>
+      <workItem from="1691055216508" duration="622000" />
+      <workItem from="1691056021551" duration="1375000" />
+      <workItem from="1692021117120" duration="768000" />
+      <workItem from="1692105636308" duration="133000" />
+      <workItem from="1692105775260" duration="1100000" />
+      <workItem from="1692187504353" duration="18000" />
+      <workItem from="1692260816113" duration="1252000" />
+      <workItem from="1692264571412" duration="7805000" />
+      <workItem from="1692340922377" duration="10475000" />
+      <workItem from="1692688748093" duration="2617000" />
+      <workItem from="1692695003008" duration="5567000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
