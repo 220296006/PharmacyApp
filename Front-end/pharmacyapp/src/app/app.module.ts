@@ -10,13 +10,14 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
+import { CustomerComponent } from './components/customer/customer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     UserComponent,
-    CustomerComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
