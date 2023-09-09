@@ -13,13 +13,14 @@ import { MatTableModule } from '@angular/material/table';
 import { CustomerComponent } from './components/customer/customer.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { UserService } from './services/userservice.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     UserComponent,
-    CustomerComponent,
+    CustomerComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +33,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatSortModule,
     MatPaginatorModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
