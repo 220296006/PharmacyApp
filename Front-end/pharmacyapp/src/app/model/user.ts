@@ -13,3 +13,4 @@ export interface User {
   createdAt: Date;
   isNotLocked: boolean;
 }
+

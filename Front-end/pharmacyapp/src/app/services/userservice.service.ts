@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '../model/api-response';
 import { Page } from '../model/page';
@@ -15,11 +15,5 @@ export class UserService {
 
   getAllUserData(name: string = '', page: number = 0, size: number = 10): Observable<ApiResponse<Page>> {
     return this.http.get<ApiResponse<Page>>(`${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`);
-
   }
-
-    // Make call to the back end API to retrieve page of users
-    // users$ = (name: string = '', page: number = 0, size: number = 10): Observable<ApiResponse<Page>> => 
-    // this.http.get<ApiResponse<Page>>(`${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`);
-
 }

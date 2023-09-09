@@ -11,6 +11,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { CustomerComponent } from './components/customer/customer.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { UserService } from './services/userservice.service';
 
 @NgModule({
   declarations: [
@@ -27,9 +30,10 @@ import { CustomerComponent } from './components/customer/customer.component';
     HttpClientModule,
     BrowserAnimationsModule,
     MatTableModule,
-    AngularMaterialModule,
+    MatSortModule,
+    MatPaginatorModule
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
