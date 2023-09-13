@@ -1,5 +1,8 @@
 # PharmacyApp
 
+![Alt text](PharmacyApp.png);
+
+
 Pharmacy App Software Documentation
 
 ## Table of Contents
