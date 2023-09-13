@@ -5,17 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/PharmacyApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/UserRowMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/rowmapper/UserRowMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/java/za/ac/cput/service/implementation/UserServiceImp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/components/user/user/user.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/services/userservice.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/services/userservice.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation/navigation.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation/navigation.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/assets/health cross pharmacy symbol line vector icon logo  (1).png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,6 +139,7 @@
       <workItem from="1692340922377" duration="10475000" />
       <workItem from="1692688748093" duration="2617000" />
       <workItem from="1692695003008" duration="5567000" />
+      <workItem from="1694610562758" duration="69000" />
     </task>
     <servers />
   </component>
