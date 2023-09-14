@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Navigation</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg" [ngClass]="{'sticky': isSticky}">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/home"><img
+        src="assets/images/PharmacyApp.png"
+        alt="Logo-Image"
+        width="90"
+        height="94"
+      /></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/home">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="home icon"
+                fontIcon="home"
+              ></mat-icon>
+              Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/customer">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="account_circle icon"
+                fontIcon="account_circle"
+              ></mat-icon
+              >Customers</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/invoice">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="assignment icon "
+                fontIcon="assignment"
+              ></mat-icon
+              >Invoices</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/medication">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="school icon"
+                fontIcon="medication"
+              ></mat-icon
+              >Medications</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/prescription">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="build icon"
+                fontIcon="assignment_turned_in color-red"
+              ></mat-icon
+              >Prescriptions</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/inventory">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="folder icon"
+                fontIcon="inventory"
+              ></mat-icon
+              >Inventory</a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/user">
+              <mat-icon
+                aria-hidden="false"
+                aria-label="contact_page icon"
+                fontIcon="contact_page"
+              ></mat-icon
+              >Users</a
+            >
+          </li>
+        <form class="d-flex">
+          <input
+            class="form-control me-2"
+            type="search"
+            placeholder="Search"
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">
+            Search
+          </button>
+        </form>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Logout</a></li>
+          </ul>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </nav> 
+</body>
+</html>
+
+

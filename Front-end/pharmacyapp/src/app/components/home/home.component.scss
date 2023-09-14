@@ -1,0 +1,49 @@
+#image {
+  width: 100%; /* Use 100% width to fill the container */
+  height: 100vh; /* Use 100vh for full viewport height */
+  display: flex; /* Use flex to center align */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  background-image: url('http://localhost:4200/assets/images/PharmacyApp.png');
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  position: relative;
+}
+
+#image::before {
+  content: "";
+  background: rgba(5, 13, 24, 0.3);
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+#image .image-container {
+  z-index: 6;
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+#image p {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 26px;
+  font-family: "Poppins", sans-serif;
+}
+
+#image p span.typed {
+  color: #fff;
+  padding-bottom: 4px;
+  letter-spacing: 1px;
+  border-bottom: 3px solid #149ddd;
+}
+
+// body, html {
+//   margin: 2%;
+//   padding: 0%;
+// }

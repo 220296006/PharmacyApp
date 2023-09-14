@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" beforeDir="false" afterPath="$PROJECT_DIR$/Back-end/src/main/resources/PHYSICAL.mwb.bak" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/assets/health cross pharmacy symbol line vector icon logo  (1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/assets/PharmacyApp.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,6 +149,7 @@
       <workItem from="1692688748093" duration="2617000" />
       <workItem from="1692695003008" duration="5567000" />
       <workItem from="1694610562758" duration="69000" />
+      <workItem from="1694682644062" duration="131000" />
     </task>
     <servers />
   </component>

@@ -29,6 +29,7 @@ export class UserComponent implements OnInit {
   getAllUserData() {
     this.userService.getAllUserData().subscribe({
       next: (response: ApiResponse<Page>) => {
+        console.log("Response from server:", response);
         this.tableDataSource.data = response.data.page.content;
         this.tableDataSource.paginator = this.paginator;
         this.tableDataSource.sort = this.sort;
@@ -38,4 +39,5 @@ export class UserComponent implements OnInit {
       }
     });
   }
+  
 }
