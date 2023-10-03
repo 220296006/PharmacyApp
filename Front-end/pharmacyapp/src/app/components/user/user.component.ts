@@ -22,7 +22,7 @@ export class UserComponent implements OnInit {
 
   constructor(private userService: UserService) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getAllUserData();
   }
 
@@ -39,5 +39,5 @@ export class UserComponent implements OnInit {
       }
     });
   }
-  
+
 }
