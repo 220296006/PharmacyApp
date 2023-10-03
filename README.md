@@ -66,7 +66,7 @@ The Pharmacy App includes the following functional requirements:
 - Capture invoice details, including customer information, amount, due date, and payment status
 - Allow users to mark invoices as paid and track payment status
 
-## 3. Non-Functional Requirements
+## 4. Non-Functional Requirements
 The Pharmacy App includes the following non-functional requirements:
 
 ### Performance
@@ -87,6 +87,6 @@ The Pharmacy App includes the following non-functional requirements:
 - The application should be highly reliable and available, with minimal downtime
 - Data integrity should be maintained, ensuring accurate and consistent information storage and retrieval
 
-## 4. Conclusion
+## 5. Conclusion
 This Pharmacy App Software Documentation provides an overview of the application, including its functional and non-functional requirements, as well as the technology stack used for development. By adhering to these requirements and leveraging the specified technologies, the app aims to provide an efficient and user-friendly solution for managing pharmacy operations.
 
