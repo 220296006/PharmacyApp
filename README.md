@@ -15,7 +15,24 @@ Pharmacy App Software Documentation
 ## 1. Introduction
 The Pharmacy App is a web-based application designed to streamline pharmacy operations and provide an efficient platform for managing customers, inventory, prescriptions, medications, and invoices. The app aims to simplify the process of managing pharmacy-related tasks, enhancing customer experience, and improving overall operational efficiency.
 
-## 2. Functional Requirements
+![Alt text](PharmacyApp-System-Design.drawio.png);
+
+## 2. Technology Stack
+The Pharmacy App utilizes the following technology stack:
+
+### Backend
+- Java 19
+- Spring Boot framework
+- MySQL Workbench Relational Database
+- Lombok for code generation
+- Spring JDBC for database connectivity
+
+### Frontend
+- Angular (TypeScript)
+- Bootstrap for responsive UI design
+- HTML and CSS (latest versions) for markup and styling
+
+## 3. Functional Requirements
 The Pharmacy App includes the following functional requirements:
 
 ### User Management
@@ -69,21 +86,8 @@ The Pharmacy App includes the following non-functional requirements:
 - The application should be highly reliable and available, with minimal downtime
 - Data integrity should be maintained, ensuring accurate and consistent information storage and retrieval
 
-## 4. Technology Stack
-The Pharmacy App utilizes the following technology stack:
 
-### Backend
-- Java 19
-- Spring Boot framework
-- MySQL Workbench Relational Database
-- Lombok for code generation
-- Spring JDBC for database connectivity
 
-### Frontend
-- Angular (TypeScript)
-- Bootstrap for responsive UI design
-- HTML and CSS (latest versions) for markup and styling
-
-## 5. Conclusion
+## 4. Conclusion
 This Pharmacy App Software Documentation provides an overview of the application, including its functional and non-functional requirements, as well as the technology stack used for development. By adhering to these requirements and leveraging the specified technologies, the app aims to provide an efficient and user-friendly solution for managing pharmacy operations.
 
