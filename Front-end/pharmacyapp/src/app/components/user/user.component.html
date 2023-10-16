@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Users</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users</title>
 </head>
+
 <body>
-  <h4 class="user-heading">Users List</h4>
+  <h4 align="center">Users</h4>
   <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
 
     <!-- ID Column -->
@@ -15,24 +17,24 @@
       <td mat-cell *matCellDef="let row"> {{row.id}} </td>
     </ng-container>
 
-      <!-- Image Column -->
-      <ng-container matColumnDef="imageUrl">
-        <th mat-header-cell *matHeaderCellDef> Image </th>
-        <td mat-cell *matCellDef="let row"> {{row.imageUrl}} </td>
-      </ng-container>
-  
+    <!-- Image Column -->
+    <ng-container matColumnDef="imageUrl">
+      <th mat-header-cell *matHeaderCellDef> Image </th>
+      <td mat-cell *matCellDef="let row"> {{row.imageUrl}} </td>
+    </ng-container>
+
     <!-- First Name Column -->
     <ng-container matColumnDef="firstName">
       <th mat-header-cell *matHeaderCellDef> First Name </th>
       <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
     </ng-container>
-  
+
     <!-- Middle Name Column -->
     <ng-container matColumnDef="middleName">
       <th mat-header-cell *matHeaderCellDef> Middle Name </th>
       <td mat-cell *matCellDef="let row"> {{row.middleName}} </td>
     </ng-container>
-  
+
     <!-- Last Name Column -->
     <ng-container matColumnDef="lastName">
       <th mat-header-cell *matHeaderCellDef> Last Name </th>
@@ -44,12 +46,6 @@
       <th mat-header-cell *matHeaderCellDef> Email </th>
       <td mat-cell *matCellDef="let row"> {{row.email}} </td>
     </ng-container>
-    <!-- Password Column-->
-    <!-- <ng-container matColumnDef="password">
-      <th mat-header-cell *matHeaderCellDef> Password </th>
-      <td mat-cell *matCellDef="let row"> {{row.passsword}} </td>
-    </ng-container> -->
-
 
     <!-- Phone Column -->
     <ng-container matColumnDef="phone">
@@ -63,15 +59,13 @@
       <td mat-cell *matCellDef="let row"> {{row.address}} </td>
     </ng-container>
 
-  
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-
-  <mat-paginator [length]="tableDataSource.data.length"
-  [pageSize]="10"
-  [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons
-  aria-label="Select page">
-</mat-paginator>
+  <mat-paginator [length]="tableDataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page">
+  </mat-paginator>
 </body>
+
 </html>

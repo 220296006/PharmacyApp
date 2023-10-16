@@ -1,3 +1,4 @@
+import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
@@ -10,19 +11,20 @@ import { UserComponent } from './components/user/user.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 const routes: Routes = [
-  {path: '#', pathMatch: 'full', component:NavigationComponent},
-  {path: 'home', pathMatch: 'full', component: HomeComponent},
-  {path: 'customer', pathMatch: 'full', component: CustomerComponent},
-  {path: 'invoice', pathMatch: 'full', component: InvoiceComponent},
-  {path: 'medication', pathMatch: 'full', component: MedicationComponent},
-  {path: 'prescription', pathMatch: 'full', component: PrescriptionComponent},
-  {path: 'inventory', pathMatch: 'full', component: InventoryComponent},
-  {path: 'user', pathMatch: 'full', component: UserComponent}
-];
+  { path: 'nav', pathMatch: 'full', component: NavigationComponent },
+  { path: 'home', pathMatch: 'full', component: HomeComponent },
+  { path: 'customer', pathMatch: 'full', component: CustomerComponent },
+  { path: 'invoice', pathMatch: 'full', component: InvoiceComponent },
+  { path: 'medication', pathMatch: 'full', component: MedicationComponent },
+  { path: 'prescription', pathMatch: 'full', component: PrescriptionComponent },
+  { path: 'inventory', pathMatch: 'full', component: InventoryComponent },
+  { path: 'user', pathMatch: 'full', component: UserComponent },
+  { path: 'customer-details/:id', component: CustomerDetailsComponent },
 
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
