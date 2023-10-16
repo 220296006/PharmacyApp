@@ -1,9 +1,9 @@
 
 spring:
  datasource:
-   url: jdbc:mysql://localhost:3306/PharmacyApp
+   url: jdbc:mysql://localhost:3306/PharmacyApp-DB
    username: root
-   password: Shaun@96
+   password: Capaciti@1234
  spring:
    servlet:
      filter:

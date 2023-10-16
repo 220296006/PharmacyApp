@@ -27,7 +27,7 @@ public class CustomerServiceImp implements CustomerService {
 
     @Override
     public Collection<Customer> getAllCustomers(String name, int page, int pageSize) {
-        return customerRepository.list("customers", 1, 5);
+        return customerRepository.list("customers", 1, 10);
     }
     @Override
     public Customer findCustomerById(Long id) {return customerRepository.read(id);

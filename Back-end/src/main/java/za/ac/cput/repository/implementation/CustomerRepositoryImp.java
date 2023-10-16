@@ -51,6 +51,7 @@ public class CustomerRepositoryImp implements CustomerRepository<Customer> {
          Map<String, Object> linkUserParams = new HashMap<>();
          linkUserParams.put("user_id", user.getId());
          linkUserParams.put("id", customer.getId());
+         linkUserParams.put("first_name", user.getFirstName());
          jdbc.update(UPDATE_CUSTOMER_LINKED_TO_USER_QUERY, linkUserParams);
          return customer;
         } catch (Exception exception) {
@@ -119,6 +120,7 @@ public void delete(Long id) {
                 .addValue("city",customer.getCity())
                 .addValue("state", customer.getState())
                 .addValue("zipCode", customer.getZipCode())
-                .addValue("user_id", customer.getUser().getId());
+                .addValue("user_id", customer.getUser().getId())
+                .addValue("first_name", customer.getUser().getFirstName()); // Include 'first_name' here
     }
 }

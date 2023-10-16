@@ -1,1 +1,63 @@
-<p>customer works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers</title>
+</head>
+
+<body>
+  <h4 align="center">Customers</h4>
+  <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef> Id </th>
+      <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+    </ng-container>
+
+    <!-- First Name Column -->
+    <!-- First Name Column -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef> First Name </th>
+      <td mat-cell *matCellDef="let row">
+        <a [routerLink]="['/customer-details', row.id]">{{row.user.firstName}}</a>
+      </td>
+    </ng-container>
+
+
+    <!-- Address Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+    </ng-container>
+
+    <!--  City Column -->
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef> City </th>
+      <td mat-cell *matCellDef="let row"> {{row.city}} </td>
+    </ng-container>
+
+    <!--  State Column -->
+    <ng-container matColumnDef="state">
+      <th mat-header-cell *matHeaderCellDef> State </th>
+      <td mat-cell *matCellDef="let row"> {{row.state}} </td>
+    </ng-container>
+
+    <!-- Zip Code Column -->
+    <ng-container matColumnDef="zipCode">
+      <th mat-header-cell *matHeaderCellDef> Zip Code </th>
+      <td mat-cell *matCellDef="let row"> {{row.zipCode}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [length]="tableDataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page">
+  </mat-paginator>
+</body>
+
+</html>

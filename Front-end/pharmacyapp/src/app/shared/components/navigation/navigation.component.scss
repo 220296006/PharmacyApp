@@ -1,0 +1,44 @@
+/* Apply styles to the whole navigation bar */
+.navbar {
+    background-color: rgb(83, 99, 97); /* Set the background color */
+    transition: background-color 0.3s ease-in-out;
+    position: sticky;
+    top: 0; /* Stick the navigation bar to the top of the viewport */
+    z-index: 100; /* Adjust the z-index to ensure it's above other content */
+}
+
+.navbar.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    /* Add any other styles you want for the sticky navigation bar */
+  }
+
+/* Style the icons and text inside the navigation bar */
+.navbar-nav .nav-item {
+    display: flex;
+    align-items: center; /* Align items vertically */
+}
+
+.navbar-nav .nav-item:hover {
+    background-color: rgb(55, 204, 214);
+}
+
+.navbar-nav .nav-item a {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    text-decoration: none; /* Remove underlines from links */
+    color: #ffffff; /* Set text color */
+    padding: 0.5rem 1rem; /* Adjust padding as needed */
+}
+
+/* Style the mat-icon */
+.navbar-nav .nav-item mat-icon:hover {
+    margin-right: 0.25rem; /* Adjust spacing between icon and text */
+    background-color: rgb(55, 204, 214);
+
+}
+
+.dropdown-item{
+    color: #eb1212;
+}
