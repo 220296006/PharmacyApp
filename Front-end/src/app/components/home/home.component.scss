@@ -5,32 +5,61 @@
 .logo {
   width: 250px;
   height: 250px;
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 .slideshow-container {
   position: relative;
   overflow: hidden;
-}
-.slide {
-  display: flex;
-  width: 100%;
-  animation: slide 4s ease-in-out infinite;
+  display: flex; /* Ensure the slides are in a horizontal line */
 }
 
-.image {
+.slide {
+  display: flex;
+  width: 200%;
+  transition: transform 1s ease-in-out;
+  transform: translateX(-25%); /* Center the slides initially */
+}
+
+.slide img {
   width: 50%;
   height: auto;
   margin: 0 auto;
+  display: block; /* Remove extra space below the images */
+
 }
 
-@keyframes slide {
-  0%, 100% {
-    transform: translateX(100%);
-  }
-  50% {
+@keyframes continuousSlide {
+  0% {
     transform: translateX(0);
   }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.slide-buttons {
+  position: absolute;
+  top: 71%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  transform: translateY(-50%);
+}
+
+.prev-button,
+.next-button {
+  background-color: #3ca395;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.prev-button:hover,
+.next-button:hover {
+  background-color: #2c7d6f;
 }
 
 .typed {
@@ -38,4 +67,5 @@
   margin-top: 20px;
   color: rgb(60, 163, 149);
   font-weight: 700;
+  margin-top: 0;
 }

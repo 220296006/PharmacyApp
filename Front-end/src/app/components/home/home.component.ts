@@ -14,8 +14,6 @@ export class HomeComponent implements OnInit {
     // Initialize Typed.js
     this.initTyped();
 
-    // this.showNextSlide();
-
     // Start the slideshow
     this.startSlideshow();
   }
@@ -44,24 +42,36 @@ export class HomeComponent implements OnInit {
       this.showNextSlide();
     }, 4000);
   }
-  private showNextSlide(): void {
-    // Get all slides
-    const slides = document.querySelectorAll('.slide');
 
-    // Hide all slides
-    slides.forEach((slide) => {
-      slide.classList.remove('slide-in');
-    });
-
-    // Increment the index
+  showNextSlide(): void {
     this.currentSlideIndex++;
 
     // If reached the end, go back to the first slide
-    if (this.currentSlideIndex >= slides.length) {
+    if (this.currentSlideIndex >= 2) {
       this.currentSlideIndex = 0;
     }
 
-    // Show the next slide
-    slides[this.currentSlideIndex].classList.add('slide-in');
+    this.updateSlideTransform();
+  }
+
+  showPrevSlide(): void {
+    this.currentSlideIndex--;
+
+    // If reached the beginning, go to the last slide
+    if (this.currentSlideIndex < 0) {
+      this.currentSlideIndex = 1;
+    }
+
+    this.updateSlideTransform();
+  }
+
+  private updateSlideTransform(): void {
+    const slides = document.querySelectorAll('.slide');
+
+    slides.forEach((slide, index) => {
+      const slideElement = slide as HTMLElement;
+      const transformValue = `translateX(${(index - this.currentSlideIndex) * 100}%)`;
+      slideElement.style.transform = transformValue;
+    });
   }
 }

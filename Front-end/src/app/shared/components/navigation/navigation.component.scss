@@ -7,12 +7,6 @@
     z-index: 100; /* Adjust the z-index to ensure it's above other content */
 }
 
-.navbar.sticky {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    /* Add any other styles you want for the sticky navigation bar */
-  }
 
 /* Style the icons and text inside the navigation bar */
 .navbar-nav .nav-item {
@@ -39,6 +33,3 @@
 
 }
 
-.dropdown-item{
-    color: #eb1212;
-}
