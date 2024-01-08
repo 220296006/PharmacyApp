@@ -118,18 +118,6 @@ CREATE TABLE Customers
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Table Medications
-DROP TABLE IF EXISTS Medications;
-CREATE TABLE Medications
-(
-    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    prescription_id   INT UNSIGNED NOT NULL,
-    name              VARCHAR(100) NOT NULL,
-    dosage            VARCHAR(100) NOT NULL,
-    frequency         VARCHAR(100) NOT NULL,
-    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
 -- Table Inventory
 DROP TABLE IF EXISTS Inventory;
 CREATE TABLE Inventory
@@ -144,6 +132,20 @@ CREATE TABLE Inventory
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- Table Medications
+DROP TABLE IF EXISTS Medications;
+CREATE TABLE Medications
+(
+    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prescription_id   INT UNSIGNED NOT NULL,
+    name              VARCHAR(100) NOT NULL,
+    dosage            VARCHAR(100) NOT NULL,
+    frequency         VARCHAR(100) NOT NULL,
+    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
 
 -- Table Prescriptions
 DROP TABLE IF EXISTS Prescriptions;

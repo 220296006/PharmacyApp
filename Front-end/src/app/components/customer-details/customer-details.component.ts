@@ -25,6 +25,7 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   getCustomerById(customerId: number): void {
+    console.log('Loading customer details for ID:', customerId);
     this.customerService.getCustomerById(customerId).subscribe({
       next: (response: any) => {
         console.log('Response from server:', response);

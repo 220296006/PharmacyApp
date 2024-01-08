@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { Customer } from 'src/app/model/customer';
 import { ApiResponse } from 'src/app/model/api-response';
+import { Customer } from 'src/app/model/customer';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +27,7 @@ export class CustomerService {
   getCustomerById(customerId: number): Observable<ApiResponse<Customer>> {
     const url = `${this.serverUrl}/read/${customerId}`;
     return this.http.get<ApiResponse<Customer>>(url).pipe(catchError(this.handleError));
-  }
-  
+}
 
   handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
