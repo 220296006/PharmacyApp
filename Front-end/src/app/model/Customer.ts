@@ -7,6 +7,6 @@ export interface Customer {
   state: string;
   user: {
     id: number;
-    firstName: string; 
-  }
+    firstName: string;
+  };
 }
