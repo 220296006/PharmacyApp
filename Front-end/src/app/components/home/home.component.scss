@@ -1,50 +1,68 @@
-.home-container {
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#hero {
   text-align: center;
+  padding: 100px 0;
 }
 
 .logo {
-  width: 250px;
-  height: 250px;
-  margin-top: 0;
+  width: 200px;
+  height: 200px;
 }
 
-.slideshow-container {
+.typed {
+  font-size: 24px;
+  margin-top: 20px;
+  color: #333;
+  font-weight: bold;
+}
+
+#features {
+  background-color: #fff;
+  padding: 80px 0;
+}
+
+.slideshow {
   position: relative;
   overflow: hidden;
-  display: flex; /* Ensure the slides are in a horizontal line */
+  display: flex;
+  transition: transform 1s ease-in-out;
 }
 
 .slide {
   display: flex;
-  width: 200%;
-  transition: transform 1s ease-in-out;
-  transform: translateX(-25%); /* Center the slides initially */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
-.slide img {
-  width: 50%;
-  height: auto;
-  margin: 0 auto;
-  display: block; /* Remove extra space below the images */
-
+.feature-image {
+  width: 300px;
+  height: 300px;
+  margin-bottom: 20px;
 }
 
-@keyframes continuousSlide {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+h2 {
+  font-size: 18px;
+  color: #333;
 }
 
 .slide-buttons {
-  position: absolute;
-  top: 71%;
-  width: 100%;
+  margin-top: 20px;
   display: flex;
   justify-content: space-between;
-  transform: translateY(-50%);
 }
 
 .prev-button,
@@ -52,7 +70,7 @@
   background-color: #3ca395;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
 }
@@ -60,12 +78,4 @@
 .prev-button:hover,
 .next-button:hover {
   background-color: #2c7d6f;
-}
-
-.typed {
-  font-size: 18px;
-  margin-top: 20px;
-  color: rgb(60, 163, 149);
-  font-weight: 700;
-  margin-top: 0;
 }

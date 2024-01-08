@@ -117,10 +117,11 @@ public void delete(Long id) {
         return  new MapSqlParameterSource()
                 .addValue("id", customer.getId())
                 .addValue("address", customer.getAddress())
+                .addValue("imageUrl", customer.getImageUrl())
                 .addValue("city",customer.getCity())
                 .addValue("state", customer.getState())
                 .addValue("zipCode", customer.getZipCode())
                 .addValue("user_id", customer.getUser().getId())
-                .addValue("first_name", customer.getUser().getFirstName()); // Include 'first_name' here
+                .addValue("first_name", customer.getUser().getFirstName());
     }
 }

@@ -3,32 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home</title>
+  <title>Pharmacy App</title>
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 </head>
 <body>
-  <!-- Image  -->
-  <section id="image">
-    <!-- home.component.html -->
-    <div class="home-container">
+  <section id="hero">
+    <div class="container">
       <img src="assets/images/PharmacyApp.png" alt="Pharmacy App Logo" class="logo" />
-      <p class="typed" data-typed-items="Welcome to the Pharmacy App. ,Your trusted source for all your pharmacy needs."></p>
+      <h1 class="typed" data-typed-items="Welcome to the Pharmacy App.,Your trusted source for all your pharmacy needs."></h1>
     </div>
   </section>
 
-  <section class="slides">
-    <div class="slideshow-container">
-      <div class="slide">
-        <img src="assets/images/Medication.png" alt="Slide 1" class="image" />
+  <section id="features">
+    <div class="container">
+      <div class="slideshow">
+        <div class="slide">
+          <img src="assets/images/Medication.png" alt="Medication" class="feature-image" />
+          <h2>Explore Medications</h2>
+        </div>
+        <div class="slide">
+          <img src="assets/images/Prescription.png" alt="Prescription" class="feature-image" />
+          <h2>Manage Prescriptions</h2>
+        </div>
       </div>
-      <div class="slide">
-        <img src="assets/images/Prescription.png" alt="Slide 2" class="image" />
+      <div class="slide-buttons">
+        <button (click)="showPrevSlide()" class="prev-button">❮ Prev</button>
+        <button (click)="showNextSlide()" class="next-button">Next ❯</button>
       </div>
-    </div>
-    <div class="slide-buttons">
-      <button (click)="showPrevSlide()" class="prev-button">❮ Prev</button>
-      <button (click)="showNextSlide()" class="next-button">Next ❯</button>
     </div>
   </section>
+
+  <script src="path/to/your/custom/app.js"></script>
 </body>
 </html>

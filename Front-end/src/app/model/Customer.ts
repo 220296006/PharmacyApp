@@ -1,5 +1,6 @@
 export interface Customer {
   id: number;
+  imageUrl: string;
   address: string;
   city: string;
   zipCode: string;

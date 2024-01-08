@@ -22,6 +22,7 @@ import org.springframework.data.annotation.Id;
 public class Customer{
     @Id
     private Long id;
+    private String imageUrl;
     private String address;
     private String city;
     private String state;
