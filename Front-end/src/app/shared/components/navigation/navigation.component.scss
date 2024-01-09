@@ -1,35 +1,37 @@
-/* Apply styles to the whole navigation bar */
 .navbar {
-    background-color: rgb(83, 99, 97); /* Set the background color */
+    background-color: rgb(83, 99, 97);
     transition: background-color 0.3s ease-in-out;
     position: sticky;
-    top: 0; /* Stick the navigation bar to the top of the viewport */
-    z-index: 100; /* Adjust the z-index to ensure it's above other content */
-}
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  }
 
-
-/* Style the icons and text inside the navigation bar */
-.navbar-nav .nav-item {
+  /* Style the icons and text inside the navigation bar */
+  .navbar-nav .nav-item {
     display: flex;
-    align-items: center; /* Align items vertically */
-}
+    align-items: center;
+  }
 
-.navbar-nav .nav-item:hover {
+  .navbar-nav .nav-item:hover {
     background-color: rgb(55, 204, 214);
-}
+  }
 
-.navbar-nav .nav-item a {
+  .navbar-nav .nav-item a {
     display: flex;
-    align-items: center; /* Align items vertically */
-    text-decoration: none; /* Remove underlines from links */
-    color: #ffffff; /* Set text color */
-    padding: 0.5rem 1rem; /* Adjust padding as needed */
-}
+    align-items: center;
+    text-decoration: none;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease-in-out; /* Smooth text color transition */
+  }
 
-/* Style the mat-icon */
-.navbar-nav .nav-item mat-icon:hover {
-    margin-right: 0.25rem; /* Adjust spacing between icon and text */
-    background-color: rgb(55, 204, 214);
+  /* Style the mat-icon */
+  .navbar-nav .nav-item mat-icon {
+    margin-right: 0.5rem; /* Adjust spacing between icon and text */
+    transition: margin-right 0.3s ease-in-out; /* Smooth margin transition */
+  }
 
-}
-
+  .navbar-nav .nav-item:hover a {
+    color: #333; /* Change text color on hover */
+  }

@@ -57,8 +57,8 @@ export class UserComponent implements OnInit {
     });
   }
 
-  onDeleteUser(userId: number) {
-    this.userService.deleteUser(userId).subscribe({
+  onDeleteUser(id: number) {
+    this.userService.deleteUserById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
@@ -73,7 +73,7 @@ export class UserComponent implements OnInit {
     });
   }
 
-  onUpdateUser(userId: number) {
+ onUpdateUser(userId: number) {
     this.userService.getUserById(userId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
@@ -88,8 +88,6 @@ export class UserComponent implements OnInit {
       },
     });
   }
-  
-  
 
   openUpdateDialog(user: User): void {
     const dialogRef = this.updateDialog.open(UpdateUserDialogComponent, {

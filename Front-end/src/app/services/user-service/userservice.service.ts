@@ -22,25 +22,19 @@ export class UserService {
     );
   }
 
-  getUserById(userId: number): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${this.serverUrl}/user/update/${userId}`)
+  getUserById(id: number): Observable<ApiResponse<User>> {
+    return this.http.get<ApiResponse<User>>(`${this.serverUrl}/user/read/${id}`)
     .pipe(catchError(this.handleError));
   }
 
 
-  onUpdateUser(id: number, user: User): Observable<ApiResponse<User>> {
-    return this.http
-      .get<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`)
+  updateUserById(id: number, user: User): Observable<ApiResponse<User>> {
+    return this.http.put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user)
       .pipe(catchError(this.handleError));
   }
+  
 
-  updateUser(id: number, user: User): Observable<ApiResponse<User>> {
-    return this.http
-      .put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user)
-      .pipe(catchError(this.handleError));
-  }
-
-  deleteUser(id: number): Observable<ApiResponse<User>> {
+  deleteUserById(id: number): Observable<ApiResponse<User>> {
     return this.http
       .delete<ApiResponse<User>>(`${this.serverUrl}/user/delete/${id}`)
       .pipe(catchError(this.handleError));

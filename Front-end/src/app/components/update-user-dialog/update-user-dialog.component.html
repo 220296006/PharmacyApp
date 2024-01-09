@@ -3,45 +3,39 @@
     <form #updateForm="ngForm">
 
         <!-- Id Field (readonly) -->
-        <mat-form-field class="full-width" [hidden]="true">
-            <input matInput readonly name="id" placeholder="ID" [(ngModel)]="data.user.id" />
-            <mat-icon class="id-icon">bx bx-id</mat-icon>
-        </mat-form-field>
+        <mat-form-field class="full-width" hidden="true">
+            <input matInput  name="id" placeholder="ID" [(ngModel)]="data.id" />
+          </mat-form-field>
+          
 
         <!-- First Name Field -->
         <mat-form-field class="full-width">
-            <input matInput name="firstName" placeholder="First Name" [(ngModel)]="data.user.firstName" required />
-            <mat-icon class="bx-icon">bx bx-user</mat-icon>
+            <input matInput name="firstName" placeholder="First Name" [(ngModel)]="data.firstName" required />
         </mat-form-field>
 
         <!-- Middle Name Field -->
         <mat-form-field class="full-width">
-            <input matInput name="middleName" placeholder="Middle Name" [(ngModel)]="data.user.middleName" />
-            <mat-icon class="bx-icon">bx bx-user</mat-icon>
+            <input matInput name="middleName" placeholder="Middle Name" [(ngModel)]="data.middleName" />
         </mat-form-field>
 
         <!-- Last Name Field -->
         <mat-form-field class="full-width">
-            <input matInput name="lastName" placeholder="Last Name" [(ngModel)]="data.user.lastName" required />
-            <mat-icon class="bx-icon">bx bx-user</mat-icon>
+            <input matInput name="lastName" placeholder="Last Name" [(ngModel)]="data.lastName" required />
         </mat-form-field>
 
         <!-- Email Field -->
         <mat-form-field class="full-width">
-            <input matInput type="email" name="email" placeholder="Email" [(ngModel)]="data.user.email" required />
-            <mat-icon class="bx-icon">bx bx-envelope</mat-icon>
+            <input matInput type="email" name="email" placeholder="Email" [(ngModel)]="data.email" required />
         </mat-form-field>
 
         <!-- Address Field -->
         <mat-form-field class="full-width">
-            <input matInput name="address" placeholder="Address" [(ngModel)]="data.user.address" />
-            <mat-icon class="bx-icon">bx bx-map</mat-icon>
+            <input matInput name="address" placeholder="Address" [(ngModel)]="data.address" />
         </mat-form-field>
 
         <!-- Phone Field -->
         <mat-form-field class="full-width">
-            <input matInput name="phone" placeholder="Phone" [(ngModel)]="data.user.phone" />
-            <mat-icon class="bx-icon">bx bx-phone</mat-icon>
+            <input matInput name="phone" placeholder="Phone" [(ngModel)]="data.phone" />
         </mat-form-field>
     </form>
 </div>
