@@ -25,7 +25,7 @@ public class PrescriptionRowMapper implements RowMapper<Prescription> {
 
         Customer customer = new Customer();
         customer.setId(rs.getLong("customer_id"));
-
+        prescription.setCustomer(customer);
         return prescription;
     }
 }

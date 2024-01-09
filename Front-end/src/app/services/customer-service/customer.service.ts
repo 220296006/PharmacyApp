@@ -25,7 +25,7 @@ export class CustomerService {
   }
 
   getCustomerById(customerId: number): Observable<ApiResponse<Customer>> {
-    const url = `${this.serverUrl}/read/${customerId}`;
+    const url = `${this.serverUrl}/customer/read/${customerId}`;
     return this.http.get<ApiResponse<Customer>>(url).pipe(catchError(this.handleError));
 }
 

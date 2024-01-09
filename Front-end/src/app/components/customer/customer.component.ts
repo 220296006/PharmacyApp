@@ -22,6 +22,7 @@ export class CustomerComponent  implements OnInit {
     'city',
     'state',
     'zipCode',
+    'options'
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -50,4 +51,11 @@ export class CustomerComponent  implements OnInit {
       },
     });
   }
+
+  editCustomer(_t99: any) {
+    throw new Error('Method not implemented.');
+    }
+    deleteCustomer(_t99: any) {
+    throw new Error('Method not implemented.');
+    }
 }

@@ -1,3 +1,4 @@
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CustomerService } from './services/customer-service/customer.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -21,6 +22,8 @@ import { InventoryComponent } from './components/inventory/inventory.component';
 import { HomeComponent } from './components/home/home.component';
 import { UserService } from './services/user-service/userservice.service';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
+import { PrescriptionService } from './services/prescription-service/prescription-service.service';
+import { UpdateUserDialogComponent } from './components/update-user-dialog/update-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,7 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
     InventoryComponent,
     HomeComponent,
     CustomerDetailsComponent,
+    UpdateUserDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,8 +49,14 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
+    MatDialogModule,
   ],
-  providers: [UserService, CustomerService],
+  providers: [
+    UserService,
+    CustomerService,
+    PrescriptionService,
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

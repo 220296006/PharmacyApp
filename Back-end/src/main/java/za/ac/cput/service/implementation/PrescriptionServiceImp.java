@@ -27,7 +27,7 @@ public class PrescriptionServiceImp implements PrescriptionService {
 
     @Override
     public Collection<Prescription> getAllPrescriptions(String name, int page, int pageSize) {
-        return prescriptionRepository.list("customers", 1, 5);
+        return prescriptionRepository.list("customers", 1, 50);
     }
 
     @Override
