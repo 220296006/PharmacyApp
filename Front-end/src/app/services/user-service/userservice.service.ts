@@ -16,23 +16,20 @@ export class UserService {
     name: string = '',
     page: number = 0,
     size: number = 10
-  ): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(
+  ): Observable<ApiResponse<User[]>> {
+    return this.http.get<ApiResponse<User[]>>(
       `${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`
     );
   }
-
+  
   getUserById(id: number): Observable<ApiResponse<User>> {
     return this.http.get<ApiResponse<User>>(`${this.serverUrl}/user/read/${id}`)
     .pipe(catchError(this.handleError));
   }
 
-
-  updateUserById(id: number, user: User): Observable<ApiResponse<User>> {
-    return this.http.put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user)
-      .pipe(catchError(this.handleError));
+  updateUserData(id: number, user: User): Observable<ApiResponse<User>> {
+    return this.http.put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user);
   }
-  
 
   deleteUserById(id: number): Observable<ApiResponse<User>> {
     return this.http

@@ -17,7 +17,7 @@ public interface UserService {
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
-    UserDTO updateUser(User user);
+    UserDTO updateUserById(Long id, User updatedUser);
 
     User findUserById(Long id);
 

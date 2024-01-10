@@ -13,3 +13,6 @@ export interface User {
   isNotLocked: boolean;
 }
 
+export interface UserData {
+  user: User;
+}

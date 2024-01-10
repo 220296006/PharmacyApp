@@ -26,30 +26,32 @@ export class UpdateUserDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('Data received in dialog:', this.data);
     if (this.data?.user) {
-      this.user = { ...this.data.user }; 
+      console.log('User data in dialog:', this.data.user);
+      this.user = this.data.user;
     }
   }
-
+   
   onCancelClick(): void {
     this.dialogRef.close();
   }
-
   onUpdateClick(): void {
-    this.userService.updateUserById(this.user.id, this.user).subscribe({
+    this.userService.updateUserData(this.user.id, this.user).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'CREATED') {
-          this.dialogRef.close(true); // Indicate success
+          this.dialogRef.close(true); 
         } else {
           console.error('Error: ' + response.message);
-          this.dialogRef.close(false); // Indicate failure
+          this.dialogRef.close(false); 
         }
       },
       error: (error) => {
         console.error('Error updating user:', error);
-        this.dialogRef.close(false); // Indicate failure
+        this.dialogRef.close(false); 
       },
     });
   }
+  
 }

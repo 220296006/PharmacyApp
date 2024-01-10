@@ -37,9 +37,27 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUser(User user) {
+    public UserDTO updateUserById(Long id , User updatedUser) {
 
-        return UserDTOMapper.fromUser(userRepository.update(user));
+        User existingUser = userRepository.findById(id);
+
+        // Check if the user exists
+        if (existingUser != null) {
+            // Update the existing user with the new data
+            existingUser.setFirstName(updatedUser.getFirstName());
+            existingUser.setLastName(updatedUser.getLastName());
+            existingUser.setMiddleName(updatedUser.getMiddleName());
+            existingUser.setEmail(updatedUser.getEmail());
+            existingUser.setAddress(updatedUser.getAddress());
+            existingUser.setPhone(updatedUser.getPhone());
+            // Save the updated user
+            User updatedUserEntity = userRepository.save(existingUser);
+            // Convert the updated user to DTO for response
+            return UserDTOMapper.fromUser(updatedUserEntity);
+        } else {
+            // If the user does not exist, return null
+            return null;
+        }
     }
 
     @Override

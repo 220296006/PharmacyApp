@@ -1,45 +1,50 @@
 <h2 mat-dialog-title>Update User</h2>
 <div mat-dialog-content>
-    <form #updateForm="ngForm">
+  <form #updateForm="ngForm">
 
-        <!-- Id Field (readonly) -->
-        <mat-form-field class="full-width" hidden="true">
-            <input matInput  name="id" placeholder="ID" [(ngModel)]="data.id" />
-          </mat-form-field>
-          
+    <!-- Id Field (readonly) -->
+    <mat-form-field class="full-width" hidden="true">
+      <input matInput name="id" placeholder="ID" [ngModel]="user?.id" />
+    </mat-form-field>
 
-        <!-- First Name Field -->
-        <mat-form-field class="full-width">
-            <input matInput name="firstName" placeholder="First Name" [(ngModel)]="data.firstName" required />
-        </mat-form-field>
+    <!-- First Name Field -->
+    <mat-form-field class="full-width">
+      <input matInput name="firstName" placeholder="First Name" [ngModel]="user?.firstName"
+        (ngModelChange)="user.firstName = $event" required />
+    </mat-form-field>
 
-        <!-- Middle Name Field -->
-        <mat-form-field class="full-width">
-            <input matInput name="middleName" placeholder="Middle Name" [(ngModel)]="data.middleName" />
-        </mat-form-field>
+    <!-- Middle Name Field -->
+    <mat-form-field class="full-width">
+      <input matInput name="middleName" placeholder="Middle Name" [ngModel]="user?.middleName"
+        (ngModelChange)="user.middleName = $event" />
+    </mat-form-field>
 
-        <!-- Last Name Field -->
-        <mat-form-field class="full-width">
-            <input matInput name="lastName" placeholder="Last Name" [(ngModel)]="data.lastName" required />
-        </mat-form-field>
+    <!-- Last Name Field -->
+    <mat-form-field class="full-width">
+      <input matInput name="lastName" placeholder="Last Name" [ngModel]="user?.lastName"
+        (ngModelChange)="user.lastName = $event" required />
+    </mat-form-field>
 
-        <!-- Email Field -->
-        <mat-form-field class="full-width">
-            <input matInput type="email" name="email" placeholder="Email" [(ngModel)]="data.email" required />
-        </mat-form-field>
+    <!-- Email Field -->
+    <mat-form-field class="full-width">
+      <input matInput type="email" name="email" placeholder="Email" [ngModel]="user?.email"
+        (ngModelChange)="user.email = $event" required />
+    </mat-form-field>
 
-        <!-- Address Field -->
-        <mat-form-field class="full-width">
-            <input matInput name="address" placeholder="Address" [(ngModel)]="data.address" />
-        </mat-form-field>
+    <!-- Address Field -->
+    <mat-form-field class="full-width">
+      <input matInput name="address" placeholder="Address" [ngModel]="user?.address"
+        (ngModelChange)="user.address = $event" />
+    </mat-form-field>
 
-        <!-- Phone Field -->
-        <mat-form-field class="full-width">
-            <input matInput name="phone" placeholder="Phone" [(ngModel)]="data.phone" />
-        </mat-form-field>
-    </form>
+    <!-- Phone Field -->
+    <mat-form-field class="full-width">
+      <input matInput name="phone" placeholder="Phone" [ngModel]="user?.phone" (ngModelChange)="user.phone = $event" />
+    </mat-form-field>
+
+  </form>
 </div>
 <div mat-dialog-actions>
-    <button mat-button (click)="onCancelClick()">Cancel</button>
-    <button mat-button color="primary" [disabled]="updateForm.invalid" (click)="onUpdateClick()">Update</button>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button color="primary" [disabled]="updateForm.invalid" (click)="onUpdateClick()">Update</button>
 </div>

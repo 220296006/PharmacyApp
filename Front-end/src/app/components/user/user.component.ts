@@ -1,8 +1,8 @@
+import { User } from './../../model/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user-service/userservice.service';
 import { UpdateUserDialogComponent } from '../update-user-dialog/update-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,8 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
-
-  tableDataSource: MatTableDataSource<User[]> = new MatTableDataSource<User[]>([]);
+  tableDataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   displayedColumns: string[] = [
     'id',
     'imageUrl',
@@ -24,7 +23,7 @@ export class UserComponent implements OnInit {
     'email',
     'phone',
     'address',
-    'options'
+    'options',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -32,7 +31,7 @@ export class UserComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private updateDialog: MatDialog,
+    private updateDialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -43,7 +42,14 @@ export class UserComponent implements OnInit {
     this.userService.getAllUserData().subscribe({
       next: (response) => {
         console.log('Response from server:', response);
-        if (response.status === 'OK' && Array.isArray(response.data.page)) {
+
+        if (
+          response.status === 'OK' &&
+          response.data &&
+          Array.isArray(response.data.page)
+        ) {
+          console.log('Data received:', response.data);
+
           this.tableDataSource.data = response.data.page;
           this.tableDataSource.paginator = this.paginator;
           this.tableDataSource.sort = this.sort;
@@ -73,14 +79,23 @@ export class UserComponent implements OnInit {
     });
   }
 
- onUpdateUser(userId: number) {
+  onUpdateUser(userId: number) {
     this.userService.getUserById(userId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
-        if (response.status === 'OK' && response) {
-          this.openUpdateDialog(response.data.page);
+
+        if (response.status === 'OK' && response.data && response.data.user) {
+          console.log('Data passed to dialog:', response.data);
+
+          // Update the condition to check for user property
+          const user = response.data.user;
+          if (user) {
+            this.openUpdateDialog(user);
+          } else {
+            console.error('Error: User not found in response.data.user');
+          }
         } else {
-          console.error('Error: User not found');
+          console.error('Error: User data not present in the response');
         }
       },
       error: (error) => {
@@ -90,6 +105,7 @@ export class UserComponent implements OnInit {
   }
 
   openUpdateDialog(user: User): void {
+    console.log('User data passed to dialog:', user); // Check if user is defined
     const dialogRef = this.updateDialog.open(UpdateUserDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',

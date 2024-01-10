@@ -78,10 +78,10 @@ public class UserController {
         );
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Response> updateUser(@Valid @RequestBody User user){
-           log.info("Update User: {}", user);
-           UserDTO userDTO = userService.updateUser(user);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody User user){
+           log.info("Update User: {}, {}", id, user);
+           UserDTO userDTO = userService.updateUserById(id, user);
            return  ResponseEntity.created(getUri()).body(
                     Response.builder()
                         .timeStamp(now())

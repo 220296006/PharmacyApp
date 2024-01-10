@@ -16,4 +16,5 @@ public interface UserRepository <T extends User> {
       void delete(Long id);
       T findByEmailIgnoreCase(String email);
       Boolean existByEmail(String email);
+      T findById(Long id);
 }
