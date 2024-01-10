@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
 })
 export class UpdateUserDialogComponent implements OnInit {
   user: User = {
-    id: null, firstName: '', lastName: '', email: '', address: '', phone: '',
+    id: null, firstName: '', lastName: '', email: '', address: '', phone: '', password: '',
     middleName: '',
     imageUrl: '',
     enabled: false,

@@ -1,9 +1,13 @@
 package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
+import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
+import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.ConfirmationRepository;
@@ -20,6 +24,7 @@ import java.util.Collection;
  **/
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
     private final ConfirmationRepository<Confirmation> confirmationRepository;
@@ -37,26 +42,35 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUserById(Long id , User updatedUser) {
+    public UserDTO updateUserById(Long id, UserUpdateDTO updatedUser) {
+        try {
+            User existingUser = userRepository.findById(id);
 
-        User existingUser = userRepository.findById(id);
+            // Check if the user exists
+            if (existingUser != null) {
+                // Update the existing user with the new data
+                existingUser.setFirstName(updatedUser.getFirstName());
+                existingUser.setLastName(updatedUser.getLastName());
+                existingUser.setMiddleName(updatedUser.getMiddleName());
+                existingUser.setEmail(updatedUser.getEmail());
+                existingUser.setAddress(updatedUser.getAddress());
+                existingUser.setPhone(updatedUser.getPhone());
 
-        // Check if the user exists
-        if (existingUser != null) {
-            // Update the existing user with the new data
-            existingUser.setFirstName(updatedUser.getFirstName());
-            existingUser.setLastName(updatedUser.getLastName());
-            existingUser.setMiddleName(updatedUser.getMiddleName());
-            existingUser.setEmail(updatedUser.getEmail());
-            existingUser.setAddress(updatedUser.getAddress());
-            existingUser.setPhone(updatedUser.getPhone());
-            // Save the updated user
-            User updatedUserEntity = userRepository.save(existingUser);
-            // Convert the updated user to DTO for response
-            return UserDTOMapper.fromUser(updatedUserEntity);
-        } else {
-            // If the user does not exist, return null
+                // Save the updated user
+                User updatedUserEntity = userRepository.save(existingUser);
+
+                // Convert the updated user to DTO for response
+                return UserDTOMapper.fromUser(updatedUserEntity);
+            } else {
+                // If the user does not exist, return null
+                return null;
+            }
+        } catch (EmptyResultDataAccessException exception) {
+            // Handle the case where findById doesn't find a user
             return null;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while updating the user. Please try again.");
         }
     }
 

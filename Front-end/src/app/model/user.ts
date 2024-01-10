@@ -6,6 +6,7 @@ export interface User {
   email: string;
   address: string;
   phone: string;
+  password: string;
   imageUrl: string;
   enabled: boolean;
   isUsingMfa: boolean;
@@ -13,6 +14,3 @@ export interface User {
   isNotLocked: boolean;
 }
 
-export interface UserData {
-  user: User;
-}

@@ -32,7 +32,6 @@ public class User {
     @NotEmpty(message = "Email  cannot be empty ")
     @Email(message = "Email Invalid !!. Please enter valid email ")
     private String email;
-    @NotEmpty(message = "Password cannot be empty")
     private String password;
     private String address;
     private String phone;
