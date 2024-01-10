@@ -61,20 +61,22 @@ public class CustomerController {
                     .build()
            );
     }
+
     @GetMapping("/read/{id}")
-    public ResponseEntity<Response> findCustomerById(@PathVariable  Long id){
+    public ResponseEntity<Response> findCustomerById(@PathVariable Long id) {
         log.info("Fetching A Customer By Id: {}", id);
-        return  ResponseEntity.ok().body(
+        return ResponseEntity.ok().body(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("customer",  customerService.findCustomerById(id)))
+                        .data(Map.of("customer", customerService.findCustomerById(id)))
                         .message("Customer Fetched")
                         .status(OK)
                         .statusCode(OK.value())
                         .build()
         );
     }
-   @PutMapping("/update")
+
+    @PutMapping("/update")
     public ResponseEntity<Response> updateCustomer(@Valid @RequestBody Customer customer){
            log.info("Updating Customer: {}", customer);
            customerService.updateCustomer(customer);

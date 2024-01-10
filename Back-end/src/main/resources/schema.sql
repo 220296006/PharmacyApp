@@ -109,11 +109,12 @@ CREATE TABLE Customers
 (
     id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id     INT UNSIGNED NOT NULL,
+    image_url   VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     first_name INT UNSIGNED NOT NULL,
     address     VARCHAR(255) NOT NULL,
     city        VARCHAR(100) NOT NULL,
     state       VARCHAR(100) NULL,
-    zip_code    VARCHAR(20) NOT NULL,
+    zip_code    VARCHAR(20) NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -132,6 +133,20 @@ CREATE TABLE Inventory
     FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- Table Medications
+DROP TABLE IF EXISTS Medications;
+CREATE TABLE Medications
+(
+    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prescription_id   INT UNSIGNED NOT NULL,
+    name              VARCHAR(100) NOT NULL,
+    dosage            VARCHAR(100) NOT NULL,
+    frequency         VARCHAR(100) NOT NULL,
+    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
 -- Table Prescriptions
 DROP TABLE IF EXISTS Prescriptions;
 CREATE TABLE Prescriptions
@@ -144,17 +159,6 @@ CREATE TABLE Prescriptions
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Table Medications
-DROP TABLE IF EXISTS Medications;
-CREATE TABLE Medications
-(
-    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    prescription_id   INT UNSIGNED NOT NULL,
-    name              VARCHAR(100) NOT NULL,
-    dosage            VARCHAR(100) NOT NULL,
-    frequency         VARCHAR(100) NOT NULL,
-    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
 
 -- Table Invoices
 DROP TABLE IF EXISTS Invoices;
@@ -175,8 +179,16 @@ INSERT INTO Roles (id, name, permission) VALUES
     (3, 'ROLE_ADMIN', 'READ:USER,READ:CUSTOMER,CREATE:USER,DELETE:USER,DELETE:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER'),
     (4, 'ROLE_SYSADMIN', 'READ:USER,READ:CUSTOMER,CREATE:USER,CREATE:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER,DELETE:USER,DELETE:CUSTOMER');
 
+-- Update Image Url
 ALTER TABLE Customers MODIFY COLUMN first_name VARCHAR(255) NULL;
 
-SET SQL_SAFE_UPDATES = 0;
-UPDATE users SET image_url = CONCAT('https://randomuser.me/api/potraits/men', FLOOR(RAND() * 100), '.jpg');
-SELECT FLOOR(RAND() * 100);
+-- Update the 'image_url' column with random user images.
+Update Users
+SET image_url = CONCAT('https://randomuser.me/api/portraits/men/', FLOOR(RAND() * 100), '.jpg');
+
+Update Customers
+SET image_url = CONCAT('https://randomuser.me/api/portraits/men/', FLOOR(RAND() * 100), '.jpg');
+
+
+
+

@@ -1,0 +1,17 @@
+.full-width {
+  width: 100%;
+}
+
+mat-dialog-content {
+  display: flex;
+  flex-direction: column;
+}
+
+mat-form-field {
+  margin-bottom: 15px;
+}
+
+mat-dialog-actions {
+  justify-content: flex-end;
+  margin-top: 20px;
+}

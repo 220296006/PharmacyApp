@@ -9,9 +9,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.UserDTO;
+import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.User;
 import za.ac.cput.service.UserService;
+import java.util.Collections;
+
 
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -19,8 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.*;
 
 /**
  * @author : Thabiso Matsaba
@@ -78,21 +80,40 @@ public class UserController {
         );
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Response> updateUser(@Valid @RequestBody User user){
-           log.info("Update User: {}", user);
-           UserDTO userDTO = userService.updateUser(user);
-           return  ResponseEntity.created(getUri()).body(
-                    Response.builder()
-                        .timeStamp(now())
-                        .data(Map.of("user", userDTO))
-                        .message("User Updated")
-                        .status(CREATED)
-                        .statusCode(CREATED.value())
-                        .build()
-          );
-    }
-
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
+        log.info("Update User: {}, {}", id, user);
+        try {
+            UserDTO userDTO = userService.updateUserById(id, user);
+            if (userDTO != null) {
+                return ResponseEntity.ok()
+                        .body(Response.builder()
+                                .timeStamp(now())
+                                .data(Map.of("user", userDTO))
+                                .message("User Updated")
+                                .status(OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Response.builder()
+                                .timeStamp(now())
+                                .message("User not found for id: " + id)
+                                .status(NOT_FOUND)
+                                .statusCode(HttpStatus.NOT_FOUND.value())
+                                .build());
+            }
+        } catch (Exception e) {
+            log.error("Error updating user with id {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Response.builder()
+                            .timeStamp(now())
+                            .message("Failed to update user.")
+                            .status(INTERNAL_SERVER_ERROR)
+                            .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                            .build());
+        }
+}
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteUser(@PathVariable Long id){
         log.info("Delete User: {}", id);

@@ -1,35 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers</title>
-</head>
-<body>
-    <div class="customer-container">
-        <h1>Customer Information</h1>
-        <div class="customer-info">
-          <p><strong>Id:</strong> {{ customer.id }}</p>
-          <p><strong>Name:</strong> {{ customer.first_name }}</p>
-          <p><strong>Address:</strong> {{ customer.address }}</p>
-          <p><strong>City:</strong> {{ customer.city }}</p>
-          <p><strong>State:</strong> {{ customer.state }}</p>
-          <p><strong>Zip Code:</strong> {{ customer.zip_code }}</p>
 
-          <!-- Add more customer details as needed -->
-        </div>
-        <div class="customer-related">
-          <div class="breadcrumb">
-            <!-- Breadcrumb links go here -->
-          </div>
-          <div class="tabs">
-            <!-- Tab headers go here (Prescriptions, Invoices, Medications) -->
-          </div>
-          <div class="tab-content">
-            <!-- Content for each tab (prescriptions, invoices, medications) -->
-          </div>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers</title>
+</head>
+
+<body>
+  <div class="customer-container">
+    <h1>Customer Information</h1>
+    <div class="customer-info" *ngIf="customer">
+      <p><strong>Id:</strong> {{ customer?.id }}</p>
+      <p><strong></strong><img [src]="customer.imageUrl" alt="User Image" width="50" height="50" class="rounded-circle" />
+       </p>
+      <p><strong>Name:</strong> {{ customer?.user.firstName }}</p>
+      <p><strong>Address:</strong> {{ customer?.address }}</p>
+      <p><strong>City:</strong> {{ customer?.city }}</p>
+      <p><strong>State:</strong> {{ customer?.state }}</p>
+      <p><strong>Zip Code:</strong> {{ customer?.zipCode }}</p>
+    </div>
+    <div class="customer-related">
+      <div class="breadcrumb">
+        <!-- Breadcrumb links go here -->
       </div>
-      
+      <div class="tabs">
+        <div class="tab">Prescriptions</div>
+        <div class="tab">Invoices</div>
+        <div class="tab">Medications</div>
+      </div>
+      <div class="tab-content">
+        <!-- Content for each tab (prescriptions, invoices, medications) -->
+      </div>
+    </div>
+</div>
+
 </body>
+
 </html>

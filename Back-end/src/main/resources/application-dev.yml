@@ -1,14 +1,14 @@
 
 spring:
  datasource:
-   url: jdbc:mysql://localhost:3306/PharmacyApp-DB
+   url: jdbc:mysql://localhost:3306/PharmacyApp
    username: root
-   password: Capaciti@1234
+   password: Shaun@96
  spring:
    servlet:
      filter:
        cors:
-         allowed-origins: http://localhost:4200
+         allowed-origins: http://localhost:55901
 
 
  jpa:

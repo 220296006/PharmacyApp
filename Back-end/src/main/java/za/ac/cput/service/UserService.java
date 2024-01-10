@@ -1,6 +1,7 @@
 package za.ac.cput.service;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
+import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.model.User;
 
 import java.util.Collection;
@@ -17,7 +18,7 @@ public interface UserService {
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
-    UserDTO updateUser(User user);
+    UserDTO updateUserById(Long id, UserUpdateDTO updatedUser);
 
     User findUserById(Long id);
 

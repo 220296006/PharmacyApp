@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.service.EmailService;
+import za.ac.cput.utils.EmailUtils;
 
 import java.io.File;
-import java.util.Objects;
 
 import static za.ac.cput.utils.EmailUtils.getEmailMessage;
 
@@ -25,6 +25,7 @@ import static za.ac.cput.utils.EmailUtils.getEmailMessage;
  * @Date : 2023/07/13
  * @Time : 18:50
  **/
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -40,19 +41,20 @@ public class EmailServiceImp implements EmailService {
     private String fromEmail;
     @Override
     @Async
-    public void sendSimpleMailMessage(String name, String to, String token) {
+     public void sendSimpleMailMessage(String name, String to, String token) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             message.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
             message.setFrom(fromEmail);
             message.setTo(to);
-            message.setText(getEmailMessage(name, host, token));
+            message.setText(EmailUtils.getEmailMessage(name, host, token));
             emailSender.send(message);
         } catch (Exception exception) {
-             log.error(exception.getMessage());
-            throw new ApiException(exception.getMessage());
+            log.error(exception.getMessage());
+            throw new ApiException("Failed to send email: " + exception.getMessage());
         }
     }
+
     @Async
     public void sendConfirmationEmail(Confirmation confirmation) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -60,7 +62,7 @@ public class EmailServiceImp implements EmailService {
         message.setSubject("Account Confirmation");
         message.setText("Dear " + confirmation.getUser().getFirstName() + ",\n\n"
                 + "Thank you for registering an account with us. Please click on the link below to confirm your account:\n\n"
-                + "Confirmation Link: http://example.com/confirm?token=" + confirmation.getToken() + "\n\n"
+                + "Confirmation Link: https://example.com/confirm?token=" + confirmation.getToken() + "\n\n"
                 + "If you did not register an account, please ignore this email.\n\n"
                 + "Best regards,\n"
                 + "Your App Team");
@@ -71,25 +73,25 @@ public class EmailServiceImp implements EmailService {
     @Override
     @Async
     public void sendMimeMessageWithAttachments(String name, String to, String token) {
-        try {
-            MimeMessage message = getMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
-            helper.setPriority(1);
-            helper.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
-            helper.setFrom(fromEmail);
-            helper.setTo(to);
-            helper.setText(getEmailMessage(name, host, token));
-            //Add attachments
-            FileSystemResource shaun = new FileSystemResource(new File(System.getProperty("user.home") + "/Downloads/shaun.jpg"));
-            FileSystemResource ID = new FileSystemResource(new File(System.getProperty("user.home") + "/Downloads/ID.pdf"));
-            helper.addAttachment(Objects.requireNonNull(shaun.getFilename()), shaun);
-            helper.addAttachment(Objects.requireNonNull(ID.getFilename()), ID);
-            emailSender.send(message);
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            log.info("Confirmation email sent to: {}", name);
-            throw new ApiException(exception.getMessage());
-        }
+//        try {
+//            MimeMessage message = getMimeMessage();
+//            MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
+//            helper.setPriority(1);
+//            helper.setSubject(NEW_USER_ACCOUNT_VERIFICATION);
+//            helper.setFrom(fromEmail);
+//            helper.setTo(to);
+//            helper.setText(getEmailMessage(name, host, token));
+//            //Add attachments
+//            FileSystemResource shaun = new FileSystemResource(new File(System.getProperty("user.home") + "/Downloads/shaun.jpg"));
+//            FileSystemResource ID = new FileSystemResource(new File(System.getProperty("user.home") + "/Downloads/ID.pdf"));
+//            helper.addAttachment(Objects.requireNonNull(shaun.getFilename()), shaun);
+//            helper.addAttachment(Objects.requireNonNull(ID.getFilename()), ID);
+//            emailSender.send(message);
+//        } catch (Exception exception) {
+//            log.error(exception.getMessage());
+//            log.info("Confirmation email sent to: {}", name);
+//            throw new ApiException(exception.getMessage());
+      //  }
     }
 
     @Override

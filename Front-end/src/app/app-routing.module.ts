@@ -11,6 +11,7 @@ import { UserComponent } from './components/user/user.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 const routes: Routes = [
+  { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'nav', pathMatch: 'full', component: NavigationComponent },
   { path: 'home', pathMatch: 'full', component: HomeComponent },
   { path: 'customer', pathMatch: 'full', component: CustomerComponent },
