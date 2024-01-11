@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
 public class UserUpdateDTO  {
-  @Id
+    @Id
     private Long id;
     private String firstName;
     private String middleName;

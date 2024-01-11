@@ -11,6 +11,8 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import za.ac.cput.dto.UserUpdateDTO;
+import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Role;
@@ -108,6 +110,15 @@ public User update(User user) {
         throw new ApiException("An error occurred while updating the user. Please try again.");
     }
 }
+
+    public UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser) {
+        // Convert UserUpdateDTO to User and call the existing update method
+        User user = UserUpdateDTOMapper.toUser(updatedUser);
+        update(user);
+
+        // Return the updated UserUpdateDTO
+        return updatedUser;
+    }
 
  @Override
 public void delete(Long id) {
