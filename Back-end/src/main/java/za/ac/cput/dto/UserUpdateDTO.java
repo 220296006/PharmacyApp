@@ -1,6 +1,7 @@
 package za.ac.cput.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Null;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
@@ -30,6 +31,8 @@ public class UserUpdateDTO  {
     private String email;
     private String phone;
     private String address;
+    @Null
+    private String password;
     private String imageUrl;
     private boolean enabled;
     private boolean isUsingMfa;

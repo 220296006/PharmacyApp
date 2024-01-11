@@ -86,8 +86,6 @@ export class UserComponent implements OnInit {
 
         if (response.status === 'OK' && response.data && response.data.user) {
           console.log('Data passed to dialog:', response.data);
-
-          // Update the condition to check for user property
           const user = response.data.user;
           if (user) {
             this.openUpdateDialog(user);

@@ -82,14 +82,14 @@ public class UserController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
-        log.info("Update User: {}, {}", id, user);
+        log.info("Update User: {}: {}", id, user);
         try {
-            UserDTO userDTO = userService.updateUserById(id, user);
-            if (userDTO != null) {
+            UserUpdateDTO userUpdateDTO = userService.updateUserById(id, user);
+            if (userUpdateDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()
                                 .timeStamp(now())
-                                .data(Map.of("user", userDTO))
+                                .data(Map.of("user", userUpdateDTO))
                                 .message("User Updated")
                                 .status(OK)
                                 .statusCode(HttpStatus.OK.value())

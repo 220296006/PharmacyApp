@@ -36,6 +36,7 @@ export class UpdateUserDialogComponent implements OnInit {
   onCancelClick(): void {
     this.dialogRef.close();
   }
+
   onUpdateClick(): void {
     this.userService.updateUserData(this.user.id, this.user).subscribe({
       next: (response) => {

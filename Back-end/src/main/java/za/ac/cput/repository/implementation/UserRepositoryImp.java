@@ -130,10 +130,6 @@ public void delete(Long id) {
         return null;
     }
 
-    @Override
-    public User findById(Long id) {
-        return null;
-    }
 
     private Integer getEmailCount(String email){
         return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
