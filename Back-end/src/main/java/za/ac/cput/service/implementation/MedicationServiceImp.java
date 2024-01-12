@@ -25,7 +25,7 @@ public class MedicationServiceImp implements MedicationService {
 
     @Override
     public Collection<Medication> getAllMedications(String name, int page, int pageSize) {
-        return medicationRepository.list("medications", 1, 5);
+        return medicationRepository.list("medications", 1, 50);
     }
 
     @Override

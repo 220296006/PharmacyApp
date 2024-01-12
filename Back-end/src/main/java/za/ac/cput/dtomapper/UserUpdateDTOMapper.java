@@ -11,9 +11,15 @@ public class UserUpdateDTOMapper {
         return userUpdateDTO;
     }
 
+<<<<<<< HEAD
     public static User toUser(UserUpdateDTO UserUpdateDTO){
         User user = new User();
         BeanUtils.copyProperties(UserUpdateDTO, user);
+=======
+    public static User toUser(UserUpdateDTO userUpdateDTO){
+        User user = new User();
+        BeanUtils.copyProperties(userUpdateDTO, user);
+>>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
         return user;
     }
 

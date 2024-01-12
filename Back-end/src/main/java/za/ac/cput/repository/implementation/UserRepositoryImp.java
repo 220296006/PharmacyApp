@@ -11,6 +11,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+<<<<<<< HEAD
+=======
+import za.ac.cput.dto.UserDTO;
+>>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
@@ -111,11 +115,18 @@ public User update(User user) {
     }
 }
 
+<<<<<<< HEAD
     public UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser) {
         // Convert UserUpdateDTO to User and call the existing update method
         User user = UserUpdateDTOMapper.toUser(updatedUser);
         update(user);
 
+=======
+    public UserUpdateDTO updateWithDTO(UserUpdateDTO updatedUser) {
+        // Convert UserUpdateDTO to User and call the existing update method
+        User user = UserUpdateDTOMapper.toUser(updatedUser);
+        update(user);
+>>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
         // Return the updated UserUpdateDTO
         return updatedUser;
     }

@@ -2,9 +2,16 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+<<<<<<< HEAD
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+=======
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+>>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
@@ -32,7 +39,10 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
     private final ConfirmationRepository<Confirmation> confirmationRepository;
+<<<<<<< HEAD
     private final BCryptPasswordEncoder encoder;
+=======
+>>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
 
     @Override
     public UserDTO createUser(User user) {
@@ -43,7 +53,7 @@ public class UserServiceImp implements UserService {
     @Override
     public Collection<User> getAllUsers(String name, int page, int pageSize) {
 
-        return userRepository.list("users", 1, 10);
+        return userRepository.list("users", 1, 50);
     }
 
     @Override
@@ -92,15 +102,18 @@ public class UserServiceImp implements UserService {
         }
     }
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
     @Override
     public User findUserById(Long id) {
-
         return UserDTOMapper.toUser(userRepository.read(id));
     }
+
 
     @Override
     public boolean deleteUser(Long id) {
