@@ -11,5 +11,5 @@ public class UserQuery {
      public static final String FETCH_ALL_USERS_QUERY = "SELECT * FROM Users LIMIT :size OFFSET :page";
      public static final String FETCH_USER_BY_ID_QUERY = "SELECT * FROM Users WHERE id = :user_id";
      public static final String DELETE_USER_BY_ID_QUERY = "DELETE FROM Users WHERE id = :user_id";
-     public static final String UPDATE_USER_QUERY = "UPDATE Users SET first_name = :firstName, middle_name = :middleName, last_name = :lastName, email = :email, password = :password, phone = :phone, address = :address WHERE id = :id";
+     public static final String UPDATE_USER_QUERY = "UPDATE Users SET first_name = :firstName, middle_name = :middleName, last_name = :lastName, email = :email, phone = :phone, address = :address WHERE id = :id";
 }

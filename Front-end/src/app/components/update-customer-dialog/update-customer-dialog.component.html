@@ -1,0 +1,50 @@
+<h2 mat-dialog-title>Update Customer</h2>
+<div mat-dialog-content>
+    <form #updateForm="ngForm">
+
+        <!-- Id Field (readonly) -->
+        <mat-form-field class="full-width" hidden="true">
+            <input matInput name="id" placeholder="ID" [ngModel]="customer?.id" />
+        </mat-form-field>
+
+        <!-- Image Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="imageUrl" placeholder="Middle Name" [ngModel]="customer?.imageUrl"
+                (ngModelChange)="customer.imageUrl= $event" />
+        </mat-form-field>
+
+        <!-- First Name Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="firstName" placeholder="First Name" [ngModel]="customer?.user.firstName"
+                (ngModelChange)="customer.user.firstName= $event" required />
+        </mat-form-field>
+
+           <!-- City Field -->
+           <mat-form-field class="full-width">
+            <input matInput name="City" placeholder="Last Name" [ngModel]="customer?.city"
+                (ngModelChange)="customer.city = $event" required />
+        </mat-form-field>
+
+        <!-- Address Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="address" placeholder="Last Name" [ngModel]="customer?.address"
+                (ngModelChange)="customer.address = $event" required />
+        </mat-form-field>
+
+        <!-- State Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="State" placeholder="Last Name" [ngModel]="customer?.state"
+                (ngModelChange)="customer.state = $event" required />
+        </mat-form-field>
+
+        <!-- Zip Code Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="zipCode" placeholder="Last Name" [ngModel]="customer?.zipCode"
+                (ngModelChange)="customer.zipCode = $event" required />
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onCancelClick()">Cancel</button>
+    <button mat-button color="primary" [disabled]="updateForm.invalid" (click)="onUpdateClick()">Update</button>
+</div>

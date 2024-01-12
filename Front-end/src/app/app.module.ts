@@ -24,6 +24,8 @@ import { UserService } from './services/user-service/userservice.service';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { PrescriptionService } from './services/prescription-service/prescription-service.service';
 import { UpdateUserDialogComponent } from './components/update-user-dialog/update-user-dialog.component';
+import { UpdateCustomerDialogComponent } from './components/update-customer-dialog/update-customer-dialog.component';
+import { MedicationService } from './services/medication-service/medication-service.service';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,7 @@ import { UpdateUserDialogComponent } from './components/update-user-dialog/updat
     HomeComponent,
     CustomerDetailsComponent,
     UpdateUserDialogComponent,
+    UpdateCustomerDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { UpdateUserDialogComponent } from './components/update-user-dialog/updat
   providers: [
     UserService,
     CustomerService,
+    MedicationService,
     PrescriptionService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],

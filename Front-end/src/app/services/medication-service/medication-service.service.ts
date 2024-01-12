@@ -2,50 +2,52 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { ApiResponse } from 'src/app/model/api-response';
-import { Customer } from 'src/app/model/customer';
+import { Medication } from 'src/app/model/medication';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CustomerService {
+export class MedicationService {
   private readonly serverUrl: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
-  getAllCustomerData(
+  getAllMedicationData(
     name: string = '',
     page: number = 0,
     size: number = 50
-  ): Observable<ApiResponse<Customer>> {
+  ): Observable<ApiResponse<Medication[]>> {
     return this.http
-      .get<ApiResponse<Customer>>(
-        `${this.serverUrl}/customer/all?name=${name}&page=${page}&size=${size}`
+      .get<ApiResponse<Medication[]>>(
+        `${this.serverUrl}/medication/all?name=${name}&page=${page}&size=${size}`
       )
       .pipe(catchError(this.handleError));
   }
 
-  getCustomerById(customerId: number): Observable<ApiResponse<Customer>> {
-    const url = `${this.serverUrl}/customer/read/${customerId}`;
+  getMedicationById(medicationId: number): Observable<ApiResponse<Medication>> {
+    const url = `${this.serverUrl}/medication/read/${medicationId}`;
     return this.http
-      .get<ApiResponse<Customer>>(url)
+      .get<ApiResponse<Medication>>(url)
       .pipe(catchError(this.handleError));
   }
 
-  updateCustomerData(
+  updateMedicationData(
     id: number,
-    customer: Customer
-  ): Observable<ApiResponse<Customer>> {
+    medication: Medication
+  ): Observable<ApiResponse<Medication>> {
     return this.http
-      .put<ApiResponse<Customer>>(
-        `${this.serverUrl}/customer/update/${id}`,
-        customer
+      .put<ApiResponse<Medication>>(
+        `${this.serverUrl}/medication/update/${id}`,
+        medication
       )
       .pipe(catchError(this.handleError));
   }
 
-  deleteCustomerById(id: number): Observable<ApiResponse<Customer>> {
+  deleteMedicationById(id: number): Observable<ApiResponse<Medication>> {
     return this.http
-      .delete<ApiResponse<Customer>>(`${this.serverUrl}/customer/delete/${id}`)
+      .delete<ApiResponse<Medication>>(
+        `${this.serverUrl}/medication/delete/${id}`
+      )
       .pipe(catchError(this.handleError));
   }
 

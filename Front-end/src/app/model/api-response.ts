@@ -6,5 +6,7 @@ export interface ApiResponse<T> {
   data: {
     user?: T; 
     page?: T; 
+    customer?: T;
+    medication?: T;
   };
 }

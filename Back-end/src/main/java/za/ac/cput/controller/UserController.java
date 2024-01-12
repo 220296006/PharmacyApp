@@ -84,7 +84,7 @@ public class UserController {
     public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
         log.info("Update User: {}: {}", id, user);
         try {
-            UserUpdateDTO userUpdateDTO = userService.updateUserById(id, user);
+            UserUpdateDTO userUpdateDTO = userService.updateSysAdmin(id, user);
             if (userUpdateDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()

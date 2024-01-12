@@ -42,14 +42,12 @@ export class UserComponent implements OnInit {
     this.userService.getAllUserData().subscribe({
       next: (response) => {
         console.log('Response from server:', response);
-
         if (
           response.status === 'OK' &&
           response.data &&
           Array.isArray(response.data.page)
         ) {
           console.log('Data received:', response.data);
-
           this.tableDataSource.data = response.data.page;
           this.tableDataSource.paginator = this.paginator;
           this.tableDataSource.sort = this.sort;

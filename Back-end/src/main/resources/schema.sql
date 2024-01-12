@@ -139,13 +139,11 @@ CREATE TABLE Medications
 (
     id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     prescription_id   INT UNSIGNED NOT NULL,
-    name              VARCHAR(100) NOT NULL,
-    dosage            VARCHAR(100) NOT NULL,
-    frequency         VARCHAR(100) NOT NULL,
+    name              VARCHAR(400) NOT NULL,
+    dosage            VARCHAR(400) NOT NULL,
+    frequency         VARCHAR(400) NOT NULL,
     FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
-
 
 -- Table Prescriptions
 DROP TABLE IF EXISTS Prescriptions;
