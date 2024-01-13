@@ -21,10 +21,9 @@ public class MedicationRowMapper implements RowMapper<Medication> {
        medication.setName(rs.getString("name"));
        medication.setDosage(rs.getString("dosage"));
        medication.setFrequency(rs.getString("frequency"));
-
        Prescription prescription = new Prescription();
        prescription.setId(rs.getLong("prescription_id"));
-
+       medication.setPrescription(prescription);
        return medication;
     }
 

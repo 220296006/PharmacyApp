@@ -1,7 +1,6 @@
 package za.ac.cput.repository;
 import za.ac.cput.dto.UserUpdateDTO;
 
-import za.ac.cput.dto.UserDTO;
 import za.ac.cput.model.User;
 import java.util.Collection;
 

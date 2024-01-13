@@ -1,1 +1,69 @@
-<p>invoice works!</p>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoices</title>
+</head>
+
+<body>
+    <h4 align="center">Invoice</h4>
+    <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
+        <!-- ID Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>Id</th>
+            <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+
+       <!-- Customer ID Column -->
+       <ng-container matColumnDef="customer_id">
+        <th mat-header-cell *matHeaderCellDef>Customer Id</th>
+        <td mat-cell *matCellDef="let row">{{ row.customer.id }}</td>
+    </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef>Amount</th>
+            <td mat-cell *matCellDef="let row"> {{ row.amount }}</td>
+        </ng-container>
+
+        <!--  Due Date Column -->
+        <ng-container matColumnDef="due_date">
+            <th mat-header-cell *matHeaderCellDef>Due Date</th>
+            <td mat-cell *matCellDef="let row">{{ row.due_date}}</td>
+        </ng-container>
+
+        <!--  Paid Column -->
+        <ng-container matColumnDef="paid">
+            <th mat-header-cell *matHeaderCellDef>Paid</th>
+            <td mat-cell *matCellDef="let row">{{ row.paid }}</td>
+        </ng-container>
+
+    
+
+        <!-- Options Column -->
+        <ng-container matColumnDef="options">
+            <th mat-header-cell *matHeaderCellDef>Options</th>
+            <td mat-cell *matCellDef="let row">
+                <button mat-raised-button color="primary" (click)="onUpdateInvoice(row.id)">
+                    Update
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-raised-button color="warn" (click)="onDeleteInvoice(row.id)">
+                    Delete
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator [length]="tableDataSource.data.length" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page">
+    </mat-paginator>
+</body>
+
+</html>

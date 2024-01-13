@@ -26,7 +26,7 @@ import java.util.Date;
 public class Invoice {
     @Id
     private Long id;
-    private BigDecimal amount;
+    private String amount;
     private Date dueDate;
     private boolean paid;
     private Customer customer;

@@ -24,7 +24,7 @@ public class InventoryServiceImp implements InventoryService {
     }
     @Override
     public Collection<Inventory> findAllInventory(String name, int page, int pageSize) {
-        return inventoryRepository.list("inventory", 1, 5);
+        return inventoryRepository.list("inventory", 1, 50);
     }
     @Override
     public Inventory findByInventoryId(Long id) {

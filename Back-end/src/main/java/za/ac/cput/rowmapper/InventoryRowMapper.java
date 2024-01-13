@@ -7,6 +7,7 @@ import za.ac.cput.model.Medication;
 import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 /**
  * @author : Thabiso Matsaba
@@ -22,7 +23,9 @@ public class InventoryRowMapper implements RowMapper<Inventory> {
         inventory.setName(rs.getString("name"));
         inventory.setDescription(rs.getString("description"));
         inventory.setQuantity(BigInteger.valueOf(rs.getInt("quantity")));
-        inventory.setPrice(rs.getBigDecimal("price"));
+        inventory.setPrice(rs.getString("price"));
+        inventory.setCreated_at(LocalDateTime.now());
+        inventory.setUpdated_at(LocalDateTime.now());
 
         Medication medication = new Medication();
         medication.setId(rs.getLong("medication_id"));

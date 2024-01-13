@@ -5,7 +5,6 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
@@ -28,7 +27,7 @@ public class Inventory {
     private String name;
     private String description;
     private BigInteger quantity;
-    private BigDecimal price;
+    private String price;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
     private Medication medication;

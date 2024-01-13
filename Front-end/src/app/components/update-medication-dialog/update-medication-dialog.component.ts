@@ -28,7 +28,7 @@ export class UpdateMedicationDialogComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Data received in dialog:', this.data);
-    if (this.data?.user) {
+    if (this.data?.medication) {
       console.log('User data in dialog:', this.data.medication);
       this.medication = this.data.medication;
     }

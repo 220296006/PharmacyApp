@@ -20,10 +20,9 @@ public class ConfirmationRowMapper implements RowMapper<Confirmation> {
         confirmation.setId(rs.getLong("id"));
         confirmation.setToken(rs.getString("token"));
         confirmation.setCreatedDate(rs.getTimestamp("created_date").toLocalDateTime());
-
         User user = new User();
         user.setId(rs.getLong("user_id"));
-
+        confirmation.setUser(user);
         return confirmation;
     }
 }

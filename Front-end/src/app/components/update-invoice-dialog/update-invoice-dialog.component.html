@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Update Medication</h2>
+<div mat-dialog-content>
+  <form #updateForm="ngForm">
+    <!-- Id Field (readonly) -->
+    <mat-form-field class="full-width" hidden="true">
+      <input matInput name="id" placeholder="ID" [ngModel]="invoice?.id" />
+    </mat-form-field>
+
+    <!-- Amount Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="name"
+        placeholder="Name"
+        [ngModel]="invoice?.amount"
+        (ngModelChange)="invoice.amount = $event"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Due Date Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="description"
+        placeholder="Description"
+        [ngModel]="invoice?.due_date| date : 'yyyy-MM-dd HH:mm:ss'"
+        (ngModelChange)="invoice.due_date = $event"
+      />
+    </mat-form-field>
+
+    <!-- Paid Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="quantity"
+        placeholder="Quantity"
+        [ngModel]="invoice?.paid"
+        (ngModelChange)="invoice.paid = $event"
+      />
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button
+    mat-button
+    color="primary"
+    [disabled]="updateForm.invalid"
+    (click)="onUpdateClick()"
+  >
+    Update
+  </button>
+</div>

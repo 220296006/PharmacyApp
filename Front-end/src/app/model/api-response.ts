@@ -8,5 +8,8 @@ export interface ApiResponse<T> {
     page?: T; 
     customer?: T;
     medication?: T;
+    inventory?: T;
+    prescription?: T;
+    invoices?: T;
   };
 }

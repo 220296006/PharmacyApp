@@ -11,10 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-<<<<<<< HEAD
-=======
-import za.ac.cput.dto.UserDTO;
->>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
+
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
@@ -53,7 +50,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     @Override
     public User save(User user) {
         log.info("Saving A User");
-        if(getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new
+        if (getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new
                 ApiException("Email already in use. Please use different email and try again");
         try {
             KeyHolder holder = new GeneratedKeyHolder();
@@ -68,108 +65,100 @@ public class UserRepositoryImp implements UserRepository<User> {
             user.setEnabled(false);
             user.setNotLocked(true);
             return user;
-        }  catch (Exception exception){
+        } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
         }
     }
-@Override
-public Collection<User> list(String name, int page, int pageSize) {
-    log.info("Fetch All Users");
-    try {
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("size", pageSize)
-                .addValue("page", (page - 1) * pageSize);
-        return jdbc.query(FETCH_ALL_USERS_QUERY, parameters, new UserRowMapper());
-    } catch (Exception exception) {
-        log.error(exception.getMessage());
-        throw new ApiException("No users found. Please try again.");
-    }
-}
 
-  @Override
-public User read(Long id) {
-    log.info("Fetch User by Id");
-    try {
-        return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), new UserRowMapper());
-    }  catch (EmptyResultDataAccessException exception) {
-        return null;
-    } catch (Exception exception) {
-        log.error(exception.getMessage());
-        throw new ApiException("No user with ID" + id + "found. Please try again.");
+    @Override
+    public Collection<User> list(String name, int page, int pageSize) {
+        log.info("Fetch All Users");
+        try {
+            SqlParameterSource parameters = new MapSqlParameterSource()
+                    .addValue("size", pageSize)
+                    .addValue("page", (page - 1) * pageSize);
+            return jdbc.query(FETCH_ALL_USERS_QUERY, parameters, new UserRowMapper());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("No users found. Please try again.");
+        }
     }
-}
 
- @Override
-public User update(User user) {
-    log.info("Updating user");
-    try {
-        SqlParameterSource parameters = getSqlParameterSource(user);
-        jdbc.update(UPDATE_USER_QUERY, parameters);
-        return user;
-    } catch (EmptyResultDataAccessException exception) {
-        return null;
-    } catch (Exception exception) {
-        log.error(exception.getMessage());
-        throw new ApiException("An error occurred while updating the user. Please try again.");
+    @Override
+    public User read(Long id) {
+        log.info("Fetch User by Id");
+        try {
+            return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), new UserRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("No user with ID" + id + "found. Please try again.");
+        }
     }
-}
 
-<<<<<<< HEAD
+    @Override
+    public User update(User user) {
+        log.info("Updating user");
+        try {
+            SqlParameterSource parameters = getSqlParameterSource(user);
+            jdbc.update(UPDATE_USER_QUERY, parameters);
+            return user;
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while updating the user. Please try again.");
+        }
+    }
+
     public UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser) {
         // Convert UserUpdateDTO to User and call the existing update method
         User user = UserUpdateDTOMapper.toUser(updatedUser);
         update(user);
+       return updatedUser;
+    }
+        @Override
+        public void delete (Long id){
+            log.info("Deleting user by Id");
+            try {
+                jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
+            } catch (Exception exception) {
+                log.error(exception.getMessage());
+                throw new ApiException("An error occurred while deleting the user. Please try again.");
+            }
+        }
 
-=======
-    public UserUpdateDTO updateWithDTO(UserUpdateDTO updatedUser) {
-        // Convert UserUpdateDTO to User and call the existing update method
-        User user = UserUpdateDTOMapper.toUser(updatedUser);
-        update(user);
->>>>>>> 52015e28bdccc786bc5bb2d1653be746ead758a1
-        // Return the updated UserUpdateDTO
-        return updatedUser;
+        @Override
+        public User findByEmailIgnoreCase (String email){
+            return null;
+        }
+
+        @Override
+        public Boolean existByEmail (String email){
+            return null;
+        }
+
+
+        private Integer getEmailCount (String email){
+            return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
+        }
+
+        private SqlParameterSource getSqlParameterSource (User user){
+            return new MapSqlParameterSource()
+                    .addValue("id", user.getId())
+                    .addValue("firstName", user.getFirstName())
+                    .addValue("middleName", user.getMiddleName())
+                    .addValue("lastName", user.getLastName())
+                    .addValue("email", user.getEmail())
+                    .addValue("phone", user.getPhone())
+                    .addValue("address", user.getAddress())
+                    .addValue("password", encoder.encode(user.getPassword()));
+        }
+
+        private String getVerificationUrl (String key, String type){
+            return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + "/" + key + type).toUriString();
+        }
     }
 
- @Override
-public void delete(Long id) {
-    log.info("Deleting user by Id");
-    try {
-        jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
-    } catch (Exception exception) {
-        log.error(exception.getMessage());
-        throw new ApiException("An error occurred while deleting the user. Please try again.");
-    }
-}
-
-    @Override
-    public User findByEmailIgnoreCase(String email) {
-        return null;
-    }
-
-    @Override
-    public Boolean existByEmail(String email) {
-        return null;
-    }
-
-
-    private Integer getEmailCount(String email){
-        return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
-    }
-
-    private SqlParameterSource getSqlParameterSource(User user) {
-        return  new MapSqlParameterSource()
-               .addValue("id", user.getId())
-                .addValue("firstName", user.getFirstName())
-                .addValue("middleName", user.getMiddleName())
-                .addValue("lastName", user.getLastName())
-                .addValue("email", user.getEmail())
-                .addValue("phone", user.getPhone())
-                .addValue("address", user.getAddress())
-                .addValue("password", encoder.encode(user.getPassword()));
-    }
-
-    private String getVerificationUrl(String key, String type) {
-         return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + "/" + key + type).toUriString();
-    }
-}

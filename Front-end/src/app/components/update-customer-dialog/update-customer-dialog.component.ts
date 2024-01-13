@@ -31,9 +31,9 @@ export class UpdateCustomerDialogComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Data received in dialog:', this.data);
-    if (this.data?.user) {
+    if (this.data?.customer) {
       console.log('User data in dialog:', this.data.customer);
-      this.customer = this.data.user;
+      this.customer = this.data.customer;
     }  }
 
 

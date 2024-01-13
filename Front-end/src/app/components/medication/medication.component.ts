@@ -18,6 +18,7 @@ export class MedicationComponent implements OnInit{
     'name',
     'dosage',
     'frequency',
+    'options'
   ];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -42,6 +43,8 @@ export class MedicationComponent implements OnInit{
         ) {
           console.log('Data received:', response.data.medication);
           this.tableDataSource.data = response.data.medication;
+          this.tableDataSource.paginator = this.paginator;
+          this.tableDataSource.sort = this.sort;
           
         } else {
           console.error('Error: ' + response.message);
@@ -51,8 +54,7 @@ export class MedicationComponent implements OnInit{
         console.error('Error fetching data:', error);
       },
     });
-    this.tableDataSource.paginator = this.paginator;
-    this.tableDataSource.sort = this.sort;
+
   }
 
 
