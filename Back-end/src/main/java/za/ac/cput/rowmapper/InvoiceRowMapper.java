@@ -22,6 +22,7 @@ public class InvoiceRowMapper implements RowMapper<Invoice> {
         invoice.setAmount(BigInteger.valueOf(rs.getInt("amount")));
         invoice.setDueDate(rs.getDate("due_date"));
         invoice.setPaid(rs.getBoolean("paid"));
+
         Customer customer = new Customer();
         customer.setId(rs.getLong("customer_id"));
         invoice.setCustomer(customer);

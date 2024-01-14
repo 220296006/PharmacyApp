@@ -18,18 +18,16 @@ public class CustomerRowMapper implements RowMapper<Customer> {
     public Customer mapRow(ResultSet rs, int rowNum) throws SQLException {
         Customer customer = new Customer();
         customer.setId(rs.getLong("id"));
-        customer.setImageUrl(rs.getString("image_url"));
-        customer.setAddress(rs.getString("address"));
         customer.setCity(rs.getString("city"));
         customer.setState(rs.getString("state"));
         customer.setZipCode(rs.getString("zip_code"));
 
-        // Assuming that the User object is also mapped in the result set
         User user = new User();
         user.setId(rs.getLong("user_id"));
         user.setFirstName(rs.getString("first_name"));
+        user.setImageUrl(rs.getString("image_url"));
+        user.setAddress(rs.getString("address"));
         customer.setUser(user);
-
         return customer;
     }
 }

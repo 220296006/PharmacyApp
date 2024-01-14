@@ -29,6 +29,7 @@ public class InventoryRowMapper implements RowMapper<Inventory> {
 
         Medication medication = new Medication();
         medication.setId(rs.getLong("medication_id"));
+        inventory.setMedication(medication);
         return inventory;
     }
 }

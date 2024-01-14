@@ -12,10 +12,10 @@
     <h1>Customer Information</h1>
     <div class="customer-info" *ngIf="customer">
       <p><strong>Id:</strong> {{ customer?.id }}</p>
-      <p><strong></strong><img [src]="customer.imageUrl" alt="User Image" width="50" height="50" class="rounded-circle" />
+      <p><strong></strong><img [src]="customer?.user.imageUrl" alt="User Image" width="50" height="50" class="rounded-circle" />
        </p>
       <p><strong>Name:</strong> {{ customer?.user.firstName }}</p>
-      <p><strong>Address:</strong> {{ customer?.address }}</p>
+      <p><strong>Address:</strong> {{ customer?.user.address }}</p>
       <p><strong>City:</strong> {{ customer?.city }}</p>
       <p><strong>State:</strong> {{ customer?.state }}</p>
       <p><strong>Zip Code:</strong> {{ customer?.zipCode }}</p>

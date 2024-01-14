@@ -1,50 +1,12 @@
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (1, 1, 'http://dummyimage.com/171x100.png/dddddd/000000', 'Paco', '1st Floor', 'Hepo', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (2, 2, 'http://dummyimage.com/141x100.png/5fa2dd/ffffff', 'Giffy', 'Apt 243', 'Lappeenranta', null, '54300');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (3, 3, 'http://dummyimage.com/190x100.png/dddddd/000000', 'Josefina', '11th Floor', 'Cikembar', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (4, 4, 'http://dummyimage.com/224x100.png/dddddd/000000', 'Hendrick', 'Room 640', 'Kiruru', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (5, 5, 'http://dummyimage.com/155x100.png/dddddd/000000', 'Nero', 'Apt 1782', 'Alagoa Grande', null, '58388-000');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (6, 6, 'http://dummyimage.com/195x100.png/5fa2dd/ffffff', 'Tony', 'Room 1364', 'Jianjiang', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (7, 7, 'http://dummyimage.com/212x100.png/cc0000/ffffff', 'Pia', 'PO Box 47970', 'Yidu', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (8, 8, 'http://dummyimage.com/127x100.png/cc0000/ffffff', 'Gray', 'Suite 15', 'Arnaía', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (9, 9, 'http://dummyimage.com/191x100.png/5fa2dd/ffffff', 'Aubrey', 'Suite 22', 'Hallsberg', 'Örebro', '694 24');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (10, 10, 'http://dummyimage.com/110x100.png/ff4444/ffffff', 'Ethel', 'Room 431', 'Santo Isidro', 'Setúbal', '2985-105');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (11, 11, 'http://dummyimage.com/103x100.png/cc0000/ffffff', 'Dun', 'Apt 1667', 'Prengtale', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (12, 12, 'http://dummyimage.com/177x100.png/ff4444/ffffff', 'Winfred', '19th Floor', 'Salamá', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (13, 13, 'http://dummyimage.com/166x100.png/ff4444/ffffff', 'Heda', 'Room 1169', 'Bratislava', null, '841 01');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (14, 14, 'http://dummyimage.com/122x100.png/dddddd/000000', 'Tobias', '10th Floor', 'Zheleznogorsk', null, '307156');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (15, 15, 'http://dummyimage.com/247x100.png/ff4444/ffffff', 'Jemimah', 'Room 1405', 'Pataha', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (16, 16, 'http://dummyimage.com/110x100.png/cc0000/ffffff', 'Janeva', 'Suite 26', 'Gotputuk', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (17, 17, 'http://dummyimage.com/194x100.png/dddddd/000000', 'Lurleen', 'PO Box 25452', 'Ranchuelo', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (18, 18, 'http://dummyimage.com/237x100.png/dddddd/000000', 'Rois', 'Suite 81', 'Dongpu', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (19, 19, 'http://dummyimage.com/190x100.png/cc0000/ffffff', 'Perl', 'Room 1813', 'Zibreira', 'Santarém', '2350-833');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (20, 20, 'http://dummyimage.com/156x100.png/ff4444/ffffff', 'Herbie', 'Room 531', 'Dayton', 'Ohio', '45440');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (21, 21, 'http://dummyimage.com/163x100.png/ff4444/ffffff', 'Domenic', 'Apt 1370', 'Maramag', null, '8714');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (22, 22, 'http://dummyimage.com/223x100.png/cc0000/ffffff', 'Shea', 'Room 359', 'Kanada', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (23, 23, 'http://dummyimage.com/148x100.png/cc0000/ffffff', 'Meta', 'Apt 1821', 'Cidahu', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (24, 24, 'http://dummyimage.com/228x100.png/dddddd/000000', 'Lars', 'Apt 1810', 'Phatthalung', null, '86000');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (25, 25, 'http://dummyimage.com/162x100.png/cc0000/ffffff', 'Blinny', 'Room 1405', 'Ipil', null, '7001');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (26, 26, 'http://dummyimage.com/232x100.png/dddddd/000000', 'Beckie', 'Suite 41', 'Saboyá', null, '154617');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (27, 27, 'http://dummyimage.com/235x100.png/ff4444/ffffff', 'Elfie', 'Apt 194', 'Njivice', null, '51512');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (28, 28, 'http://dummyimage.com/224x100.png/dddddd/000000', 'Violetta', 'PO Box 34804', 'Saint-Quentin', 'Picardie', '02104 CEDEX');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (29, 29, 'http://dummyimage.com/237x100.png/5fa2dd/ffffff', 'Charis', 'PO Box 35969', 'Tangkilsari', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (30, 30, 'http://dummyimage.com/240x100.png/dddddd/000000', 'Maribelle', 'Suite 70', 'Almenara', null, '39900-000');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (31, 31, 'http://dummyimage.com/156x100.png/cc0000/ffffff', 'Wyatan', 'Room 171', 'El Peñón', null, '11510');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (32, 32, 'http://dummyimage.com/227x100.png/5fa2dd/ffffff', 'Jennee', 'Suite 65', 'Den Chai', null, '54140');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (33, 33, 'http://dummyimage.com/197x100.png/5fa2dd/ffffff', 'Kaila', 'Apt 1150', 'Eldoret', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (34, 34, 'http://dummyimage.com/139x100.png/ff4444/ffffff', 'Lelah', 'Room 303', 'Plast', null, '457031');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (35, 35, 'http://dummyimage.com/247x100.png/cc0000/ffffff', 'Aurelia', '13th Floor', 'Tipo-Tipo', null, '7304');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (36, 36, 'http://dummyimage.com/209x100.png/dddddd/000000', 'Skipper', 'Suite 50', 'Porto Velho', null, '78900-000');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (37, 37, 'http://dummyimage.com/135x100.png/ff4444/ffffff', 'Binni', '11th Floor', 'Daba', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (38, 38, 'http://dummyimage.com/135x100.png/5fa2dd/ffffff', 'Consolata', 'PO Box 33351', 'Litian', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (39, 39, 'http://dummyimage.com/197x100.png/cc0000/ffffff', 'Even', 'Room 97', 'Tanjung Kidul', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (40, 40, 'http://dummyimage.com/166x100.png/ff4444/ffffff', 'Megan', 'Apt 1941', 'Innisfil', 'Ontario', 'L9S');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (41, 41, 'http://dummyimage.com/201x100.png/cc0000/ffffff', 'Paolina', 'Suite 64', 'Guisijan', null, '5705');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (42, 42, 'http://dummyimage.com/232x100.png/ff4444/ffffff', 'Randee', 'Suite 68', 'Caldas', null, '154667');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (43, 43, 'http://dummyimage.com/203x100.png/dddddd/000000', 'Ibbie', 'Room 364', 'Ilovlya', null, '403070');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (44, 44, 'http://dummyimage.com/103x100.png/ff4444/ffffff', 'Kort', '20th Floor', 'Murree', null, '47214');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (45, 45, 'http://dummyimage.com/131x100.png/ff4444/ffffff', 'Morgen', '18th Floor', 'Sibay', null, '453839');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (46, 46, 'http://dummyimage.com/117x100.png/5fa2dd/ffffff', 'Berta', 'Apt 1711', 'Santa Venera', null, 'SVR');
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (47, 47, 'http://dummyimage.com/104x100.png/5fa2dd/ffffff', 'Conni', 'PO Box 37935', 'Cerro', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (48, 48, 'http://dummyimage.com/146x100.png/dddddd/000000', 'Kissee', 'Apt 1483', 'Fuding', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (49, 49, 'http://dummyimage.com/188x100.png/5fa2dd/ffffff', 'Gregoor', 'Apt 338', 'Umm as Sāhik', null, null);
-insert into Customers (id, user_id, image_url, first_name, address, city, state, zip_code) values (50, 50, 'http://dummyimage.com/224x100.png/5fa2dd/ffffff', 'Stephie', 'Apt 12', 'Guihulñgan', null, '6214');
+INSERT INTO Customers (id, user_id, city, state, zip_code)
+VALUES
+  (1,1, 'Cityville', 'State1', '12345'),
+  (2,2, 'Townsville', 'State2', '67890'),
+  (3,3, 'Villagetown', 'State3', '11111'),
+  (4,4, 'Healthcity', 'State4', '22222'),
+  (5, 5, 'Remedytown', 'State5', '33333'),
+  (6,6,  'Ailmentville', 'State6', '44444'),
+  (7,7, 'Cureburg', 'State7', '55555'),
+  (8,8, 'Recoveryville', 'State8', '66666'),
+  (9,9, 'Medicineville', 'State9', '77777'),
+  (10,10,'Remedytown', 'State10', '88888');

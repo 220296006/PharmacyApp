@@ -8,7 +8,7 @@ spring:
    servlet:
      filter:
        cors:
-         allowed-origins: http://localhost:55901
+         allowed-origins: http://localhost:4200
 
 
  jpa:

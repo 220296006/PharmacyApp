@@ -51,7 +51,6 @@ public class CustomerRepositoryImp implements CustomerRepository<Customer> {
          Map<String, Object> linkUserParams = new HashMap<>();
          linkUserParams.put("user_id", user.getId());
          linkUserParams.put("id", customer.getId());
-         linkUserParams.put("first_name", user.getFirstName());
          jdbc.update(UPDATE_CUSTOMER_LINKED_TO_USER_QUERY, linkUserParams);
          return customer;
         } catch (Exception exception) {
@@ -116,12 +115,12 @@ public void delete(Long id) {
     private SqlParameterSource getSqlParameterSource(Customer customer) {
         return  new MapSqlParameterSource()
                 .addValue("id", customer.getId())
-                .addValue("address", customer.getAddress())
-                .addValue("imageUrl", customer.getImageUrl())
+                .addValue("address", customer.getUser().getAddress())
+                .addValue("imageUrl", customer.getUser().getImageUrl())
                 .addValue("city",customer.getCity())
                 .addValue("state", customer.getState())
                 .addValue("zipCode", customer.getZipCode())
                 .addValue("user_id", customer.getUser().getId())
-                .addValue("first_name", customer.getUser().getFirstName());
+                .addValue("firstName", customer.getUser().getFirstName());
     }
 }
