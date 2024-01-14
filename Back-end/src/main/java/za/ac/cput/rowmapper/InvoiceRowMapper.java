@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.RowMapper;
 import za.ac.cput.model.Customer;
 import za.ac.cput.model.Invoice;
 
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -18,7 +19,7 @@ public class InvoiceRowMapper implements RowMapper<Invoice> {
     public Invoice mapRow(ResultSet rs, int rowNum) throws SQLException {
         Invoice invoice = new Invoice();
         invoice.setId(rs.getLong("id"));
-        invoice.setAmount(rs.getString("amount"));
+        invoice.setAmount(BigInteger.valueOf(rs.getInt("amount")));
         invoice.setDueDate(rs.getDate("due_date"));
         invoice.setPaid(rs.getBoolean("paid"));
         Customer customer = new Customer();

@@ -11,7 +11,7 @@ import { InvoiceService } from 'src/app/services/invoice-service/invoice.service
 export class UpdateInvoiceDialogComponent implements OnInit {
   invoice: Invoice = {
     id: null,
-    amount: '',
+    amount: undefined,
     due_date: undefined,
     paid: false,
     customer: {

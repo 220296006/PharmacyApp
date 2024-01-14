@@ -13,7 +13,7 @@ CREATE TABLE Users
     using_mfa   BOOLEAN DEFAULT FALSE,
     image_url   VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     created_at  DATETIME DEFAULT CURRENT_TIMESTAMP,
-    phone       VARCHAR(45) DEFAULT NULL,
+    phone       VARCHAR(15) DEFAULT NULL,
     address     VARCHAR(255) DEFAULT NULL,
     CONSTRAINT UQ_Users_Email UNIQUE (email)
 );
@@ -110,7 +110,7 @@ CREATE TABLE Customers
     id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id     INT UNSIGNED NOT NULL,
     image_url   VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-    first_name INT UNSIGNED NOT NULL,
+    first_name  VARCHAR(255) UNSIGNED NOT NULL,
     address     VARCHAR(255) NOT NULL,
     city        VARCHAR(100) NOT NULL,
     state       VARCHAR(100) NULL,
@@ -124,7 +124,7 @@ CREATE TABLE Prescriptions
 (
     id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customer_id    INT UNSIGNED NOT NULL,
-    doctor_name    VARCHAR(100) NOT NULL,
+    doctor_name    VARCHAR(255) NOT NULL,
     doctor_address VARCHAR(255) NOT NULL,
     issue_date     DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -136,9 +136,9 @@ CREATE TABLE Medications
 (
     id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     prescription_id   INT UNSIGNED NOT NULL,
-    name              VARCHAR(400) NOT NULL,
-    dosage            VARCHAR(400) NOT NULL,
-    frequency         VARCHAR(400) NOT NULL,
+    name              VARCHAR(255) NOT NULL,
+    dosage            VARCHAR(255) NOT NULL,
+    frequency         VARCHAR(255) NOT NULL,
     FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -148,10 +148,10 @@ CREATE TABLE Inventory
 (
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     medication_id INT UNSIGNED NOT NULL,
-    name          VARCHAR(100) NOT NULL,
+    name          VARCHAR(255) NOT NULL,
     description   TEXT DEFAULT NULL,
     quantity      INT UNSIGNED NOT NULL,
-    price         VARCHAR(500) NOT NULL,
+    price         INTEGER NOT NULL,
     created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -163,7 +163,7 @@ CREATE TABLE Invoices
 (
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customer_id   INT UNSIGNED NOT NULL,
-    amount        VARCHAR(100) NOT NULL,
+    amount        INTEGER NOT NULL,
     due_date      DATETIME NOT NULL,
     paid          BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
@@ -177,8 +177,6 @@ INSERT INTO Roles (id, name, permission) VALUES
     (4, 'ROLE_SYSADMIN', 'READ:USER,READ:CUSTOMER,CREATE:USER,CREATE:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER,DELETE:USER,DELETE:CUSTOMER');
 
 -- Update Image Url
-ALTER TABLE Customers MODIFY COLUMN first_name VARCHAR(255) NULL;
-
 -- Update the 'image_url' column with random user images.
 -- Update Users
 UPDATE Users

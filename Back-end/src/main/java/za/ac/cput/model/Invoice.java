@@ -6,6 +6,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -26,7 +27,7 @@ import java.util.Date;
 public class Invoice {
     @Id
     private Long id;
-    private String amount;
+    private BigInteger amount;
     private Date dueDate;
     private boolean paid;
     private Customer customer;

@@ -27,7 +27,7 @@ public class Inventory {
     private String name;
     private String description;
     private BigInteger quantity;
-    private String price;
+    private BigInteger price;
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
     private Medication medication;
