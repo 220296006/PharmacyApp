@@ -116,7 +116,9 @@ public class InventoryRepositoryImp implements InventoryRepository<Inventory> {
                 .addValue("quantity", inventory.getQuantity())
                 .addValue("price", inventory.getPrice())
                 .addValue("medication_id", inventory.getMedication().getId())
-                .addValue("id", inventory.getId());
+                .addValue("id", inventory.getId())
+                .addValue("created_at", inventory.getCreated_at())
+                .addValue("updated_at", inventory.getUpdated_at());
     }
 }
 

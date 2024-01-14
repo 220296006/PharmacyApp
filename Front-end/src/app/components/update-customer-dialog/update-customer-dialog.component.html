@@ -1,0 +1,44 @@
+<h2 mat-dialog-title class="title">Update Customer</h2>
+<div mat-dialog-content>
+    <form #updateForm="ngForm">
+
+        <!-- Id Field (readonly) -->
+        <mat-form-field class="full-width" hidden="true">
+            <input matInput name="id" placeholder="ID" [ngModel]="customer?.id" />
+        </mat-form-field>
+
+        <!-- First Name Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="firstName" placeholder="firstName" [ngModel]="customer?.user.firstName"
+                (ngModelChange)="customer.user.firstName= $event" required />
+        </mat-form-field>
+
+           <!-- City Field -->
+           <mat-form-field class="full-width">
+            <input matInput name="City" placeholder="city" [ngModel]="customer?.city"
+                (ngModelChange)="customer.city = $event" required />
+        </mat-form-field>
+
+        <!-- Address Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="address" placeholder="address" [ngModel]="customer?.address"
+                (ngModelChange)="customer.address = $event" required />
+        </mat-form-field>
+
+        <!-- State Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="State" placeholder="state" [ngModel]="customer?.state"
+                (ngModelChange)="customer.state = $event" required />
+        </mat-form-field>
+
+        <!-- Zip Code Field -->
+        <mat-form-field class="full-width">
+            <input matInput name="zipCode" placeholder="zipCode" [ngModel]="customer?.zipCode"
+                (ngModelChange)="customer.zipCode = $event" required />
+        </mat-form-field>
+    </form>
+</div>
+<div mat-dialog-actions>
+    <button mat-button color="warn" (click)="onCancelClick()">Cancel</button>
+    <button mat-button color="primary" [disabled]="updateForm.invalid" (click)="onUpdateClick()">Update</button>
+</div>

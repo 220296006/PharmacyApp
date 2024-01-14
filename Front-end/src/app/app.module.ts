@@ -1,3 +1,4 @@
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CustomerService } from './services/customer-service/customer.service';
 import { NgModule } from '@angular/core';
@@ -24,6 +25,15 @@ import { UserService } from './services/user-service/userservice.service';
 import { CustomerDetailsComponent } from './components/customer-details/customer-details.component';
 import { PrescriptionService } from './services/prescription-service/prescription-service.service';
 import { UpdateUserDialogComponent } from './components/update-user-dialog/update-user-dialog.component';
+import { UpdateCustomerDialogComponent } from './components/update-customer-dialog/update-customer-dialog.component';
+import { MedicationService } from './services/medication-service/medication-service.service';
+import { UpdateMedicationDialogComponent } from './components/update-medication-dialog/update-medication-dialog.component';
+import { InventoryService } from './services/inventory-service/inventory.service';
+import { UpdateInventoryDialogComponent } from './components/update-inventory-dialog/update-inventory-dialog.component';
+import { UpdatePrescriptionDialogComponent } from './components/update-prescription-dialog/update-prescription-dialog.component';
+import { InvoiceService } from './services/invoice-service/invoice.service';
+import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog/update-invoice-dialog.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +48,12 @@ import { UpdateUserDialogComponent } from './components/update-user-dialog/updat
     HomeComponent,
     CustomerDetailsComponent,
     UpdateUserDialogComponent,
+    UpdateCustomerDialogComponent,
+    UpdateMedicationDialogComponent,
+    UpdateInventoryDialogComponent,
+    UpdatePrescriptionDialogComponent,
+    UpdateInvoiceDialogComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
@@ -50,10 +66,14 @@ import { UpdateUserDialogComponent } from './components/update-user-dialog/updat
     MatSortModule,
     MatPaginatorModule,
     MatDialogModule,
+    MatFormFieldModule
   ],
   providers: [
     UserService,
     CustomerService,
+    InvoiceService,
+    InventoryService,
+    MedicationService,
     PrescriptionService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],

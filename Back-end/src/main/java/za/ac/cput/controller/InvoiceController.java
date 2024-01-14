@@ -53,7 +53,7 @@ public class InvoiceController {
     return ResponseEntity.ok().body(
                 Response.builder()
                         .timeStamp( now())
-                        .data(Map.of("invoices", invoiceService.findAllInvoices(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
+                        .data(Map.of("invoices", invoiceService.findAllInvoices(name.orElse(""), page.orElse(0), pageSize.orElse(50))))
                         .message("Invoices retrieved")
                         .status(OK)
                         .statusCode(OK.value())

@@ -118,35 +118,6 @@ CREATE TABLE Customers
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Table Inventory
-DROP TABLE IF EXISTS Inventory;
-CREATE TABLE Inventory
-(
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    medication_id INT UNSIGNED NOT NULL,
-    name          VARCHAR(100) NOT NULL,
-    description   TEXT DEFAULT NULL,
-    quantity      INT UNSIGNED NOT NULL,
-    price         DECIMAL(10, 2) NOT NULL,
-    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- Table Medications
-DROP TABLE IF EXISTS Medications;
-CREATE TABLE Medications
-(
-    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    prescription_id   INT UNSIGNED NOT NULL,
-    name              VARCHAR(100) NOT NULL,
-    dosage            VARCHAR(100) NOT NULL,
-    frequency         VARCHAR(100) NOT NULL,
-    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
-
-
 -- Table Prescriptions
 DROP TABLE IF EXISTS Prescriptions;
 CREATE TABLE Prescriptions
@@ -159,6 +130,32 @@ CREATE TABLE Prescriptions
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+-- Table Medications
+DROP TABLE IF EXISTS Medications;
+CREATE TABLE Medications
+(
+    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prescription_id   INT UNSIGNED NOT NULL,
+    name              VARCHAR(400) NOT NULL,
+    dosage            VARCHAR(400) NOT NULL,
+    frequency         VARCHAR(400) NOT NULL,
+    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Table Inventory
+DROP TABLE IF EXISTS Inventory;
+CREATE TABLE Inventory
+(
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    medication_id INT UNSIGNED NOT NULL,
+    name          VARCHAR(100) NOT NULL,
+    description   TEXT DEFAULT NULL,
+    quantity      INT UNSIGNED NOT NULL,
+    price         VARCHAR(500) NOT NULL,
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- Table Invoices
 DROP TABLE IF EXISTS Invoices;
@@ -166,8 +163,8 @@ CREATE TABLE Invoices
 (
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customer_id   INT UNSIGNED NOT NULL,
-    amount        DECIMAL(10, 2) NOT NULL,
-    due_date      DATE NOT NULL,
+    amount        VARCHAR(100) NOT NULL,
+    due_date      DATETIME NOT NULL,
     paid          BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -183,11 +180,18 @@ INSERT INTO Roles (id, name, permission) VALUES
 ALTER TABLE Customers MODIFY COLUMN first_name VARCHAR(255) NULL;
 
 -- Update the 'image_url' column with random user images.
-Update Users
-SET image_url = CONCAT('https://randomuser.me/api/portraits/men/', FLOOR(RAND() * 100), '.jpg');
+-- Update Users
+UPDATE Users
+SET image_url = CONCAT('https://randomuser.me/api/portraits/',
+                      CASE WHEN RAND() < 0.5 THEN 'men/' ELSE 'women/' END,
+                      FLOOR(RAND() * 100), '.jpg');
 
-Update Customers
-SET image_url = CONCAT('https://randomuser.me/api/portraits/men/', FLOOR(RAND() * 100), '.jpg');
+-- Update Customers
+UPDATE Customers
+SET image_url = CONCAT('https://randomuser.me/api/portraits/',
+                      CASE WHEN RAND() < 0.5 THEN 'men/' ELSE 'women/' END,
+                      FLOOR(RAND() * 100), '.jpg');
+
 
 
 

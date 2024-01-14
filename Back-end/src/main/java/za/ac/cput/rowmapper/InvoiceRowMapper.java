@@ -18,12 +18,12 @@ public class InvoiceRowMapper implements RowMapper<Invoice> {
     public Invoice mapRow(ResultSet rs, int rowNum) throws SQLException {
         Invoice invoice = new Invoice();
         invoice.setId(rs.getLong("id"));
-        invoice.setAmount(rs.getBigDecimal("amount"));
+        invoice.setAmount(rs.getString("amount"));
         invoice.setDueDate(rs.getDate("due_date"));
         invoice.setPaid(rs.getBoolean("paid"));
-
         Customer customer = new Customer();
         customer.setId(rs.getLong("customer_id"));
+        invoice.setCustomer(customer);
         return invoice;
     }
 }

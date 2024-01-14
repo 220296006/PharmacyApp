@@ -1,0 +1,33 @@
+<h2 mat-dialog-title class="title">Update Prescription</h2>
+<div mat-dialog-content>
+  <form #updateForm="ngForm">
+
+    <!-- Id Field (readonly) -->
+    <mat-form-field class="full-width" hidden="true">
+      <input matInput name="id" placeholder="ID" [ngModel]="prescription?.id" />
+    </mat-form-field>
+
+    <!-- Doctor Name-->
+    <mat-form-field class="full-width">
+      <input matInput name="name" placeholder="Doctor Name" [ngModel]="prescription?.doctorName"
+        (ngModelChange)="prescription.doctorName= $event" required />
+    </mat-form-field>
+
+    <!-- Doctor Address -->
+    <mat-form-field class="full-width">
+      <input matInput name="dosage" placeholder="Doctor Address" [ngModel]="prescription?.doctorAddress"
+        (ngModelChange)="prescription.doctorAddress= $event" />
+    </mat-form-field>
+   
+    <!-- Issue Date -->
+    <mat-form-field class="full-width">
+        <input matInput name="frequency" placeholder="Issue Date" [ngModel]="prescription?.issue_date"
+          (ngModelChange)="prescription.issue_date = $event" />
+      </mat-form-field>
+    
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button mat-button color="primary" [disabled]="updateForm.invalid" (click)="onUpdateClick()">Update</button>
+</div>

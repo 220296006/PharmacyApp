@@ -10,25 +10,28 @@ import { User } from 'src/app/model/user';
 export class UserService {
   private readonly serverUrl: string = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getAllUserData(
     name: string = '',
     page: number = 0,
-    size: number = 10
+    size: number = 50
   ): Observable<ApiResponse<User[]>> {
     return this.http.get<ApiResponse<User[]>>(
       `${this.serverUrl}/user/all?name=${name}&page=${page}&size=${size}`
     );
   }
-  
+
   getUserById(id: number): Observable<ApiResponse<User>> {
-    return this.http.get<ApiResponse<User>>(`${this.serverUrl}/user/read/${id}`)
-    .pipe(catchError(this.handleError));
+    return this.http
+      .get<ApiResponse<User>>(`${this.serverUrl}/user/read/${id}`)
+      .pipe(catchError(this.handleError));
   }
 
   updateUserData(id: number, user: User): Observable<ApiResponse<User>> {
-    return this.http.put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user);
+    return this.http
+      .put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user)
+      .pipe(catchError(this.handleError));
   }
 
   deleteUserById(id: number): Observable<ApiResponse<User>> {

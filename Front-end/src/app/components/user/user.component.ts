@@ -13,6 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
+onCreateUser() {
+throw new Error('Method not implemented.');
+}
   tableDataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   displayedColumns: string[] = [
     'id',
@@ -42,14 +45,12 @@ export class UserComponent implements OnInit {
     this.userService.getAllUserData().subscribe({
       next: (response) => {
         console.log('Response from server:', response);
-
         if (
           response.status === 'OK' &&
           response.data &&
           Array.isArray(response.data.page)
         ) {
           console.log('Data received:', response.data);
-
           this.tableDataSource.data = response.data.page;
           this.tableDataSource.paginator = this.paginator;
           this.tableDataSource.sort = this.sort;
@@ -86,8 +87,6 @@ export class UserComponent implements OnInit {
 
         if (response.status === 'OK' && response.data && response.data.user) {
           console.log('Data passed to dialog:', response.data);
-
-          // Update the condition to check for user property
           const user = response.data.user;
           if (user) {
             this.openUpdateDialog(user);

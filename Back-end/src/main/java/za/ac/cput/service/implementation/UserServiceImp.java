@@ -2,11 +2,14 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
+import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
@@ -15,6 +18,7 @@ import za.ac.cput.repository.UserRepository;
 import za.ac.cput.service.UserService;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @author : Thabiso Matsaba
@@ -28,6 +32,7 @@ import java.util.Collection;
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
     private final ConfirmationRepository<Confirmation> confirmationRepository;
+    private final BCryptPasswordEncoder encoder;
 
     @Override
     public UserDTO createUser(User user) {
@@ -38,36 +43,49 @@ public class UserServiceImp implements UserService {
     @Override
     public Collection<User> getAllUsers(String name, int page, int pageSize) {
 
-        return userRepository.list("users", 1, 10);
+        return userRepository.list("users", 1, 50);
     }
 
     @Override
-    public UserDTO updateUserById(Long id, UserUpdateDTO updatedUser) {
+    public UserUpdateDTO updateSysAdmin(Long userId, UserUpdateDTO updatedUser) {
         try {
-            User existingUser = userRepository.findById(id);
+            // Check if the current user has the Sys Admin role
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication != null && authentication.getAuthorities().stream()
+                    .anyMatch(role -> role.getAuthority().equals("ROLE_SYSADMIN"))) {
 
-            // Check if the user exists
-            if (existingUser != null) {
-                // Update the existing user with the new data
-                existingUser.setFirstName(updatedUser.getFirstName());
-                existingUser.setLastName(updatedUser.getLastName());
-                existingUser.setMiddleName(updatedUser.getMiddleName());
-                existingUser.setEmail(updatedUser.getEmail());
-                existingUser.setAddress(updatedUser.getAddress());
-                existingUser.setPhone(updatedUser.getPhone());
+                // If the user has Sys Admin role, proceed with the update
+                Optional<User> optionalExistingUser = Optional.ofNullable(userRepository.read(userId));
 
-                // Save the updated user
-                User updatedUserEntity = userRepository.save(existingUser);
+                if (optionalExistingUser.isPresent()) {
+                    User existingUser = optionalExistingUser.get();
 
-                // Convert the updated user to DTO for response
-                return UserDTOMapper.fromUser(updatedUserEntity);
+                    // Update the existing user with the new data
+                    existingUser.setFirstName(updatedUser.getFirstName());
+                    existingUser.setLastName(updatedUser.getLastName());
+                    existingUser.setMiddleName(updatedUser.getMiddleName());
+
+                    // Update the email address if provided
+                    if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+                        existingUser.setEmail(updatedUser.getEmail());
+                    }
+
+                    existingUser.setAddress(updatedUser.getAddress());
+                    existingUser.setPhone(updatedUser.getPhone());
+
+                    // Save the updated user using the new updateWithDTO method
+                    userRepository.update(existingUser);
+
+                    // Return the updated UserUpdateDTO
+                    return UserUpdateDTOMapper.fromUser(existingUser);
+                } else {
+                    // If the user does not exist, return null
+                    return null;
+                }
             } else {
-                // If the user does not exist, return null
-                return null;
+                // If the user does not have Sys Admin role, throw an exception
+                throw new ApiException("Unauthorized: Insufficient permissions to update user with Sys Admin role.");
             }
-        } catch (EmptyResultDataAccessException exception) {
-            // Handle the case where findById doesn't find a user
-            return null;
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while updating the user. Please try again.");
@@ -76,9 +94,9 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserById(Long id) {
-
         return UserDTOMapper.toUser(userRepository.read(id));
     }
+
 
     @Override
     public boolean deleteUser(Long id) {

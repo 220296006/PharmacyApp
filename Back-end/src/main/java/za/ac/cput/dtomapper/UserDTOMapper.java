@@ -15,8 +15,7 @@ import za.ac.cput.model.User;
 public class UserDTOMapper {
     public static UserDTO fromUser(User user){
         UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO);
-        user.setPassword(null);
+        BeanUtils.copyProperties(user, userDTO, "password");
         return userDTO;
     }
 

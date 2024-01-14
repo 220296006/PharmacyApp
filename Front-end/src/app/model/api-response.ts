@@ -4,7 +4,13 @@ export interface ApiResponse<T> {
   status: string;
   message: string;
   data: {
+    invoice: T;
     user?: T; 
     page?: T; 
+    customer?: T;
+    medication?: T;
+    inventory?: T;
+    prescription?: T;
+    invoices?: T;
   };
 }

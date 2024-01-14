@@ -1,0 +1,87 @@
+<h2 mat-dialog-title class="title">Update Medication</h2>
+<div mat-dialog-content>
+  <form #updateForm="ngForm">
+    <!-- Id Field (readonly) -->
+    <mat-form-field class="full-width" hidden="true">
+      <input matInput name="id" placeholder="ID" [ngModel]="inventory?.id" />
+    </mat-form-field>
+
+    <!-- Name Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="name"
+        placeholder="Name"
+        [ngModel]="inventory?.name"
+        (ngModelChange)="inventory.name = $event"
+        required
+      />
+    </mat-form-field>
+
+    <!-- Description Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="description"
+        placeholder="Description"
+        [ngModel]="inventory?.description"
+        (ngModelChange)="inventory.description = $event"
+      />
+    </mat-form-field>
+
+    <!-- Quantity Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="quantity"
+        placeholder="Quantity"
+        [ngModel]="inventory?.quantity"
+        (ngModelChange)="inventory.quantity = $event"
+      />
+    </mat-form-field>
+
+    <!-- Price Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="price"
+        placeholder="Price"
+        [ngModel]="inventory?.price"
+        (ngModelChange)="inventory.price = $event"
+      />
+    </mat-form-field>
+
+    <!-- Created Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="created_at"
+        placeholder="Created"
+        [ngModel]="inventory?.created_at | date : 'yyyy-MM-dd HH:mm:ss'"
+        (ngModelChange)="inventory.created_at = $event"
+      />
+    </mat-form-field>
+
+    <!-- Updated Field -->
+    <mat-form-field class="full-width">
+      <input
+        matInput
+        name="updated_at"
+        placeholder="Updated"
+        [ngModel]="inventory?.updated_at | date : 'yyyy-MM-dd HH:mm:ss'"
+        (ngModelChange)="inventory.updated_at = $event"
+      />
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Cancel</button>
+  <button
+    mat-button
+    color="primary"
+    [disabled]="updateForm.invalid"
+    (click)="onUpdateClick()"
+  >
+    Update
+  </button>
+</div>
