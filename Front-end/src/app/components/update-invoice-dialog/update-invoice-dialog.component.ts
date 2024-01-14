@@ -27,8 +27,8 @@ export class UpdateInvoiceDialogComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Data received in dialog:', this.data);
-    if (this.data?.inventory) {
-      console.log('Inventory data in dialog:', this.data.invoice);
+    if (this.data?.invoice) {
+      console.log('Invoice data in dialog:', this.data.invoice);
       this.invoice = this.data.invoice;
     }
   }

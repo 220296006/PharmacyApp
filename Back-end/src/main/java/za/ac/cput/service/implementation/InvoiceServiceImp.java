@@ -25,7 +25,7 @@ public class InvoiceServiceImp implements InvoiceService {
 
     @Override
     public Collection<Invoice> findAllInvoices(String name, int page, int pageSize) {
-        return invoiceRepository.list("invoice", 1, 10);
+        return invoiceRepository.list("invoice", 1, 50);
     }
 
     @Override

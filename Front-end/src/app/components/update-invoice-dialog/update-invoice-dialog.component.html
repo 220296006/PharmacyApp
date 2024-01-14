@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Update Medication</h2>
+<h2 mat-dialog-title class="title">Update Invoice</h2>
 <div mat-dialog-content>
   <form #updateForm="ngForm">
     <!-- Id Field (readonly) -->
@@ -22,8 +22,8 @@
     <mat-form-field class="full-width">
       <input
         matInput
-        name="description"
-        placeholder="Description"
+        name="due_date"
+        placeholder="Due Date"
         [ngModel]="invoice?.due_date| date : 'yyyy-MM-dd HH:mm:ss'"
         (ngModelChange)="invoice.due_date = $event"
       />

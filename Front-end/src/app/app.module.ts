@@ -33,6 +33,7 @@ import { UpdateInventoryDialogComponent } from './components/update-inventory-di
 import { UpdatePrescriptionDialogComponent } from './components/update-prescription-dialog/update-prescription-dialog.component';
 import { InvoiceService } from './services/invoice-service/invoice.service';
 import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog/update-invoice-dialog.component';
+import { FooterComponent } from './shared/components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog
     UpdateMedicationDialogComponent,
     UpdateInventoryDialogComponent,
     UpdatePrescriptionDialogComponent,
-    UpdateInvoiceDialogComponent
+    UpdateInvoiceDialogComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,

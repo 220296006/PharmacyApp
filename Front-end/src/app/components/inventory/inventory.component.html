@@ -9,6 +9,10 @@
 
 <body>
     <h4 align="center">Inventory</h4>
+    <button mat-raised-button color="primary" (click)="onCreateInventory()">
+        Create Inventory
+        <mat-icon>add</mat-icon>
+    </button>
     <table mat-table [dataSource]="tableDataSource" matSort class="mat-elevation-z8">
         <!-- ID Column -->
         <ng-container matColumnDef="id">

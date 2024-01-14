@@ -164,7 +164,7 @@ CREATE TABLE Invoices
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     customer_id   INT UNSIGNED NOT NULL,
     amount        VARCHAR(100) NOT NULL,
-    due_date      DATE NOT NULL,
+    due_date      DATETIME NOT NULL,
     paid          BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

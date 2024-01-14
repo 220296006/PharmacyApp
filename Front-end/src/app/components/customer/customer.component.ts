@@ -13,6 +13,7 @@ import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-
   styleUrls: ['./customer.component.scss'],
 })
 export class CustomerComponent implements OnInit {
+
   tableDataSource: MatTableDataSource<Customer[]> = new MatTableDataSource<
     Customer[]
   >([]);
@@ -38,6 +39,10 @@ export class CustomerComponent implements OnInit {
   ngOnInit() {
     this.getAllCustomerData();
   }
+
+  onCreateCustomer() {
+    throw new Error('Method not implemented.');
+    }
 
   getAllCustomerData() {
     this.customerService.getAllCustomerData().subscribe({

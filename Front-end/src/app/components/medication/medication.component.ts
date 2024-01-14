@@ -12,6 +12,9 @@ import { UpdateMedicationDialogComponent } from '../update-medication-dialog/upd
   styleUrls: ['./medication.component.scss']
 })
 export class MedicationComponent implements OnInit{
+onCreateMedication() {
+throw new Error('Method not implemented.');
+}
   tableDataSource: MatTableDataSource<Medication> = new MatTableDataSource<Medication>([]);
   displayedColumns: string[] = [
     'id',

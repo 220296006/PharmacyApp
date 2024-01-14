@@ -13,6 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
+onCreateUser() {
+throw new Error('Method not implemented.');
+}
   tableDataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   displayedColumns: string[] = [
     'id',

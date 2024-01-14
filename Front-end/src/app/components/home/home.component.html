@@ -7,32 +7,43 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 </head>
 <body>
+  <div class="home-container">
+    <div class="box customer-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">supervised_user_circle</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Customers</div>
+          <div class="box-data">{{ customersCount }}</div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="box invoice-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">description</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Invoices</div>
+          <div class="box-data">{{ invoicesCount }}</div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="box total-billed-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">attach_money</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Total Billed</div>
+          <div class="box-data">{{ totalBilledAmount | currency: 'USD' }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <section id="hero">
     <div class="container">
       <img src="assets/images/PharmacyApp.png" alt="Pharmacy App Logo" class="logo" />
       <h1 class="typed" data-typed-items="Welcome to the Pharmacy App.,Your trusted source for all your pharmacy needs."></h1>
     </div>
   </section>
-
-  <section id="features">
-    <div class="container">
-      <div class="slideshow">
-        <div class="slide">
-          <img src="assets/images/Medication.png" alt="Medication" class="feature-image" />
-          <h2>Explore Medications</h2>
-        </div>
-        <div class="slide">
-          <img src="assets/images/Prescription.png" alt="Prescription" class="feature-image" />
-          <h2>Manage Prescriptions</h2>
-        </div>
-      </div>
-      <div class="slide-buttons">
-        <button (click)="showPrevSlide()" class="prev-button">❮ Prev</button>
-        <button (click)="showNextSlide()" class="next-button">Next ❯</button>
-      </div>
-    </div>
-  </section>
-
-  <script src="path/to/your/custom/app.js"></script>
 </body>
 </html>

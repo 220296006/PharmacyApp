@@ -8,6 +8,10 @@
 
   <body>
     <h4 align="center">Medications</h4>
+    <button mat-raised-button color="primary" (click)="onCreateMedication()">
+      Create Medication
+      <mat-icon>add</mat-icon>
+  </button>
     <table
       mat-table
       [dataSource]="tableDataSource"

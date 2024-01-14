@@ -13,6 +13,7 @@ import { UpdateInvoiceDialogComponent } from '../update-invoice-dialog/update-in
   styleUrls: ['./invoice.component.scss'],
 })
 export class InvoiceComponent implements OnInit {
+
   tableDataSource: MatTableDataSource<Invoice> =
     new MatTableDataSource<Invoice>([]);
   displayedColumns: string[] = [
@@ -31,9 +32,15 @@ export class InvoiceComponent implements OnInit {
     private invoiceService: InvoiceService,
     private updateDialog: MatDialog
   ) {}
+
   ngOnInit(): void {
     this.getAllInvoiceData();
   }
+
+  onCreateInvoice() {
+    throw new Error('Method not implemented.');
+    }
+
   getAllInvoiceData() {
     this.invoiceService.getAllInvoiceData().subscribe({
       next: (response) => {
@@ -61,15 +68,14 @@ export class InvoiceComponent implements OnInit {
     this.invoiceService.getInvoiceById(invoiceId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
-        if (
-          response.status === 'OK' &&
-          response.data &&
-          response.data.invoices
+        if (response.status === 'OK' && 
+        response.data && 
+        response.data.invoice
         ) {
           console.log('Data passed to dialog:', response.data);
-          const inventory = response.data.invoices;
-          if (inventory) {
-            this.openUpdateDialog(inventory);
+          const invoice = response.data.invoice;
+          if (invoice) {
+            this.openUpdateDialog(invoice);
           } else {
             console.error('Error:  Invoice not found in response.data');
           }
@@ -82,6 +88,7 @@ export class InvoiceComponent implements OnInit {
       },
     });
   }
+
   onDeleteInvoice(id: number) {
     this.invoiceService.deleteInvoiceById(id).subscribe({
       next: (response) => {
@@ -99,7 +106,7 @@ export class InvoiceComponent implements OnInit {
   }
 
   openUpdateDialog(invoice: Invoice): void {
-    console.log('Inventory data passed to dialog:', invoice);
+    console.log('Invoice data passed to dialog:', invoice);
     const dialogRef = this.updateDialog.open(UpdateInvoiceDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',

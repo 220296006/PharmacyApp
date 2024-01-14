@@ -13,6 +13,9 @@ import { UpdatePrescriptionDialogComponent } from '../update-prescription-dialog
   styleUrls: ['./prescription.component.scss'],
 })
 export class PrescriptionComponent implements OnInit {
+onCreatePrescription() {
+throw new Error('Method not implemented.');
+}
   tableDataSource: MatTableDataSource<Prescription[]> = new MatTableDataSource<
     Prescription[]
   >([]);

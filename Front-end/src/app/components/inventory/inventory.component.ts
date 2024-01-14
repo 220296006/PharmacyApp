@@ -13,6 +13,7 @@ import { UpdateInventoryDialogComponent } from '../update-inventory-dialog/updat
   styleUrls: ['./inventory.component.scss'],
 })
 export class InventoryComponent implements OnInit {
+
   tableDataSource: MatTableDataSource<Inventory> =
     new MatTableDataSource<Inventory>([]);
   displayedColumns: string[] = [
@@ -37,6 +38,10 @@ export class InventoryComponent implements OnInit {
   ngOnInit(): void {
     this.getAllInventoryData();
   }
+
+  onCreateInventory() {
+    throw new Error('Method not implemented.');
+    }
 
   getAllInventoryData() {
     this.inventoryService.getAllInventoryData().subscribe({

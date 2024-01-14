@@ -1,19 +1,46 @@
-.mat-elevation-z8 {
-    width: 50px;
-    height: auto;
-  }
-  
-  table {
-    width: 100%;
-  }
-  
-  th.mat-sort-header-sorted {
-    color: rgb(11, 12, 12);
-  }
-  
-  .user-heading {
-    color: #0f1614;
-    font-size: large;
-    text-align: center;
-    font: 1em sans-serif bold;
-  }
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f8ff; /* AliceBlue */
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+}
+
+h4 {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2e8b57; /* SeaGreen */
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+th, td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd; /* LightGray */
+}
+
+th {
+  background-color: #4682b4; /* SteelBlue */
+  color: #33473c; /* SeaGreen */
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+td {
+  background-color: #f5f5f5; /* WhiteSmoke */
+}
+
+button {
+  margin-right: 10px;
+}
+
+mat-paginator {
+  margin-top: 20px;
+}
