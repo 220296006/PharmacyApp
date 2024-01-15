@@ -35,8 +35,8 @@
         matInput
         name="paid"
         placeholder="Paid"
-        [ngModel]="invoice?.paid"
-        (ngModelChange)="invoice.paid = $event"
+        [ngModel]="invoice?.paymentStatus"
+        (ngModelChange)="invoice.paymentStatus = $event"
       />
     </mat-form-field>
 

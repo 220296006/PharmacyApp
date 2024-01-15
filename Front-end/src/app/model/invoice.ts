@@ -1,10 +1,14 @@
-export interface Invoice{
+import { PaymentStatus } from "./payment-status";
+
+export interface Invoice {
     id: number;
     amount: BigInt;
     dueDate: Date;
-    paid: boolean;
-    customer:{
-        id: number;
-    }
+    paymentStatus: PaymentStatus;
+    customer: {
+      id: number;
+    };
+  }
+  
 
-}
+  

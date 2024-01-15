@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import za.ac.cput.enumeration.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -29,6 +30,6 @@ public class Invoice {
     private Long id;
     private BigInteger amount;
     private Date dueDate;
-    private boolean paid;
+    private PaymentStatus paymentStatus;
     private Customer customer;
 }

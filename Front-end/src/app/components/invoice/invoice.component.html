@@ -40,13 +40,12 @@
         </ng-container>
 
         <!--  Paid Column -->
-        <ng-container matColumnDef="paid">
-            <th mat-header-cell *matHeaderCellDef>Paid</th>
-            <td mat-cell *matCellDef="let row">{{ row.paid }}</td>
+        <ng-container matColumnDef="paymentStatus">
+            <th mat-header-cell *matHeaderCellDef >Status</th>
+            <td mat-cell *matCellDef="let row"  [ngClass]="getPaymentStatusClass(row.paymentStatus)">{{ row.paymentStatus }}</td>
         </ng-container>
 
     
-
         <!-- Options Column -->
         <ng-container matColumnDef="options">
             <th mat-header-cell *matHeaderCellDef>Options</th>

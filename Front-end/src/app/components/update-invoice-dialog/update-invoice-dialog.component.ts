@@ -13,9 +13,9 @@ export class UpdateInvoiceDialogComponent implements OnInit {
     id: null,
     amount: undefined,
     dueDate: undefined,
-    paid: false,
+    paymentStatus: undefined,
     customer: {
-      id: null,
+      id: null
     },
   };
 

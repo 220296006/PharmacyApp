@@ -162,7 +162,7 @@ CREATE TABLE Invoices
     customer_id   INT UNSIGNED NOT NULL,
     amount        INTEGER NOT NULL,
     due_date      DATETIME NOT NULL,
-    paid          BOOLEAN DEFAULT FALSE,
+    payment_status  VARCHAR(100) DEFAULT NULL,
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
