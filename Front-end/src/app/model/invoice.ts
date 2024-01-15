@@ -1,7 +1,7 @@
 export interface Invoice{
     id: number;
     amount: BigInt;
-    due_date: Date;
+    dueDate: Date;
     paid: boolean;
     customer:{
         id: number;

@@ -20,7 +20,7 @@ export class InvoiceComponent implements OnInit {
     'id',
     'customer_id',
     'amount',
-    'due_date',
+    'dueDate',
     'paid',
     'options',
   ];

@@ -12,6 +12,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
+  createUser(user: User): Observable<ApiResponse<User>>{
+    console.log(user)
+    return this.http.post<ApiResponse<User>>
+    (`${this.serverUrl}/user/register`, user)
+    .pipe(catchError(this.handleError));
+  }  
+  
   getAllUserData(
     name: string = '',
     page: number = 0,
@@ -29,14 +36,12 @@ export class UserService {
   }
 
   updateUserData(id: number, user: User): Observable<ApiResponse<User>> {
-    return this.http
-      .put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user)
+    return this.http.put<ApiResponse<User>>(`${this.serverUrl}/user/update/${id}`, user)
       .pipe(catchError(this.handleError));
   }
 
   deleteUserById(id: number): Observable<ApiResponse<User>> {
-    return this.http
-      .delete<ApiResponse<User>>(`${this.serverUrl}/user/delete/${id}`)
+    return this.http.delete<ApiResponse<User>>(`${this.serverUrl}/user/delete/${id}`)
       .pipe(catchError(this.handleError));
   }
 
