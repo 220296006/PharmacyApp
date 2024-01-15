@@ -3,7 +3,7 @@ export interface Inventory{
     name: string;
     description: string;
     quantity: BigInt;
-    price: string;
+    price: BigInt;
     created_at: string;
     updated_at: string;
     medication:{

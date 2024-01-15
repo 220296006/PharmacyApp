@@ -30,23 +30,22 @@
         <!-- Amount Column -->
         <ng-container matColumnDef="amount">
             <th mat-header-cell *matHeaderCellDef>Amount</th>
-            <td mat-cell *matCellDef="let row"> {{ row.amount }}</td>
+            <td mat-cell *matCellDef="let row"> {{ row.amount | currency}}</td>
         </ng-container>
 
         <!--  Due Date Column -->
-        <ng-container matColumnDef="due_date">
+        <ng-container matColumnDef="dueDate">
             <th mat-header-cell *matHeaderCellDef>Due Date</th>
-            <td mat-cell *matCellDef="let row">{{ row.due_date}}</td>
+            <td mat-cell *matCellDef="let row">{{ row.dueDate | date}}</td>
         </ng-container>
 
         <!--  Paid Column -->
-        <ng-container matColumnDef="paid">
-            <th mat-header-cell *matHeaderCellDef>Paid</th>
-            <td mat-cell *matCellDef="let row">{{ row.paid }}</td>
+        <ng-container matColumnDef="paymentStatus">
+            <th mat-header-cell *matHeaderCellDef >Status</th>
+            <td mat-cell *matCellDef="let row"  [ngClass]="getPaymentStatusClass(row.paymentStatus)">{{ row.paymentStatus }}</td>
         </ng-container>
 
     
-
         <!-- Options Column -->
         <ng-container matColumnDef="options">
             <th mat-header-cell *matHeaderCellDef>Options</th>

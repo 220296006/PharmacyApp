@@ -6,8 +6,7 @@ package za.ac.cput.enumeration;
  * @Time : 11:00
  **/
 public enum VerificationType {
-    ACCOUNT("ACCOUNT"),
-    PASSWORD("PASSWORD");
+    ACCOUNT("ACCOUNT"), PASSWORD("PASSWORD");
 
     private final String type;
 

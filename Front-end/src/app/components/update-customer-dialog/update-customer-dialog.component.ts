@@ -12,14 +12,14 @@ export class UpdateCustomerDialogComponent implements OnInit {
 
   customer: Customer = {
     id: null,
-    imageUrl: '',
-    address: '',
     city: '',
     zipCode: '',
     state: '',
     user: {
       firstName: '',
-      id: null
+      id: null,
+      imageUrl: '',
+      address: '',
     }
   };
 

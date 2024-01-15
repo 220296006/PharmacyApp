@@ -23,12 +23,13 @@ public class InventoryRowMapper implements RowMapper<Inventory> {
         inventory.setName(rs.getString("name"));
         inventory.setDescription(rs.getString("description"));
         inventory.setQuantity(BigInteger.valueOf(rs.getInt("quantity")));
-        inventory.setPrice(rs.getString("price"));
+        inventory.setPrice(BigInteger.valueOf(rs.getInt("price")));
         inventory.setCreated_at(LocalDateTime.now());
         inventory.setUpdated_at(LocalDateTime.now());
 
         Medication medication = new Medication();
         medication.setId(rs.getLong("medication_id"));
+        inventory.setMedication(medication);
         return inventory;
     }
 }

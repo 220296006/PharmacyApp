@@ -42,11 +42,7 @@ export class CustomerDetailsComponent implements OnInit {
   }
 
   private handleError(error: any): void {
-    // Log the error or perform additional error handling here
     console.error('Detailed error:', error);
-
-    // You can also show a user-friendly message or redirect to an error page
-    // For now, let's log a simple message to the console
     console.error('An error occurred while fetching customer details. Please try again later.');
   }
 }

@@ -14,8 +14,8 @@ export class UpdateInventoryDialogComponent implements OnInit {
    id: null,
    name: '',
    description: '',
-   quantity: null,
-   price: null,
+   quantity: undefined,
+   price: undefined,
    created_at: null,
    updated_at: null,
    medication: {

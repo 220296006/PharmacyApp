@@ -30,7 +30,7 @@ th {
     background-color: #4682b4; /* SteelBlue */
     color: #33473c; /* SeaGreen */
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 
 td {
@@ -44,3 +44,24 @@ button {
 mat-paginator {
     margin-top: 20px;
 }
+
+.paid-status {
+    color: green;
+    font-weight: 700;
+  }
+  
+  .cancelled-status {
+    color: red;
+    font-weight: 700;
+  }
+  
+  .pending-status {
+    color: orange;
+    font-weight: 700;
+  }
+  
+  .overdue-status {
+    color: blue;
+    font-weight: 700;
+  }
+  

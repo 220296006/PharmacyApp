@@ -1,0 +1,80 @@
+<div class="user-form-container">
+  <form [formGroup]="userForm" class="user-form">
+    <div class="title">User Information</div>
+
+    <div class="form-row">
+      <mat-form-field class="form-half-width">
+        <mat-label>First Name</mat-label>
+        <input
+          type="text"
+          id="firstName"
+          formControlName="firstName"
+          matInput
+        />
+      </mat-form-field>
+
+      <mat-form-field class="form-half-width">
+        <mat-label>Middle Name</mat-label>
+        <input
+          type="text"
+          id="middleName"
+          formControlName="middleName"
+          matInput
+        />
+      </mat-form-field>
+    </div>
+
+    <div class="form-row">
+      <mat-form-field class="form-half-width">
+        <mat-label>Last Name</mat-label>
+        <input type="text" id="lastName" formControlName="lastName" matInput />
+      </mat-form-field>
+
+      <mat-form-field class="form-half-width">
+        <mat-label>Address</mat-label>
+        <input type="text" id="address" formControlName="address" matInput />
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="form-full-width">
+      <mat-label>Email</mat-label>
+      <input type="email" id="email" formControlName="email" matInput />
+    </mat-form-field>
+
+    <div class="form-row">
+      <mat-form-field class="form-half-width">
+        <mat-label>Phone</mat-label>
+        <input type="text" id="phone" formControlName="phone" matInput />
+      </mat-form-field>
+
+      <mat-form-field class="form-half-width">
+        <mat-label>Password</mat-label>
+        <input
+          type="{{ hidePassword ? 'password' : 'text' }}"
+          id="password"
+          formControlName="password"
+          matInput
+        />
+        <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+          <mat-icon>{{
+            hidePassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+
+    <div class="form-row actions">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="userForm.invalid"
+        (click)="onSubmit({})"
+      >
+        Add User
+      </button>
+      <button mat-raised-button class="cancel-button" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import za.ac.cput.enumeration.PaymentStatus;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -26,8 +28,8 @@ import java.util.Date;
 public class Invoice {
     @Id
     private Long id;
-    private String amount;
+    private BigInteger amount;
     private Date dueDate;
-    private boolean paid;
+    private PaymentStatus paymentStatus;
     private Customer customer;
 }

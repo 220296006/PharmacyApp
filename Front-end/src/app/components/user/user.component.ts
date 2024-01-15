@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { UserService } from 'src/app/services/user-service/userservice.service';
 import { UpdateUserDialogComponent } from '../update-user-dialog/update-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
 
 @Component({
   selector: 'app-user',
@@ -13,9 +14,10 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
-onCreateUser() {
-throw new Error('Method not implemented.');
+
+onCreateUser($event: Event) {
 }
+
   tableDataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   displayedColumns: string[] = [
     'id',
@@ -34,9 +36,25 @@ throw new Error('Method not implemented.');
 
   constructor(
     private userService: UserService,
-    private updateDialog: MatDialog
+    private updateDialog: MatDialog,
+    private createDialog: MatDialog
   ) {}
 
+  openCreateUserDialog(id: any) {
+    const dialogRef = this.createDialog.open(CreateUserDialogComponent,{
+      width: '400px',
+      exitAnimationDuration: '1000ms',
+      enterAnimationDuration: '1000ms',
+      data:
+      {
+        id: id
+      }
+    })
+    dialogRef.afterClosed().subscribe(response=> {
+      response = this.getAllUserData();
+    });
+  }
+  
   ngOnInit() {
     this.getAllUserData();
   }

@@ -42,8 +42,8 @@
 
     <!-- Isssue Date -->
     <ng-container matColumnDef="issue_date">
-      <th mat-header-cell *matHeaderCellDef> Isssue Date </th>
-      <td mat-cell *matCellDef="let row"> {{row.issue_date}} </td>
+      <th mat-header-cell *matHeaderCellDef> Issue Date </th>
+      <td mat-cell *matCellDef="let row"> {{row.issue_date | date}} </td>
     </ng-container>
 
         <!-- Options Column -->

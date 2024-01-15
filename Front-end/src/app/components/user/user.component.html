@@ -7,11 +7,13 @@
   </head>
 
   <body>
+
     <h4 align="center">Users</h4>
-    <button mat-raised-button color="primary" (click)="onCreateUser()">
-      Create User
-      <mat-icon>add</mat-icon>
-  </button>
+
+    <button mat-raised-button color="primary" (click)="openCreateUserDialog('')">
+      <mat-icon>add</mat-icon>Create User
+    </button>
+
     <table
       mat-table
       [dataSource]="tableDataSource"

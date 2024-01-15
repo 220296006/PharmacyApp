@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { AngularMaterialModule } from './modules/material.module';
 import { UserComponent } from './components/user/user.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
@@ -34,6 +34,7 @@ import { UpdatePrescriptionDialogComponent } from './components/update-prescript
 import { InvoiceService } from './services/invoice-service/invoice.service';
 import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog/update-invoice-dialog.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
+import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     UpdateInventoryDialogComponent,
     UpdatePrescriptionDialogComponent,
     UpdateInvoiceDialogComponent,
-    FooterComponent
+    FooterComponent,
+    CreateUserDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ import { FooterComponent } from './shared/components/footer/footer.component';
     MatSortModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    ReactiveFormsModule
   ],
   providers: [
     UserService,

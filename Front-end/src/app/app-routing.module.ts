@@ -9,6 +9,7 @@ import { PrescriptionComponent } from './components/prescription/prescription.co
 import { InventoryComponent } from './components/inventory/inventory.component';
 import { UserComponent } from './components/user/user.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
+import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', component: HomeComponent },
@@ -21,6 +22,8 @@ const routes: Routes = [
   { path: 'inventory', pathMatch: 'full', component: InventoryComponent },
   { path: 'user', pathMatch: 'full', component: UserComponent },
   { path: 'customer-details/:id', component: CustomerDetailsComponent },
+  { path: 'create-user-dialog', pathMatch: 'full', component: CreateUserDialogComponent },
+
 
 ];
 

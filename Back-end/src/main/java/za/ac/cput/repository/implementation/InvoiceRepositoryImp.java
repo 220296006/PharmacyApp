@@ -126,6 +126,6 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
                 .addValue("customerId", invoice.getCustomer().getId())
                 .addValue("amount", invoice.getAmount())
                 .addValue("dueDate", invoice.getDueDate())
-                .addValue("paid", invoice.isPaid());
+                .addValue("paid", invoice.getPaymentStatus());
     }
 }

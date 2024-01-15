@@ -11,11 +11,11 @@ import { InvoiceService } from 'src/app/services/invoice-service/invoice.service
 export class UpdateInvoiceDialogComponent implements OnInit {
   invoice: Invoice = {
     id: null,
-    amount: '',
-    due_date: undefined,
-    paid: false,
+    amount: undefined,
+    dueDate: undefined,
+    paymentStatus: undefined,
     customer: {
-      id: null,
+      id: null
     },
   };
 

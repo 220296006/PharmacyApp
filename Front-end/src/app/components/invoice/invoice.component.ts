@@ -14,19 +14,19 @@ import { UpdateInvoiceDialogComponent } from '../update-invoice-dialog/update-in
 })
 export class InvoiceComponent implements OnInit {
 
-  tableDataSource: MatTableDataSource<Invoice> =
-    new MatTableDataSource<Invoice>([]);
+  tableDataSource: MatTableDataSource<Invoice> = new MatTableDataSource<Invoice>([]);
   displayedColumns: string[] = [
     'id',
     'customer_id',
     'amount',
-    'due_date',
-    'paid',
+    'dueDate',
+    'paymentStatus',
     'options',
   ];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+invoices: any;
 
   constructor(
     private invoiceService: InvoiceService,
@@ -39,6 +39,21 @@ export class InvoiceComponent implements OnInit {
 
   onCreateInvoice() {
     throw new Error('Method not implemented.');
+    }
+
+    getPaymentStatusClass(paymentStatus: string): string {
+      switch (paymentStatus) {
+        case 'PAID':
+          return 'paid-status';
+        case 'CANCELLED':
+          return 'cancelled-status';
+        case 'PENDING':
+          return 'pending-status';
+        case 'OVERDUE':
+          return 'overdue-status';
+        default:
+          return '';
+      }
     }
 
   getAllInvoiceData() {

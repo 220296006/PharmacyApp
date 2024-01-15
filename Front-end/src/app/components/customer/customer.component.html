@@ -30,7 +30,7 @@
         <td mat-cell *matCellDef="let row">
           <a [routerLink]="['/customer-details', row.id]">
             <img
-              [src]="row.imageUrl"
+              [src]="row.user.imageUrl"
               alt="User Image"
               width="50"
               height="50"
@@ -51,7 +51,8 @@
       <!-- Address Column -->
       <ng-container matColumnDef="address">
         <th mat-header-cell *matHeaderCellDef>Address</th>
-        <td mat-cell *matCellDef="let row">{{ row.address }}</td>
+        <td mat-cell *matCellDef="let row">
+          {{ row.user.address }}</td>
       </ng-container>
 
       <!--  City Column -->
