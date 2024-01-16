@@ -7,11 +7,14 @@
   </head>
 
   <body>
+
     <h4 align="center">Customers</h4>
-    <button mat-raised-button color="primary" (click)="onCreateCustomer()">
+
+    <button mat-raised-button color="primary" (click)="onCreateCustomerDialog('')">
       Create Customer
       <mat-icon>add</mat-icon>
   </button>
+  
     <table
       mat-table
       [dataSource]="tableDataSource"

@@ -22,6 +22,6 @@ public static final String FETCH_ALL_CUSTOMERS_QUERY = """
         LIMIT :size OFFSET :page    \s
         """;
 public static final String UPDATE_CUSTOMER_QUERY = "UPDATE Customers SET city = :city, state = :state, zip_code = :zipCode WHERE id = :id";
-public static final String UPDATE_CUSTOMER_LINKED_TO_USER_QUERY = "UPDATE Customers SET user_id = :user_id HERE id = :id";
+public static final String UPDATE_CUSTOMER_LINKED_TO_USER_QUERY = "UPDATE Customers SET user_id = :user_id WHERE id = :id";
  public static final String DELETE_CUSTOMER_QUERY = "DELETE FROM Customers WHERE id = :id";
 }

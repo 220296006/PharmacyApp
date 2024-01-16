@@ -14,10 +14,7 @@ import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dia
   styleUrls: ['./user.component.scss'],
 })
 export class UserComponent implements OnInit {
-
-onCreateUser($event: Event) {
-}
-
+  
   tableDataSource: MatTableDataSource<User> = new MatTableDataSource<User>([]);
   displayedColumns: string[] = [
     'id',
@@ -36,12 +33,16 @@ onCreateUser($event: Event) {
 
   constructor(
     private userService: UserService,
-    private updateDialog: MatDialog,
-    private createDialog: MatDialog
+    private updateUserDialog: MatDialog,
+    private createUserDialog: MatDialog
   ) {}
 
+  ngOnInit() {
+    this.getAllUserData();
+  }
+
   openCreateUserDialog(id: any) {
-    const dialogRef = this.createDialog.open(CreateUserDialogComponent,{
+    const dialogRef = this.createUserDialog.open(CreateUserDialogComponent,{
       width: '400px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
@@ -55,10 +56,6 @@ onCreateUser($event: Event) {
     });
   }
   
-  ngOnInit() {
-    this.getAllUserData();
-  }
-
   getAllUserData() {
     this.userService.getAllUserData().subscribe({
       next: (response) => {
@@ -123,7 +120,7 @@ onCreateUser($event: Event) {
 
   openUpdateDialog(user: User): void {
     console.log('User data passed to dialog:', user); // Check if user is defined
-    const dialogRef = this.updateDialog.open(UpdateUserDialogComponent, {
+    const dialogRef = this.updateUserDialog.open(UpdateUserDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',

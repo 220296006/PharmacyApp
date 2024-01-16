@@ -12,6 +12,13 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {}
 
+  createCustomer(customer: Customer): Observable<ApiResponse<Customer>>{
+    console.log(customer)
+    return this.http.post<ApiResponse<Customer>>
+    (`${this.serverUrl}/customer/create`, customer)
+    .pipe(catchError(this.handleError));
+  } 
+
   getAllCustomerData(
     name: string = '',
     page: number = 0,

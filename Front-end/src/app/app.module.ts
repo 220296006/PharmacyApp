@@ -35,6 +35,7 @@ import { InvoiceService } from './services/invoice-service/invoice.service';
 import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog/update-invoice-dialog.component';
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
+import { CreateCustomerDialogComponent } from './components/create-customer-dialog/create-customer-dialog.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { CreateUserDialogComponent } from './components/create-user-dialog/creat
     UpdatePrescriptionDialogComponent,
     UpdateInvoiceDialogComponent,
     FooterComponent,
-    CreateUserDialogComponent
+    CreateUserDialogComponent,
+    CreateCustomerDialogComponent,
   ],
   imports: [
     BrowserModule,

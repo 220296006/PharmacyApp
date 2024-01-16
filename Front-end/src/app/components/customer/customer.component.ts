@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
 import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-customer-dialog.component';
+import { CreateCustomerDialogComponent } from '../create-customer-dialog/create-customer-dialog.component';
 
 @Component({
   selector: 'app-customer',
@@ -13,6 +14,7 @@ import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-
   styleUrls: ['./customer.component.scss'],
 })
 export class CustomerComponent implements OnInit {
+
 
   tableDataSource: MatTableDataSource<Customer[]> = new MatTableDataSource<
     Customer[]
@@ -33,15 +35,28 @@ export class CustomerComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
-    private updateDialog: MatDialog
+    private updateCustomerDialog: MatDialog,
+    private createCustomerDialog: MatDialog
+
   ) {}
 
   ngOnInit() {
     this.getAllCustomerData();
   }
 
-  onCreateCustomer() {
-    throw new Error('Method not implemented.');
+  onCreateCustomerDialog(id: any) {
+    const dialogRef = this.createCustomerDialog.open(CreateCustomerDialogComponent,{
+      width: '400px',
+      exitAnimationDuration: '1000ms',
+      enterAnimationDuration: '1000ms',
+      data:
+      {
+        id: id
+      }
+    })
+    dialogRef.afterClosed().subscribe(response=> {
+      response = this.getAllCustomerData();
+    });
     }
 
   getAllCustomerData() {
@@ -106,7 +121,7 @@ export class CustomerComponent implements OnInit {
 
   openUpdateDialog(customer: Customer): void {
     console.log('Customer data passed to dialog:', customer); // Check if user is defined
-    const dialogRef = this.updateDialog.open(UpdateCustomerDialogComponent, {
+    const dialogRef = this.updateCustomerDialog.open(UpdateCustomerDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',
