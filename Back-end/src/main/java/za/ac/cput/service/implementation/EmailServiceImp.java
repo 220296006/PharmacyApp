@@ -3,6 +3,7 @@ package za.ac.cput.service.implementation;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
@@ -34,6 +35,8 @@ public class EmailServiceImp implements EmailService {
     public static final String UTF_8_ENCODING = "UTF-8";
     public static final String EMAIL_TEMPLATE = "emailTemplate";
     public static final String TEXT_HTML_ENCODING = "text/html";
+
+    @Autowired
     private final JavaMailSender emailSender;
     @Value("${spring.mail.verify.host}")
     private String host;

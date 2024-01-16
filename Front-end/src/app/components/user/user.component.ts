@@ -7,7 +7,8 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
 import { UpdateUserDialogComponent } from '../update-user-dialog/update-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
-
+import * as alertify from 'alertifyjs';
+ 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -80,18 +81,23 @@ export class UserComponent implements OnInit {
   }
 
   onDeleteUser(id: number) {
-    this.userService.deleteUserById(id).subscribe({
-      next: (response) => {
-        console.log('Response from server:', response);
-        if (response.status === 'OK') {
-          this.getAllUserData();
-        } else {
-          console.error('Error: ' + response.message);
-        }
-      },
-      error: (error) => {
-        console.error('Error deleting user:', error);
-      },
+    alertify.confirm('Are you sure you want to permanently delete this user?', () => {
+      this.userService.deleteUserById(id).subscribe({
+        next: (response) => {
+          console.log('Response from server:', response);
+          if (response.status === 'OK') {
+            alertify.success('User deleted successfully!');
+            this.getAllUserData(); // Refresh the user data
+          } else {
+            alertify.error('Error: ' + response.message);
+          }
+        },
+        error: (error) => {
+          console.error('Error deleting user:', error);
+          alertify.error('An error occurred while deleting the user.');
+        },
+      });
+    }, () => {
     });
   }
 
@@ -119,7 +125,7 @@ export class UserComponent implements OnInit {
   }
 
   openUpdateDialog(user: User): void {
-    console.log('User data passed to dialog:', user); // Check if user is defined
+    console.log('User data passed to dialog:', user); 
     const dialogRef = this.updateUserDialog.open(UpdateUserDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',

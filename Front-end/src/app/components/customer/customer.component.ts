@@ -7,6 +7,7 @@ import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
 import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-customer-dialog.component';
 import { CreateCustomerDialogComponent } from '../create-customer-dialog/create-customer-dialog.component';
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-customer',
@@ -104,20 +105,26 @@ export class CustomerComponent implements OnInit {
   }
 
   onDeleteCustomer(id: number) {
+    alertify.confirm('Are you sure you want to permanently delete this customer?', () => {
     this.customerService.deleteCustomerById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
-          this.getAllCustomerData();
+          alertify.success('Customer deleted successfully!');
+          this.getAllCustomerData();.0
+          
         } else {
           console.error('Error: ' + response.message);
         }
       },
       error: (error) => {
-        console.error('Error deleting user:', error);
+        console.error('Error deleting customer:', error);
+        alertify.error('An error occurred while deleting the customer.');
       },
     });
-  }
+  }, () => {
+  });
+}
 
   openUpdateDialog(customer: Customer): void {
     console.log('Customer data passed to dialog:', customer); // Check if user is defined

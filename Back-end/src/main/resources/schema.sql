@@ -34,7 +34,7 @@ CREATE TABLE Customers
 DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles
 (
-    id          INT UNSIGNED NOT NULL PRIMARY KEY,
+    id          INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(45) NOT NULL,
     permission  VARCHAR(255) NOT NULL,
     CONSTRAINT UQ_Roles_Name UNIQUE (name)
@@ -162,7 +162,7 @@ CREATE TABLE Invoices
     customer_id   INT UNSIGNED NOT NULL,
     amount        INTEGER NOT NULL,
     due_date      DATETIME NOT NULL,
-    payment_status  VARCHAR(100) DEFAULT NULL,
+    payment_status  VARCHAR(100) DEFAULT 'PENDING',
     FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
