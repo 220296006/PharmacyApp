@@ -7,10 +7,9 @@ import * as alertify from 'alertifyjs';
 @Component({
   selector: 'app-create-customer-dialog',
   templateUrl: './create-customer-dialog.component.html',
-  styleUrls: ['./create-customer-dialog.component.scss']
+  styleUrls: ['./create-customer-dialog.component.scss'],
 })
-export class CreateCustomerDialogComponent implements OnInit{
-  
+export class CreateCustomerDialogComponent implements OnInit {
   customerForm: FormGroup;
 
   constructor(
@@ -37,17 +36,19 @@ export class CreateCustomerDialogComponent implements OnInit{
       this.customerForm.patchValue(rowData);
       return;
     }
-    this.customerService.createCustomer(this.customerForm.getRawValue()).subscribe({
-      next: (response) => {
-        console.log('Customer added successfully:', response.data.customer);
-        alertify.success('Customer added successfully');
-        this.dialogRef.close(response.data.customer);
-      },
-      error: (error) => {
-        console.error('Error adding customer:', error);
-        alertify.error('Error adding customer. Please try again.');
-      },
-    });
+    this.customerService
+      .createCustomer(this.customerForm.getRawValue())
+      .subscribe({
+        next: (response) => {
+          console.log('Customer added successfully:', response.data.customer);
+          alertify.success('Customer added successfully');
+          this.dialogRef.close(response.data.customer);
+        },
+        error: (error) => {
+          console.error('Error adding customer:', error);
+          alertify.error('Error adding customer. Please try again.');
+        },
+      });
   }
 
   onCancel(): void {

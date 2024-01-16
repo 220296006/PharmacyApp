@@ -49,8 +49,7 @@ public class CustomerRepositoryImp implements CustomerRepository<Customer> {
          jdbc.update(INSERT_CUSTOMER_QUERY, parameters, holder );
          customer.setId(Objects.requireNonNull(holder.getKey()).longValue());
          Map<String, Object> linkUserParams = new HashMap<>();
-         linkUser.getId()" because the return value of "za.ac.cput.model.Customer.getUser()" is null
-        at za.ac.cput.repository.implementation.CustomerRepositoryImp.save(CustomerRepositoryIerParams.put("user_id", user.getId());
+         linkUserParams.put("user_id", user.getId());
          linkUserParams.put("id", customer.getId());
          jdbc.update(UPDATE_CUSTOMER_LINKED_TO_USER_QUERY, linkUserParams);
          return customer;
