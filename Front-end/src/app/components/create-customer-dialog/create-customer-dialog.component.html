@@ -1,0 +1,50 @@
+<div class="user-form-container">
+    <form [formGroup]="customerForm" class="user-form">
+      <div class="title">Customer Information</div>
+  
+        <mat-form-field class="form-full-width">
+          <mat-label>User ID</mat-label>
+          <input
+            type="number"
+            id="userId"
+            formControlName="userId"
+            matInput
+          />
+        </mat-form-field>
+  
+        <mat-form-field class="form-full-width">
+          <mat-label>City</mat-label>
+          <input
+            type="text"
+            id="city"
+            formControlName="city"
+            matInput
+          />
+        </mat-form-field>
+  
+        <mat-form-field class="form-full-width">
+          <mat-label>State</mat-label>
+          <input type="text" id="state" formControlName="state" matInput />
+        </mat-form-field>
+  
+        <mat-form-field class="form-full-width">
+          <mat-label>Zip Code</mat-label>
+          <input type="text" id="zipCode" formControlName="zipCode" matInput />
+        </mat-form-field>
+  
+      <div class="form-row actions">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="customerForm.invalid"
+          (click)="onSubmit({})"
+        >
+          Add Customer
+        </button>
+        <button mat-raised-button class="cancel-button" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+  
