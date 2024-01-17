@@ -32,20 +32,18 @@ export class CreateCustomerDialogComponent implements OnInit {
 
   onSubmit(customer: any): void {
     if (Object.values(customer).length > 0) {
-      // If customer object is provided, set it directly
       this.customerForm.patchValue(customer);
     } else {
-      // Otherwise, create the complete payload including the user object
       const payload = {
         ...this.customerForm.getRawValue(),
         user: {
-          id: this.customerForm.get('userId').value, // Assuming userId is the user ID
+          id: this.customerForm.get('userId').value,
           firstName: '', // Add other user properties as needed
           imageUrl: '',
-          address: ''
-        }
+          address: '',
+        },
       };
-  
+
       this.customerService.createCustomer(payload).subscribe({
         next: (response) => {
           console.log('Customer added successfully:', response.data.customer);
@@ -59,8 +57,6 @@ export class CreateCustomerDialogComponent implements OnInit {
       });
     }
   }
-  
-  
 
   onCancel(): void {
     this.dialogRef.close();

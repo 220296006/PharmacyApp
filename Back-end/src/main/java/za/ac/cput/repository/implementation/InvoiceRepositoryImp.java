@@ -12,15 +12,14 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Customer;
 import za.ac.cput.model.Invoice;
+import za.ac.cput.model.Medication;
 import za.ac.cput.query.InvoiceQuery;
 import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.repository.InvoiceRepository;
 import za.ac.cput.rowmapper.InvoiceRowMapper;
+import za.ac.cput.rowmapper.MedicationRowMapper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static za.ac.cput.query.InvoiceQuery.*;
 
@@ -119,6 +118,7 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
             throw new ApiException("An error occurred while deleting the invoice. Please try again.");
         }
     }
+
 
     private SqlParameterSource getSqlParameterSource(Invoice invoice) {
         return new MapSqlParameterSource()

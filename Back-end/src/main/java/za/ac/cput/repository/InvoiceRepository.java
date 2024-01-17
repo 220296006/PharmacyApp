@@ -1,8 +1,10 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.model.Invoice;
+import za.ac.cput.model.Medication;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -16,4 +18,5 @@ public interface InvoiceRepository <T extends Invoice>{
       T read(Long id);
       T update(T t);
       void delete(Long id);
+
 }

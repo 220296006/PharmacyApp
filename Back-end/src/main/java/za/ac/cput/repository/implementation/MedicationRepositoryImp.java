@@ -1,5 +1,6 @@
 package za.ac.cput.repository.implementation;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,8 +11,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
+import za.ac.cput.model.Inventory;
 import za.ac.cput.model.Medication;
 import za.ac.cput.model.Prescription;
+import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.rowmapper.MedicationRowMapper;
@@ -36,14 +39,20 @@ public class MedicationRepositoryImp implements MedicationRepository<Medication>
    private final NamedParameterJdbcTemplate jdbc;
    private final PrescriptionRepository<Prescription> prescriptionRepository;
     @Override
-public Medication save(Medication medication) {
-    log.info("Saving a Medication");
+    public Medication save(Medication medication) {
+    log.info("Save a Medication");
     // Check if the associated prescription exists
     Prescription prescription = prescriptionRepository.read(medication.getPrescription().getId());
     if (prescription == null) {
         throw new ApiException("Associated prescription not found. Please provide a valid prescription ID");
     }
-    // Save Medication
+        // Check if the provided medication name is in the available medications list
+//        String medicationName = medication.getName();
+//        if (!Inventory.inventoryRepository.getAvailableMedications().contains(medicationName)) {
+//            throw new ApiException("Invalid medication name. Please provide a valid medication name from the inventory.");
+//        }
+
+        // Save Medication
     try {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource parameters = getSqlParameterSource(medication);

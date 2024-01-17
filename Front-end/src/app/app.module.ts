@@ -36,6 +36,10 @@ import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
 import { CreateCustomerDialogComponent } from './components/create-customer-dialog/create-customer-dialog.component';
+import { CreateMedicationDialogComponent } from './components/create-medication-dialog/create-medication-dialog.component';
+import { CreateInventoryDialogComponent } from './components/create-inventory-dialog/create-inventory-dialog.component';
+import { CreatePrescriptionDialogComponent } from './components/create-prescription-dialog/create-prescription-dialog.component';
+import { CreateInvoiceDialogComponent } from './components/create-invoice-dialog/create-invoice-dialog.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +62,10 @@ import { CreateCustomerDialogComponent } from './components/create-customer-dial
     FooterComponent,
     CreateUserDialogComponent,
     CreateCustomerDialogComponent,
+    CreateMedicationDialogComponent,
+    CreateInventoryDialogComponent,
+    CreatePrescriptionDialogComponent,
+    CreateInvoiceDialogComponent,
   ],
   imports: [
     BrowserModule,

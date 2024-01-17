@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Prescription } from 'src/app/model/prescription';
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
 import { UpdatePrescriptionDialogComponent } from '../update-prescription-dialog/update-prescription-dialog.component';
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-prescription',
@@ -90,10 +91,12 @@ throw new Error('Method not implemented.');
   }
 
   deletePrescription(id: number) {
-    this.prescriptionService.deletePrescriptionById(id).subscribe({
+    alertify.confirm('Are you sure you want to permanently delete this prescription?', () => {
+      this.prescriptionService.deletePrescriptionById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
+          alertify.success('Prescription deleted successfully!');
           this.getAllPrescriptionData();
         } else {
           console.error('Error: ' + response.message);
@@ -101,9 +104,12 @@ throw new Error('Method not implemented.');
       },
       error: (error) => {
         console.error('Error deleting prescription:', error);
+        alertify.error('An error occurred while deleting the prescription.');
       },
     });
-  }
+  }, () => {
+  });
+}
 
   openUpdateDialog(prescription: Prescription): void {
     console.log('Inventory data passed to dialog:', prescription);

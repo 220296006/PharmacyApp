@@ -1,8 +1,10 @@
 package za.ac.cput.service;
 
 import za.ac.cput.model.Inventory;
+import za.ac.cput.model.Medication;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -16,4 +18,6 @@ public interface InventoryService {
     Inventory findByInventoryId(Long id);
     void updateInventory(Inventory inventory);
     boolean deleteInventory(Long id);
+
+    List<Medication> getAvailableMedications(Medication medication);
 }

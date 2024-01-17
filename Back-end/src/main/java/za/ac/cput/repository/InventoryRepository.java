@@ -1,8 +1,10 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.model.Inventory;
+import za.ac.cput.model.Medication;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -16,5 +18,7 @@ public interface InventoryRepository <T extends Inventory> {
       T read(Long id);
       T update(T t);
       void delete(Long id);
+      List<Medication> getAvailableMedications();
+
 }
 
