@@ -8,11 +8,18 @@ import { Prescription } from 'src/app/model/prescription';
   providedIn: 'root'
 })
 export class PrescriptionService{
+
   private readonly serverUrl: string = 'http://localhost:8080';
 
 
   constructor(private http: HttpClient) { }
 
+  createPrescription(prescription: Prescription): Observable<ApiResponse<Prescription>>{
+    console.log(prescription)
+    return this.http.post<ApiResponse<Prescription>>
+    (`${this.serverUrl}/prescription/create`, prescription)
+    .pipe(catchError(this.handleError));
+  }  
   getAllPrescriptionData(
     name: string = '',
     page: number = 0,

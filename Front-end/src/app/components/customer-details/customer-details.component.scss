@@ -1,84 +1,68 @@
-.customer-container {
-    background-color: #f2f2f2;
-    padding: 20px;
-  }
-  
-  .customer-info {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-  }
-  
-  /* Add more CSS styles as needed */
-  body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f8f8;
-}
+/* customer-details.component.scss */
 
 .customer-container {
     max-width: 800px;
-    margin: 50px auto;
-    background-color: #fff;
+    margin: 0 auto;
+  }
+  
+  .customer-info {
+    background-color: #f0f0f0;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    color: #333;
-    text-align: center;
-}
-
-.customer-info {
-    margin-top: 20px;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
-}
-
-p {
-    margin: 8px 0;
-    color: #555;
-}
-
-strong {
-    color: #333;
-}
-
-.customer-related {
-    margin-top: 20px;
-}
-
-.breadcrumb {
-    /* Add styles for breadcrumb links */
-}
-
-.tabs {
-    display: flex;
-    margin-top: 15px;
-    border-bottom: 1px solid #ddd;
-}
-
-.tab {
-    flex: 1;
-    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .customer-related {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .breadcrumb {
+    background-color: #eee;
     padding: 10px;
+  }
+  
+  .tabs {
+    display: flex;
+    background-color: #007bff;
+  }
+  
+  .tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
     cursor: pointer;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-    border-radius: 5px 5px 0 0;
-    color: #333;
-    transition: background-color 0.3s;
-}
-
-.tab:hover {
-    background-color: #ddd;
-}
-
-.tab-content {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 0 0 5px 5px;
-}
+  }
+  
+  .tab:hover {
+    background-color: #0056b3;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .tab-content h2 {
+    color: #007bff;
+  }
+  
+  .tab-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .tab-content li {
+    margin-bottom: 10px;
+  }
+  
+  /* Increase the size of the image */
+  .customer-info img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 20px;
+  }
   

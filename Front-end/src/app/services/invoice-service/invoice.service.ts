@@ -13,6 +13,14 @@ export class InvoiceService {
 
   constructor(private http: HttpClient) {}
 
+  createInvoice(invoice: Invoice): Observable<ApiResponse<Invoice>>{
+    console.log(invoice)
+    return this.http.post<ApiResponse<Invoice>>
+    (`${this.serverUrl}/invoice/create`, invoice)
+    .pipe(catchError(this.handleError));
+  }  
+
+
   getAllInvoiceData(
     name: string = '',
     page: number = 0,

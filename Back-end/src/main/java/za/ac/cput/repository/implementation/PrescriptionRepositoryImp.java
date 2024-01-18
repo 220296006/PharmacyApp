@@ -126,6 +126,6 @@ public Collection<Prescription> list(String name, int page, int pageSize) {
                 .addValue("customerId", prescription.getCustomer().getId())
                 .addValue("doctorName", prescription.getDoctorName())
                 .addValue("doctorAddress", prescription.getDoctorAddress())
-                .addValue("issueDate", prescription.getIssue_date());
+                .addValue("issueDate", prescription.getIssueDate());
     }
 }

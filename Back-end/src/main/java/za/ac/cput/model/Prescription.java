@@ -27,6 +27,6 @@ public class Prescription {
     private Long id;
     private String doctorName;
     private String doctorAddress;
-    private Date issue_date;
+    private Date issueDate;
     private Customer customer;
 }

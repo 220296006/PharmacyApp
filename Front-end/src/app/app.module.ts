@@ -40,6 +40,8 @@ import { CreateMedicationDialogComponent } from './components/create-medication-
 import { CreateInventoryDialogComponent } from './components/create-inventory-dialog/create-inventory-dialog.component';
 import { CreatePrescriptionDialogComponent } from './components/create-prescription-dialog/create-prescription-dialog.component';
 import { CreateInvoiceDialogComponent } from './components/create-invoice-dialog/create-invoice-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -79,7 +81,9 @@ import { CreateInvoiceDialogComponent } from './components/create-invoice-dialog
     MatPaginatorModule,
     MatDialogModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   providers: [
     UserService,

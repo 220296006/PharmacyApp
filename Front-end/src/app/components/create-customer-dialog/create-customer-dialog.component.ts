@@ -38,7 +38,7 @@ export class CreateCustomerDialogComponent implements OnInit {
         ...this.customerForm.getRawValue(),
         user: {
           id: this.customerForm.get('userId').value,
-          firstName: '', // Add other user properties as needed
+          firstName: '', 
           imageUrl: '',
           address: '',
         },
