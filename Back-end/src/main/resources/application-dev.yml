@@ -4,7 +4,6 @@ spring:
    url: jdbc:mysql://localhost:3306/PharmacyApp
    username: root
    password: Shaun@96
- spring:
    servlet:
      filter:
        cors:
@@ -16,12 +15,7 @@ spring:
      generate-ddl: true
      show-sql: true
      hibernate:
-       ddl-auto: validate
-       logging:
-         level:
-           org:
-             hibernate:
-               SQL=DEBUG:
+       ddl-auto: update
      properties:
       hibernate:
        dialect: org.hibernate.dialect.MySQLDialect

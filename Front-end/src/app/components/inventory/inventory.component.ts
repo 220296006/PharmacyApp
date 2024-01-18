@@ -6,6 +6,8 @@ import { MatSort } from '@angular/material/sort';
 import { InventoryService } from 'src/app/services/inventory-service/inventory.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateInventoryDialogComponent } from '../update-inventory-dialog/update-inventory-dialog.component';
+import * as alertify from 'alertifyjs';
+import { CreateInventoryDialogComponent } from '../create-inventory-dialog/create-inventory-dialog.component';
 
 @Component({
   selector: 'app-inventory',
@@ -18,6 +20,7 @@ export class InventoryComponent implements OnInit {
     new MatTableDataSource<Inventory>([]);
   displayedColumns: string[] = [
     'id',
+    'medicationId',
     'name',
     'description',
     'quantity',
@@ -32,15 +35,27 @@ export class InventoryComponent implements OnInit {
 
   constructor(
     private inventoryService: InventoryService,
-    private updateDialog: MatDialog
+    private updateInventoryDialog: MatDialog,
+    private createInventoryDialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.getAllInventoryData();
   }
 
-  onCreateInventory() {
-    throw new Error('Method not implemented.');
+  onCreateInventoryDialog(id: any) {
+    const dialogRef = this.createInventoryDialog.open(CreateInventoryDialogComponent,{
+      width: '400px',
+      exitAnimationDuration: '1000ms',
+      enterAnimationDuration: '1000ms',
+      data:
+      {
+        id: id
+      }
+    })
+    dialogRef.afterClosed().subscribe(response=> {
+      response = this.getAllInventoryData();
+    });
     }
 
   getAllInventoryData() {
@@ -93,10 +108,13 @@ export class InventoryComponent implements OnInit {
   }
 
   onDeleteInventory(id: number) {
+    alertify.confirm('Are you sure you want to permanently delete this inventory?', () => {
+
     this.inventoryService.deleteInventoryById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
+          alertify.success('inventory deleted successfully!');
           this.getAllInventoryData();
         } else {
           console.error('Error: ' + response.message);
@@ -104,13 +122,15 @@ export class InventoryComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error deleting inventory:', error);
+        alertify.error('An error occurred while deleting the inventory.');
       },
     });
-  }
-
+  }, () => {
+  });
+}
   openUpdateDialog(inventory: Inventory): void {
     console.log('Inventory data passed to dialog:', inventory);
-    const dialogRef = this.updateDialog.open(UpdateInventoryDialogComponent, {
+    const dialogRef = this.updateInventoryDialog.open(UpdateInventoryDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',

@@ -9,6 +9,14 @@ import { Medication } from 'src/app/model/medication';
 })
 export class MedicationService {
   private readonly serverUrl: string = 'http://localhost:8080';
+  
+  
+  createMedication(medication: Medication): Observable<ApiResponse<Medication>>{
+    console.log(medication)
+    return this.http.post<ApiResponse<Medication>>
+    (`${this.serverUrl}/medication/create`, medication)
+    .pipe(catchError(this.handleError));
+  } 
 
   constructor(private http: HttpClient) {}
 

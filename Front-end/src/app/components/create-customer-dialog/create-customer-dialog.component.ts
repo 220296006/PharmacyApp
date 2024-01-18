@@ -32,13 +32,19 @@ export class CreateCustomerDialogComponent implements OnInit {
 
   onSubmit(customer: any): void {
     if (Object.values(customer).length > 0) {
-      let rowData = { ...customer };
-      this.customerForm.patchValue(rowData);
-      return;
-    }
-    this.customerService
-      .createCustomer(this.customerForm.getRawValue())
-      .subscribe({
+      this.customerForm.patchValue(customer);
+    } else {
+      const payload = {
+        ...this.customerForm.getRawValue(),
+        user: {
+          id: this.customerForm.get('userId').value,
+          firstName: '', // Add other user properties as needed
+          imageUrl: '',
+          address: '',
+        },
+      };
+
+      this.customerService.createCustomer(payload).subscribe({
         next: (response) => {
           console.log('Customer added successfully:', response.data.customer);
           alertify.success('Customer added successfully');
@@ -49,6 +55,7 @@ export class CreateCustomerDialogComponent implements OnInit {
           alertify.error('Error adding customer. Please try again.');
         },
       });
+    }
   }
 
   onCancel(): void {

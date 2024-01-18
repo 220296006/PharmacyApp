@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Invoice } from 'src/app/model/invoice';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
 import { UpdateInvoiceDialogComponent } from '../update-invoice-dialog/update-invoice-dialog.component';
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-invoice',
@@ -105,10 +106,12 @@ invoices: any;
   }
 
   onDeleteInvoice(id: number) {
+    alertify.confirm('Are you sure you want to permanently delete this invoice?', () => {
     this.invoiceService.deleteInvoiceById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
+          alertify.success('Invoice deleted successfully!');
           this.getAllInvoiceData();
         } else {
           console.error('Error: ' + response.message);
@@ -116,9 +119,13 @@ invoices: any;
       },
       error: (error) => {
         console.error('Error deleting invoice:', error);
+        alertify.error('An error occurred while deleting the invoice.');
+
       },
     });
-  }
+  }, () => {
+  });
+}
 
   openUpdateDialog(invoice: Invoice): void {
     console.log('Invoice data passed to dialog:', invoice);

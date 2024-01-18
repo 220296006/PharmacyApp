@@ -14,5 +14,6 @@ public class InvoiceQuery {
     public static final String FETCH_ALL_INVOICES_QUERY = "SELECT * FROM Invoices LIMIT :size OFFSET :page";
 
     public static final String UPDATE_CUSTOMER_LINKED_TO_INVOICE_QUERY = "UPDATE Invoices SET customer_id = :customer_id WHERE id = :id";
+
 }
 
