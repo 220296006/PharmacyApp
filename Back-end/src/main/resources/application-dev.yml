@@ -15,7 +15,12 @@ spring:
      generate-ddl: true
      show-sql: true
      hibernate:
-       ddl-auto: update
+       ddl-auto: validate
+       logging:
+         level:
+           org:
+             hibernate:
+               SQL=DEBUG:
      properties:
       hibernate:
        dialect: org.hibernate.dialect.MySQLDialect
