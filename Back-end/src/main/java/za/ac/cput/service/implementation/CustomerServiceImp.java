@@ -44,4 +44,8 @@ public class CustomerServiceImp implements CustomerService {
         customerRepository.delete(id);
         return true;
     }
+
+    @Override
+    public long countCustomers() {
+        return customerRepository.count();    }
 }

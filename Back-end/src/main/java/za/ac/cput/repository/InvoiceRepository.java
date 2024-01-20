@@ -1,8 +1,8 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.model.Invoice;
-import za.ac.cput.model.Medication;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,5 +18,10 @@ public interface InvoiceRepository <T extends Invoice>{
       T read(Long id);
       T update(T t);
       void delete(Long id);
+
+      List<Invoice> findInvoiceByCustomerId(Long customerId);
+
+      long count();
+      BigInteger getTotalBilledAmount();
 
 }

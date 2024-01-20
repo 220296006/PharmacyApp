@@ -18,13 +18,12 @@ import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.rowmapper.MedicationRowMapper;
+import za.ac.cput.rowmapper.PrescriptionRowMapper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static za.ac.cput.query.MedicationQuery.*;
+import static za.ac.cput.query.PrescriptionQuery.SELECT_PRESCRIPTION_BY_CUSTOMER_ID_QUERY;
 
 /**
  * @author : Thabiso Matsaba
@@ -126,6 +125,21 @@ public class MedicationRepositoryImp implements MedicationRepository<Medication>
             throw new ApiException("An error occurred while deleting the prescription. Please try again.");
         }
          return true;
+    }
+
+    @Override
+    public List<Medication> findByPrescriptionId(Long prescription_id) {
+        log.info("Fetching a Medication by Prescription ID: {}", prescription_id);
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("prescription_id", prescription_id);
+            return jdbc.query(SELECT_MEDICATION_BY_PRESCRIPTION_ID_QUERY, paramMap, new MedicationRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null; // or return an empty list depending on your use case
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching the medications. Please try again.");
+        }
     }
 
     private SqlParameterSource getSqlParameterSource(Medication medication) {

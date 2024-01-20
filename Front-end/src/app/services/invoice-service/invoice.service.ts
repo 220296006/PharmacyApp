@@ -40,6 +40,13 @@ export class InvoiceService {
       .pipe(catchError(this.handleError));
   }
 
+  getInvoicesByCustomerId(customerId: number): Observable<ApiResponse<Invoice>> {
+    const url = `${this.serverUrl}/invoice/read/customer/${customerId}`;
+    return this.http
+      .get<ApiResponse<Invoice>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
   updateInvoiceData(
     id: number,
     invoice: Invoice

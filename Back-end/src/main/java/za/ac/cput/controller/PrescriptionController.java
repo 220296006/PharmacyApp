@@ -36,7 +36,7 @@ public class PrescriptionController {
     public ResponseEntity<Response> createPrescription(@RequestBody @Validated Prescription prescription){
         log.info("Saving a Prescription {}:", prescription);
         prescriptionService.createPrescription(prescription);
-        return ResponseEntity.created(getUri()).body(
+        return ResponseEntity.created(getUriPrescription()).body(
                 Response.builder()
                         .timeStamp( now())
                         .data(Map.of("prescription", prescription))
@@ -72,11 +72,25 @@ public class PrescriptionController {
                         .build()
         );
     }
+
+    @GetMapping("/read/customer/{customerId}")
+    public ResponseEntity<Response> findByCustomerId(@PathVariable Long customerId){
+        log.info("Fetching A Prescription By Customer Id: {}", customerId);
+        return  ResponseEntity.created(getUriCustomer()).body(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("prescription",  prescriptionService.getPrescriptionsByCustomerId(customerId)))
+                        .message("Prescription Retrieved")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
       @PutMapping("/update")
     public ResponseEntity<Response> updatePrescription(@Valid @RequestBody Prescription prescription){
            log.info("Updating Prescription: {}", prescription);
            prescriptionService.updatePrescription(prescription);
-           return  ResponseEntity.created(getUri()).body(
+           return  ResponseEntity.created(getUriPrescription()).body(
                     Response.builder()
                         .timeStamp(now())
                         .data(Map.of("prescription", prescription))
@@ -86,7 +100,7 @@ public class PrescriptionController {
                         .build()
           );
     }
-         @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deletePrescription(@PathVariable Long id){
         log.info("Deleting Prescription: {}", id);
          return ResponseEntity.ok(
@@ -99,7 +113,12 @@ public class PrescriptionController {
                         .build()
         );
     }
-     private URI getUri(){
+     private URI getUriPrescription(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/prescription/get/<prescriptionId>").toUriString());
     }
+
+    private URI getUriCustomer(){
+        return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/prescription/get/<customerId>").toUriString());
+    }
+
 }

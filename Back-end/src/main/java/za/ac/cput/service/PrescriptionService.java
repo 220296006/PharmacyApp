@@ -4,6 +4,7 @@ import za.ac.cput.model.Customer;
 import za.ac.cput.model.Prescription;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -21,4 +22,7 @@ public interface PrescriptionService {
      void updatePrescription( Prescription prescription);
 
      boolean deletePrescription(Long id);
+
+     List<Prescription> getPrescriptionsByCustomerId(Long customerId);
+
 }

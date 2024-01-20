@@ -2,7 +2,7 @@ import { PaymentStatus } from "./payment-status";
 
 export interface Invoice {
     id: number;
-    amount: BigInt;
+    amount: number;
     dueDate: Date;
     paymentStatus: PaymentStatus;
     customer: {

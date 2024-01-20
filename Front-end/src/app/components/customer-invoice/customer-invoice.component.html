@@ -1,0 +1,27 @@
+<div class="invoices-container">
+  <div *ngIf="invoices && invoices.length > 0">
+    <ul class="list-group">
+      <li *ngFor="let invoice of invoices" class="list-group-item">
+        <div class="d-flex justify-content-between align-items-center">
+          <div>
+            <span class="font-weight-bold">Invoice ID:</span> {{ invoice.id }}
+          </div>
+          <div>
+            <span class="font-weight-bold">Amount:</span> {{ invoice.amount | currency: 'ZAR' }}
+          </div>
+          
+          <div [ngClass]="getPaymentStatusClass(invoice.paymentStatus)">
+            <span class="font-weight-bold">Status:</span> {{ invoice.paymentStatus }}
+          </div>             
+          <div>
+            <span class="font-weight-bold">Date:</span>
+            {{ invoice.dueDate | date : "short" }}
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="!invoices || invoices.length === 0" class="alert alert-info">
+    No invoices available.
+  </div>
+</div>

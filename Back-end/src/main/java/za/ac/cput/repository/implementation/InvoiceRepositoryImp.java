@@ -1,5 +1,10 @@
 package za.ac.cput.repository.implementation;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -12,13 +17,12 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Customer;
 import za.ac.cput.model.Invoice;
-import za.ac.cput.model.Medication;
 import za.ac.cput.query.InvoiceQuery;
 import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.repository.InvoiceRepository;
 import za.ac.cput.rowmapper.InvoiceRowMapper;
-import za.ac.cput.rowmapper.MedicationRowMapper;
 
+import java.math.BigInteger;
 import java.util.*;
 
 import static za.ac.cput.query.InvoiceQuery.*;
@@ -33,6 +37,8 @@ import static za.ac.cput.query.InvoiceQuery.*;
 @RequiredArgsConstructor
 @Slf4j
 public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
+    @PersistenceContext
+    private EntityManager entityManager;
     private final NamedParameterJdbcTemplate jdbc;
     private final CustomerRepository<Customer> customerRepository;
 
@@ -117,6 +123,39 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while deleting the invoice. Please try again.");
         }
+    }
+
+    @Override
+    public List<Invoice> findInvoiceByCustomerId(Long customerId) {
+        log.info("Fetching a Invoice by Customer ID: {}", customerId);
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("customerId", customerId);
+            return jdbc.query(SELECT_INVOICE_BY_CUSTOMER_ID_QUERY, paramMap, new InvoiceRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching the invoices. Please try again.");
+        }
+    }
+
+    @Override
+    public long count() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Invoice> root = query.from(Invoice.class);
+        query.select(cb.count(root));
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
+    @Override
+    public BigInteger getTotalBilledAmount() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<BigInteger> query = cb.createQuery(BigInteger.class);
+        Root<Invoice> root = query.from(Invoice.class);
+        query.select(cb.sum(root.get("amount")));
+        return entityManager.createQuery(query).getSingleResult();
     }
 
 

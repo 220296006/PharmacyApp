@@ -7,6 +7,7 @@ import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.service.MedicationService;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -42,5 +43,10 @@ public class MedicationServiceImp implements MedicationService {
     public boolean deleteMedication(Long id) {
         medicationRepository.delete(id);
         return true;
+    }
+
+    @Override
+    public List<Medication> getMedicationsByPrescriptionId(Long prescription_id) {
+        return medicationRepository.findByPrescriptionId(prescription_id);
     }
 }

@@ -1,7 +1,16 @@
+import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
+import { Prescription } from 'src/app/model/prescription'; // Import Prescription model
+import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
+import { forkJoin } from 'rxjs';
+import { Medication } from 'src/app/model/medication';
+import { InventoryComponent } from '../inventory/inventory.component';
+import { Invoice } from 'src/app/model/invoice';
+import { InvoiceComponent } from '../invoice/invoice.component';
+import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
 
 @Component({
   selector: 'app-customer-details',
@@ -9,20 +18,56 @@ import { CustomerService } from 'src/app/services/customer-service/customer.serv
   styleUrls: ['./customer-details.component.scss'],
 })
 export class CustomerDetailsComponent implements OnInit {
+
+  selectedTab: string;
+
+  selectTab(tab: string): void {
+    this.selectedTab = tab;
+  }
+
   customer: Customer | undefined;
+  prescriptions: Prescription []| undefined; 
+  medications: Medication []| undefined; 
+  invoices: Invoice []| undefined; 
 
   constructor(
     private route: ActivatedRoute,
-    private customerService: CustomerService
-  ) {}
+    private customerService: CustomerService,
+    private prescriptionService: PrescriptionService,
+    private medicationService: MedicationService,
+    private invoiceService: InvoiceService
+  ) { }
 
   ngOnInit(): void {
-    // Extract customer ID from route parameters
     this.route.params.subscribe((params) => {
       const customerId = +params['id'];
-      this.getCustomerById(customerId);
+      const prescription_id = +params['id'];
+  
+      forkJoin({
+        customer: this.customerService.getCustomerById(customerId),
+        prescriptions: this.prescriptionService.getPrescriptionsByCustomerId(customerId),
+        medications: this.medicationService.getMedicationsByPrescriptionId(prescription_id),
+        invoices: this.invoiceService.getInvoicesByCustomerId(customerId),
+      }).subscribe({
+        next: (responses: any) => {
+          console.log('Response from server:', responses);
+  
+          this.customer = responses.customer.data.customer;
+          this.prescriptions = responses.prescriptions.data.prescription;
+          this.medications = responses.medications.data.medications;
+          this.invoices = responses.invoices.data.invoices;
+        },
+        error: (error) => {
+          console.error('Error fetching data:', error);
+          this.handleError(error);
+        },
+        complete: () => {
+          console.log('Data fetch operation completed.');
+        },
+      });
     });
   }
+  
 
   getCustomerById(customerId: number) {
     console.log('Loading customer details for ID:', customerId);
@@ -30,6 +75,8 @@ export class CustomerDetailsComponent implements OnInit {
       next: (response: any) => {
         console.log('Response from server:', response);
         this.customer = response.data.customer;
+        this.prescriptions = response.data.prescriptions
+        this.medications= response.data.medications;
       },
       error: (error) => {
         console.error('Error fetching customer details:', error);
@@ -41,8 +88,61 @@ export class CustomerDetailsComponent implements OnInit {
     });
   }
 
+  getInvoicesByCustomerId(customerId: number) {
+    console.log('Loading invoices for customer ID:', customerId);
+    this.invoiceService.getInvoicesByCustomerId(customerId).subscribe({
+      next: (response: any) => {
+        console.log(' Invoices from server:', response);
+        this.prescriptions = response.data.invoice; 
+      },
+      error: (error) => {
+        console.error('Error fetching  invoice:', error);
+        this.handleError(error);
+      },
+      complete: () => {
+        console.log(' Invoices fetch operation completed.');
+      },
+    });
+  }
+
+  getPrescriptionById(customerId: number) {
+    console.log('Loading prescriptions for customer ID:', customerId);
+    this.prescriptionService.getPrescriptionsByCustomerId(customerId).subscribe({
+      next: (response: any) => {
+        console.log('Prescriptions from server:', response);
+        this.prescriptions = response.data.prescription; 
+      },
+      error: (error) => {
+        console.error('Error fetching prescriptions:', error);
+        this.handleError(error);
+      },
+      complete: () => {
+        console.log('Prescriptions fetch operation completed.');
+      },
+    });
+  }
+
+  getMedicationsByPrescriptionId(prescription_id: number) {
+    console.log('Loading prescriptions for customer ID:', prescription_id);
+    this.medicationService.getMedicationsByPrescriptionId(prescription_id).subscribe({
+      next: (response: any) => {
+        console.log('Medications from server:', response);
+        this.prescriptions = response.data.medications; 
+      },
+      error: (error) => {
+        console.error('Error fetching medications:', error);
+        this.handleError(error);
+      },
+      complete: () => {
+        console.log('Medications fetch operation completed.');
+      },
+    });
+  }
+  
+  
+
   private handleError(error: any): void {
     console.error('Detailed error:', error);
-    console.error('An error occurred while fetching customer details. Please try again later.');
+    console.error('An error occurred. Please try again later.');
   }
 }

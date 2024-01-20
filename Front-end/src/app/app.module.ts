@@ -42,6 +42,11 @@ import { CreatePrescriptionDialogComponent } from './components/create-prescript
 import { CreateInvoiceDialogComponent } from './components/create-invoice-dialog/create-invoice-dialog.component';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { CustomerPrescriptionsComponent } from './components/customer-prescriptions/customer-prescriptions.component';
+import { CustomerMedicationsComponent } from './components/customer-medications/customer-medications.component';
+import { CustomerInvoiceComponent } from './components/customer-invoice/customer-invoice.component';
+import { HomeService } from './services/home-service/home.service';
 
 @NgModule({
   declarations: [
@@ -68,6 +73,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     CreateInventoryDialogComponent,
     CreatePrescriptionDialogComponent,
     CreateInvoiceDialogComponent,
+    CustomerPrescriptionsComponent,
+    CustomerMedicationsComponent,
+    CustomerInvoiceComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,9 +92,11 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCardModule,
   ],
   providers: [
     UserService,
+    HomeService,
     CustomerService,
     InvoiceService,
     InventoryService,

@@ -28,7 +28,7 @@ export class InvoiceComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-invoices: any;
+  invoices: any;
 
   constructor(
     private invoiceService: InvoiceService,

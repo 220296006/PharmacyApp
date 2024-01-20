@@ -1,68 +1,89 @@
-/* customer-details.component.scss */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
 
 .customer-container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
-  
-  .customer-info {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-  }
-  
-  .customer-related {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  
-  .breadcrumb {
-    background-color: #eee;
-    padding: 10px;
-  }
-  
-  .tabs {
-    display: flex;
-    background-color: #007bff;
-  }
-  
-  .tab {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  .tab:hover {
-    background-color: #0056b3;
-  }
-  
-  .tab-content {
-    padding: 20px;
-  }
-  
-  .tab-content h2 {
-    color: #007bff;
-  }
-  
-  .tab-content ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .tab-content li {
-    margin-bottom: 10px;
-  }
-  
-  /* Increase the size of the image */
-  .customer-info img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 20px;
-  }
-  
+  max-width: 800px;
+  margin: 20px auto;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+}
+
+.customer-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.customer-info p {
+  margin: 10px 0;
+}
+
+.customer-image {
+  flex: 1;
+  text-align: center;
+  padding: 20px;
+}
+
+.customer-image img {
+  max-width: 500%;
+  height: 100%;
+}
+
+.heading {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2b83b6;
+  margin-bottom: 20px;
+}
+
+.customer-related {
+  background-color: #ecf0f1;
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  color: #2b83b6;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.prescriptions-container,
+.medications-container {
+  margin-top: 20px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+p {
+  margin: 0;
+}
+
+.no-data {
+  color: #7f8c8d;
+}

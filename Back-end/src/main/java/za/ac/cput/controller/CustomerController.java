@@ -33,6 +33,12 @@ import static org.springframework.http.HttpStatus.OK;
 public class CustomerController {
     private final CustomerService customerService;
 
+    @GetMapping("/count")
+    public ResponseEntity<Long> getCustomersCount() {
+        long count = customerService.countCustomers();
+        return ResponseEntity.ok(count);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<Response> createCustomer(@RequestBody @Validated Customer customer){
         log.info("Saving a Customer {}:", customer);

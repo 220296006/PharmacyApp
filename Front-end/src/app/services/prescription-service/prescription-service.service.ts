@@ -37,6 +37,13 @@ export class PrescriptionService{
       .pipe(catchError(this.handleError));
   }
 
+  getPrescriptionsByCustomerId(customerId: number): Observable<ApiResponse<Prescription>> {
+    const url = `${this.serverUrl}/prescription/read/customer/${customerId}`;
+    return this.http
+      .get<ApiResponse<Prescription>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
   updatePrescriptionData(
     id: number,
     prescription: Prescription

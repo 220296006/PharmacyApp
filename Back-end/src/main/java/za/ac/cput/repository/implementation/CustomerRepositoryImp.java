@@ -1,5 +1,10 @@
 package za.ac.cput.repository.implementation;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -33,6 +38,8 @@ import static za.ac.cput.query.CustomerQuery.*;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomerRepositoryImp implements CustomerRepository<Customer> {
+    @PersistenceContext
+    private EntityManager entityManager;
     private final NamedParameterJdbcTemplate jdbc;
     private final UserRepository<User> userRepository;
 
@@ -111,6 +118,15 @@ public void delete(Long id) {
         throw new ApiException("An error occurred while deleting the customer. Please try again.");
     }
 }
+
+    @Override
+    public long count() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<Customer> root = query.from(Customer.class);
+        query.select(cb.count(root));
+        return entityManager.createQuery(query).getSingleResult();
+    }
 
     private SqlParameterSource getSqlParameterSource(Customer customer) {
         return  new MapSqlParameterSource()
