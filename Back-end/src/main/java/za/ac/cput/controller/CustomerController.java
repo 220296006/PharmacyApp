@@ -34,9 +34,10 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @GetMapping("/count")
-    public ResponseEntity<Long> getCustomersCount() {
-        long count = customerService.countCustomers();
-        return ResponseEntity.ok(count);
+    public ResponseEntity<Integer> getCustomerCount() {
+        log.info("Fetching Customer Count");
+        Integer customerCount = customerService.getCustomerCount();
+        return ResponseEntity.ok(customerCount);
     }
 
     @PostMapping("/create")

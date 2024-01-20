@@ -35,7 +35,7 @@ public class InvoiceController {
 
     @GetMapping("/count")
     public ResponseEntity<Long> getInvoicesCount() {
-        long count = invoiceService.countInvoices();
+        long count = invoiceService.getInvoiceCount();
         return ResponseEntity.ok(count);
     }
 

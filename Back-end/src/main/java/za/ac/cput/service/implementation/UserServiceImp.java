@@ -52,7 +52,7 @@ public class UserServiceImp implements UserService {
             // Check if the current user has the Sys Admin role
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication != null && authentication.getAuthorities().stream()
-                    .anyMatch(role -> role.getAuthority().equals("ROLE_SYSADMIN"))) {
+                    .anyMatch(role -> role.getAuthority().equals("ROLE_USER"))) {
 
                 // If the user has Sys Admin role, proceed with the update
                 Optional<User> optionalExistingUser = Optional.ofNullable(userRepository.read(userId));

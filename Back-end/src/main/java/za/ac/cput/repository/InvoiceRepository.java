@@ -21,7 +21,7 @@ public interface InvoiceRepository <T extends Invoice>{
 
       List<Invoice> findInvoiceByCustomerId(Long customerId);
 
-      long count();
+      Integer countInvoices();
       BigInteger getTotalBilledAmount();
 
 }

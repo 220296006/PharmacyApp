@@ -52,8 +52,8 @@ public class InvoiceServiceImp implements InvoiceService {
     }
 
     @Override
-    public long countInvoices() {
-        return invoiceRepository.count();
+    public Integer getInvoiceCount() {
+        return invoiceRepository.countInvoices();
     }
 
     @Override

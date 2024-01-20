@@ -17,4 +17,5 @@ public interface CustomerRepository <T extends Customer> {
       T update(T t);
       void delete(Long id);
 
-      long count();}
+      Integer countCustomers();
+}

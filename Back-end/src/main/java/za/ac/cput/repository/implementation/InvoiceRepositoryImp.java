@@ -2,9 +2,7 @@ package za.ac.cput.repository.implementation;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -39,6 +37,7 @@ import static za.ac.cput.query.InvoiceQuery.*;
 public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
     @PersistenceContext
     private EntityManager entityManager;
+
     private final NamedParameterJdbcTemplate jdbc;
     private final CustomerRepository<Customer> customerRepository;
 
@@ -141,23 +140,26 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
     }
 
     @Override
-    public long count() {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> query = cb.createQuery(Long.class);
-        Root<Invoice> root = query.from(Invoice.class);
-        query.select(cb.count(root));
-        return entityManager.createQuery(query).getSingleResult();
+    public Integer countInvoices() {
+        log.info("Fetching Total Invoices");
+        try {
+            return jdbc.queryForObject(SELECT_INVOICE_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching invoice count. Please try again.");
+        }
     }
 
     @Override
     public BigInteger getTotalBilledAmount() {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<BigInteger> query = cb.createQuery(BigInteger.class);
-        Root<Invoice> root = query.from(Invoice.class);
-        query.select(cb.sum(root.get("amount")));
-        return entityManager.createQuery(query).getSingleResult();
+        log.info("Fetching Total Billed Amount");
+        try {
+            return jdbc.queryForObject(SELECT_TOTAL_BILLED_AMOUNT_QUERY, new HashMap<>(), BigInteger.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching total billed amount. Please try again.");
+        }
     }
-
 
     private SqlParameterSource getSqlParameterSource(Invoice invoice) {
         return new MapSqlParameterSource()

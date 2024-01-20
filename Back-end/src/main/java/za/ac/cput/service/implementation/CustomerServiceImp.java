@@ -46,6 +46,9 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
-    public long countCustomers() {
-        return customerRepository.count();    }
+    public Integer getCustomerCount() {
+        return customerRepository.countCustomers();
+    }
+
+
 }

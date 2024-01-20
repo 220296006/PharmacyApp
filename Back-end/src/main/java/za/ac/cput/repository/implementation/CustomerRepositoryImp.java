@@ -2,9 +2,6 @@ package za.ac.cput.repository.implementation;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -38,8 +35,6 @@ import static za.ac.cput.query.CustomerQuery.*;
 @RequiredArgsConstructor
 @Slf4j
 public class CustomerRepositoryImp implements CustomerRepository<Customer> {
-    @PersistenceContext
-    private EntityManager entityManager;
     private final NamedParameterJdbcTemplate jdbc;
     private final UserRepository<User> userRepository;
 
@@ -120,12 +115,14 @@ public void delete(Long id) {
 }
 
     @Override
-    public long count() {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Long> query = cb.createQuery(Long.class);
-        Root<Customer> root = query.from(Customer.class);
-        query.select(cb.count(root));
-        return entityManager.createQuery(query).getSingleResult();
+    public Integer countCustomers() {
+        log.info("Fetching Total Customers");
+        try {
+            return jdbc.queryForObject(SELECT_CUSTOMER_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching customer count. Please try again.");
+        }
     }
 
     private SqlParameterSource getSqlParameterSource(Customer customer) {
