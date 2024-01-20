@@ -1,5 +1,8 @@
 package za.ac.cput.repository.implementation;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -17,10 +20,8 @@ import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.repository.InvoiceRepository;
 import za.ac.cput.rowmapper.InvoiceRowMapper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.math.BigInteger;
+import java.util.*;
 
 import static za.ac.cput.query.InvoiceQuery.*;
 
@@ -34,6 +35,9 @@ import static za.ac.cput.query.InvoiceQuery.*;
 @RequiredArgsConstructor
 @Slf4j
 public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
+    @PersistenceContext
+    private EntityManager entityManager;
+
     private final NamedParameterJdbcTemplate jdbc;
     private final CustomerRepository<Customer> customerRepository;
 
@@ -120,12 +124,49 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
         }
     }
 
+    @Override
+    public List<Invoice> findInvoiceByCustomerId(Long customerId) {
+        log.info("Fetching a Invoice by Customer ID: {}", customerId);
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("customerId", customerId);
+            return jdbc.query(SELECT_INVOICE_BY_CUSTOMER_ID_QUERY, paramMap, new InvoiceRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching the invoices. Please try again.");
+        }
+    }
+
+    @Override
+    public Integer countInvoices() {
+        log.info("Fetching Total Invoices");
+        try {
+            return jdbc.queryForObject(SELECT_INVOICE_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching invoice count. Please try again.");
+        }
+    }
+
+    @Override
+    public BigInteger getTotalBilledAmount() {
+        log.info("Fetching Total Billed Amount");
+        try {
+            return jdbc.queryForObject(SELECT_TOTAL_BILLED_AMOUNT_QUERY, new HashMap<>(), BigInteger.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching total billed amount. Please try again.");
+        }
+    }
+
     private SqlParameterSource getSqlParameterSource(Invoice invoice) {
         return new MapSqlParameterSource()
                 .addValue("id", invoice.getId())
                 .addValue("customerId", invoice.getCustomer().getId())
                 .addValue("amount", invoice.getAmount())
                 .addValue("dueDate", invoice.getDueDate())
-                .addValue("paid", invoice.getPaymentStatus());
+                .addValue("paymentStatus", invoice.getPaymentStatus());
     }
 }

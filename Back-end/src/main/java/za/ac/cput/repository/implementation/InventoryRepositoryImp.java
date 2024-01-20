@@ -15,11 +15,9 @@ import za.ac.cput.model.Medication;
 import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.rowmapper.InventoryRowMapper;
+import za.ac.cput.rowmapper.MedicationRowMapper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static za.ac.cput.query.InventoryQuery.*;
 
@@ -37,10 +35,10 @@ public class InventoryRepositoryImp implements InventoryRepository<Inventory> {
     private final MedicationRepository<Medication> medicationRepository;
     @Override
     public Inventory save(Inventory inventory) {
-        log.info("Saving an Inventory: {}", inventory);
+        log.info("Save an Inventory: {}", inventory);
         Medication medication = medicationRepository.read(inventory.getMedication().getId());
         if (medication == null || medication.getId() == null) {
-        throw new ApiException("Associated medication not found. Please provide a valid user ID");
+        throw new ApiException("Associated medication not found. Please provide a valid medication d");
     }
         try {
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -109,6 +107,17 @@ public class InventoryRepositoryImp implements InventoryRepository<Inventory> {
             throw new ApiException("An error occurred while deleting the invoice. Please try again.");
         }
     }
+
+    @Override
+    public List<Medication> getAvailableMedications() {
+        try {
+            return jdbc.query(GET_AVAILABLE_MEDICATIONS_QUERY, new MedicationRowMapper());
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching available medications. Please try again.");
+        }
+    }
+
     private  SqlParameterSource getSqlParameterSource(Inventory inventory) {
         return new MapSqlParameterSource()
                 .addValue("name", inventory.getName())

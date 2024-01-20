@@ -36,6 +36,17 @@ import { UpdateInvoiceDialogComponent } from './components/update-invoice-dialog
 import { FooterComponent } from './shared/components/footer/footer.component';
 import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
 import { CreateCustomerDialogComponent } from './components/create-customer-dialog/create-customer-dialog.component';
+import { CreateMedicationDialogComponent } from './components/create-medication-dialog/create-medication-dialog.component';
+import { CreateInventoryDialogComponent } from './components/create-inventory-dialog/create-inventory-dialog.component';
+import { CreatePrescriptionDialogComponent } from './components/create-prescription-dialog/create-prescription-dialog.component';
+import { CreateInvoiceDialogComponent } from './components/create-invoice-dialog/create-invoice-dialog.component';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatCardModule } from '@angular/material/card';
+import { CustomerPrescriptionsComponent } from './components/customer-prescriptions/customer-prescriptions.component';
+import { CustomerMedicationsComponent } from './components/customer-medications/customer-medications.component';
+import { CustomerInvoiceComponent } from './components/customer-invoice/customer-invoice.component';
+import { HomeService } from './services/home-service/home.service';
 
 @NgModule({
   declarations: [
@@ -58,6 +69,13 @@ import { CreateCustomerDialogComponent } from './components/create-customer-dial
     FooterComponent,
     CreateUserDialogComponent,
     CreateCustomerDialogComponent,
+    CreateMedicationDialogComponent,
+    CreateInventoryDialogComponent,
+    CreatePrescriptionDialogComponent,
+    CreateInvoiceDialogComponent,
+    CustomerPrescriptionsComponent,
+    CustomerMedicationsComponent,
+    CustomerInvoiceComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,10 +89,14 @@ import { CreateCustomerDialogComponent } from './components/create-customer-dial
     MatPaginatorModule,
     MatDialogModule,
     MatFormFieldModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatCardModule,
   ],
   providers: [
     UserService,
+    HomeService,
     CustomerService,
     InvoiceService,
     InventoryService,

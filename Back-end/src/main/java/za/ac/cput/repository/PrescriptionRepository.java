@@ -3,6 +3,7 @@ package za.ac.cput.repository;
 import za.ac.cput.model.Prescription;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -16,4 +17,6 @@ public interface PrescriptionRepository <T extends Prescription> {
       T read(Long id);
       T update(T t);
       boolean delete(Long id);
+
+      List<Prescription> findByCustomerId(Long customerId);
 }

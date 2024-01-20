@@ -16,4 +16,6 @@ public interface CustomerRepository <T extends Customer> {
       T read(Long id);
       T update(T t);
       void delete(Long id);
+
+      Integer countCustomers();
 }

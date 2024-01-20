@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeService } from 'src/app/services/home-service/home.service';
 import Typed from 'typed.js';
 
 @Component({
@@ -7,13 +8,32 @@ import Typed from 'typed.js';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  customersCount = 7;
-  invoicesCount = 12;
-  totalBilledAmount = 3500;
+  customersCount = 0;
+  invoicesCount = 0;
+  totalBilledAmount = 0;
+
+  constructor(private homeService: HomeService) {}
 
   ngOnInit(): void {
+    console.log(this.customersCount)
+    // Fetch counts and total billed amount
+    this.fetchCounts();
     // Initialize Typed.js
     this.initTyped();
+  }
+
+  private fetchCounts(): void {
+    this.homeService.getCustomersCount().subscribe((count) => {
+      this.customersCount = count;
+    });
+
+    this.homeService.getInvoicesCount().subscribe((count) => {
+      this.invoicesCount = count;
+    });
+
+    this.homeService.getTotalBilledAmount().subscribe((amount) => {
+      this.totalBilledAmount = amount;
+    });
   }
 
   private initTyped(): void {
@@ -33,6 +53,4 @@ export class HomeComponent implements OnInit {
       });
     }
   }
-
- 
 }

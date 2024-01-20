@@ -8,11 +8,18 @@ import { Prescription } from 'src/app/model/prescription';
   providedIn: 'root'
 })
 export class PrescriptionService{
+
   private readonly serverUrl: string = 'http://localhost:8080';
 
 
   constructor(private http: HttpClient) { }
 
+  createPrescription(prescription: Prescription): Observable<ApiResponse<Prescription>>{
+    console.log(prescription)
+    return this.http.post<ApiResponse<Prescription>>
+    (`${this.serverUrl}/prescription/create`, prescription)
+    .pipe(catchError(this.handleError));
+  }  
   getAllPrescriptionData(
     name: string = '',
     page: number = 0,
@@ -25,6 +32,13 @@ export class PrescriptionService{
 
   getPrescriptionById(prescriptionId: number): Observable<ApiResponse<Prescription>> {
     const url = `${this.serverUrl}/prescription/read/${prescriptionId}`;
+    return this.http
+      .get<ApiResponse<Prescription>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
+  getPrescriptionsByCustomerId(customerId: number): Observable<ApiResponse<Prescription>> {
+    const url = `${this.serverUrl}/prescription/read/customer/${customerId}`;
     return this.http
       .get<ApiResponse<Prescription>>(url)
       .pipe(catchError(this.handleError));

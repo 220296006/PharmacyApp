@@ -1,0 +1,48 @@
+<!-- create-invoice-dialog.component.html -->
+<div class="invoice-form-container">
+    <form [formGroup]="invoiceForm" class="invoice-form">
+      <div class="title">Invoice Information</div>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Customer ID</mat-label>
+        <input type="number" id="customerId" formControlName="customerId" matInput />
+      </mat-form-field>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Amount</mat-label>
+        <input type="number" id="amount" formControlName="amount" matInput />
+      </mat-form-field>
+
+      <mat-form-field class="form-full-width">
+        <mat-label>Due Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          id="dueDate"
+          formControlName="dueDate"
+          placeholder="Choose a date"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field class="form-full-width">
+        <mat-label>Status</mat-label>
+        <input type="text" id="paymentStatus" formControlName="paymentStatus" matInput />
+      </mat-form-field>
+      <div class="form-row actions">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="invoiceForm.invalid"
+          (click)="onSubmit({})"
+        >
+          Create Invoice
+        </button>
+        <button mat-raised-button class="cancel-button" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+  

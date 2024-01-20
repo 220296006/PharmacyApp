@@ -1,0 +1,62 @@
+<div class="prescription-form-container">
+  <form [formGroup]="prescriptionForm" class="prescription-form">
+    <div class="title">Prescription Information</div>
+
+    <mat-form-field class="form-full-width">
+      <mat-label>Customer Id</mat-label>
+      <input
+        type="number"
+        id="customerId"
+        formControlName="customerId"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field class="form-full-width">
+      <mat-label>Doctor's Name</mat-label>
+      <input
+        type="text"
+        id="doctorName"
+        formControlName="doctorName"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field class="form-full-width">
+      <mat-label>Doctor's Address </mat-label>
+      <input
+        type="text"
+        id="doctorAddress"
+        formControlName="doctorAddress"
+        matInput
+      />
+    </mat-form-field>
+
+    <mat-form-field class="form-full-width">
+      <mat-label>Date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        id="issueDate"
+        formControlName="issueDate"
+        placeholder="Choose a date"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <div class="form-row actions">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="prescriptionForm.invalid"
+        (click)="onSubmit({})"
+      >
+        Create Prescription
+      </button>
+      <button mat-raised-button class="cancel-button" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>

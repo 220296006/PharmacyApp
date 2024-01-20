@@ -1,0 +1,41 @@
+.invoices-container {
+  padding: 20px;
+
+  h2 {
+    font-size: 2em;
+    font-weight: bold;
+    color: #2e8b57; /* SeaGreen */
+    margin-bottom: 20px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 10px;
+    }
+  }
+
+  .paid-status {
+    color: green;
+    font-weight: 700;
+  }
+  
+  .cancelled-status {
+    color: red;
+    font-weight: 700;
+  }
+  
+  .pending-status {
+    color: orange;
+    font-weight: 700;
+  }
+  
+  .overdue-status {
+    color: blue;
+    font-weight: 700;
+  }
+}
+
+

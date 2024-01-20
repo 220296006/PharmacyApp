@@ -1,5 +1,7 @@
 package za.ac.cput.repository.implementation;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -111,6 +113,17 @@ public void delete(Long id) {
         throw new ApiException("An error occurred while deleting the customer. Please try again.");
     }
 }
+
+    @Override
+    public Integer countCustomers() {
+        log.info("Fetching Total Customers");
+        try {
+            return jdbc.queryForObject(SELECT_CUSTOMER_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching customer count. Please try again.");
+        }
+    }
 
     private SqlParameterSource getSqlParameterSource(Customer customer) {
         return  new MapSqlParameterSource()

@@ -1,8 +1,10 @@
 package za.ac.cput.service;
 
 import za.ac.cput.model.Medication;
+import za.ac.cput.model.Prescription;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -16,4 +18,6 @@ public interface MedicationService {
     Medication findMedicationById(Long id);
     void updateMedication(Medication medication);
     boolean deleteMedication(Long id);
+    List<Medication> getMedicationsByPrescriptionId(Long prescription_id);
+
 }

@@ -9,6 +9,14 @@ import { Medication } from 'src/app/model/medication';
 })
 export class MedicationService {
   private readonly serverUrl: string = 'http://localhost:8080';
+  
+  
+  createMedication(medication: Medication): Observable<ApiResponse<Medication>>{
+    console.log(medication)
+    return this.http.post<ApiResponse<Medication>>
+    (`${this.serverUrl}/medication/create`, medication)
+    .pipe(catchError(this.handleError));
+  } 
 
   constructor(private http: HttpClient) {}
 
@@ -26,6 +34,13 @@ export class MedicationService {
 
   getMedicationById(medicationId: number): Observable<ApiResponse<Medication>> {
     const url = `${this.serverUrl}/medication/read/${medicationId}`;
+    return this.http
+      .get<ApiResponse<Medication>>(url)
+      .pipe(catchError(this.handleError));
+  }
+
+  getMedicationsByPrescriptionId(prescription_id: number): Observable<ApiResponse<Medication>> {
+    const url = `${this.serverUrl}/medication/read/prescription/${prescription_id}`;
     return this.http
       .get<ApiResponse<Medication>>(url)
       .pipe(catchError(this.handleError));

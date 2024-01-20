@@ -1,0 +1,36 @@
+.user-form-container {
+    max-width: 600px;
+    margin: auto;
+  }
+  
+  .user-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  
+  .form-full-width {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .title {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #2e8b57; /* SeaGreen */
+    margin-bottom: 20px;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .cancel-button {
+    background-color: #1e90ff; /* DodgerBlue */
+    color: white;
+    margin-right: 130px;
+  }
+  

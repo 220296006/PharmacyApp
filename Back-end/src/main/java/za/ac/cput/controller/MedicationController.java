@@ -75,6 +75,20 @@ public class MedicationController {
         );
     }
 
+    @GetMapping("/read/prescription/{prescription_id}")
+    public ResponseEntity<Response> findMedicationsByPrescriptionId(@PathVariable Long prescription_id) {
+        log.info("Fetching Medications By Prescription Id: {}", prescription_id);
+        return ResponseEntity.created(getUriMedications()).body(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("medications", medicationService.getMedicationsByPrescriptionId(prescription_id)))
+                        .message("Medications Retrieved")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
+
     @PutMapping("/update")
     public ResponseEntity<Response> updateMedication(@Valid @RequestBody Medication medication){
            log.info("Updating Customer: {}", medication);
@@ -105,5 +119,9 @@ public class MedicationController {
     }
 private URI getUri(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/medication/get/<customerId>").toUriString());
+    }
+
+    private URI getUriMedications(){
+        return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/medication/get/<prescriptionId>").toUriString());
     }
 }

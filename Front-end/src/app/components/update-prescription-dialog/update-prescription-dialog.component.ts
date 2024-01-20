@@ -13,7 +13,7 @@ export class UpdatePrescriptionDialogComponent implements OnInit {
     id: null,
     doctorName: '',
     doctorAddress: '',
-    issue_date: undefined,
+    issueDate: undefined,
     customer: {
       id: null,
     },

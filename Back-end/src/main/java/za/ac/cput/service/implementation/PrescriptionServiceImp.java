@@ -7,6 +7,7 @@ import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.service.PrescriptionService;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -22,6 +23,7 @@ public class PrescriptionServiceImp implements PrescriptionService {
 
     @Override
     public void createPrescription(Prescription prescription) {
+
         prescriptionRepository.save(prescription);
     }
 
@@ -44,5 +46,10 @@ public class PrescriptionServiceImp implements PrescriptionService {
     public boolean deletePrescription(Long id) {
         prescriptionRepository.delete(id);
         return true;
+    }
+
+    @Override
+    public List<Prescription> getPrescriptionsByCustomerId(Long customerId) {
+        return prescriptionRepository.findByCustomerId(customerId);
     }
 }

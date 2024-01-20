@@ -23,8 +23,6 @@ const routes: Routes = [
   { path: 'user', pathMatch: 'full', component: UserComponent },
   { path: 'customer-details/:id', component: CustomerDetailsComponent },
   { path: 'create-user-dialog', pathMatch: 'full', component: CreateUserDialogComponent },
-
-
 ];
 
 @NgModule({

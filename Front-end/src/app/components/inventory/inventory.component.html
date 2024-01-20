@@ -9,7 +9,7 @@
 
 <body>
     <h4 align="center">Inventory</h4>
-    <button mat-raised-button color="primary" (click)="onCreateInventory()">
+    <button mat-raised-button color="primary" (click)="onCreateInventoryDialog('')">
         Create Inventory
         <mat-icon>add</mat-icon>
     </button>
@@ -20,6 +20,11 @@
             <td mat-cell *matCellDef="let row">{{ row.id }}</td>
         </ng-container>
 
+        <!-- ID Column -->
+        <ng-container matColumnDef="medicationId">
+            <th mat-header-cell *matHeaderCellDef>Medication Id</th>
+            <td mat-cell *matCellDef="let row">{{ row.medication.id }}</td>
+        </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
@@ -42,7 +47,7 @@
         <!--  Price Column -->
         <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef>Price</th>
-            <td mat-cell *matCellDef="let row">{{ row.price | currency}}</td>
+            <td mat-cell *matCellDef="let row">{{ row.price | currency: 'ZAR' }}</td>
         </ng-container>
 
         <ng-container matColumnDef="created_at">

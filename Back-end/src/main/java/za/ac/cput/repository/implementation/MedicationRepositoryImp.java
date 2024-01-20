@@ -1,5 +1,6 @@
 package za.ac.cput.repository.implementation;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,18 +11,19 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
+import za.ac.cput.model.Inventory;
 import za.ac.cput.model.Medication;
 import za.ac.cput.model.Prescription;
+import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.rowmapper.MedicationRowMapper;
+import za.ac.cput.rowmapper.PrescriptionRowMapper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static za.ac.cput.query.MedicationQuery.*;
+import static za.ac.cput.query.PrescriptionQuery.SELECT_PRESCRIPTION_BY_CUSTOMER_ID_QUERY;
 
 /**
  * @author : Thabiso Matsaba
@@ -36,14 +38,20 @@ public class MedicationRepositoryImp implements MedicationRepository<Medication>
    private final NamedParameterJdbcTemplate jdbc;
    private final PrescriptionRepository<Prescription> prescriptionRepository;
     @Override
-public Medication save(Medication medication) {
-    log.info("Saving a Medication");
+    public Medication save(Medication medication) {
+    log.info("Save a Medication");
     // Check if the associated prescription exists
     Prescription prescription = prescriptionRepository.read(medication.getPrescription().getId());
     if (prescription == null) {
         throw new ApiException("Associated prescription not found. Please provide a valid prescription ID");
     }
-    // Save Medication
+        // Check if the provided medication name is in the available medications list
+//        String medicationName = medication.getName();
+//        if (!Inventory.inventoryRepository.getAvailableMedications().contains(medicationName)) {
+//            throw new ApiException("Invalid medication name. Please provide a valid medication name from the inventory.");
+//        }
+
+        // Save Medication
     try {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource parameters = getSqlParameterSource(medication);
@@ -117,6 +125,21 @@ public Medication save(Medication medication) {
             throw new ApiException("An error occurred while deleting the prescription. Please try again.");
         }
          return true;
+    }
+
+    @Override
+    public List<Medication> findByPrescriptionId(Long prescription_id) {
+        log.info("Fetching a Medication by Prescription ID: {}", prescription_id);
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("prescription_id", prescription_id);
+            return jdbc.query(SELECT_MEDICATION_BY_PRESCRIPTION_ID_QUERY, paramMap, new MedicationRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null; // or return an empty list depending on your use case
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching the medications. Please try again.");
+        }
     }
 
     private SqlParameterSource getSqlParameterSource(Medication medication) {

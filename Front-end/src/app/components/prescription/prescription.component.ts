@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Prescription } from 'src/app/model/prescription';
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
 import { UpdatePrescriptionDialogComponent } from '../update-prescription-dialog/update-prescription-dialog.component';
+import * as alertify from 'alertifyjs';
+import { CreatePrescriptionDialogComponent } from '../create-prescription-dialog/create-prescription-dialog.component';
 
 @Component({
   selector: 'app-prescription',
@@ -13,9 +15,7 @@ import { UpdatePrescriptionDialogComponent } from '../update-prescription-dialog
   styleUrls: ['./prescription.component.scss'],
 })
 export class PrescriptionComponent implements OnInit {
-onCreatePrescription() {
-throw new Error('Method not implemented.');
-}
+
   tableDataSource: MatTableDataSource<Prescription[]> = new MatTableDataSource<
     Prescription[]
   >([]);
@@ -24,7 +24,7 @@ throw new Error('Method not implemented.');
     'customerId',
     'doctorName',
     'doctorAddress',
-    'issue_date',
+    'issueDate',
     'options',
   ];
 
@@ -33,8 +33,23 @@ throw new Error('Method not implemented.');
 
   constructor(
     private prescriptionService: PrescriptionService,
-    private updateDialog: MatDialog
+    private updatePrescriptionDialog: MatDialog,
+    private createPresctiptionDialog: MatDialog
   ) {}
+
+  onCreatePrescriptionDialog(id: any) {
+    const dialogRef = this.createPresctiptionDialog.open(CreatePrescriptionDialogComponent,{
+      width: '400px',
+      exitAnimationDuration: '1000ms',
+      enterAnimationDuration: '1000ms',
+      data:
+      {
+        id: id
+      }
+    })
+    dialogRef.afterClosed().subscribe(response=> {
+      response = this.getAllPrescriptionData();
+    });    }
 
   ngOnInit() {
     this.getAllPrescriptionData();
@@ -90,10 +105,12 @@ throw new Error('Method not implemented.');
   }
 
   deletePrescription(id: number) {
-    this.prescriptionService.deletePrescriptionById(id).subscribe({
+    alertify.confirm('Are you sure you want to permanently delete this prescription?', () => {
+      this.prescriptionService.deletePrescriptionById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
+          alertify.success('Prescription deleted successfully!');
           this.getAllPrescriptionData();
         } else {
           console.error('Error: ' + response.message);
@@ -101,13 +118,16 @@ throw new Error('Method not implemented.');
       },
       error: (error) => {
         console.error('Error deleting prescription:', error);
+        alertify.error('An error occurred while deleting the prescription.');
       },
     });
-  }
+  }, () => {
+  });
+}
 
   openUpdateDialog(prescription: Prescription): void {
     console.log('Inventory data passed to dialog:', prescription);
-    const dialogRef = this.updateDialog.open(
+    const dialogRef = this.updatePrescriptionDialog.open(
       UpdatePrescriptionDialogComponent,
       {
         width: '400px',

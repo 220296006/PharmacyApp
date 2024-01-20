@@ -6,6 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Medication } from 'src/app/model/medication';
 import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 import { UpdateMedicationDialogComponent } from '../update-medication-dialog/update-medication-dialog.component';
+import { CreateMedicationDialogComponent } from '../create-medication-dialog/create-medication-dialog.component';
+import * as alertify from 'alertifyjs';
+
 @Component({
   selector: 'app-medication',
   templateUrl: './medication.component.html',
@@ -18,6 +21,7 @@ throw new Error('Method not implemented.');
   tableDataSource: MatTableDataSource<Medication> = new MatTableDataSource<Medication>([]);
   displayedColumns: string[] = [
     'id',
+    'prescription_id',
     'name',
     'dosage',
     'frequency',
@@ -29,11 +33,26 @@ throw new Error('Method not implemented.');
 
   constructor(
     private medicationService: MedicationService,
-    private updateDialog: MatDialog) {}
+    private updateMedicationDialog: MatDialog,
+    private createMedicationDialog: MatDialog) {}
 
   ngOnInit(){
     this.getAllMedicationData();
   }
+  onCreateMedicationDialog(id: any){
+    const dialogRef = this.createMedicationDialog.open(CreateMedicationDialogComponent,{
+    width: '400px',
+    exitAnimationDuration: '1000ms',
+    enterAnimationDuration: '1000ms',
+    data:
+    {
+      id: id
+    }
+  })
+  dialogRef.afterClosed().subscribe(response=> {
+    response = this.getAllMedicationData();
+  });}
+
 
   getAllMedicationData(){
     this.medicationService.getAllMedicationData().subscribe({
@@ -60,7 +79,6 @@ throw new Error('Method not implemented.');
 
   }
 
-
   onUpdateMedication(medicationId: number) {
     this.medicationService.getMedicationById(medicationId).subscribe({
       next: (response) => {
@@ -85,24 +103,29 @@ throw new Error('Method not implemented.');
   }
 
   onDeleteMedication(id: number) {
+    alertify.confirm('Are you sure you want to permanently delete this medication?', () => {
     this.medicationService.deleteMedicationById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
+          alertify.success('Medication deleted successfully!');
           this.getAllMedicationData();
         } else {
           console.error('Error: ' + response.message);
         }
       },
       error: (error) => {
-        console.error('Error deleting user:', error);
+        console.error('Error deleting medication:', error);
+        alertify.error('An error occurred while deleting the customer.');
       },
     });
-  }
+  }, () => {
+  });
+}
 
   openUpdateDialog(medication: Medication): void {
     console.log('User data passed to dialog:', medication); // Check if user is defined
-    const dialogRef = this.updateDialog.open(UpdateMedicationDialogComponent, {
+    const dialogRef = this.updateMedicationDialog.open(UpdateMedicationDialogComponent, {
       width: '400px',
       exitAnimationDuration: '1000ms',
       enterAnimationDuration: '1000ms',

@@ -8,9 +8,24 @@ import { Inventory } from 'src/app/model/inventory';
   providedIn: 'root',
 })
 export class InventoryService {
+
+
   private readonly serverUrl: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
+
+  createInventory(inventory: Inventory): Observable<ApiResponse<Inventory>>{
+    console.log(inventory)
+    return this.http.post<ApiResponse<Inventory>>
+    (`${this.serverUrl}/inventory/create`, inventory)
+    .pipe(catchError(this.handleError));
+  } 
+
+  
+  getAvailableMedications(): Observable<Inventory[]> {
+    const url = `${this.serverUrl}/inventory/medications`;
+    return this.http.get<Inventory[]>(url);
+  }
 
   getAllInventoryData(
     name: string = '',

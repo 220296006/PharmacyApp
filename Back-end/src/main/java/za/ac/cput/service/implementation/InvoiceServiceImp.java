@@ -6,7 +6,9 @@ import za.ac.cput.model.Invoice;
 import za.ac.cput.repository.InvoiceRepository;
 import za.ac.cput.service.InvoiceService;
 
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -42,5 +44,20 @@ public class InvoiceServiceImp implements InvoiceService {
     public boolean deleteInvoice(Long id) {
         invoiceRepository.delete(id);
         return true;
+    }
+
+    @Override
+    public List<Invoice> getInvoicesByCustomerId(Long customerId) {
+        return invoiceRepository.findInvoiceByCustomerId(customerId);
+    }
+
+    @Override
+    public Integer getInvoiceCount() {
+        return invoiceRepository.countInvoices();
+    }
+
+    @Override
+    public BigInteger getTotalBilledAmount() {
+        return invoiceRepository.getTotalBilledAmount();
     }
 }

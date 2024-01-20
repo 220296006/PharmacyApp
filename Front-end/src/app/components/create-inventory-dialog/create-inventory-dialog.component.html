@@ -1,0 +1,45 @@
+<div class="inventory-form-container">
+    <form [formGroup]="inventoryForm" class="inventory-form">
+      <div class="title">Inventory Item Information</div>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Medication ID</mat-label>
+        <input type="number" id="medicationId" formControlName="medicationId" matInput />
+      </mat-form-field>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Medication Name</mat-label>
+        <input type="text" id="name" formControlName="name" matInput />
+      </mat-form-field>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Description</mat-label>
+        <input type="text" id="description" formControlName="description" matInput />
+      </mat-form-field>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Quantity</mat-label>
+        <input type="number" id="quantity" formControlName="quantity" matInput />
+      </mat-form-field>
+  
+      <mat-form-field class="form-full-width">
+        <mat-label>Price</mat-label>
+        <input type="number" id="price" formControlName="price" matInput />
+      </mat-form-field>
+  
+      <div class="form-row actions">
+        <button
+          mat-raised-button
+          color="primary"
+          [disabled]="inventoryForm.invalid"
+          (click)="onSubmit({})"
+        >
+          Add Inventory Item
+        </button>
+        <button mat-raised-button class="cancel-button" (click)="onCancel()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+  

@@ -3,7 +3,9 @@ package za.ac.cput.service;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import za.ac.cput.model.Invoice;
 
+import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -17,5 +19,10 @@ public interface InvoiceService {
     Invoice findByInvoiceId(Long id);
     void updateInvoice(Invoice invoice);
     boolean deleteInvoice(Long id);
+    List<Invoice> getInvoicesByCustomerId(Long customerId);
+
+    Integer getInvoiceCount();
+    BigInteger getTotalBilledAmount();
+
 
 }

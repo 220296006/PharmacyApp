@@ -16,10 +16,7 @@ import za.ac.cput.repository.CustomerRepository;
 import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.rowmapper.PrescriptionRowMapper;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static za.ac.cput.query.PrescriptionQuery.*;
 
@@ -120,12 +117,30 @@ public Collection<Prescription> list(String name, int page, int pageSize) {
         }
         return true;
     }
-     private SqlParameterSource getSqlParameterSource(Prescription prescription) {
+
+    @Override
+    public List<Prescription> findByCustomerId(Long customerId) {
+        log.info("Fetching a Prescription by Customer ID: {}", customerId);
+        try {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("customerId", customerId);
+
+            return jdbc.query(SELECT_PRESCRIPTION_BY_CUSTOMER_ID_QUERY, paramMap, new PrescriptionRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null; // or return an empty list depending on your use case
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching the prescription. Please try again.");
+        }
+    }
+
+
+    private SqlParameterSource getSqlParameterSource(Prescription prescription) {
         return new MapSqlParameterSource()
                 .addValue("id", prescription.getId())
                 .addValue("customerId", prescription.getCustomer().getId())
                 .addValue("doctorName", prescription.getDoctorName())
                 .addValue("doctorAddress", prescription.getDoctorAddress())
-                .addValue("issueDate", prescription.getIssue_date());
+                .addValue("issueDate", prescription.getIssueDate());
     }
 }

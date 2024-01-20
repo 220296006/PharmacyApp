@@ -11,6 +11,7 @@ import za.ac.cput.model.Invoice;
 import za.ac.cput.model.Response;
 import za.ac.cput.service.InvoiceService;
 
+import java.math.BigInteger;
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
@@ -31,6 +32,18 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping(path = "/invoice")
 public class InvoiceController {
     private final InvoiceService invoiceService;
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getInvoicesCount() {
+        long count = invoiceService.getInvoiceCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/total-billed-amount")
+    public ResponseEntity<BigInteger> getTotalBilledAmount() {
+        BigInteger totalAmount = invoiceService.getTotalBilledAmount();
+        return ResponseEntity.ok(totalAmount);
+    }
 
     @PostMapping("/create")
     public ResponseEntity<Response> createInvoice(@RequestBody @Validated Invoice invoice){
@@ -74,6 +87,19 @@ public class InvoiceController {
                         .build()
         );
    }
+    @GetMapping("/read/customer/{customerId}")
+    public ResponseEntity<Response> getInvoicesByCustomerId(@PathVariable Long customerId) {
+        log.info("Fetching invoices for Customer ID: {}", customerId);
+        return ResponseEntity.ok().body(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("invoices", invoiceService.getInvoicesByCustomerId(customerId)))
+                        .message("Invoices Retrieved")
+                        .status(OK)
+                        .statusCode(OK.value())
+                        .build()
+        );
+    }
 
    @PutMapping("/update")
    public ResponseEntity<Response> updateInvoice(@Valid @RequestBody Invoice invoice){
@@ -106,5 +132,9 @@ public class InvoiceController {
 
    private URI getUri(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/invoice/get/<invoiceId>").toUriString());
+    }
+
+    private URI getUriCustomerInvoice(){
+        return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/invoice/get/<customerId>").toUriString());
     }
 }

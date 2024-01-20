@@ -3,10 +3,12 @@ package za.ac.cput.service.implementation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import za.ac.cput.model.Inventory;
+import za.ac.cput.model.Medication;
 import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.service.InventoryService;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -39,4 +41,9 @@ public class InventoryServiceImp implements InventoryService {
         inventoryRepository.delete(id);
         return true;
     }
-}
+
+    @Override
+    public List<Medication> getAvailableMedications(Medication medication) {
+        return inventoryRepository.getAvailableMedications();
+    }
+    }
