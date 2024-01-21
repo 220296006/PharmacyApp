@@ -30,7 +30,61 @@ CREATE TABLE Customers
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- Table Roles
+-- Table Invoices
+DROP TABLE IF EXISTS Invoices;
+CREATE TABLE Invoices
+(
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    customer_id   INT UNSIGNED NOT NULL,
+    amount        INTEGER NOT NULL,
+    due_date      DATETIME NOT NULL,
+    payment_status  VARCHAR(255) DEFAULT 'PENDING',
+    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+-
+-- Table Prescriptions
+DROP TABLE IF EXISTS Prescriptions;
+CREATE TABLE Prescriptions
+(
+    id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    customer_id    INT UNSIGNED NOT NULL,
+    doctor_name    VARCHAR(255) NOT NULL,
+    doctor_address VARCHAR(255) NOT NULL,
+    issue_date     DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+
+-- Table Medications
+DROP TABLE IF EXISTS Medications;
+CREATE TABLE Medications
+(
+    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    prescription_id   INT UNSIGNED NOT NULL,
+    name              VARCHAR(255) NOT NULL,
+    dosage            VARCHAR(255) NOT NULL,
+    frequency         VARCHAR(255) NOT NULL,
+    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- Table Inventory
+DROP TABLE IF EXISTS Inventory;
+CREATE TABLE Inventory
+(
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    medication_id INT UNSIGNED NOT NULL,
+    name          VARCHAR(255) NOT NULL,
+    description   TEXT DEFAULT NULL,
+    quantity      INT UNSIGNED NOT NULL,
+    price         INTEGER NOT NULL,
+    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+
+- Table Roles
 DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles
 (
@@ -113,57 +167,6 @@ CREATE TABLE ResetPasswordVerifications
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT UQ_ResetPasswordVerifications_User_Id UNIQUE (user_id),
     CONSTRAINT UQ_ResetPasswordVerifications_Url UNIQUE (url)
-);
-
--- Table Prescriptions
-DROP TABLE IF EXISTS Prescriptions;
-CREATE TABLE Prescriptions
-(
-    id             INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    customer_id    INT UNSIGNED NOT NULL,
-    doctor_name    VARCHAR(255) NOT NULL,
-    doctor_address VARCHAR(255) NOT NULL,
-    issue_date     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- Table Medications
-DROP TABLE IF EXISTS Medications;
-CREATE TABLE Medications
-(
-    id                INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    prescription_id   INT UNSIGNED NOT NULL,
-    name              VARCHAR(255) NOT NULL,
-    dosage            VARCHAR(255) NOT NULL,
-    frequency         VARCHAR(255) NOT NULL,
-    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- Table Inventory
-DROP TABLE IF EXISTS Inventory;
-CREATE TABLE Inventory
-(
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    medication_id INT UNSIGNED NOT NULL,
-    name          VARCHAR(255) NOT NULL,
-    description   TEXT DEFAULT NULL,
-    quantity      INT UNSIGNED NOT NULL,
-    price         INTEGER NOT NULL,
-    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
-);
-
--- Table Invoices
-DROP TABLE IF EXISTS Invoices;
-CREATE TABLE Invoices
-(
-    id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    customer_id   INT UNSIGNED NOT NULL,
-    amount        INTEGER NOT NULL,
-    due_date      DATETIME NOT NULL,
-    payment_status  VARCHAR(100) DEFAULT 'PENDING',
-    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Insert new roles

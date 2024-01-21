@@ -38,7 +38,7 @@ public class InventoryRepositoryImp implements InventoryRepository<Inventory> {
         log.info("Save an Inventory: {}", inventory);
         Medication medication = medicationRepository.read(inventory.getMedication().getId());
         if (medication == null || medication.getId() == null) {
-        throw new ApiException("Associated medication not found. Please provide a valid medication d");
+        throw new ApiException("Associated medication not found. Please provide a valid medication id");
     }
         try {
         KeyHolder keyHolder = new GeneratedKeyHolder();
