@@ -1,6 +1,5 @@
 package za.ac.cput.repository.implementation;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -18,12 +17,10 @@ import za.ac.cput.repository.InventoryRepository;
 import za.ac.cput.repository.MedicationRepository;
 import za.ac.cput.repository.PrescriptionRepository;
 import za.ac.cput.rowmapper.MedicationRowMapper;
-import za.ac.cput.rowmapper.PrescriptionRowMapper;
 
 import java.util.*;
 
 import static za.ac.cput.query.MedicationQuery.*;
-import static za.ac.cput.query.PrescriptionQuery.SELECT_PRESCRIPTION_BY_CUSTOMER_ID_QUERY;
 
 /**
  * @author : Thabiso Matsaba
@@ -37,19 +34,20 @@ import static za.ac.cput.query.PrescriptionQuery.SELECT_PRESCRIPTION_BY_CUSTOMER
 public class MedicationRepositoryImp implements MedicationRepository<Medication> {
    private final NamedParameterJdbcTemplate jdbc;
    private final PrescriptionRepository<Prescription> prescriptionRepository;
+  // private final InventoryRepository<Inventory> inventoryRepository;
     @Override
     public Medication save(Medication medication) {
     log.info("Save a Medication");
     // Check if the associated prescription exists
     Prescription prescription = prescriptionRepository.read(medication.getPrescription().getId());
-    if (prescription == null) {
+    if (prescription == null || prescription.getId() == null) {
         throw new ApiException("Associated prescription not found. Please provide a valid prescription ID");
     }
         // Check if the provided medication name is in the available medications list
-//        String medicationName = medication.getName();
-//        if (!Inventory.inventoryRepository.getAvailableMedications().contains(medicationName)) {
-//            throw new ApiException("Invalid medication name. Please provide a valid medication name from the inventory.");
-//        }
+     //  String medicationName = medication.getName();
+        //if (!inventoryRepository.getAvailableMedications().contains(medicationName)) {
+         //  throw new ApiException("Invalid medication name. Please provide a valid medication name from the inventory.");
+        // }
 
         // Save Medication
     try {

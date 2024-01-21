@@ -131,9 +131,17 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
 
         @Override
-        public User findByEmailIgnoreCase (String email){
-            return null;
-        }
+        public User findUserByEmailIgnoreCase (String email){
+            log.info("Fetch User by Email");
+            try {
+                return jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper());
+            } catch (EmptyResultDataAccessException exception) {
+                return null;
+            } catch (Exception exception) {
+                log.error(exception.getMessage());
+                throw new ApiException("NEmail not found. Please use different email and try again");
+            }
+    }
 
         @Override
         public Boolean existByEmail (String email){

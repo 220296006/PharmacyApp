@@ -2,9 +2,8 @@ package za.ac.cput.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,32 +14,34 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 
 /**
  * @author : Thabiso Matsaba
- * @Project : Back-end
+ * @Project : PharmacyApp
  * @Date : 2024/01/21
  * @Time : 16:01
  **/
-@Configuration
 @AllArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig {
+public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = (AuthenticationManagerBuilder) http.getSharedObjects();
-        authenticationManagerBuilder.authenticationProvider(null);
-        http.csrf().disable();
-        http.authorizeRequests()
-                .antMatchers(POST, "user/create/**")
-                .permitAll().antMatchers("/**")
-                .authenticated()
-                .anyRequest()
-                .hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_SYSADMIN", "ROLE_MANAGER")
-                .and().httpBasic(Customizer.withDefaults())
-                .sessionManagement()
-                .sessionCreationPolicy(STATELESS);
+
+        http
+                .cors().and() // Enable CORS
+                .csrf().disable() // Disable CSRF for simplicity (you may enable it based on your requirements)
+                .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll() // Allow pre-flight requests
+                .anyRequest().permitAll(); // Allow all other requests
+
+//        http.csrf().disable()
+//                .authorizeRequests()
+//                .antMatchers(POST, "user/create/**").permitAll()
+//                .antMatchers("/**").authenticated()
+//                .anyRequest().hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_SYSADMIN", "ROLE_MANAGER")
+//                .and()
+//                .httpBasic(Customizer.withDefaults())
+//                .sessionManagement().sessionCreationPolicy(STATELESS);
+
         return http.build();
     }
-
-
 }

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
@@ -32,7 +31,6 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
     private final ConfirmationRepository<Confirmation> confirmationRepository;
-    private final BCryptPasswordEncoder encoder;
 
     @Override
     public UserDTO createUser(User user) {
@@ -58,20 +56,7 @@ public class UserServiceImp implements UserService {
                 Optional<User> optionalExistingUser = Optional.ofNullable(userRepository.read(userId));
 
                 if (optionalExistingUser.isPresent()) {
-                    User existingUser = optionalExistingUser.get();
-
-                    // Update the existing user with the new data
-                    existingUser.setFirstName(updatedUser.getFirstName());
-                    existingUser.setLastName(updatedUser.getLastName());
-                    existingUser.setMiddleName(updatedUser.getMiddleName());
-
-                    // Update the email address if provided
-                    if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
-                        existingUser.setEmail(updatedUser.getEmail());
-                    }
-
-                    existingUser.setAddress(updatedUser.getAddress());
-                    existingUser.setPhone(updatedUser.getPhone());
+                    User existingUser = getUser(updatedUser, optionalExistingUser);
 
                     // Save the updated user using the new updateWithDTO method
                     userRepository.update(existingUser);
@@ -92,6 +77,24 @@ public class UserServiceImp implements UserService {
         }
     }
 
+    private static User getUser(UserUpdateDTO updatedUser, Optional<User> optionalExistingUser) {
+        User existingUser = optionalExistingUser.get();
+
+        // Update the existing user with the new data
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setMiddleName(updatedUser.getMiddleName());
+
+        // Update the email address if provided
+        if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+
+        existingUser.setAddress(updatedUser.getAddress());
+        existingUser.setPhone(updatedUser.getPhone());
+        return existingUser;
+    }
+
     @Override
     public User findUserById(Long id) {
         return UserDTOMapper.toUser(userRepository.read(id));
@@ -107,7 +110,7 @@ public class UserServiceImp implements UserService {
     @Override
     public Boolean verifyToken(String token) {
         Confirmation confirmation = confirmationRepository.findByToken(token);
-        User user = userRepository.findByEmailIgnoreCase(confirmation.getUser().getEmail());
+        User user = userRepository.findUserByEmailIgnoreCase(confirmation.getUser().getEmail());
         user.setEnabled(true);
         userRepository.save(user);
         confirmationRepository.findByToken(token);

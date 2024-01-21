@@ -16,7 +16,7 @@ public interface UserRepository <T extends User> {
       T read(Long id);
       T update(User t);
       void delete(Long id);
-      T findByEmailIgnoreCase(String email);
+      T findUserByEmailIgnoreCase(String email);
       Boolean existByEmail(String email);
       UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser);
 

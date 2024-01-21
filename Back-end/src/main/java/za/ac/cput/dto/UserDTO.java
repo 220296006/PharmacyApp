@@ -1,11 +1,9 @@
 package za.ac.cput.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Id;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import za.ac.cput.model.User;
-
+import org.springframework.data.annotation.Id;
 import java.time.LocalDateTime;
 
 /**
