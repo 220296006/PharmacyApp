@@ -1,8 +1,10 @@
+import { Customer } from 'src/app/model/customer';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { InvoiceService } from './../../services/invoice-service/invoice.service';
 import * as alertify from 'alertifyjs';
+import { PaymentStatus } from 'src/app/model/payment-status';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -11,6 +13,8 @@ import * as alertify from 'alertifyjs';
 })
 export class CreateInvoiceDialogComponent implements OnInit {
   invoiceForm: FormGroup;
+  paymentStatusOptions: PaymentStatus[] = Object.values(PaymentStatus);
+
 
   constructor(
     private fb: FormBuilder,
@@ -38,9 +42,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
     } else {
       const payload = {
         ...this.invoiceForm.getRawValue(),
-        user: {
-          id: this.invoiceForm.get('customerId').value,
-          paymentStatus: this.invoiceForm.get('paymentStatus').value
+        customer: {
+          id: this.invoiceForm.get('customerId').value
         },
       };
 

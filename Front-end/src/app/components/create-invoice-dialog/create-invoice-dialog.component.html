@@ -28,8 +28,14 @@
 
       <mat-form-field class="form-full-width">
         <mat-label>Status</mat-label>
-        <input type="text" id="paymentStatus" formControlName="paymentStatus" matInput />
+        <mat-select id="paymentStatus" formControlName="paymentStatus">
+          <mat-option *ngFor="let status of paymentStatusOptions" [value]="status">
+            {{ status }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
+      
+
       <div class="form-row actions">
         <button
           mat-raised-button

@@ -2,7 +2,6 @@ package za.ac.cput.repository.implementation;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -46,15 +45,14 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
         log.info("Saving an Invoice: {}", invoice);
         // Check if the associated customer exists
         Customer customer = customerRepository.read(invoice.getCustomer().getId());
-        if (customer == null) {
+        if (customer == null || customer.getId() == null)  {
             throw new ApiException("Associated customer not found. Please provide a valid customer ID");
         }
         try {
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(invoice);
-            jdbc.update(InvoiceQuery.INSERT_INVOICE_QUERY, parameters, holder);
+            jdbc.update(INSERT_INVOICE_QUERY, parameters, holder);
             invoice.setId(Objects.requireNonNull(holder.getKey()).longValue());
-           // Link the invoice with the customer
             Map<String, Object> linkCustomerParams = new HashMap<>();
             linkCustomerParams.put("id", invoice.getId());
             linkCustomerParams.put("customer_id", customer.getId());

@@ -51,7 +51,6 @@ export class CustomerDetailsComponent implements OnInit {
       }).subscribe({
         next: (responses: any) => {
           console.log('Response from server:', responses);
-  
           this.customer = responses.customer.data.customer;
           this.prescriptions = responses.prescriptions.data.prescription;
           this.medications = responses.medications.data.medications;

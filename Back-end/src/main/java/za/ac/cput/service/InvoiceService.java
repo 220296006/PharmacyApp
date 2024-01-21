@@ -20,7 +20,6 @@ public interface InvoiceService {
     void updateInvoice(Invoice invoice);
     boolean deleteInvoice(Long id);
     List<Invoice> getInvoicesByCustomerId(Long customerId);
-
     Integer getInvoiceCount();
     BigInteger getTotalBilledAmount();
 
