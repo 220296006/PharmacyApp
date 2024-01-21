@@ -8,9 +8,9 @@ Pharmacy App Software Documentation
 ## Table of Contents
 
 1. [Introduction](#introduction)
-2. [Functional Requirements](#functional-requirements)
-3. [Non-Functional Requirements](#non-functional-requirements)
-4. [Technology Stack](#technology-stack)
+2. [Technology Stack](#technology-stack)
+3. [Functional Requirements](#functional-requirements)
+4. [Non-Functional Requirements](#non-functional-requirements)
 5. [Suggested Improvements](#suggested-improvements)
 6. [Conclusion](#conclusion)
 
