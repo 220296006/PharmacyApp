@@ -1,6 +1,5 @@
 package za.ac.cput.service.implementation;
 
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import za.ac.cput.model.Confirmation;
 import za.ac.cput.service.EmailService;
 import za.ac.cput.utils.EmailUtils;
 
+import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 import static za.ac.cput.utils.EmailUtils.getEmailMessage;

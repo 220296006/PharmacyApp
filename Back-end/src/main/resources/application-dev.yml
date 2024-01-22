@@ -3,31 +3,38 @@ spring:
     url: jdbc:mysql://localhost:3306/PharmacyApp
     username: root
     password: Shaun@96
-    servlet:
-      filter:
-        cors:
-          allowed-origins: http://localhost:4200
+  servlet:
+    filter:
+      cors:
+        allowed-origins: http://localhost:4200
 
 
+  security:
+    enabled: false
+#    jwt:
+#      token:
+#        secret-key: CjpZAMDqlt1JH+br+wsKkjybvAj9QxtUs8FfhkvTvUU=
+#        expire-length: 3600000
   jpa:
     sql:
       init:
         mode: always
-    show-sql=true:
-      database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+      logging:
+        level:
+          org:
+            hibernate:
+              SQL: DEBUG
+    properties:
       hibernate:
-        ddl-auto: none
-        logging:
-          level:
-            org:
-              hibernate:
-                SQL=DEBUG:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQLDialect
-          format_sql: true
-          globally_quoted_identifiers: true
-        format-sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+        globally_quoted_identifiers: true
+      format-sql: true
+
   sql:
     init:
       mode: always
@@ -63,52 +70,3 @@ VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
 
 #Server
 SERVER_PORT: 8080
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

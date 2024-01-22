@@ -1,16 +1,22 @@
 package za.ac.cput.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.proxy.HibernateProxy;
+import org.springframework.data.annotation.Id;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
-import java.util.Objects;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * @author : Thabiso Matsaba
@@ -19,14 +25,13 @@ import java.util.Objects;
  * @Time : 16:57
  **/
 
-@ToString
+@Data
 @SuperBuilder
 @AllArgsConstructor
 @Getter @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-@Entity
-public class User {
+public class User  implements UserDetails {
     @Id
     private Long id;
     @NotEmpty(message = "First Name cannot be empty ")
@@ -34,8 +39,9 @@ public class User {
     private String middleName;
     @NotEmpty(message = "Last Name cannot be empty ")
     private String lastName;
-    @NotEmpty(message = "Email  cannot be empty ")
+    @NotEmpty(message = "Email cannot be empty ")
     @Email(message = "Email Invalid !!. Please enter valid email ")
+    @Column(unique = true)
     private String email;
     private String password;
     private String address;
@@ -46,20 +52,39 @@ public class User {
     private LocalDateTime createdAt;
     private boolean isNotLocked;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
+
     @Override
-    public final boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
-        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-        if (thisEffectiveClass != oEffectiveClass) return false;
-        User user = (User) o;
-        return getId() != null && Objects.equals(getId(), user.getId());
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
+        return authorities;
+    }
+
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
-    public final int hashCode() {
-        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    public boolean isAccountNonExpired() {
+        return true; // You may implement custom logic if needed
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return isNotLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // You may implement custom logic if needed
     }
 }
 

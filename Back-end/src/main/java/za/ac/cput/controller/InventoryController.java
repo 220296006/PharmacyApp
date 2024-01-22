@@ -1,6 +1,5 @@
 package za.ac.cput.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import za.ac.cput.model.Medication;
 import za.ac.cput.model.Response;
 import za.ac.cput.service.InventoryService;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;

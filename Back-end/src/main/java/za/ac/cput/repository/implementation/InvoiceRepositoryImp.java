@@ -1,7 +1,5 @@
 package za.ac.cput.repository.implementation;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -34,8 +32,6 @@ import static za.ac.cput.query.InvoiceQuery.*;
 @RequiredArgsConstructor
 @Slf4j
 public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
-    @PersistenceContext
-    private EntityManager entityManager;
 
     private final NamedParameterJdbcTemplate jdbc;
     private final CustomerRepository<Customer> customerRepository;
