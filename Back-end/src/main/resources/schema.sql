@@ -82,8 +82,6 @@ CREATE TABLE Inventory
     FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-
-
 - Table Roles
 DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles

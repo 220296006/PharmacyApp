@@ -23,10 +23,7 @@ import za.ac.cput.repository.UserRepository;
 import za.ac.cput.rowmapper.UserRowMapper;
 import za.ac.cput.service.EmailService;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static za.ac.cput.enumeration.RoleType.ROLE_USER;
 import static za.ac.cput.enumeration.VerificationType.ACCOUNT;
@@ -134,17 +131,26 @@ public class UserRepositoryImp implements UserRepository<User> {
         public User findUserByEmailIgnoreCase (String email){
             log.info("Fetch User by Email");
             try {
-                return jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper());
+                return (jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper()));
+            } catch (EmptyResultDataAccessException exception) {
+                return null;
+            } catch (Exception exception) {
+                log.error("Error while fetching user by email: {}", exception.getMessage());
+                throw new ApiException("Error while fetching user by email");
+            }
+    }
+
+        @Override
+        public Boolean existByEmail (String email){
+            log.info("Fetch User by Email");
+            try {
+                jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper());
             } catch (EmptyResultDataAccessException exception) {
                 return null;
             } catch (Exception exception) {
                 log.error(exception.getMessage());
                 throw new ApiException("NEmail not found. Please use different email and try again");
             }
-    }
-
-        @Override
-        public Boolean existByEmail (String email){
             return null;
         }
 

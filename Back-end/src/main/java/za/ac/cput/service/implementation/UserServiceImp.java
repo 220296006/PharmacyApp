@@ -117,4 +117,9 @@ public class UserServiceImp implements UserService {
         return Boolean.TRUE;
     }
 
+    @Override
+    public  Optional<User> findUserByEmailIgnoreCase(String email) {
+        return Optional.ofNullable(userRepository.findUserByEmailIgnoreCase(email));
+    }
+
 }

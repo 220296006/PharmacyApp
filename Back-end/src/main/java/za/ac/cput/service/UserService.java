@@ -4,6 +4,7 @@ import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.model.User;
 
 import java.util.Collection;
+import java.util.Optional;
 
 /**
  * @author : Thabiso Matsba
@@ -23,4 +24,6 @@ public interface UserService {
 
     boolean deleteUser(Long id);
     Boolean verifyToken(String token);
+
+    Optional<User> findUserByEmailIgnoreCase(String email);
 }
