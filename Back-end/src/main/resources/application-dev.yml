@@ -8,13 +8,6 @@ spring:
       cors:
         allowed-origins: http://localhost:4200
 
-
-  security:
-    enabled: false
-#    jwt:
-#      token:
-#        secret-key: CjpZAMDqlt1JH+br+wsKkjybvAj9QxtUs8FfhkvTvUU=
-#        expire-length: 3600000
   jpa:
     sql:
       init:
