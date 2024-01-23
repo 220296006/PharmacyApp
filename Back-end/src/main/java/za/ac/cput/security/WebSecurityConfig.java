@@ -41,12 +41,14 @@ public class WebSecurityConfig {
                 .antMatchers(GET, "/user/all", "/user/read/**", "/prescription/all", "/prescription/read/**", "/medication/all", "/medication/read/**", "/invoice/count",
                         "/invoice/total-billed-amount", "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**", "/customer/count", "/customer/all", "/customer/read/**").permitAll()
                 //ADMIN, MANAGER, SYSADMIN Access
-                .antMatchers(PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update")
-                .hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
+                .antMatchers(PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").permitAll()
+                //.hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
                 .antMatchers(DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**",
-                        "/customer/delete/**").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
+                        "/customer/delete/**").permitAll()
+                //.hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
                 .antMatchers("/**").authenticated()
-                .anyRequest().hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_SYSADMIN", "ROLE_MANAGER")
+                .anyRequest()
+                .hasAnyRole("ROLE_USER", "ROLE_ADMIN", "ROLE_SYSADMIN", "ROLE_MANAGER")
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .authenticationProvider(authenticationProvider())
