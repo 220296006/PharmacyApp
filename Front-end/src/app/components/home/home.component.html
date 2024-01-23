@@ -7,8 +7,7 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
 </head>
 <body>
-  <div class="home-container">
-   <!-- existing code -->
+  <div class="home-container" *ngIf="isLoggedIn()">
 
 <div class="box customer-box">
   <div class="box-content">
@@ -41,7 +40,7 @@
 </div>
   </div>
 
-  <section id="hero">
+  <section id="hero" *ngIf="isLoggedIn()">
     <div class="container">
       <img src="assets/images/PharmacyApp.png" alt="Pharmacy App Logo" class="logo" />
       <h1 class="typed" data-typed-items="Welcome to the Pharmacy App.,Your trusted source for all your pharmacy needs."></h1>

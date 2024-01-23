@@ -1,0 +1,52 @@
+<div class="registration-container">
+
+  <img src="assets/images/PharmacyApp.png" alt="Pharmacy App Logo" class="app-logo">
+
+  <h2 class="h2">Create Account</h2>
+  <form [formGroup]="registrationForm" (ngSubmit)="onRegister('')">
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" formControlName="firstName" />
+
+    <label for="middleName">Middle Name:</label>
+    <input type="text" id="middleName" formControlName="middleName" />
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" formControlName="lastName" />
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" formControlName="email" />
+
+    <label for="phone">Phone Number:</label>
+    <input type="tel" id="phone" formControlName="phone" />
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" formControlName="address" />
+
+    <label for="password">Password:</label>
+    <div class="password-input">
+      <input
+        type="{{ hidePassword ? 'password' : 'text' }}"
+        id="password"
+        name="password"
+        formControlName="password"
+        required
+      />
+      <button
+        class="toggle-password"
+        mat-icon-button
+        matSuffix
+        (click)="togglePasswordVisibility()"
+      >
+        <mat-icon>{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+    </div>
+
+    <button type="submit">Register</button>
+
+    <p class="login-link">
+      Already have an account? <a href="/login">Login</a>
+    </p>
+  </form>
+</div>

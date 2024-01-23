@@ -12,6 +12,10 @@ export class HomeComponent implements OnInit {
   invoicesCount = 0;
   totalBilledAmount = 0;
 
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('token');
+  }
+
   constructor(private homeService: HomeService) {}
 
   ngOnInit(): void {
