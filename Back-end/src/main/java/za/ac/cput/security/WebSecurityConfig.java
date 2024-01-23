@@ -37,7 +37,7 @@ public class WebSecurityConfig {
         http.csrf().disable()
                 .authorizeRequests()
                 //Public Access
-                .antMatchers(POST, "/user/register", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create", "/customer/create").permitAll()
+                .antMatchers(POST, "/user/register", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create**").permitAll()
                 .antMatchers(GET, "/user/all", "/user/read/**", "/prescription/all", "/prescription/read/**", "/medication/all", "/medication/read/**", "/invoice/count",
                         "/invoice/total-billed-amount", "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**", "/customer/count", "/customer/all", "/customer/read/**").permitAll()
                 //ADMIN, MANAGER, SYSADMIN Access

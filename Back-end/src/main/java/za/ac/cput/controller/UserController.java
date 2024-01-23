@@ -40,29 +40,11 @@ import static org.springframework.http.HttpStatus.*;
 @CrossOrigin(origins = "http://localhost:4200")  // Add this line
 public class UserController {
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder; // Inject the PasswordEncoder
 
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);
-        // Check if the user already exists
-        if (userService.findUserByEmailIgnoreCase(user.getEmail()).isEmpty()) {
-            return ResponseEntity.status(CONFLICT)
-                    .body(Response.builder()
-                            .timeStamp(now())
-                            .message("User with email already exists")
-                            .status(CONFLICT)
-                            .statusCode(CONFLICT.value())
-                            .build());
-        }
-
-        // Encode the password before saving
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
         UserDTO userDTO = userService.createUser(user);
-
-        // You can also include logic to automatically log in the user after registration if needed.
-
         return ResponseEntity.created(getUri()).body(
                 Response.builder()
                         .timeStamp(now())
