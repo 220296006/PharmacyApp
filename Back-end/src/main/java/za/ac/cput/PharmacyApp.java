@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootApplication()
-//exclude = SecurityAutoConfiguration.class
 @EnableAsync
 public class PharmacyApp {
 

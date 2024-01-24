@@ -9,6 +9,9 @@ import { User } from 'src/app/model/user';
   providedIn: 'root'
 })
 export class AuthService {
+
+  private apiUrl = 'http://localhost:8080';
+
   forgotPassword(email: string): Observable<ApiResponse<any>> {
     const forgotPasswordUrl = `${this.apiUrl}/user/forgot-password`;
     const body = { email };
@@ -16,31 +19,31 @@ export class AuthService {
     return this.http.post<ApiResponse<any>>(forgotPasswordUrl, body);
   }
 
-  private apiUrl = 'http://localhost:8080'; // Replace with your server URL
 
   constructor(private http: HttpClient) { }
 
-  registerUser(user: User): Observable<ApiResponse<User>>{
-    console.log(user)
+  registerUser(user: User): Observable<ApiResponse<User>> {
+    console.log('Registering user:', user);
     return this.http.post<ApiResponse<User>>
-    (`${this.apiUrl}/user/register`, user)
-  }  
+      (`${this.apiUrl}/user/register`, user)
+  }
 
   login(email: string, password: string): Observable<any> {
-    const loginUrl = `${this.apiUrl}/login`;
+    const loginUrl = `${this.apiUrl}/user/login`;
     const body = { email, password };
-  
+
     // Set the headers with the Bearer token
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.getToken()}`  // Replace yourTokenVariableHere with the actual token
     });
-  
+
     return this.http.post<any>(loginUrl, body, { headers })
-    .pipe(
-      tap(response => this.saveToken(response.token)),
-      catchError(this.handleError<any>('Login'))
-    );
+      .pipe(
+        tap(response => console.log('Login response:', response)), // Add this line for logging
+        tap(response => this.saveToken(response.token)),
+        catchError(this.handleError<any>('Login'))
+      );
   }
 
   public saveToken(token: string): void {
@@ -64,11 +67,11 @@ export class AuthService {
     if (!token) {
       return of(null);
     }
-  
+
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<User>(`${this.apiUrl}/user/info`, { headers });
   }
-  
+
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -78,5 +81,5 @@ export class AuthService {
   }
 
 
-  
+
 }

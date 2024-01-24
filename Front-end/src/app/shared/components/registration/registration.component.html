@@ -37,16 +37,17 @@
         matSuffix
         (click)="togglePasswordVisibility()"
       >
-        <mat-icon>{{
-          hidePassword ? "visibility_off" : "visibility"
-        }}</mat-icon>
+        <mat-icon>
+          {{ hidePassword ? "visibility_off" : "visibility"}}
+        </mat-icon>
       </button>
     </div>
 
     <button type="submit" [disabled]="!registrationForm.valid">Register</button>
-
+  </form>
+  
     <p class="login-link">
       Already have an account? <a href="/login">Login</a>
     </p>
-  </form>
+ 
 </div>

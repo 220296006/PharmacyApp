@@ -13,8 +13,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import za.ac.cput.service.implementation.UserDetailsServiceImpl;
-import za.ac.cput.utils.JwtTokenProvider;
 
 import javax.sql.DataSource;
 
@@ -38,7 +38,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenFilter jwtTokenFilter;
 
     @Override
     @Bean
@@ -62,8 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf().disable()
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create").permitAll()
                 .antMatchers(HttpMethod.GET,
@@ -73,9 +73,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/customer/count", "/customer/all", "/customer/read/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
                 .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .apply(new JwtConfigurer(jwtTokenProvider)); // Custom JwtConfigurer to handle JWT authentication
+                .anyRequest().authenticated();
     }
-
 }

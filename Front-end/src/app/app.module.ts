@@ -91,6 +91,7 @@ import { ForgotPasswordComponent } from './shared/components/forgot-password/for
     AngularMaterialModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatSortModule,

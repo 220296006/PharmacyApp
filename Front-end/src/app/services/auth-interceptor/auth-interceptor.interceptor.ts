@@ -3,9 +3,11 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor
+  HttpInterceptor,
+  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -16,19 +18,28 @@ export class AuthInterceptor implements HttpInterceptor {
     const token = localStorage.getItem('token');
 
     if (token) {
-      const clonedRequest = request.clone({
+      request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
         }
       });
-
-      return next.handle(clonedRequest);
-    } else {
-      // Handle the case where there is no token (e.g., redirect to login)
-      console.warn('No token found. Redirecting to login page.');
-      // You can also navigate to the login page using the Router if needed.
-      // For now, simply proceed with the original request.
-      return next.handle(request);
     }
+
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          console.error('Unauthorized request. Redirecting to login page.');
+          // Handle unauthorized access, e.g., redirect to login page
+        } else if (error.status === 403) {
+          console.error('Forbidden request. Redirecting to access denied page.');
+          // Handle forbidden access, e.g., redirect to access denied page
+        } else {
+          console.error('HTTP error occurred:');
+          console.error(error);
+          // Handle other HTTP errors as needed
+        }
+        return throwError(error);
+      })
+    );
   }
 }
