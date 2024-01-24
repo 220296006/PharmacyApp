@@ -12,6 +12,7 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
 import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
 import { RegistrationComponent } from './shared/components/registration/registration.component';
 import { LoginComponent } from './shared/components/login/login.component';
+import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
 
 const routes: Routes = [
   { path: 'register', pathMatch: 'full', component: RegistrationComponent },
@@ -27,6 +28,8 @@ const routes: Routes = [
   { path: 'user', pathMatch: 'full', component: UserComponent },
   { path: 'customer-details/:id', component: CustomerDetailsComponent },
   { path: 'create-user-dialog', pathMatch: 'full', component: CreateUserDialogComponent },
+  { path: 'forgot-password', pathMatch: 'full', component: ForgotPasswordComponent },
+
 ];
 
 @NgModule({

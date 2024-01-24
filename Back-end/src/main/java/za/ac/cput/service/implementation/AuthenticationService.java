@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.model.AuthenticationResponse;
-import za.ac.cput.utils.JwtUtil;
+import za.ac.cput.utils.JwtTokenProvider;
 
 import java.security.InvalidKeyException;
 
@@ -30,7 +30,7 @@ public class AuthenticationService {
     }
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtTokenProvider jwtUtil;
 
     @Autowired
     private UserDetailsService userDetailsService;

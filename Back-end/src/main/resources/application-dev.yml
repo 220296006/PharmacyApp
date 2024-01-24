@@ -61,5 +61,7 @@ EMAIL_ID: thabisomatsaba96@gmail.com
 EMAIL_PASSWORD: ysjqkbfnhvpnfzwo
 VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
 
+jwt:
+  secret:
 #Server
 SERVER_PORT: 8080

@@ -2,7 +2,9 @@ package za.ac.cput.repository;
 import za.ac.cput.model.Role;
 
 import java.util.Collection;
- /**
+import java.util.List;
+
+/**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp
  * @Date : 2023/07/08
@@ -15,7 +17,7 @@ public interface RoleRepository <T extends Role> {
         T update(T t);
         boolean delete(Long id);
         void addRoleToUser(Long userId, String roleName);
-        void getRoleByUserId(Long userId);
+         List<Role> getRolesByUserId(Long userId);
         Role getRoleByUserEmail(String email);
         Role updateUserRole(Long userId , String roleName);
 }

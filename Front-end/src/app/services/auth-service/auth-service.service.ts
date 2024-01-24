@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/model/api-response';
 import { User } from 'src/app/model/user';
 
@@ -9,7 +9,12 @@ import { User } from 'src/app/model/user';
   providedIn: 'root'
 })
 export class AuthService {
+  forgotPassword(email: string): Observable<ApiResponse<any>> {
+    const forgotPasswordUrl = `${this.apiUrl}/user/forgot-password`;
+    const body = { email };
 
+    return this.http.post<ApiResponse<any>>(forgotPasswordUrl, body);
+  }
 
   private apiUrl = 'http://localhost:8080'; // Replace with your server URL
 
