@@ -1,10 +1,159 @@
 /* You can add global styles to this file, and also import other style files */
-html, body {
-  height: 0%;
-  margin: 0%;
+body {
+  font-family: "Roboto", sans-serif;
+  color: #272829;
+  transition: background-color 0.5s ease;
 }
 
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+a {
+  color: #149ddd;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #37b3ed;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Raleway", sans-serif;
+}
+
+section {
+  padding: 80px 0;
+  overflow: hidden;
+}
+
+.section-bg {
+  background-color: #f5f6f7;
+}
+
+.section-header {
+  text-align: center;
+  padding-bottom: 70px;
+}
+
+.section-header h2 {
+  font-size: 32px;
+  font-weight: 700;
+  position: relative;
+  color: #2e3135;
+}
+
+.section-header h2:before,
+.section-header h2:after {
+  content: "";
+  width: 50px;
+  height: 2px;
+  background: var(--color-primary);
+  display: inline-block;
+}
+
+.section-header h2:before {
+  margin: 0 15px 10px 0;
+}
+
+.section-header h2:after {
+  margin: 0 0 10px 15px;
+}
+
+.section-header p {
+  margin: 0 auto 0 auto;
+}
+
+@media (min-width: 1199px) {
+  .section-header p {
+    max-width: 60%;
+  }
+}
+/* Add this code to your global styles */
+@media screen and (max-width: 1400px) {
+  #profile {
+    height: 83vh;
+    margin-bottom: 6rem;
+  }
+  .about-containers {
+    flex-wrap: wrap;
+  }
+  #contact,
+  #projects {
+    height: -moz-fit-content;
+    height: fit-content;
+  }
+}
+@media screen and (max-width: 1200px) {
+  #nav {
+    display: none;
+  }
+  #nav {
+    display: flex;
+  }
+  #experience,
+  .experience-details-container {
+    margin-top: 2rem;
+  }
+  #profile,
+  .section-container {
+    display: block;
+  }
+  section,
+  .section-container {
+    height: -moz-fit-content;
+    height: fit-content;
+  }
+  section {
+    margin: 0 5%;
+  }
+  .section__pic-container {
+    width: 275px;
+    height: 275px;
+    margin: 0 auto 2rem;
+  }
+  .about-containers {
+    margin-top: 0;
+  }
+}
+/* Media query for small screens */
+@media screen and (max-width: 480px) {
+  #contact {
+    padding: 1rem;
+  }
+  .contact-info-upper-container {
+    max-width: 100%;
+    border-radius: 0;
+  }
+  form {
+    max-width: 100%;
+  }
+  form input,
+  form textarea {
+    width: calc(100% - 12px);
+  }
+}
+/* Media query for tablets */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  form input,
+  form textarea {
+    width: calc(100% - 40px);
+  }
+}
+/* Media query for desktops */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  #contact {
+    padding: 3rem;
+  }
+  .contact-info-upper-container {
+    max-width: 60rem;
+  }
+  form {
+    max-width: 40rem;
+  }
+}
+html {
+  scroll-behavior: smooth;
 }/*# sourceMappingURL=styles.css.map */

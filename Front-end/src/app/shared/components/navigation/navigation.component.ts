@@ -22,17 +22,17 @@ export class NavigationComponent  implements OnInit{
   }
 
   loadLoggedInUser() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
     if (token) {
-      const decodedToken: any = jwtDecode(token);
-      this.service.getUserInfo(decodedToken).subscribe(
-        (user: any) => {
-          this.loggedInUser = user.logged_in_as;
-        }
-      );
+      try {
+        const decodedToken = jwtDecode(token);
+        console.log('Decoded Token:', decodedToken);
+        // Further processing of the decoded token, such as extracting user information
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
     }
   }
-
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
   }

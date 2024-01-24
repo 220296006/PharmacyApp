@@ -6,7 +6,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { AngularMaterialModule } from './modules/material.module';
 import { UserComponent } from './components/user/user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -51,6 +50,7 @@ import { RegistrationComponent } from './shared/components/registration/registra
 import { AuthService } from './services/auth-service/auth-service.service';
 import { LoginComponent } from './shared/components/login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor/auth-interceptor.interceptor';
+import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 @NgModule({
   declarations: [

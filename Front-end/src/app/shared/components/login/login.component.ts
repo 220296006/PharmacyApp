@@ -1,7 +1,9 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { User } from 'src/app/model/user';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import * as alertify from 'alertifyjs';
+import { catchError, finalize, of, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 
 @Component({
@@ -14,40 +16,52 @@ export class LoginComponent implements OnInit{
 
   hidePassword = true;
 
-  togglePasswordVisibility() {
-    this.hidePassword = !this.hidePassword;
-  }
   constructor(
-    private fb: FormBuilder, 
-    private authService: AuthService, 
-    private router: Router) 
-    {
-
-
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private snackBar: MatSnackBar,  // Inject MatSnackBar
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
-
   ngOnInit(): void {
   }
 
-  onSubmit() {
-    if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).subscribe(
-        response => {
-          // Redirect to home or desired page upon successful login
-          this.router.navigate(['/home']);
-        },
-        error => {
-          console.error('Login failed:', error);
-          // Handle login failure, show error message, etc.
-        }
-      );
-    }
+  togglePasswordVisibility() {
+    this.hidePassword = !this.hidePassword;
   }
 
+  onLogin() {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value; // Destructure email and password
+      this.authService.login(email,password )
+        .pipe(
+          tap(() => {
+            alertify.success('Login successful');  // Show success message with alertify
+          }),
+          catchError(error => {
+            console.error('Login failed:', error);
+            this.snackBar.open('Login failed. Please check your credentials and try again.', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top'
+            });
+            return of(null);  // Continue the observable chain
+          }),
+          finalize(() => {
+            // This block will be executed on completion, whether successful or with an error
+          })
+        )
+        .subscribe(response => {
+          if (response) {
+            // Only navigate if the login was successful
+            this.router.navigate(['/home']);
+          }
+        });
+    }
+  }
 }
 

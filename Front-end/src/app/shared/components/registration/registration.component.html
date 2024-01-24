@@ -3,7 +3,7 @@
   <img src="assets/images/PharmacyApp.png" alt="Pharmacy App Logo" class="app-logo">
 
   <h2 class="h2">Create Account</h2>
-  <form [formGroup]="registrationForm" (ngSubmit)="onRegister('')">
+  <form [formGroup]="registrationForm" (ngSubmit)="onRegister()">
     <label for="firstName">First Name:</label>
     <input type="text" id="firstName" formControlName="firstName" />
 
@@ -43,7 +43,7 @@
       </button>
     </div>
 
-    <button type="submit">Register</button>
+    <button type="submit" [disabled]="!registrationForm.valid">Register</button>
 
     <p class="login-link">
       Already have an account? <a href="/login">Login</a>
