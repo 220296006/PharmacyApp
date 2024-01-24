@@ -24,12 +24,18 @@ export class AuthService {
   login(email: string, password: string): Observable<any> {
     const loginUrl = `${this.apiUrl}/login`;
     const body = { email, password };
-
-    return this.http.post<any>(loginUrl, body)
-      .pipe(
-        tap(response => this.saveToken(response.token)),
-        catchError(this.handleError<any>('Login'))
-      );
+  
+    // Set the headers with the Bearer token
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.getToken()}`  // Replace yourTokenVariableHere with the actual token
+    });
+  
+    return this.http.post<any>(loginUrl, body, { headers })
+    .pipe(
+      tap(response => this.saveToken(response.token)),
+      catchError(this.handleError<any>('Login'))
+    );
   }
 
   public saveToken(token: string): void {
@@ -48,10 +54,16 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
-  getUserInfo(token: string): Observable<User> {
+  getUserInfo(): Observable<User> {
+    const token = this.getToken();
+    if (!token) {
+      return of(null);
+    }
+  
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User>('apiUrl', { headers })
+    return this.http.get<User>(`${this.apiUrl}/user/info`, { headers });
   }
+  
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

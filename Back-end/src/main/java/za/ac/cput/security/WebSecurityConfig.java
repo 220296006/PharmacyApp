@@ -3,6 +3,7 @@ package za.ac.cput.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -39,26 +40,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 // Public routes
-                .antMatchers("/user/login","/user/register", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create**").permitAll()
-
-                // Read permissions for all roles
-                .antMatchers(GET,
+                .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create").permitAll()
+                .antMatchers(HttpMethod.GET,
                         "/user/all", "/user/read/**", "/prescription/all", "/prescription/read/**",
                         "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount",
                         "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**",
                         "/customer/count", "/customer/all", "/customer/read/**").permitAll()
-
-                // ADMIN, MANAGER, SYSADMIN Access
-                .antMatchers(PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update")
-                .hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
-
-                .antMatchers(DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**",
-                        "/customer/delete/**")
-                .hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
-
-                // Additional antMatchers for specific permissions can be added here
-
-                // Any other request must be authenticated
+                .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
+                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()

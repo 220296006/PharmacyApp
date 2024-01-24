@@ -23,8 +23,12 @@ export class AuthInterceptor implements HttpInterceptor {
       });
 
       return next.handle(clonedRequest);
+    } else {
+      // Handle the case where there is no token (e.g., redirect to login)
+      console.warn('No token found. Redirecting to login page.');
+      // You can also navigate to the login page using the Router if needed.
+      // For now, simply proceed with the original request.
+      return next.handle(request);
     }
-
-    return next.handle(request);
   }
 }
