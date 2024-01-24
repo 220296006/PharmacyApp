@@ -2,7 +2,6 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,12 +13,11 @@ import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.query.UserQuery;
+import za.ac.cput.repository.implementation.RoleRepositoryImp;
 import za.ac.cput.rowmapper.UserRowMapper;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +31,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final NamedParameterJdbcTemplate jdbc;
+    private final RoleRepositoryImp roleRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -41,20 +40,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with email: " + email);
             }
-            List<SimpleGrantedAuthority> authorities = getAuthorities(user.getRoles());
-            return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
+            List<Role> roles = roleRepository.getRolesByUserId(user.getId());
+            return new org.springframework.security.core.userdetails.User(
+                    user.getEmail(), user.getPassword(), user.isEnabled(), true,
+                    true, user.isNotLocked(), getAuthorities(roles)
+            );
         } catch (EmptyResultDataAccessException exception) {
             throw new UsernameNotFoundException("User not found with email: " + email);
-        } catch (DataAccessException | ApiException exception) {
+        } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("Error loading user by email");
         }
     }
 
-    private List<SimpleGrantedAuthority> getAuthorities(Set<Role> roles) {
-        if (roles == null) {
-            return Collections.emptyList();
-        }
-        return roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toList());
+    private List<SimpleGrantedAuthority> getAuthorities(List<Role> roles) {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .collect(Collectors.toList());
     }
 }

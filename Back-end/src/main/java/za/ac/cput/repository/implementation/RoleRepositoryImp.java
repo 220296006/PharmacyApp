@@ -14,9 +14,7 @@ import za.ac.cput.model.Role;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.rowmapper.RoleRowMapper;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static java.util.Objects.requireNonNull;
 import static za.ac.cput.enumeration.RoleType.ROLE_USER;
@@ -132,18 +130,19 @@ public boolean delete(Long id) {
     }
 
     @Override
-public void getRoleByUserId(Long userId) {
-    log.info("Retrieving role by user ID: {}", userId);
-    try {
-        SqlParameterSource parameters = new MapSqlParameterSource().addValue("userId", userId);
-        jdbc.queryForObject(SELECT_ROLE_BY_USER_ID_QUERY, parameters, new RoleRowMapper());
-    } catch (EmptyResultDataAccessException exception) {
-        log.error(exception.getMessage());
-    } catch (Exception exception) {
-        log.error(exception.getMessage());
-        throw new ApiException("An error occurred while retrieving the role. Please try again.");
+    public List<Role> getRolesByUserId(Long userId) {
+        log.info("Retrieving roles by user ID: {}", userId);
+        try {
+            SqlParameterSource parameters = new MapSqlParameterSource().addValue("userId", userId);
+            return jdbc.query(SELECT_ROLES_BY_USER_ID_QUERY, parameters, new RoleRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            log.error(exception.getMessage());
+            return Collections.emptyList();
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while retrieving the roles. Please try again.");
+        }
     }
-}
 
 
    @Override

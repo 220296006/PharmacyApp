@@ -3,13 +3,12 @@ package za.ac.cput.utils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.KeyGenerator;
-import java.security.InvalidKeyException;
+import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
-import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,19 +22,9 @@ import java.util.function.Function;
  * @Time : 16:34
  **/
 @Component
-public class JwtUtil {
-    private final String SECRET_KEY;
-    public JwtUtil() {
-        this.SECRET_KEY = String.valueOf(generateSecretKey());
-    }
-    private Key generateSecretKey() {
-    try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-            return keyGenerator.generateKey();
-   } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Failed to generate secret key for JWT");
-  }
-}
+public class JwtTokenProvider {
+    @Value("${jwt.secret}")
+    private String SECRET_KEY;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -52,7 +41,7 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(SECRET_KEY)
+                .setSigningKey(SECRET_KEY.getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
@@ -62,28 +51,34 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) throws InvalidKeyException {
+    public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, userDetails.getUsername());
     }
 
-    public String generateToken(UserDetails userDetails, Map<String, Object> additionalClaims) throws InvalidKeyException {
+    public String generateToken(UserDetails userDetails, Map<String, Object> additionalClaims) {
         return createToken(additionalClaims, userDetails.getUsername());
     }
 
-    private String createToken(Map<String, Object> claims, String subject) throws InvalidKeyException {
-        Key signingKey = io.jsonwebtoken.security.Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    private String createToken(Map<String, Object> claims, String subject) {
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        Key signingKey = new SecretKeySpec(SECRET_KEY.getBytes(), signatureAlgorithm.getJcaName());
+
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(24)))
-                .signWith(signingKey, SignatureAlgorithm.HS256)
+                .signWith(signingKey)
                 .compact();
     }
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public String getEmailFromToken(String token) {
+        return extractClaim(token, Claims::getSubject);
     }
 }

@@ -29,5 +29,11 @@
       </button>
     </div>
     <button type="submit" [disabled]="!loginForm.valid">Login</button>
+
+    <!-- Registration link -->
+    <p>Don't have an account? <a [routerLink]="['/register']">Register</a></p>
+
+    <!-- Forgot Password link -->
+    <p><a [routerLink]="['/forgot-password']">Forgot Password?</a></p>
   </form>
 </div>

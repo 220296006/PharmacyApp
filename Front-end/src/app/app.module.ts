@@ -51,6 +51,7 @@ import { AuthService } from './services/auth-service/auth-service.service';
 import { LoginComponent } from './shared/components/login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor/auth-interceptor.interceptor';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
+import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +83,7 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
     CustomerInvoiceComponent,
     RegistrationComponent,
     LoginComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,

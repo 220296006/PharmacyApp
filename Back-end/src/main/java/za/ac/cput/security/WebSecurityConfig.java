@@ -1,6 +1,7 @@
 package za.ac.cput.security;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,8 +13,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import za.ac.cput.service.implementation.UserDetailsServiceImpl;
+import za.ac.cput.utils.JwtTokenProvider;
 
-import static org.springframework.http.HttpMethod.*;
+import javax.sql.DataSource;
 
 /**
  * @author : Thabiso Matsaba
@@ -28,10 +31,33 @@ import static org.springframework.http.HttpMethod.*;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery("SELECT email, password, enabled FROM Users WHERE email = ?")
+                .authoritiesByUsernameQuery("SELECT email, name FROM UserRoles WHERE email = ?");
     }
 
     @Override
@@ -39,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                // Public routes
                 .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create").permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/user/all", "/user/read/**", "/prescription/all", "/prescription/read/**",
@@ -50,27 +75,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/login").permitAll()
-                .and()
-                .logout().permitAll();
-    }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("userpassword")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("adminpassword")).roles("ADMIN")
-                .and()
-                .withUser("manager").password(passwordEncoder().encode("managerpassword")).roles("MANAGER")
-                .and()
-                .withUser("sysadmin").password(passwordEncoder().encode("sysadminpassword")).roles("SYSADMIN");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+                .apply(new JwtConfigurer(jwtTokenProvider)); // Custom JwtConfigurer to handle JWT authentication
     }
 
 }
