@@ -1,0 +1,86 @@
+.registration-container {
+  max-width: 400px;
+  margin: 3px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.app-logo {
+  max-width: 150px; /* Adjust the max-width as needed */
+  margin-bottom: 20px;
+  margin-left: 100px;
+}
+
+.h2{
+  font-size: 2em;
+  font-weight: bold;
+  color: #2e8b57; /* SeaGreen */
+  margin-bottom: 20px;
+  margin-left: 72px;
+}
+
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+.password-input {
+  position: relative;
+  width: calc(100% - 10px);
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+button.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #ddd;
+  border: 1px solid #ccc;
+  padding: 5px;
+  cursor: pointer;
+}
+
+button.toggle-password:hover {
+  background-color: #c0c0c0;
+}
+
+button.toggle-password mat-icon {
+  color: #555;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+p.login-link {
+  margin-top: 15px;
+  text-align: center;
+}
+
+p.login-link a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+p.login-link a:hover {
+  text-decoration: underline;
+}

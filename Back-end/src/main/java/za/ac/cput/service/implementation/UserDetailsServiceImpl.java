@@ -2,6 +2,7 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), authorities);
         } catch (EmptyResultDataAccessException exception) {
             throw new UsernameNotFoundException("User not found with email: " + email);
-        } catch (Exception exception) {
+        } catch (DataAccessException | ApiException exception) {
             log.error(exception.getMessage());
             throw new ApiException("Error loading user by email");
         }

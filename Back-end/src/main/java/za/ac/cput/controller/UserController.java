@@ -2,23 +2,25 @@ package za.ac.cput.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
+import za.ac.cput.model.AuthenticationResponse;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.User;
 import za.ac.cput.service.UserService;
+import za.ac.cput.service.implementation.AuthenticationService;
 
 import javax.validation.Valid;
-import java.util.Collections;
-
-
 import java.net.URI;
+import java.security.InvalidKeyException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +42,19 @@ import static org.springframework.http.HttpStatus.*;
 @CrossOrigin(origins = "http://localhost:4200")  // Add this line
 public class UserController {
     private final UserService userService;
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+        try {
+            AuthenticationResponse authenticationResponse = authenticationService.authenticateUser(authenticationRequest);
+            return ResponseEntity.ok(authenticationResponse);
+        } catch (BadCredentialsException | InvalidKeyException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(ResponseEntity.notFound());
+        }
+    }
 
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {

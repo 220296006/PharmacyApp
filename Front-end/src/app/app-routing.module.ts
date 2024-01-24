@@ -10,8 +10,12 @@ import { InventoryComponent } from './components/inventory/inventory.component';
 import { UserComponent } from './components/user/user.component';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { CreateUserDialogComponent } from './components/create-user-dialog/create-user-dialog.component';
+import { RegistrationComponent } from './shared/components/registration/registration.component';
+import { LoginComponent } from './shared/components/login/login.component';
 
 const routes: Routes = [
+  { path: 'register', pathMatch: 'full', component: RegistrationComponent },
+  { path: 'login', pathMatch: 'full', component: LoginComponent },
   { path: '', pathMatch: 'full', component: HomeComponent },
   { path: 'nav', pathMatch: 'full', component: NavigationComponent },
   { path: 'home', pathMatch: 'full', component: HomeComponent },

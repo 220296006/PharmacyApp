@@ -6,11 +6,10 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { AngularMaterialModule } from './modules/material.module';
 import { UserComponent } from './components/user/user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
 import { CustomerComponent } from './components/customer/customer.component';
@@ -47,6 +46,11 @@ import { CustomerPrescriptionsComponent } from './components/customer-prescripti
 import { CustomerMedicationsComponent } from './components/customer-medications/customer-medications.component';
 import { CustomerInvoiceComponent } from './components/customer-invoice/customer-invoice.component';
 import { HomeService } from './services/home-service/home.service';
+import { RegistrationComponent } from './shared/components/registration/registration.component';
+import { AuthService } from './services/auth-service/auth-service.service';
+import { LoginComponent } from './shared/components/login/login.component';
+import { AuthInterceptor } from './services/auth-interceptor/auth-interceptor.interceptor';
+import { NavigationComponent } from './shared/components/navigation/navigation.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +80,8 @@ import { HomeService } from './services/home-service/home.service';
     CustomerPrescriptionsComponent,
     CustomerMedicationsComponent,
     CustomerInvoiceComponent,
+    RegistrationComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -95,6 +101,12 @@ import { HomeService } from './services/home-service/home.service';
     MatCardModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    AuthService,
     UserService,
     HomeService,
     CustomerService,
