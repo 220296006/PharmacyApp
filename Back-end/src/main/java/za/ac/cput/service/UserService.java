@@ -24,6 +24,5 @@ public interface UserService {
 
     boolean deleteUser(Long id);
     Boolean verifyToken(String token);
-
-    Optional<User> findUserByEmailIgnoreCase(String email);
+    User findUserByEmailIgnoreCase(String email);
 }

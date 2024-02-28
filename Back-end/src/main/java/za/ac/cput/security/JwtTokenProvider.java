@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
@@ -34,14 +36,11 @@ public class JwtTokenProvider {
     private UserDetailsService userDetailsService;
 
     public String createToken(String username, Set<Role> roles) {
+        log.info("Creating JWT token for user: {}", username);
         Claims claims = Jwts.claims().setSubject(username);
-        // Convert the set of roles to a list of role names
-        List<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toList());
-        claims.put("roles", roleNames);
-
+        claims.put("roles", roles.stream().map(Role::getName).collect(Collectors.toSet()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -54,6 +53,7 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
+        log.info("Retrieved UserDetails for token: {}", token);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -74,6 +74,7 @@ public class JwtTokenProvider {
             Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
+            log.error("JWT token validation failed: {}", e.getMessage());
             throw new JwtAuthenticationException("Expired or invalid JWT token", HttpStatus.UNAUTHORIZED);
         }
     }

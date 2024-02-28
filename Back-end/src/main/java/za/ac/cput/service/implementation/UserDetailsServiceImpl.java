@@ -2,6 +2,7 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,8 +36,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        if (email == null) { // Check for null email
+            log.warn("Email is null during user loading.");
+            throw new UsernameNotFoundException("Email cannot be null");
+        }
+
         try {
-            User user = jdbc.queryForObject(UserQuery.FETCH_USER_BY_EMAIL_QUERY, Map.of("mail", email), new UserRowMapper());
+            User user = jdbc.queryForObject(UserQuery.FETCH_USER_BY_EMAIL_QUERY,
+                    Map.of("email", email), new UserRowMapper());
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with email: " + email);
             }
@@ -45,17 +52,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     user.getEmail(), user.getPassword(), user.isEnabled(), true,
                     true, user.isNotLocked(), getAuthorities(roles)
             );
-        } catch (EmptyResultDataAccessException exception) {
+        } catch (DataAccessException exception) { // Catch specific database access exception
+            log.error("Error loading user by email: " + email, exception);
             throw new UsernameNotFoundException("User not found with email: " + email);
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("Error loading user by email");
+        } catch (Exception exception) { // Catch unexpected exceptions
+            log.error("Unexpected error loading user by email: " + email, exception);
+            throw new ApiException("An unexpected error occurred");
         }
     }
 
     private List<SimpleGrantedAuthority> getAuthorities(List<Role> roles) {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                .map(role -> new SimpleGrantedAuthority("ROLE_USER" + role.getName()))
                 .collect(Collectors.toList());
     }
 }

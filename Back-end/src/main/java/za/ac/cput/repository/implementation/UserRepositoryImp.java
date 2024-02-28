@@ -149,7 +149,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                 return null;
             } catch (Exception exception) {
                 log.error(exception.getMessage());
-                throw new ApiException("NEmail not found. Please use different email and try again");
+                throw new ApiException("Email not found. Please use different email and try again");
             }
             return null;
         }

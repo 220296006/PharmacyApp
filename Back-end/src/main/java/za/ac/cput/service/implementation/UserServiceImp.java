@@ -118,8 +118,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public  Optional<User> findUserByEmailIgnoreCase(String email) {
-        return Optional.ofNullable(userRepository.findUserByEmailIgnoreCase(email));
+    public  User findUserByEmailIgnoreCase(String email) {
+        return userRepository.findUserByEmailIgnoreCase(email);
     }
 
 }
