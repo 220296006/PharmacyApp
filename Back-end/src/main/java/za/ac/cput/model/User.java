@@ -57,7 +57,7 @@ public class User  implements UserDetails {
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    public Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -65,7 +65,6 @@ public class User  implements UserDetails {
         roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         return authorities;
     }
-
 
     @Override
     public String getUsername() {

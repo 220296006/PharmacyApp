@@ -4,7 +4,17 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import za.ac.cput.model.Role;
+
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
+
+import static javax.persistence.CascadeType.ALL;
 
 /**
  * @author : Thabiso Matsaba
@@ -33,4 +43,10 @@ public class UserDTO{
     private boolean isUsingMfa;
     private LocalDateTime createdAt;
     private boolean isNotLocked;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    public Set<Role> roles = new HashSet<>();
 }

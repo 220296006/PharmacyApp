@@ -17,9 +17,10 @@ import { ForgotPasswordComponent } from './shared/components/forgot-password/for
 const routes: Routes = [
   { path: 'register', pathMatch: 'full', component: RegistrationComponent },
   { path: 'login', pathMatch: 'full', component: LoginComponent },
+  { path: 'forgot-password', pathMatch: 'full', component: ForgotPasswordComponent },
   { path: '', pathMatch: 'full', component: HomeComponent },
-  { path: 'nav', pathMatch: 'full', component: NavigationComponent },
   { path: 'home', pathMatch: 'full', component: HomeComponent },
+  { path: 'nav', pathMatch: 'full', component: NavigationComponent },
   { path: 'customer', pathMatch: 'full', component: CustomerComponent },
   { path: 'invoice', pathMatch: 'full', component: InvoiceComponent },
   { path: 'medication', pathMatch: 'full', component: MedicationComponent },
@@ -28,8 +29,7 @@ const routes: Routes = [
   { path: 'user', pathMatch: 'full', component: UserComponent },
   { path: 'customer-details/:id', component: CustomerDetailsComponent },
   { path: 'create-user-dialog', pathMatch: 'full', component: CreateUserDialogComponent },
-  { path: 'forgot-password', pathMatch: 'full', component: ForgotPasswordComponent },
-
+  { path: '**', redirectTo: '' } 
 ];
 
 @NgModule({

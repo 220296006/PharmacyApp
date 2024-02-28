@@ -5,7 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,16 +19,19 @@ import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.model.AuthenticationResponse;
 import za.ac.cput.model.Response;
+import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
+import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.UserService;
-import za.ac.cput.service.implementation.AuthenticationService;
+import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.security.InvalidKeyException;
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
@@ -39,20 +47,34 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(path = "/user")
-@CrossOrigin(origins = "http://localhost:4200")  // Add this line
 public class UserController {
     private final UserService userService;
     @Autowired
-    private AuthenticationService authenticationService;
+    private JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            AuthenticationResponse authenticationResponse = authenticationService.authenticateUser(authenticationRequest);
-            return ResponseEntity.ok(authenticationResponse);
-        } catch (BadCredentialsException | InvalidKeyException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(ResponseEntity.notFound());
+            // Authenticate user
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+            // Map authorities (roles) to Role objects
+            Set<Role> roles = userDetails.getAuthorities().stream()
+                    .map(authority -> Role.builder().name(authority.getAuthority()).build())
+                    .collect(Collectors.toSet());
+            // Generate JWT token
+            String token = jwtTokenProvider.createToken(authenticationRequest.getEmail(), roles);
+
+            // Return token in response
+            return ResponseEntity.ok(new AuthenticationResponse(token));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username/password supplied");
         }
     }
 
@@ -60,16 +82,19 @@ public class UserController {
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);
         UserDTO userDTO = userService.createUser(user);
+        // Generate JWT token for the newly registered user
+        String token = jwtTokenProvider.createToken(userDTO.getEmail(), userDTO.getRoles());
         return ResponseEntity.created(getUri()).body(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("user", userDTO))
+                        .data(Map.of("user", userDTO, "token", token)) // Include the token in the response
                         .message("User Created")
                         .status(CREATED)
                         .statusCode(CREATED.value())
                         .build()
         );
     }
+
     @GetMapping("/all")
     public ResponseEntity<Response> getAllUsers(@RequestParam Optional<String> name, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
         log.info("Fetching users for page {} of size {}:", page, pageSize);
