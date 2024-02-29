@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,6 +50,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(path = "/user")
+@ComponentScan
 public class UserController {
     private final UserService userService;
     @Autowired
@@ -67,39 +69,49 @@ public class UserController {
 
         // Retrieve user from database
         User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
-        try {
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found");
-            }
-            // Use Spring Security's recommended authentication approach
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
-            // Retrieve user details for token generation
-            UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+        if (user == null) {
+            log.warn("User not found with email: {}", authenticationRequest.getEmail());
+            throw new UsernameNotFoundException("User not found");
+        }
 
-           // Map authorities (roles) to Role objects
+        try {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+                    authenticationRequest.getPassword());
+
+            // Authenticate the user
+            Authentication authenticated = authenticationManager.authenticate(authentication);
+
+            // Retrieve user details from the authenticated object
+            UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
+
+            // Map authorities (roles) to Role objects
             Set<Role> roles = userDetails.getAuthorities().stream()
                     .map(authority -> Role.builder().name(authority.getAuthority()).build())
                     .collect(Collectors.toSet());
-           // Generate JWT token
-            String token = jwtTokenProvider.createToken(authenticationRequest.getEmail(), roles);
+
+            // Generate JWT token
+            String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
+            log.info("Generated JWT token for user: {}", userDetails.getUsername());
+
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
             responseBody.put("message", "User authenticated successfully");
             return ResponseEntity.ok(responseBody);
         } catch (BadCredentialsException e) {
-            log.error("Invalid password for user with email {}", authenticationRequest.getEmail());
+            log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) { // Catch and log any other exceptions for broader logging coverage
+            log.error("Unexpected error during login: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
 
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);
         UserDTO userDTO = userService.createUser(user);
-        // Generate JWT token for the newly registered user
-        String token = jwtTokenProvider.createToken(userDTO.getEmail(), userDTO.getRoles());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.created(getUri()).body(
                 Response.builder()
                         .timeStamp(now())

@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Role;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final NamedParameterJdbcTemplate jdbc;
     private final RoleRepositoryImp roleRepository;
@@ -42,15 +44,24 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         try {
-            User user = jdbc.queryForObject(UserQuery.FETCH_USER_BY_EMAIL_QUERY,
-                    Map.of("email", email), new UserRowMapper());
+            User user = jdbc.queryForObject(
+                    "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
+                            "FROM Users u " +
+                            "JOIN UserRoles ur ON u.id = ur.user_id " +
+                            "JOIN Roles r ON ur.role_id = r.id " +
+                            "WHERE u.email = :email " +
+                            "GROUP BY u.id",
+                    Map.of("email", email), // Pass the email parameter here
+                    new UserRowMapper()
+            );
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with email: " + email);
             }
-            List<Role> roles = roleRepository.getRolesByUserId(user.getId());
+
+            // **Fix 1: Return the correct type**
             return new org.springframework.security.core.userdetails.User(
                     user.getEmail(), user.getPassword(), user.isEnabled(), true,
-                    true, user.isNotLocked(), getAuthorities(roles)
+                    true, user.isNotLocked(), getAuthorities(roleRepository.getRolesByUserId(user.getId()))
             );
         } catch (DataAccessException exception) { // Catch specific database access exception
             log.error("Error loading user by email: " + email, exception);
