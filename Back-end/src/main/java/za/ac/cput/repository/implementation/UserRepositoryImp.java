@@ -2,6 +2,8 @@ package za.ac.cput.repository.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -41,15 +43,20 @@ import static za.ac.cput.query.UserQuery.*;
 public class UserRepositoryImp implements UserRepository<User> {
     private final NamedParameterJdbcTemplate jdbc;
     private final RoleRepository<Role> roleRepository;
-    private final BCryptPasswordEncoder encoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
     @Override
     public User save(User user) {
         log.info("Saving A User");
+        if (user.getPassword() == null) {
+            throw new ApiException("Password cannot be null");
+        }
         if (getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new
                 ApiException("Email already in use. Please use different email and try again");
         try {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
@@ -59,7 +66,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", verificationToken));
             Confirmation confirmation = new Confirmation(user);
             emailService.sendSimpleMailMessage(user.getFirstName(), user.getEmail(), confirmation.getToken());
-            user.setEnabled(false);
+            user.setEnabled(true);
             user.setNotLocked(true);
             return user;
         } catch (Exception exception) {
@@ -129,10 +136,19 @@ public class UserRepositoryImp implements UserRepository<User> {
 
         @Override
         public User findUserByEmailIgnoreCase (String email){
-            log.info("Fetch User by Email");
+            log.info("Fetch User by Email {}", email);
             try {
-                return (jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper()));
-            } catch (EmptyResultDataAccessException exception) {
+                return jdbc.queryForObject(
+                            "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
+                                    "FROM Users u " +
+                                    "JOIN UserRoles ur ON u.id = ur.user_id " +
+                                    "JOIN Roles r ON ur.role_id = r.id " +
+                                    "WHERE u.email = :email " +
+                                    "GROUP BY u.id",
+                            Map.of("email", email), // Pass the email parameter here
+                            new UserRowMapper()
+                    );
+                } catch (EmptyResultDataAccessException exception) {
                 return null;
             } catch (Exception exception) {
                 log.error("Error while fetching user by email: {}", exception.getMessage());
@@ -149,7 +165,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                 return null;
             } catch (Exception exception) {
                 log.error(exception.getMessage());
-                throw new ApiException("NEmail not found. Please use different email and try again");
+                throw new ApiException("Email not found. Please use different email and try again");
             }
             return null;
         }
@@ -168,7 +184,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                     .addValue("email", user.getEmail())
                     .addValue("phone", user.getPhone())
                     .addValue("address", user.getAddress())
-                    .addValue("password", encoder.encode(user.getPassword()));
+                    .addValue("password", passwordEncoder.encode(user.getPassword()));
         }
 
         private String getVerificationUrl (String key, String type){

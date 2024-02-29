@@ -1,5 +1,6 @@
 package za.ac.cput.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -28,12 +30,17 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = jwtTokenProvider.resolveToken(request);
         try {
             if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication auth = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(auth);
+                log.debug("JWT token found: {}", token);
+                if (jwtTokenProvider.validateToken(token)) {
+                    Authentication auth = jwtTokenProvider.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    log.info("User successfully authenticated");
+                }
             }
         } catch (JwtAuthenticationException e) {
             SecurityContextHolder.clearContext();
             response.sendError(e.getHttpStatus().value(), e.getMessage());
+            log.error("JWT authentication error: {}", e.getMessage());
             return;
         }
         filterChain.doFilter(request, response);

@@ -3,14 +3,19 @@ package za.ac.cput.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -28,9 +33,7 @@ import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
@@ -47,6 +50,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(path = "/user")
+@ComponentScan
 public class UserController {
     private final UserService userService;
     @Autowired
@@ -56,25 +60,50 @@ public class UserController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
+    @Autowired // Autowired the password encoder
+    private BCryptPasswordEncoder passwordEncoder;
+
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+        log.info("Received login request for user: {}", authenticationRequest.getEmail());
+
+        // Retrieve user from database
+        User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
+        if (user == null) {
+            log.warn("User not found with email: {}", authenticationRequest.getEmail());
+            throw new UsernameNotFoundException("User not found");
+        }
+
         try {
-            // Authenticate user
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getEmail());
+            Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+                    authenticationRequest.getPassword());
+
+            // Authenticate the user
+            Authentication authenticated = authenticationManager.authenticate(authentication);
+
+            // Retrieve user details from the authenticated object
+            UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
+
             // Map authorities (roles) to Role objects
             Set<Role> roles = userDetails.getAuthorities().stream()
                     .map(authority -> Role.builder().name(authority.getAuthority()).build())
                     .collect(Collectors.toSet());
-            // Generate JWT token
-            String token = jwtTokenProvider.createToken(authenticationRequest.getEmail(), roles);
 
-            // Return token in response
-            return ResponseEntity.ok(new AuthenticationResponse(token));
+            // Generate JWT token
+            String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
+            log.info("Generated JWT token for user: {}", userDetails.getUsername());
+
+            // Return token in response body
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("token", token);
+            responseBody.put("message", "User authenticated successfully");
+            return ResponseEntity.ok(responseBody);
         } catch (BadCredentialsException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username/password supplied");
+            log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) { // Catch and log any other exceptions for broader logging coverage
+            log.error("Unexpected error during login: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -82,17 +111,15 @@ public class UserController {
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);
         UserDTO userDTO = userService.createUser(user);
-        // Generate JWT token for the newly registered user
-        String token = jwtTokenProvider.createToken(userDTO.getEmail(), userDTO.getRoles());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.created(getUri()).body(
                 Response.builder()
                         .timeStamp(now())
-                        .data(Map.of("user", userDTO, "token", token)) // Include the token in the response
+                        .data(Map.of("user", userDTO))
                         .message("User Created")
                         .status(CREATED)
                         .statusCode(CREATED.value())
-                        .build()
-        );
+                        .build());
     }
 
     @GetMapping("/all")

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -43,6 +44,8 @@ public class User  implements UserDetails {
     @Email(message = "Email Invalid !!. Please enter valid email ")
     @Column(unique = true)
     private String email;
+    @NotEmpty(message = "Password cannot be empty ")
+    @NotNull
     private String password;
     private String address;
     private String phone;
@@ -51,13 +54,12 @@ public class User  implements UserDetails {
     private boolean isUsingMfa;
     private LocalDateTime createdAt;
     private boolean isNotLocked;
-
     @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
