@@ -29,7 +29,6 @@ import javax.sql.DataSource;
 @AllArgsConstructor
 @EnableWebSecurity
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 

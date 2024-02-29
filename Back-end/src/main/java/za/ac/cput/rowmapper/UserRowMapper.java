@@ -7,6 +7,7 @@ import za.ac.cput.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,20 +21,11 @@ public class UserRowMapper implements RowMapper<User> {
         user.setFirstName(resultSet.getString("first_name"));
         user.setMiddleName(resultSet.getString("middle_name"));
         user.setLastName(resultSet.getString("last_name"));
+        user.setPassword(resultSet.getString("password"));
         user.setEmail(resultSet.getString("email"));
         user.setPhone(resultSet.getString("phone"));
         user.setAddress(resultSet.getString("address"));
         user.setEnabled(resultSet.getBoolean("enabled"));
-
-        // Retrieve roles as string from ResultSet
-        String rolesString = resultSet.getString("roles");
-        List<GrantedAuthority> authorities = Arrays.stream(rolesString.split(","))
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-
-        // Defer role loading (consider using JPA relationships or a separate service)
-        // user.setAuthorities(authorities);
-
         return user;
     }
 }

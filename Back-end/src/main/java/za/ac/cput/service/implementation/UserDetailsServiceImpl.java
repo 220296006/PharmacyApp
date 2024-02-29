@@ -71,7 +71,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     user.isEnabled(), // Enabled status
                     true, // Account not expired
                     true, // Credentials not expired
-                    user.isNotLocked(), // Account not locked
+                    true, // Account not locked
                     getAuthorities(roleRepository.getRolesByUserId(user.getId())) // Authorities (roles)
             );
         } catch (DataAccessException exception) {
@@ -84,7 +84,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
         private List<GrantedAuthority> getAuthorities (List < Role > roles) {
             return roles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                    .map(role -> new SimpleGrantedAuthority(role.getName()))
                     .collect(Collectors.toList());
         }
 

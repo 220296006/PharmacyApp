@@ -70,7 +70,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             Confirmation confirmation = new Confirmation(user);
             emailService.sendSimpleMailMessage(user.getFirstName(), user.getEmail(), confirmation.getToken());
             user.setEnabled(true);
-            user.setNotLocked(true);
+            user.setNotLocked(false);
             return user;
         } catch (Exception exception) {
             log.error(exception.getMessage());
