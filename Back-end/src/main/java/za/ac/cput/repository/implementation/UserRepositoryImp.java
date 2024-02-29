@@ -56,7 +56,10 @@ public class UserRepositoryImp implements UserRepository<User> {
         if (getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new
                 ApiException("Email already in use. Please use different email and try again");
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            log.info("Password before encoding: {}", user.getPassword()); // Log password before encoding
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            log.info("Password after encoding: {}", user.getPassword()); // Log password after encoding
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
@@ -74,6 +77,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             throw new ApiException("An error occurred. Please try again.");
         }
     }
+
 
     @Override
     public Collection<User> list(String name, int page, int pageSize) {
@@ -184,7 +188,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                     .addValue("email", user.getEmail())
                     .addValue("phone", user.getPhone())
                     .addValue("address", user.getAddress())
-                    .addValue("password", passwordEncoder.encode(user.getPassword()));
+                    .addValue("password", (user.getPassword()));
         }
 
         private String getVerificationUrl (String key, String type){

@@ -60,8 +60,9 @@ public class UserController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @Autowired // Autowired the password encoder
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -69,10 +70,23 @@ public class UserController {
 
         // Retrieve user from database
         User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
+
         if (user == null) {
             log.warn("User not found with email: {}", authenticationRequest.getEmail());
             throw new UsernameNotFoundException("User not found");
         }
+
+        // Log the entered password
+        log.debug("Entered password: {}", authenticationRequest.getPassword());
+        // Retrieve the hashed password stored in the database
+        String hashedPasswordFromDatabase = user.getPassword();
+        // Verify password
+        if (!passwordEncoder.matches(authenticationRequest.getPassword(), hashedPasswordFromDatabase)) {
+            log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        // Log password match
+        log.debug("Password matched for user with email: {}", authenticationRequest.getEmail());
 
         try {
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
@@ -107,11 +121,11 @@ public class UserController {
         }
     }
 
+
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);
         UserDTO userDTO = userService.createUser(user);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.created(getUri()).body(
                 Response.builder()
                         .timeStamp(now())
