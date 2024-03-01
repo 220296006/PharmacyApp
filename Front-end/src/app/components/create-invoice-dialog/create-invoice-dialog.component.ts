@@ -1,4 +1,3 @@
-import { Customer } from 'src/app/model/customer';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';

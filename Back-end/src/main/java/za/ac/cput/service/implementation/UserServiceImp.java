@@ -122,4 +122,12 @@ public class UserServiceImp implements UserService {
         return userRepository.findUserByEmailIgnoreCase(email);
     }
 
+    @Override
+    public UserDTO getUserInfo(String username) {
+        User user = userRepository.findUserByEmailIgnoreCase(username);
+        if (user != null) {
+            return UserDTOMapper.fromUser(user);
+        }
+        return null;
+    }
 }

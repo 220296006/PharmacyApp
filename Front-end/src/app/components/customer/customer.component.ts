@@ -3,11 +3,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
 import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-customer-dialog.component';
 import { CreateCustomerDialogComponent } from '../create-customer-dialog/create-customer-dialog.component';
 import * as alertify from 'alertifyjs';
+import { Customer } from 'src/app/model/Customer';
 
 @Component({
   selector: 'app-customer',

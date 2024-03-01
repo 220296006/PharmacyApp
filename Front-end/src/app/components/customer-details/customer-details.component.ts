@@ -1,7 +1,6 @@
 import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Customer } from 'src/app/model/customer';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
 import { Prescription } from 'src/app/model/prescription'; // Import Prescription model
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
@@ -11,6 +10,7 @@ import { InventoryComponent } from '../inventory/inventory.component';
 import { Invoice } from 'src/app/model/invoice';
 import { InvoiceComponent } from '../invoice/invoice.component';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
+import { Customer } from 'src/app/model/Customer';
 
 @Component({
   selector: 'app-customer-details',

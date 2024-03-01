@@ -51,6 +51,7 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 @RequestMapping(path = "/user")
 @ComponentScan
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     private final UserService userService;
     @Autowired
@@ -62,7 +63,17 @@ public class UserController {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-
+    @GetMapping("/info")
+    public ResponseEntity<UserDTO> getUserInfo(@RequestHeader("Authorization") String token) {
+        String username = jwtTokenProvider.getUsername(token);
+        if (username != null) {
+            UserDTO userDTO = userService.getUserInfo(username);
+            if (userDTO != null) {
+                return ResponseEntity.ok(userDTO);
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -106,7 +117,7 @@ public class UserController {
             // Generate JWT token
             String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
             log.info("Generated JWT token for user: {}", userDetails.getUsername());
-
+            token = token.trim();
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
