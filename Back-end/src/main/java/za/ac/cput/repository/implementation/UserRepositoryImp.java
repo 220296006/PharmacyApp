@@ -3,7 +3,6 @@ package za.ac.cput.repository.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -173,6 +172,54 @@ public class UserRepositoryImp implements UserRepository<User> {
             }
             return null;
         }
+
+    @Override
+    public List<User> getUsersByRole(String roleName) {
+        // Implement logic to fetch users by role
+        try {
+            return jdbc.query(GET_USERS_BY_ROLE_QUERY,
+                    Map.of("roleName", roleName),
+                    new UserRowMapper());
+        } catch (Exception exception) {
+            log.error("Error while fetching users by role {}: {}", roleName, exception.getMessage());
+            throw new ApiException("Error while fetching users by role");
+        }
+    }
+
+    // Additional methods for managing roles and permissions
+    @Override
+    public void assignRole(Long userId, String roleName) {
+        // Implement logic to assign a role to a user
+        try {
+            Role role = roleRepository.findRoleByName(roleName);
+            if (role != null) {
+                jdbc.update(ASSIGN_ROLE_QUERY,
+                        Map.of("userId", userId, "roleId", role.getId()));
+            } else {
+                throw new ApiException("Role not found: " + roleName);
+            }
+        } catch (Exception exception) {
+            log.error("Error while assigning role {} to user {}: {}", roleName, userId, exception.getMessage());
+            throw new ApiException("Error while assigning role to user");
+        }
+    }
+
+    @Override
+    public void revokeRole(Long userId, String roleName) {
+        // Implement logic to revoke a role from a user
+        try {
+            Role role = roleRepository.findRoleByName(roleName);
+            if (role != null) {
+                jdbc.update(REVOKE_ROLE_QUERY,
+                        Map.of("userId", userId, "roleId", role.getId()));
+            } else {
+                throw new ApiException("Role not found: " + roleName);
+            }
+        } catch (Exception exception) {
+            log.error("Error while revoking role {} from user {}: {}", roleName, userId, exception.getMessage());
+            throw new ApiException("Error while revoking role from user");
+        }
+    }
 
 
         private Integer getEmailCount (String email){

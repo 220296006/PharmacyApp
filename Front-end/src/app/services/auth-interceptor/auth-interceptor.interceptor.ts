@@ -6,13 +6,14 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private snackBar: MatSnackBar) {} // Inject MatSnackBar
+  constructor(private snackBar: MatSnackBar, private router: Router) {} // Inject MatSnackBar
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
@@ -34,6 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
+          this.router.navigate(['/login']);
           // Handle unauthorized access, e.g., redirect to login page
         } else if (error.status === 403) {
           console.error('Forbidden request. Redirecting to access denied page.');
@@ -50,6 +52,7 @@ export class AuthInterceptor implements HttpInterceptor {
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
+          this.router.navigate(['/login']);
           // Handle other HTTP errors as needed
         }
         throw error; // Throw the error directly

@@ -68,7 +68,6 @@ CREATE TABLE Medications
 );
 
 -- Table Inventory
-DROP TABLE IF EXISTS Inventory;
 CREATE TABLE Inventory
 (
     id            INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -93,7 +92,6 @@ CREATE TABLE Roles
 );
 
 -- Table UserRoles
-DROP TABLE IF EXISTS UserRoles;
 CREATE TABLE UserRoles
 (
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

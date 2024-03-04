@@ -114,16 +114,25 @@
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                style="font-size: 30px; color: rgb(0, 0, 0); font-weight: bold;"
+                style="font-size: 10px; color: rgb(0, 0, 0); font-weight: bold;"
 
               >
-              {{ loggedInUser?.firstName }} {{ loggedInUser?.lastName }}               </a>
+              Welcome, {{ loggedInUser.email | uppercase}}</a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Accout</a></li>
-                <li><a class="dropdown-item" href="#">Log Out</a></li>
-                <!-- <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#">Admin</a></li> -->
+                <li>
+                  <button mat-icon-button>
+                    <mat-icon>account_circle</mat-icon>
+                  </button>
+                  <a class="dropdown-item" href="#">Account</a>
+                </li>
+                <li>
+                  <button mat-icon-button >
+                    <mat-icon>exit_to_app</mat-icon>
+                  </button>
+                  <a class="dropdown-item" href="#" (click)="onLogout()">Log Out</a>
+                </li>
               </ul>
+              
             </li>
           </ul>
         </div>

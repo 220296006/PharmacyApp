@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import * as alertify from 'alertifyjs';
-import { jwtDecode } from 'jwt-decode';
 import { User } from 'src/app/model/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navigation',
@@ -12,7 +12,7 @@ import { User } from 'src/app/model/user';
 export class NavigationComponent implements OnInit {
   loggedInUser: User;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     this.loadLoggedInUser();
@@ -38,6 +38,7 @@ export class NavigationComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
+    this.router.navigate(['/login']);
     alertify.success('You have been logged out');
   }
 }

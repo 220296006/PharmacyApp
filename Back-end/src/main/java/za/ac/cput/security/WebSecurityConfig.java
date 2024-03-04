@@ -59,8 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount",
                         "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**",
                         "/customer/count", "/customer/all", "/customer/read/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
-                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "MANAGER", "SYSADMIN")
+                .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
+                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
                 .anyRequest().authenticated();
     }
 

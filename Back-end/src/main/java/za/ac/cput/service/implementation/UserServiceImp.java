@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
@@ -31,6 +32,7 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
     private final ConfirmationRepository<Confirmation> confirmationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDTO createUser(User user) {
@@ -130,4 +132,22 @@ public class UserServiceImp implements UserService {
         }
         return null;
     }
-}
+
+    @Override
+    public User loginAsAdmin(String email, String password) {
+        try {
+            // Retrieve the user by email
+            User user = userRepository.findUserByEmailIgnoreCase(email);
+            // Check if the user exists and the password matches
+            if (user != null && passwordEncoder.matches(password, user.getPassword())) {
+                // Check if the user has the ROLE_ADMIN role
+                if (user.getRoles().contains("ROLE_ADMIN")) {
+                    return user; // Return the authenticated user
+                }
+            }
+        } catch (Exception e) {
+            log.error("Error during admin login: {}", e.getMessage());
+        }
+        return null; // Return null if authentication fails
+    }
+    }

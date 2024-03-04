@@ -27,4 +27,7 @@ public interface UserService {
     User findUserByEmailIgnoreCase(String email);
 
     UserDTO getUserInfo(String username);
+
+    User loginAsAdmin(String email, String password);
+
 }

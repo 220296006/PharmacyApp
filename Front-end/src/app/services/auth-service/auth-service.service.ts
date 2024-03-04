@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/model/api-response';
 import { User } from 'src/app/model/user';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -66,17 +67,42 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
+
   getUserInfo(): Observable<User> {
-    const token = this.getToken();
+    const token = localStorage.getItem('token');
     if (!token) {
       return of(null);
     }
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User>(`${this.apiUrl}/user/info`, { headers }).pipe(
-      tap((userInfo) => console.log('User Info:', userInfo)),
-      catchError(this.handleError<User>('Get User Info'))
-    );
+
+    // Decode the token to get user details
+    const decodedToken: any = jwtDecode(token);
+    console.log('Decoded Token:', decodedToken); // Log decoded token
+
+
+    // Extract first name and last name from email
+    const email = decodedToken.sub;
+    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim()); // Remove any extra dots
+    const initials = firstName.charAt(0) + lastName.charAt(0);
+    // Assuming the token contains user information such as roles, iat, exp, etc.
+    const user: User = {
+      email: initials,
+      id: 0,
+      firstName: 'firstName',
+      middleName: 'astName',
+      lastName: '',
+      address: '',
+      phone: '',
+      password: '',
+      imageUrl: '',
+      enabled: false,
+      isUsingMfa: false,
+      createdAt: undefined,
+      isNotLocked: false
+    };
+
+    return of(user);
   }
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

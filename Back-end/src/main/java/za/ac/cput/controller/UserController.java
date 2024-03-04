@@ -11,8 +11,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
-import za.ac.cput.model.AuthenticationResponse;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
@@ -30,6 +27,7 @@ import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.UserService;
 import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -75,18 +73,54 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
-        log.info("Received login request for user: {}", authenticationRequest.getEmail());
-
-        // Retrieve user from database
-        User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
-
+    @PostMapping("/login/admin")
+    @RolesAllowed("ROLE_ADMIN")
+    public ResponseEntity<?> loginAsAdmin(@RequestBody AuthenticationRequest authenticationRequest) {
+        log.info("Received login request for admin: {}", authenticationRequest.getEmail());
+        // Authenticate user as ROLE_ADMIN
+        User user = userService.loginAsAdmin(authenticationRequest.getEmail(), authenticationRequest.getPassword());
         if (user == null) {
             log.warn("User not found with email: {}", authenticationRequest.getEmail());
             throw new UsernameNotFoundException("User not found");
         }
+        try {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+                    authenticationRequest.getPassword());
+            // Authenticate the user
+            Authentication authenticated = authenticationManager.authenticate(authentication);
+            // Retrieve user details from the authenticated object
+            UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
 
+            Set<Role> roles = userDetails.getAuthorities().stream()
+                    .map(authority -> Role.builder().name(authority.getAuthority()).build())
+                    .collect(Collectors.toSet());
+            // Create and return JWT token if authentication is successful
+            String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
+            log.info("Generated JWT token for user: {}", userDetails.getUsername());
+            token = token.trim();
+            // Return token in response body
+            Map<String, Object> responseBody = new HashMap<>();
+            responseBody.put("token", token);
+            responseBody.put("message", "User authenticated successfully");
+            return ResponseEntity.ok(responseBody);
+        } catch (BadCredentialsException e) {
+            log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        } catch (Exception e) { // Catch and log any other exceptions for broader logging coverage
+            log.error("Unexpected error during login: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+        log.info("Received login request for user: {}", authenticationRequest.getEmail());
+        // Retrieve user from database
+        User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
+        if (user == null) {
+            log.warn("User not found with email: {}", authenticationRequest.getEmail());
+            throw new UsernameNotFoundException("User not found");
+        }
         // Log the entered password
         log.debug("Entered password: {}", authenticationRequest.getPassword());
         // Retrieve the hashed password stored in the database
@@ -98,22 +132,17 @@ public class UserController {
         }
         // Log password match
         log.debug("Password matched for user with email: {}", authenticationRequest.getEmail());
-
         try {
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                     authenticationRequest.getPassword());
-
             // Authenticate the user
             Authentication authenticated = authenticationManager.authenticate(authentication);
-
             // Retrieve user details from the authenticated object
             UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
-
             // Map authorities (roles) to Role objects
             Set<Role> roles = userDetails.getAuthorities().stream()
                     .map(authority -> Role.builder().name(authority.getAuthority()).build())
                     .collect(Collectors.toSet());
-
             // Generate JWT token
             String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
             log.info("Generated JWT token for user: {}", userDetails.getUsername());
