@@ -1,8 +1,7 @@
-USE pharmacyapp
+USE pharmacyapp;
 
 INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, password, enabled, not_locked, using_mfa, phone, address)
  VALUES
-   (1, 'http://dummyimage.com/238x100.png/cc0000/ffffff', 'John', 'Doe', 'Smith', 'john.smith@example.com', 'hashed_password', TRUE, TRUE, FALSE, '123-456-7890', '123 Main St, Cityville'),
    (2, 'http://dummyimage.com/238x100.png/cc0000/ffffff', 'Jane', 'A', 'Johnson', 'jane.johnson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '987-654-3210', '456 Oak St, Townsville'),
    (3, 'http://dummyimage.com/238x100.png/cc0000/ffffff', 'Michael', 'B', 'Brown', 'michael.brown@example.com', 'hashed_password', TRUE, TRUE, FALSE, '555-123-4567', '789 Pine St, Villagetown'),
    (4, 'http://dummyimage.com/238x100.png/cc0000/ffffff','Emily', 'C', 'Davis', 'emily.davis@example.com', 'hashed_password', TRUE, TRUE, FALSE, '333-999-7777', '101 Elm St, Healthcity'),
@@ -15,7 +14,6 @@ INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, pas
 
 INSERT INTO Customers (id, user_id, city, state, zip_code)
 VALUES
-  (1,1, 'Cityville', 'State1', '12345'),
   (2,2, 'Townsville', 'State2', '67890'),
   (3,3, 'Villagetown', 'State3', '11111'),
   (4,4, 'Healthcity', 'State4', '22222'),
@@ -27,7 +25,6 @@ VALUES
   (10,10,'Remedytown', 'State10', '88888');
 
   INSERT INTO Prescriptions (id, customer_id, doctor_name, doctor_address, issue_date) VALUES
-    (1,1, 'Dr. Johnson', '456 Health Ave, Townsville', '2023-02-20'),
     (2,2, 'Dr. Matsaba', '421 Makhaza Ave, Cityville', '2023-02-10'),
     (3,3, 'Dr. Brown', '789 Wellness Blvd, Villagetown', '2023-03-10'),
     (4,4, 'Dr. Davis', '101 Healing Rd, Healthcity', '2023-04-05'),
@@ -40,7 +37,6 @@ VALUES
 
 INSERT INTO Medications (id, prescription_id, name, dosage, frequency)
  VALUES
-  (1,1, 'Paracetamol', '10 mg', 'Once a day'),
   (2,2, 'Amoxicillin', '10 mg', 'Once a day'),
   (3,3, 'Lisinopril', '15 mg', 'Twice a day'),
   (4,4, 'Omeprazole', '20 mg', 'Once a day'),
@@ -49,9 +45,8 @@ INSERT INTO Medications (id, prescription_id, name, dosage, frequency)
   (7,7, 'Ibuprofen', '30 mg', 'Twice a day'),
   (8,8, 'Atorvastatin', '40 mg', 'Once a day'),
   (9,9, 'Amlodipine', '50 mg', 'Three times a day'),
-  (10,10, 'GrandPa', '50 mg', 'Three times a day')
+  (10,10, 'GrandPa', '50 mg', 'Three times a day');
 
-insert into Invoices (id, customer_id, amount, due_date, payment_status) values (1, 1, '6.61', '2023-12-18 18:23:12', 'PAID');
 insert into Invoices (id, customer_id, amount, due_date, payment_status) values (2, 2, '7.61', '2023-12-18 18:23:12', 'CANCELLED');
 insert into Invoices (id, customer_id, amount, due_date, payment_status) values (3, 3, '6.84', '2023-06-05 03:20:00', 'PENDING');
 insert into Invoices (id, customer_id, amount, due_date, payment_status) values (4, 4, '1.46', '2023-03-02 00:23:18', 'PAID');
@@ -65,7 +60,6 @@ insert into Invoices (id, customer_id, amount, due_date, payment_status) values 
 
 INSERT INTO Inventory (id, medication_id, name, description, quantity, price)
 VALUES
-  (1,1, 'Paracetamol', 'Headache Tablet', 100, 5),
   (2,2, 'Amoxicillin', 'Antibiotic', 50, '12.50'),
   (3,3, 'Lisinopril', 'Blood pressure medication', 30, '8.75'),
   (4,4, 'Omeprazole', 'Acid reflux medication', 60, '20.50'),
@@ -76,5 +70,13 @@ VALUES
   (9,9, 'Amlodipine', 'Blood pressure medication', 55, '14.60'),
   (10,10, 'GrandPa', 'Pain medication', 55, '14.60');
 
+INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, password, enabled, not_locked, using_mfa, phone, address)
+VALUES (1, 'http://dummyimage.com/238x100.png/cc0000/ffffff','thabiso', 'patrick','matsaba','thabisomatsaba96@gmail.com', '$2a$10$KcXLFyv4PQ3i.JdMwQbiBey7lS.Z5ftoRnpfGB4W7aBo5TCe8wyYK', 1,1,1,'987-654-3210', '456 Oak St, Townsville');
 
+INSERT INTO UserRoles (user_id, role_id)
+SELECT u.id, r.id
+FROM Users u
+CROSS JOIN Roles r
+WHERE u.email = 'thabisomatsaba96@gmail.com'
+AND r.name = 'ROLE_ADMIN'
 
