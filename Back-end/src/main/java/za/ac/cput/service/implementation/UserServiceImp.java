@@ -11,6 +11,7 @@ import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
 import za.ac.cput.dtomapper.UserUpdateDTOMapper;
+import za.ac.cput.enumeration.RoleType;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
@@ -20,6 +21,8 @@ import za.ac.cput.service.UserService;
 
 import java.util.Collection;
 import java.util.Optional;
+
+import static za.ac.cput.enumeration.RoleType.ROLE_ADMIN;
 
 /**
  * @author : Thabiso Matsaba
@@ -142,7 +145,7 @@ public class UserServiceImp implements UserService {
             // Check if the user exists and the password matches
             if (user != null && passwordEncoder.matches(password, user.getPassword())) {
                 // Check if the user has the ROLE_ADMIN role
-                if (user.getRoles().contains("ROLE_ADMIN")) {
+                if (user.getRoles().contains(ROLE_ADMIN)) {
                     return user; // Return the authenticated user
                 }
             }

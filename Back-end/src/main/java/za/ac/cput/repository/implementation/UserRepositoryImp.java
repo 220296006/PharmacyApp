@@ -19,6 +19,7 @@ import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
+import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.rowmapper.UserRowMapper;
@@ -64,10 +65,13 @@ public class UserRepositoryImp implements UserRepository<User> {
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
             user.setId(Objects.requireNonNull(holder.getKey()).longValue());
             roleRepository.addRoleToUser(user.getId(), ROLE_USER.name());
-            String verificationToken = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
-            jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", verificationToken));
+            String token = UUID.randomUUID().toString();
+            jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", token));
             Confirmation confirmation = new Confirmation(user);
-            emailService.sendSimpleMailMessage(user.getFirstName(), user.getEmail(), confirmation.getToken());
+            confirmation.setUser(user);
+            confirmation.setToken(token);
+            //confirmationRepository.save(confirmation);
+            emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), token);
             user.setEnabled(true);
             user.setNotLocked(false);
             return user;
@@ -238,8 +242,12 @@ public class UserRepositoryImp implements UserRepository<User> {
                     .addValue("password", (user.getPassword()));
         }
 
-        private String getVerificationUrl (String key, String type){
-            return ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/verify/" + "/" + key + type).toUriString();
-        }
+    private String getVerificationUrl(String key, String type) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/user/verify/" + key + type)
+                .toUriString();
     }
+
+
+}
 

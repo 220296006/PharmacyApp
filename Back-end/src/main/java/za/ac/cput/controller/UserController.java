@@ -261,19 +261,33 @@ public class UserController {
                         .build()
         );
     }
-    @GetMapping("/confirm")
-    public ResponseEntity<Response> confirmUserAccount(@RequestParam("token") String token) {
+    @GetMapping("/verify/{token}account")  // Adjusted mapping to include token as a path variable
+    public ResponseEntity<Response> confirmUserAccount(@PathVariable("token") String token) {
+        // Ensure security measures are in place to protect against potential token-based attacks
         Boolean isSuccess = userService.verifyToken(token);
-        return ResponseEntity.ok().body(
-                Response.builder()
-                        .timeStamp(LocalDateTime.parse(LocalDateTime.now().toString()))
-                        .data(Map.of("Success", isSuccess))
-                        .message("Account Verified")
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .build()
-        );
+        if (isSuccess) {
+            return ResponseEntity.ok().body(
+                    Response.builder()
+                            .timeStamp(LocalDateTime.now())  // Simplified timestamp creation
+                            .data(Map.of("Success", true))
+                            .message("Account Verified")
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
+                            .build()
+            );
+        } else {
+            return ResponseEntity.badRequest().body(
+                    Response.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .data(Map.of("Success", false))
+                            .message("Invalid or expired token")
+                            .status(HttpStatus.BAD_REQUEST)
+                            .statusCode(HttpStatus.BAD_REQUEST.value())
+                            .build()
+            );
+        }
     }
+
 
     private URI getUri(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());
