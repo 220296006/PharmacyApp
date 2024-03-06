@@ -49,11 +49,10 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-
-
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
-        log.info("Retrieved UserDetails for token: {}", token);
+        log.info("Retrieved UserDetails for user: {}", userDetails.getUsername());
+        log.debug("Retrieved password for user: {}", userDetails.getPassword());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 

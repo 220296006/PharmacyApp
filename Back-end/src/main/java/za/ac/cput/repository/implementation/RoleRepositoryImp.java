@@ -181,4 +181,59 @@ public Role updateUserRole(Long userId, String roleName) {
     }
 }
 
-}
+     @Override
+     public Role findRoleByName(String roleName) {
+         String query = "SELECT id FROM Roles WHERE name = :roleName";
+         Map<String, Object> params = new HashMap<>();
+         params.put("roleName", roleName);
+         return jdbc.queryForObject(query, params, Role.class);
+     }
+
+     @Override
+     public Long findUserIdByEmail(String email) {
+         String query = "SELECT id FROM Users WHERE email = :email";
+         Map<String, Object> params = new HashMap<>();
+         params.put("email", email);
+         return jdbc.queryForObject(query, params, Long.class);
+     }
+
+     @Override
+     public Long findRoleIdByName(String roleName) {
+         String query = "SELECT id FROM Roles WHERE name = :roleName";
+         Map<String, Object> params = new HashMap<>();
+         params.put("roleName", roleName);
+         return jdbc.queryForObject(query, params, Long.class);
+     }
+
+     public void assignRolesToUser(String email) {
+         // Fetch user ID based on email
+         Long userId = findUserIdByEmail(email);
+         if (userId == null) {
+             // Handle user not found
+             return;
+         }
+
+         // Fetch role IDs for ROLE_ADMIN, ROLE_MANAGER, and ROLE_SYSADMIN
+         Long roleIdAdmin = findRoleIdByName("ROLE_ADMIN");
+         Long roleIdManager = findRoleIdByName("ROLE_MANAGER");
+         Long roleIdSysAdmin = findRoleIdByName("ROLE_SYSADMIN");
+
+         // Insert records into UserRoles table to assign roles to the user
+         String assignRolesQuery = "INSERT INTO UserRoles (user_id, role_id) VALUES (:userId, :roleId)";
+         Map<String, Object> params = new HashMap<>();
+         params.put("userId", userId);
+
+         // Assign ROLE_ADMIN
+         params.put("roleId", roleIdAdmin);
+         jdbc.update(assignRolesQuery, params);
+
+         // Assign ROLE_MANAGER
+         params.put("roleId", roleIdManager);
+         jdbc.update(assignRolesQuery, params);
+
+         // Assign ROLE_SYSADMIN
+         params.put("roleId", roleIdSysAdmin);
+         jdbc.update(assignRolesQuery, params);
+     }
+
+ }

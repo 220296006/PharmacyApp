@@ -3,7 +3,6 @@ package za.ac.cput.repository.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -56,7 +55,10 @@ public class UserRepositoryImp implements UserRepository<User> {
         if (getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new
                 ApiException("Email already in use. Please use different email and try again");
         try {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            log.info("Password before encoding: {}", user.getPassword()); // Log password before encoding
+            String hashedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(hashedPassword);
+            log.info("Password after encoding: {}", user.getPassword()); // Log password after encoding
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
@@ -67,13 +69,14 @@ public class UserRepositoryImp implements UserRepository<User> {
             Confirmation confirmation = new Confirmation(user);
             emailService.sendSimpleMailMessage(user.getFirstName(), user.getEmail(), confirmation.getToken());
             user.setEnabled(true);
-            user.setNotLocked(true);
+            user.setNotLocked(false);
             return user;
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
         }
     }
+
 
     @Override
     public Collection<User> list(String name, int page, int pageSize) {
@@ -170,6 +173,54 @@ public class UserRepositoryImp implements UserRepository<User> {
             return null;
         }
 
+    @Override
+    public List<User> getUsersByRole(String roleName) {
+        // Implement logic to fetch users by role
+        try {
+            return jdbc.query(GET_USERS_BY_ROLE_QUERY,
+                    Map.of("roleName", roleName),
+                    new UserRowMapper());
+        } catch (Exception exception) {
+            log.error("Error while fetching users by role {}: {}", roleName, exception.getMessage());
+            throw new ApiException("Error while fetching users by role");
+        }
+    }
+
+    // Additional methods for managing roles and permissions
+    @Override
+    public void assignRole(Long userId, String roleName) {
+        // Implement logic to assign a role to a user
+        try {
+            Role role = roleRepository.findRoleByName(roleName);
+            if (role != null) {
+                jdbc.update(ASSIGN_ROLE_QUERY,
+                        Map.of("userId", userId, "roleId", role.getId()));
+            } else {
+                throw new ApiException("Role not found: " + roleName);
+            }
+        } catch (Exception exception) {
+            log.error("Error while assigning role {} to user {}: {}", roleName, userId, exception.getMessage());
+            throw new ApiException("Error while assigning role to user");
+        }
+    }
+
+    @Override
+    public void revokeRole(Long userId, String roleName) {
+        // Implement logic to revoke a role from a user
+        try {
+            Role role = roleRepository.findRoleByName(roleName);
+            if (role != null) {
+                jdbc.update(REVOKE_ROLE_QUERY,
+                        Map.of("userId", userId, "roleId", role.getId()));
+            } else {
+                throw new ApiException("Role not found: " + roleName);
+            }
+        } catch (Exception exception) {
+            log.error("Error while revoking role {} from user {}: {}", roleName, userId, exception.getMessage());
+            throw new ApiException("Error while revoking role from user");
+        }
+    }
+
 
         private Integer getEmailCount (String email){
             return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
@@ -184,7 +235,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                     .addValue("email", user.getEmail())
                     .addValue("phone", user.getPhone())
                     .addValue("address", user.getAddress())
-                    .addValue("password", passwordEncoder.encode(user.getPassword()));
+                    .addValue("password", (user.getPassword()));
         }
 
         private String getVerificationUrl (String key, String type){

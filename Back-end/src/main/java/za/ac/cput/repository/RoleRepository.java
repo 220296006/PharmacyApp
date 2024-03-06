@@ -20,4 +20,10 @@ public interface RoleRepository <T extends Role> {
          List<Role> getRolesByUserId(Long userId);
         Role getRoleByUserEmail(String email);
         Role updateUserRole(Long userId , String roleName);
+
+        Role  findRoleByName(String roleName);
+
+        Long findUserIdByEmail(String email);
+
+        Long findRoleIdByName(String roleName);
 }

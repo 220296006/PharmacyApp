@@ -3,8 +3,9 @@ import za.ac.cput.dto.UserUpdateDTO;
 
 import za.ac.cput.model.User;
 import java.util.Collection;
+import java.util.List;
 
- /**
+/**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp
  * @Date : 2023/07/08
@@ -20,4 +21,10 @@ public interface UserRepository <T extends User> {
       Boolean existByEmail(String email);
       UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser);
 
- }
+    List<User> getUsersByRole(String roleName);
+
+      // Additional methods for managing roles and permissions
+      void assignRole(Long userId, String roleName);
+
+      void revokeRole(Long userId, String roleName);
+}

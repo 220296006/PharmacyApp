@@ -25,4 +25,9 @@ public interface UserService {
     boolean deleteUser(Long id);
     Boolean verifyToken(String token);
     User findUserByEmailIgnoreCase(String email);
+
+    UserDTO getUserInfo(String username);
+
+    User loginAsAdmin(String email, String password);
+
 }

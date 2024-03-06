@@ -52,6 +52,8 @@ import { LoginComponent } from './shared/components/login/login.component';
 import { AuthInterceptor } from './services/auth-interceptor/auth-interceptor.interceptor';
 import { NavigationComponent } from './shared/components/navigation/navigation.component';
 import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
+import { ToastrModule, ToastrService  } from 'ngx-toastr';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -102,12 +104,18 @@ import { ForgotPasswordComponent } from './shared/components/forgot-password/for
     MatDatepickerModule,
     MatNativeDateModule,
     MatCardModule,
+    ToastrModule.forRoot({
+      timeOut: 3000, // Set default toast duration to 3 seconds
+      progressBar: true, // Enable progress bar
+      positionClass: 'toast-top-right', // Set default position to top-right
+    }),
+    MatSnackBarModule,
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
+      multi: true,
     },
     AuthService,
     UserService,
@@ -117,6 +125,7 @@ import { ForgotPasswordComponent } from './shared/components/forgot-password/for
     InventoryService,
     MedicationService,
     PrescriptionService,
+    ToastrService,
     { provide: MAT_DIALOG_DATA, useValue: {} },
   ],
   bootstrap: [AppComponent],

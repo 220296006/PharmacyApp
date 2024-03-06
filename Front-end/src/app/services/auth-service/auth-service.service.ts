@@ -4,13 +4,33 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/model/api-response';
 import { User } from 'src/app/model/user';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   private apiUrl = 'http://localhost:8080';
+
+  constructor(private http: HttpClient) { }
+
+  loginAsAdmin(email: string, password: string): Observable<any> {
+    const loginUrl = `${this.apiUrl}/user/login/admin`;
+    const body = { email, password };
+
+    return this.http.post<any>(loginUrl, body).pipe(
+      tap((response) => console.log('Login response:', response)),
+      tap((response) => {
+        // Check if the response contains a valid token
+        if (response.token) {
+          this.saveToken(response.token);
+        } else {
+          console.error("Login response doesn't contain a token");
+        }
+      }),
+      catchError(this.handleError<any>('Login'))
+    );
+  }
 
   forgotPassword(email: string): Observable<ApiResponse<any>> {
     const forgotPasswordUrl = `${this.apiUrl}/user/forgot-password`;
@@ -19,31 +39,34 @@ export class AuthService {
     return this.http.post<ApiResponse<any>>(forgotPasswordUrl, body);
   }
 
-
-  constructor(private http: HttpClient) { }
-
   registerUser(user: User): Observable<ApiResponse<User>> {
     console.log('Registering user:', user);
-    return this.http.post<ApiResponse<User>>
-      (`${this.apiUrl}/user/register`, user)
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+    return this.http.post<ApiResponse<User>>(
+      `${this.apiUrl}/user/register`,
+      user,
+      { headers }
+    );
   }
 
   login(email: string, password: string): Observable<any> {
     const loginUrl = `${this.apiUrl}/user/login`;
     const body = { email, password };
 
-    // Set the headers with the Bearer token
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.getToken()}`  // Replace yourTokenVariableHere with the actual token
-    });
-
-    return this.http.post<any>(loginUrl, body, { headers })
-      .pipe(
-        tap(response => console.log('Login response:', response)), // Add this line for logging
-        tap(response => this.saveToken(response.token)),
-        catchError(this.handleError<any>('Login'))
-      );
+    return this.http.post<any>(loginUrl, body).pipe(
+      tap((response) => console.log('Login response:', response)),
+      tap((response) => {
+        // Check if the response contains a valid token
+        if (response.token) {
+          this.saveToken(response.token);
+        } else {
+          console.error("Login response doesn't contain a token");
+        }
+      }),
+      catchError(this.handleError<any>('Login'))
+    );
   }
 
   public saveToken(token: string): void {
@@ -62,16 +85,41 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
+
   getUserInfo(): Observable<User> {
-    const token = this.getToken();
+    const token = localStorage.getItem('token');
     if (!token) {
       return of(null);
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User>(`${this.apiUrl}/user/info`, { headers });
-  }
+    // Decode the token to get user details
+    const decodedToken: any = jwtDecode(token);
+    console.log('Decoded Token:', decodedToken); // Log decoded token
 
+
+    // Extract first name and last name from email
+    const email = decodedToken.sub;
+    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim()); // Remove any extra dots
+    const initials = firstName.charAt(0) + lastName.charAt(0);
+    // Assuming the token contains user information such as roles, iat, exp, etc.
+    const user: User = {
+      email: initials,
+      id: 0,
+      firstName: 'firstName',
+      middleName: 'astName',
+      lastName: '',
+      address: '',
+      phone: '',
+      password: '',
+      imageUrl: '',
+      enabled: false,
+      isUsingMfa: false,
+      createdAt: undefined,
+      isNotLocked: false
+    };
+
+    return of(user);
+  }
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
@@ -79,7 +127,4 @@ export class AuthService {
       return of(result as T);
     };
   }
-
-
-
 }
