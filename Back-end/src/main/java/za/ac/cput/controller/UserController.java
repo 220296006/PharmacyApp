@@ -82,7 +82,18 @@ public class UserController {
         if (user == null) {
             log.warn("User not found with email: {}", authenticationRequest.getEmail());
             throw new UsernameNotFoundException("User not found");
-        }
+}
+            log.debug("Entered password: {}", authenticationRequest.getPassword());
+            // Retrieve the hashed password stored in the database
+            String hashedPasswordFromDatabase = user.getPassword();
+            // Verify password
+            if (!passwordEncoder.matches(authenticationRequest.getPassword(), hashedPasswordFromDatabase)) {
+                log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            // Log password match
+            log.debug("Password matched for user with email: {}", authenticationRequest.getEmail());
+
         try {
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                     authenticationRequest.getPassword());

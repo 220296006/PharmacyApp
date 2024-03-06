@@ -14,6 +14,24 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
+  loginAsAdmin(email: string, password: string): Observable<any> {
+    const loginUrl = `${this.apiUrl}/user/login/admin`;
+    const body = { email, password };
+
+    return this.http.post<any>(loginUrl, body).pipe(
+      tap((response) => console.log('Login response:', response)),
+      tap((response) => {
+        // Check if the response contains a valid token
+        if (response.token) {
+          this.saveToken(response.token);
+        } else {
+          console.error("Login response doesn't contain a token");
+        }
+      }),
+      catchError(this.handleError<any>('Login'))
+    );
+  }
+
   forgotPassword(email: string): Observable<ApiResponse<any>> {
     const forgotPasswordUrl = `${this.apiUrl}/user/forgot-password`;
     const body = { email };
