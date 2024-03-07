@@ -29,7 +29,7 @@ import java.io.InputStream;
 @Slf4j
 public class EmailServiceImp implements EmailService {
     public static final String UTF_8_ENCODING = "UTF-8";
-    public static final String EMAIL_TEMPLATE = "emailTemplate";
+    public static final String EMAIL_TEMPLATE = "NEW USER VERIFICATION";
 
     @Autowired
     private final JavaMailSender emailSender;

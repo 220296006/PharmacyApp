@@ -261,14 +261,16 @@ public class UserController {
                         .build()
         );
     }
-    @GetMapping("/verify/{token}account")  // Adjusted mapping to include token as a path variable
+    @GetMapping("/verify/{token}/account")
     public ResponseEntity<Response> confirmUserAccount(@PathVariable("token") String token) {
-        // Ensure security measures are in place to protect against potential token-based attacks
+        // Delegate token verification to the UserServiceImp
         Boolean isSuccess = userService.verifyToken(token);
+
         if (isSuccess) {
+            // If token verification is successful, return success response
             return ResponseEntity.ok().body(
                     Response.builder()
-                            .timeStamp(LocalDateTime.now())  // Simplified timestamp creation
+                            .timeStamp(LocalDateTime.now())
                             .data(Map.of("Success", true))
                             .message("Account Verified")
                             .status(HttpStatus.OK)
@@ -276,6 +278,7 @@ public class UserController {
                             .build()
             );
         } else {
+            // If token verification fails, return error response
             return ResponseEntity.badRequest().body(
                     Response.builder()
                             .timeStamp(LocalDateTime.now())
@@ -287,6 +290,8 @@ public class UserController {
             );
         }
     }
+
+
 
 
     private URI getUri(){

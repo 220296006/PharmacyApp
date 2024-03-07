@@ -65,13 +65,10 @@ public class UserRepositoryImp implements UserRepository<User> {
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
             user.setId(Objects.requireNonNull(holder.getKey()).longValue());
             roleRepository.addRoleToUser(user.getId(), ROLE_USER.name());
-            String token = UUID.randomUUID().toString();
+            String token = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", token));
             Confirmation confirmation = new Confirmation(user);
-            confirmation.setUser(user);
-            confirmation.setToken(token);
-            //confirmationRepository.save(confirmation);
-            emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), token);
+            emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), confirmation.getToken());
             user.setEnabled(true);
             user.setNotLocked(false);
             return user;
@@ -244,10 +241,9 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     private String getVerificationUrl(String key, String type) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/user/verify/" + key + type)
+                .path("/user/verify/" + key + "/" + type)
                 .toUriString();
     }
-
 
 }
 
