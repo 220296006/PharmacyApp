@@ -8,6 +8,12 @@ spring:
       cors:
         allowed-origins: http://localhost:4200
 
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+
   jpa:
     sql:
       init:
