@@ -16,6 +16,7 @@ import za.ac.cput.service.EmailService;
 
 import javax.mail.internet.MimeMessage;
 import java.io.InputStream;
+import java.util.Scanner;
 
 /**
  * @author : Thabiso Matsaba
@@ -37,8 +38,6 @@ public class EmailServiceImp implements EmailService {
     private String host;
     @Value("${spring.mail.username}")
     private String fromEmail;
-
-
     @Autowired
     private TemplateEngine templateEngine;
     @Override
@@ -56,19 +55,8 @@ public class EmailServiceImp implements EmailService {
             context.setVariable("name", name);
             context.setVariable("host", host);
             context.setVariable("token", token);
-            // Process the Thymeleaf template with the provided context
             String htmlContent = templateEngine.process("emailTemplate", context);
-            // Load the image as an InputStreamSource
-            InputStreamSource imageSource = new InputStreamSource() {
-                @Override
-                public InputStream getInputStream() {
-                    // Load your image input stream here
-                    return getClass().getResourceAsStream("src/main/resources/images/PharmacyApp.png");
-                }
-            };
 
-            // Add the image as an inline attachment
-            helper.addInline("pharmacyLogo", imageSource, "image/png");
             helper.setText(htmlContent, true);
             emailSender.send(message);
         } catch (Exception exception) {
@@ -77,5 +65,6 @@ public class EmailServiceImp implements EmailService {
             throw new ApiException(exception.getMessage());
         }
     }
+
 
 }

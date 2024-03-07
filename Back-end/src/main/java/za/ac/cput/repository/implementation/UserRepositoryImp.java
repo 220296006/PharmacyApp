@@ -239,6 +239,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                     .addValue("password", (user.getPassword()));
         }
 
+
     private String getVerificationUrl(String key, String type) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/user/verify/" + key + "/" + type)
