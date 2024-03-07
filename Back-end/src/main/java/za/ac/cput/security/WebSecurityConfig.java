@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -33,9 +32,6 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
@@ -53,9 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // Permit OPTIONS requests
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/user/login/admin", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create").permitAll()
                 .antMatchers(HttpMethod.GET,
-                        "/user/all", "/user/read/**", "/prescription/all", "/prescription/read/**",
+                        "/user/all", "/user/verify/{token}/account", "/user/read/**", "/prescription/all", "/prescription/read/**",
                         "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount",
                         "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**",
                         "/customer/count", "/customer/all", "/customer/read/**").permitAll()

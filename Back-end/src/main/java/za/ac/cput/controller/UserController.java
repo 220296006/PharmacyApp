@@ -3,9 +3,9 @@ package za.ac.cput.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -14,9 +14,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.thymeleaf.TemplateEngine;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
@@ -24,14 +27,16 @@ import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.security.JwtTokenProvider;
+import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.UserService;
-import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
@@ -50,14 +55,14 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping(path = "/user")
 @ComponentScan
 @CrossOrigin(origins = "http://localhost:4200")
+@Controller
 public class UserController {
     private final UserService userService;
+    private final ConfirmationService confirmationService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private AuthenticationManager authenticationManager;
-    @Autowired
-    private UserDetailsServiceImpl userDetailsService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -261,18 +266,26 @@ public class UserController {
                         .build()
         );
     }
-    @GetMapping("/confirm")
-    public ResponseEntity<Response> confirmUserAccount(@RequestParam("token") String token) {
-        Boolean isSuccess = userService.verifyToken(token);
-        return ResponseEntity.ok().body(
-                Response.builder()
-                        .timeStamp(LocalDateTime.parse(LocalDateTime.now().toString()))
-                        .data(Map.of("Success", isSuccess))
-                        .message("Account Verified")
-                        .status(HttpStatus.OK)
-                        .statusCode(HttpStatus.OK.value())
-                        .build()
-        );
+    @GetMapping("/verify/{token}/account")
+    public ResponseEntity<String> confirmUserAccount(@PathVariable("token") String token) {
+        String userId = String.valueOf(confirmationService.findTokenByUserId(token));
+        StringBuilder html = new StringBuilder();
+        if (userId != null) {
+            // Token exists, build verification message in HTML
+            html.append("<!DOCTYPE html>")
+                    .append("<html>")
+                    .append("<body>")
+                    .append("<h2>User Verification</h2>")
+                    .append("<img src=\"https://thabisomatsba.netlify.app/assets/images/PharmacyApp.png\" alt=\"Pharmacy App Logo\" class=\"logo\" style=\"width: 200px; margin-bottom: 10px;\">")
+                    .append("<p>Your account has been successfully verified. You can now proceed to login.</p>")
+                    .append("</body>")
+                    .append("</html>");
+        } else {
+            // Token not found, build error message
+            html.append("Invalid or expired token");
+        }
+
+        return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html.toString());
     }
 
     private URI getUri(){

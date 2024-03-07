@@ -2,29 +2,32 @@ USE pharmacyapp;
 
 INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, password, enabled, not_locked, using_mfa, phone, address)
  VALUES
-   (2, 'http://dummyimage.com/238x100.png/cc0000/ffffff', 'Jane', 'A', 'Johnson', 'jane.johnson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '987-654-3210', '456 Oak St, Townsville'),
-   (3, 'http://dummyimage.com/238x100.png/cc0000/ffffff', 'Michael', 'B', 'Brown', 'michael.brown@example.com', 'hashed_password', TRUE, TRUE, FALSE, '555-123-4567', '789 Pine St, Villagetown'),
-   (4, 'http://dummyimage.com/238x100.png/cc0000/ffffff','Emily', 'C', 'Davis', 'emily.davis@example.com', 'hashed_password', TRUE, TRUE, FALSE, '333-999-7777', '101 Elm St, Healthcity'),
-   (5,  'http://dummyimage.com/238x100.png/cc0000/ffffff','Christopher', 'D', 'Miller', 'christopher.miller@example.com', 'hashed_password', TRUE, TRUE, FALSE, '111-444-8888', '202 Maple St, Remedytown'),
-   (6,  'http://dummyimage.com/238x100.png/cc0000/ffffff','Sophia', 'E', 'Wilson', 'sophia.wilson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '777-222-5555', '303 Birch St, Ailmentville'),
-   (7,  'http://dummyimage.com/238x100.png/cc0000/ffffff','Matthew', 'F', 'Moore', 'matthew.moore@example.com', 'hashed_password', TRUE, TRUE, FALSE, '999-666-3333', '404 Cedar St, Cureburg'),
-   (8,  'http://dummyimage.com/238x100.png/cc0000/ffffff','Olivia', 'G', 'Taylor', 'olivia.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
-   (9, 'http://dummyimage.com/238x100.png/cc0000/ffffff','Emma', 'H', 'Clark', 'emma.clark@example.com', 'hashed_password', TRUE, TRUE, FALSE, '444-111-9999', '606 Spruce St, Medicineville'),
-   (10,  'http://dummyimage.com/238x100.png/cc0000/ffffff','William', 'I', 'Hall', 'william.hall@example.com', 'hashed_password', TRUE, TRUE, FALSE, '666-333-2222', '707 Sycamore St, Remedytown');
+    (1, 'https://randomuser.me/api/portraits/','Chris', 'G', 'Taylor', 'chris.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
+   (2, 'https://randomuser.me/api/portraits/', 'Jane', 'A', 'Johnson', 'jane.johnson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '987-654-3210', '456 Oak St, Townsville'),
+   (3, 'https://randomuser.me/api/portraits/', 'Michael', 'B', 'Brown', 'michael.brown@example.com', 'hashed_password', TRUE, TRUE, FALSE, '555-123-4567', '789 Pine St, Villagetown'),
+   (4, 'https://randomuser.me/api/portraits/','Emily', 'C', 'Davis', 'emily.davis@example.com', 'hashed_password', TRUE, TRUE, FALSE, '333-999-7777', '101 Elm St, Healthcity'),
+   (5, 'https://randomuser.me/api/portraits/','Christopher', 'D', 'Miller', 'christopher.miller@example.com', 'hashed_password', TRUE, TRUE, FALSE, '111-444-8888', '202 Maple St, Remedytown'),
+   (6, 'https://randomuser.me/api/portraits/','Sophia', 'E', 'Wilson', 'sophia.wilson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '777-222-5555', '303 Birch St, Ailmentville'),
+   (7, 'https://randomuser.me/api/portraits/','Matthew', 'F', 'Moore', 'matthew.moore@example.com', 'hashed_password', TRUE, TRUE, FALSE, '999-666-3333', '404 Cedar St, Cureburg'),
+   (8, 'https://randomuser.me/api/portraits/','Olivia', 'G', 'Taylor', 'olivia.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
+   (9, 'https://randomuser.me/api/portraits/','Emma', 'H', 'Clark', 'emma.clark@example.com', 'hashed_password', TRUE, TRUE, FALSE, '444-111-9999', '606 Spruce St, Medicineville'),
+   (10, 'https://randomuser.me/api/portraits/','William', 'I', 'Hall', 'william.hall@example.com', 'hashed_password', TRUE, TRUE, FALSE, '666-333-2222', '707 Sycamore St, Remedytown');
 
 INSERT INTO Customers (id, user_id, city, state, zip_code)
 VALUES
+  (1,1,  'Ailmentville', 'State6', '44444'),
   (2,2, 'Townsville', 'State2', '67890'),
   (3,3, 'Villagetown', 'State3', '11111'),
   (4,4, 'Healthcity', 'State4', '22222'),
-  (5, 5, 'Remedytown', 'State5', '33333'),
-  (6,6,  'Ailmentville', 'State6', '44444'),
+  (5,5, 'Remedytown', 'State5', '33333'),
+  (6,6, 'Ailmentville', 'State6', '44444'),
   (7,7, 'Cureburg', 'State7', '55555'),
   (8,8, 'Recoveryville', 'State8', '66666'),
   (9,9, 'Medicineville', 'State9', '77777'),
   (10,10,'Remedytown', 'State10', '88888');
 
   INSERT INTO Prescriptions (id, customer_id, doctor_name, doctor_address, issue_date) VALUES
+    (1,1, 'Dr. Matsaba', '421 Makhaza Ave, Cityville', '2023-02-10'),
     (2,2, 'Dr. Matsaba', '421 Makhaza Ave, Cityville', '2023-02-10'),
     (3,3, 'Dr. Brown', '789 Wellness Blvd, Villagetown', '2023-03-10'),
     (4,4, 'Dr. Davis', '101 Healing Rd, Healthcity', '2023-04-05'),
@@ -37,6 +40,7 @@ VALUES
 
 INSERT INTO Medications (id, prescription_id, name, dosage, frequency)
  VALUES
+   (1,1, 'Amoxicillin', '10 mg', 'Once a day'),
   (2,2, 'Amoxicillin', '10 mg', 'Once a day'),
   (3,3, 'Lisinopril', '15 mg', 'Twice a day'),
   (4,4, 'Omeprazole', '20 mg', 'Once a day'),
@@ -47,6 +51,7 @@ INSERT INTO Medications (id, prescription_id, name, dosage, frequency)
   (9,9, 'Amlodipine', '50 mg', 'Three times a day'),
   (10,10, 'GrandPa', '50 mg', 'Three times a day');
 
+insert into Invoices (id, customer_id, amount, due_date, payment_status) values (1, 1, '7.61', '2023-12-18 18:23:12', 'CANCELLED');
 insert into Invoices (id, customer_id, amount, due_date, payment_status) values (2, 2, '7.61', '2023-12-18 18:23:12', 'CANCELLED');
 insert into Invoices (id, customer_id, amount, due_date, payment_status) values (3, 3, '6.84', '2023-06-05 03:20:00', 'PENDING');
 insert into Invoices (id, customer_id, amount, due_date, payment_status) values (4, 4, '1.46', '2023-03-02 00:23:18', 'PAID');
@@ -60,6 +65,7 @@ insert into Invoices (id, customer_id, amount, due_date, payment_status) values 
 
 INSERT INTO Inventory (id, medication_id, name, description, quantity, price)
 VALUES
+  (1,1, 'Amoxicillin', 'Antibiotic', 50, '12.50'),
   (2,2, 'Amoxicillin', 'Antibiotic', 50, '12.50'),
   (3,3, 'Lisinopril', 'Blood pressure medication', 30, '8.75'),
   (4,4, 'Omeprazole', 'Acid reflux medication', 60, '20.50'),
@@ -71,7 +77,7 @@ VALUES
   (10,10, 'GrandPa', 'Pain medication', 55, '14.60');
 
 INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, password, enabled, not_locked, using_mfa, phone, address)
-VALUES (1, 'http://dummyimage.com/238x100.png/cc0000/ffffff','thabiso', 'patrick','matsaba','thabisomatsaba96@gmail.com', '$2a$10$KcXLFyv4PQ3i.JdMwQbiBey7lS.Z5ftoRnpfGB4W7aBo5TCe8wyYK', 1,1,1,'987-654-3210', '456 Oak St, Townsville');
+VALUES (11, 'http://dummyimage.com/238x100.png/cc0000/ffffff','thabiso', 'patrick','matsaba','thabisomatsaba96@gmail.com', '$2a$10$KcXLFyv4PQ3i.JdMwQbiBey7lS.Z5ftoRnpfGB4W7aBo5TCe8wyYK', 1,1,1,'987-654-3210', '456 Oak St, Townsville');
 
 INSERT INTO UserRoles (user_id, role_id)
 SELECT u.id, r.id
