@@ -1,5 +1,6 @@
 package za.ac.cput.repository.implementation;
 
+import com.twilio.rest.api.v2010.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +12,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
-import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.rowmapper.UserRowMapper;
@@ -28,7 +26,6 @@ import za.ac.cput.service.EmailService;
 import java.util.*;
 
 import static za.ac.cput.enumeration.RoleType.ROLE_USER;
-import static za.ac.cput.enumeration.VerificationType.ACCOUNT;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
 import static za.ac.cput.query.UserQuery.*;
 /**
@@ -65,10 +62,9 @@ public class UserRepositoryImp implements UserRepository<User> {
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
             user.setId(Objects.requireNonNull(holder.getKey()).longValue());
             roleRepository.addRoleToUser(user.getId(), ROLE_USER.name());
-            String token = getVerificationUrl(UUID.randomUUID().toString(), ACCOUNT.getType());
+            String token = UUID.randomUUID().toString();
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", token));
-            Confirmation confirmation = new Confirmation(user);
-            emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), confirmation.getToken());
+            emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), token);
             user.setEnabled(true);
             user.setNotLocked(false);
             return user;
@@ -240,11 +236,11 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
 
 
-    private String getVerificationUrl(String key, String type) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/user/verify/" + key + "/" + type)
-                .toUriString();
-    }
+//    private String getVerificationUrl(String key, String type) {
+//        return ServletUriComponentsBuilder.fromCurrentContextPath()
+//                .path("/user/verify/" + key + "/" + type)
+//                .toUriString();
+//    }
 
 }
 

@@ -1,9 +1,11 @@
 package za.ac.cput.controller;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +22,13 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
+import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
+import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.security.JwtTokenProvider;
+import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.UserService;
 import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
@@ -31,7 +36,10 @@ import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
@@ -52,8 +60,12 @@ import static org.springframework.http.HttpStatus.*;
 @CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     private final UserService userService;
+    private final ConfirmationService confirmationService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -263,35 +275,31 @@ public class UserController {
     }
     @GetMapping("/verify/{token}/account")
     public ResponseEntity<Response> confirmUserAccount(@PathVariable("token") String token) {
-        // Delegate token verification to the UserServiceImp
-        Boolean isSuccess = userService.verifyToken(token);
-
-        if (isSuccess) {
-            // If token verification is successful, return success response
-            return ResponseEntity.ok().body(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .data(Map.of("Success", true))
-                            .message("Account Verified")
-                            .status(HttpStatus.OK)
-                            .statusCode(HttpStatus.OK.value())
-                            .build()
-            );
-        } else {
-            // If token verification fails, return error response
-            return ResponseEntity.badRequest().body(
-                    Response.builder()
-                            .timeStamp(LocalDateTime.now())
-                            .data(Map.of("Success", false))
-                            .message("Invalid or expired token")
-                            .status(HttpStatus.BAD_REQUEST)
-                            .statusCode(HttpStatus.BAD_REQUEST.value())
-                            .build()
-            );
+            String userId = confirmationService.findTokenByUserId(token);
+            if (userId != null) {
+                // Token exists, return success response
+                return ResponseEntity.ok().body(
+                        Response.builder()
+                                .timeStamp(LocalDateTime.now())
+                                .data(Map.of("Success", true))
+                                .message("Account Verified")
+                                .status(HttpStatus.OK)
+                                .statusCode(HttpStatus.OK.value())
+                                .build()
+                );
+            } else {
+                // Token not found, return error response
+                return ResponseEntity.badRequest().body(
+                        Response.builder()
+                                .timeStamp(LocalDateTime.now())
+                                .data(Map.of("Success", false))
+                                .message("Invalid or expired token")
+                                .status(HttpStatus.BAD_REQUEST)
+                                .statusCode(HttpStatus.BAD_REQUEST.value())
+                                .build()
+                );
+            }
         }
-    }
-
-
 
 
     private URI getUri(){

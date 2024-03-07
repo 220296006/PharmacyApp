@@ -23,7 +23,7 @@ public interface UserService {
     User findUserById(Long id);
 
     boolean deleteUser(Long id);
-    Boolean verifyToken(String token);
+
     User findUserByEmailIgnoreCase(String email);
 
     UserDTO getUserInfo(String username);

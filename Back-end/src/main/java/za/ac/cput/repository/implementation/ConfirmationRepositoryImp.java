@@ -8,12 +8,10 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
+import za.ac.cput.model.User;
 import za.ac.cput.query.ConfirmationQuery;
 import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.rowmapper.ConfirmationRowMapper;
@@ -36,11 +34,22 @@ import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
 public class ConfirmationRepositoryImp implements ConfirmationRepository<Confirmation> {
 
     private final NamedParameterJdbcTemplate jdbc;
-    private final JavaMailSender javaMailSender;
+
     @Override
-    public Confirmation findByToken(String token) {
-        return null;
+    public Confirmation findTokenByUserId(String userId) {
+        log.info("Finding token by User ID: {}", userId);
+        String query = ConfirmationQuery.FIND_TOKEN_BY_USER_ID;
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("userId", userId);
+        try {
+            return jdbc.queryForObject(query, params, Confirmation.class);
+        } catch (EmptyResultDataAccessException ex) {
+            log.warn("Token not found for User ID: {}", userId);
+            return null;
+        }
     }
+
+
     @Override
     public Confirmation save(Confirmation confirmation) {
         log.info("Saving a Confirmation: {}", confirmation);
@@ -49,7 +58,6 @@ public class ConfirmationRepositoryImp implements ConfirmationRepository<Confirm
             SqlParameterSource parameters = getSqlParameterSource(confirmation);
             jdbc.update(INSERT_CONFIRMATION_QUERY, parameters, holder);
             confirmation.setId(Objects.requireNonNull(holder.getKey()).longValue());
-            sendConfirmationEmail(confirmation);
             return confirmation;
         } catch (Exception exception) {
             log.error(exception.getMessage());
@@ -114,21 +122,6 @@ public class ConfirmationRepositoryImp implements ConfirmationRepository<Confirm
                 .addValue("token", confirmation.getToken())
                 .addValue("createdDate", confirmation.getCreatedDate())
                 .addValue("userId", confirmation.getUser().getId());
-    }
-
-    @Async
-    private void sendConfirmationEmail(Confirmation confirmation) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(confirmation.getUser().getEmail());
-        message.setSubject("Account Confirmation");
-        message.setText("Dear " + confirmation.getUser().getFirstName() + ",\n\n"
-                + "Thank you for registering an account with us. Please click on the link below to confirm your account:\n\n"
-                + "Confirmation Link: http://example.com/confirm?token=" + confirmation.getToken() + "\n\n"
-                + "If you did not register an account, please ignore this email.\n\n"
-                + "Best regards,\n"
-                + "Your App Team");
-        javaMailSender.send(message);
-        log.info("Confirmation email sent to: {}", confirmation.getUser().getEmail());
     }
 }
 

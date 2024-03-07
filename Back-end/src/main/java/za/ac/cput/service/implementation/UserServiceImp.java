@@ -113,15 +113,7 @@ public class UserServiceImp implements UserService {
         return true;
     }
 
-    @Override
-    public Boolean verifyToken(String token) {
-        Confirmation confirmation = confirmationRepository.findByToken(token);
-        User user = userRepository.findUserByEmailIgnoreCase(confirmation.getUser().getEmail());
-        user.setEnabled(true);
-        userRepository.save(user);
-        confirmationRepository.findByToken(token);
-        return Boolean.TRUE;
-    }
+
 
     @Override
     public  User findUserByEmailIgnoreCase(String email) {
