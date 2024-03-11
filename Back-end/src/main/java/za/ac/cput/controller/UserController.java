@@ -79,15 +79,14 @@ public class UserController {
     }
 
     @PostMapping("/login/admin")
-    @RolesAllowed("ROLE_ADMIN")
-    public ResponseEntity<?> loginAsAdmin(@RequestBody AuthenticationRequest authenticationRequest) {
+    public  ResponseEntity<Map<String, Object>> loginAsAdmin(@RequestBody AuthenticationRequest authenticationRequest) {
         log.info("Received login request for admin: {}", authenticationRequest.getEmail());
         // Authenticate user as ROLE_ADMIN
-        User user = userService.loginAsAdmin(authenticationRequest.getEmail(), authenticationRequest.getPassword());
+        User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
         if (user == null) {
             log.warn("User not found with email: {}", authenticationRequest.getEmail());
             throw new UsernameNotFoundException("User not found");
-}
+        }
             log.debug("Entered password: {}", authenticationRequest.getPassword());
             // Retrieve the hashed password stored in the database
             String hashedPasswordFromDatabase = user.getPassword();
@@ -162,7 +161,6 @@ public class UserController {
             // Generate JWT token
             String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
             log.info("Generated JWT token for user: {}", userDetails.getUsername());
-            token = token.trim();
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
@@ -177,7 +175,19 @@ public class UserController {
         }
     }
 
-
+    @PostMapping("/register/admin")
+    public ResponseEntity<Response> createAdminUser(@RequestBody @Validated User user) {
+        log.info("Registering a user: {}", user);
+        UserDTO userDTO = userService.createAdmin(user);
+        return ResponseEntity.created(getUri()).body(
+                Response.builder()
+                        .timeStamp(now())
+                        .data(Map.of("user", userDTO))
+                        .message("User Created")
+                        .status(CREATED)
+                        .statusCode(CREATED.value())
+                        .build());
+    }
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);

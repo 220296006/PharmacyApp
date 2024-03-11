@@ -40,8 +40,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO createUser(User user) {
-
         return UserDTOMapper.fromUser(userRepository.save(user));
+    }
+
+    @Override
+    public UserDTO createAdmin(User user) {
+        return UserDTOMapper.fromUser(userRepository.saveAdmin(user));
     }
 
     @Override
@@ -127,23 +131,5 @@ public class UserServiceImp implements UserService {
             return UserDTOMapper.fromUser(user);
         }
         return null;
-    }
-
-    @Override
-    public User loginAsAdmin(String email, String password) {
-        try {
-            // Retrieve the user by email
-            User user = userRepository.findUserByEmailIgnoreCase(email);
-            // Check if the user exists and the password matches
-            if (user != null && passwordEncoder.matches(password, user.getPassword())) {
-                // Check if the user has the ROLE_ADMIN role
-                if (user.getRoles().contains(ROLE_ADMIN)) {
-                    return user; // Return the authenticated user
-                }
-            }
-        } catch (Exception e) {
-            log.error("Error during admin login: {}", e.getMessage());
-        }
-        return null; // Return null if authentication fails
     }
     }

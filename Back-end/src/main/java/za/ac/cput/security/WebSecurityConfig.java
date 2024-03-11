@@ -49,14 +49,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // Permit OPTIONS requests
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/user/login/admin", "/customer/create", "/prescription/create", "/medication/create", "/invoice/create", "/inventory/create").permitAll()
+                .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/user/register/admin",
+                        "/user/login/admin", "/customer/create", "/prescription/create", "/medication/create",
+                        "/invoice/create", "/inventory/create").permitAll()
                 .antMatchers(HttpMethod.GET,
-                        "/user/all", "/user/verify/{token}/account", "/user/read/**", "/prescription/all", "/prescription/read/**",
+                        "/user/all", "/user/verify/{token}/account", "/user/read/**", "/prescription/all",
+                        "/prescription/read/**",
                         "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount",
-                        "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**",
-                        "/customer/count", "/customer/all", "/customer/read/**").permitAll()
-                .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
-                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
+                        "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all",
+                        "/inventory/read/**", "/customer/count", "/customer/all", "/customer/read/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update",
+                        "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ROLE_ADMIN",
+                        "ROLE_MANAGER", "ROLE_SYSADMIN")
+                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**",
+                        "/invoice/delete/**", "/inventory/delete/**",
+                        "/customer/delete/**").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
                 .anyRequest().authenticated();
     }
 
