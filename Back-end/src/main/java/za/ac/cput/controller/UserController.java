@@ -68,12 +68,10 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity<UserDTO> getUserInfo(@RequestHeader("Authorization") String token) {
-        String username = jwtTokenProvider.getUsername(token);
-        if (username != null) {
-            UserDTO userDTO = userService.getUserInfo(username);
-            if (userDTO != null) {
-                return ResponseEntity.ok(userDTO);
-            }
+        String username = jwtTokenProvider.getUsername(token).trim();
+        UserDTO userDTO = userService.getUserInfo(username);
+        if (userDTO != null) {
+            return ResponseEntity.ok(userDTO);
         }
         return ResponseEntity.notFound().build();
     }
