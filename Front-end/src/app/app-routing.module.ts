@@ -13,9 +13,11 @@ import { CreateUserDialogComponent } from './components/create-user-dialog/creat
 import { RegistrationComponent } from './shared/components/registration/registration.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
+import { AdminLoginComponent } from './shared/components/admin-login/admin-login.component';
 
 const routes: Routes = [
   { path: 'login', pathMatch: 'full', component: LoginComponent },
+  { path: 'loginAsAdmin', pathMatch: 'full', component: AdminLoginComponent },
   { path: 'register', pathMatch: 'full', component: RegistrationComponent },
   { path: 'forgot-password', pathMatch: 'full', component: ForgotPasswordComponent },
   { path: '', pathMatch: 'full',  component: LoginComponent},

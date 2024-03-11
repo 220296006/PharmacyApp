@@ -25,6 +25,7 @@ import za.ac.cput.service.EmailService;
 
 import java.util.*;
 
+import static za.ac.cput.enumeration.RoleType.ROLE_ADMIN;
 import static za.ac.cput.enumeration.RoleType.ROLE_USER;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
 import static za.ac.cput.query.UserQuery.*;
@@ -74,6 +75,34 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
+    @Override
+    public User saveAdmin(User user) {
+        log.info("Saving A User");
+        try {
+            User adminUser = new User();
+            adminUser.setFirstName("Thabiso");
+            adminUser.setLastName("Matsaba");
+            adminUser.setEmail("thabisomatsaba96@gmail.com");
+            // Encrypt the password for the admin user
+            String adminPassword = "admin@2024"; // Set the desired admin password
+            String hashedAdminPassword = passwordEncoder.encode(adminPassword);
+            adminUser.setPassword(hashedAdminPassword);
+            // Save admin user to the database
+            KeyHolder holder = new GeneratedKeyHolder();
+            SqlParameterSource parameters = getSqlParameterSource(adminUser);
+            jdbc.update(INSERT_USER_QUERY, parameters, holder);
+            adminUser.setId(Objects.requireNonNull(holder.getKey()).longValue());
+            roleRepository.addRoleToUser(adminUser.getId(), ROLE_ADMIN.name());
+            user.setEnabled(true);
+            user.setNotLocked(false);
+            return user;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred. Please try again.");
+        }
+
+    }
+
 
     @Override
     public Collection<User> list(String name, int page, int pageSize) {
@@ -121,54 +150,55 @@ public class UserRepositoryImp implements UserRepository<User> {
         // Convert UserUpdateDTO to User and call the existing update method
         User user = UserUpdateDTOMapper.toUser(updatedUser);
         update(user);
-       return updatedUser;
+        return updatedUser;
     }
-        @Override
-        public void delete (Long id){
-            log.info("Deleting user by Id");
-            try {
-                jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
-            } catch (Exception exception) {
-                log.error(exception.getMessage());
-                throw new ApiException("An error occurred while deleting the user. Please try again.");
-            }
+
+    @Override
+    public void delete(Long id) {
+        log.info("Deleting user by Id");
+        try {
+            jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while deleting the user. Please try again.");
         }
-
-        @Override
-        public User findUserByEmailIgnoreCase (String email){
-            log.info("Fetch User by Email {}", email);
-            try {
-                return jdbc.queryForObject(
-                            "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
-                                    "FROM Users u " +
-                                    "JOIN UserRoles ur ON u.id = ur.user_id " +
-                                    "JOIN Roles r ON ur.role_id = r.id " +
-                                    "WHERE u.email = :email " +
-                                    "GROUP BY u.id",
-                            Map.of("email", email), // Pass the email parameter here
-                            new UserRowMapper()
-                    );
-                } catch (EmptyResultDataAccessException exception) {
-                return null;
-            } catch (Exception exception) {
-                log.error("Error while fetching user by email: {}", exception.getMessage());
-                throw new ApiException("Error while fetching user by email");
-            }
     }
 
-        @Override
-        public Boolean existByEmail (String email){
-            log.info("Fetch User by Email");
-            try {
-                jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper());
-            } catch (EmptyResultDataAccessException exception) {
-                return null;
-            } catch (Exception exception) {
-                log.error(exception.getMessage());
-                throw new ApiException("Email not found. Please use different email and try again");
-            }
+    @Override
+    public User findUserByEmailIgnoreCase(String email) {
+        log.info("Fetch User by Email {}", email);
+        try {
+            return jdbc.queryForObject(
+                    "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
+                            "FROM Users u " +
+                            "JOIN UserRoles ur ON u.id = ur.user_id " +
+                            "JOIN Roles r ON ur.role_id = r.id " +
+                            "WHERE u.email = :email " +
+                            "GROUP BY u.id",
+                    Map.of("email", email), // Pass the email parameter here
+                    new UserRowMapper()
+            );
+        } catch (EmptyResultDataAccessException exception) {
             return null;
+        } catch (Exception exception) {
+            log.error("Error while fetching user by email: {}", exception.getMessage());
+            throw new ApiException("Error while fetching user by email");
         }
+    }
+
+    @Override
+    public Boolean existByEmail(String email) {
+        log.info("Fetch User by Email");
+        try {
+            jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper());
+        } catch (EmptyResultDataAccessException exception) {
+            return null;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("Email not found. Please use different email and try again");
+        }
+        return null;
+    }
 
     @Override
     public List<User> getUsersByRole(String roleName) {
@@ -219,28 +249,22 @@ public class UserRepositoryImp implements UserRepository<User> {
     }
 
 
-        private Integer getEmailCount (String email){
-            return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
-        }
+    private Integer getEmailCount(String email) {
+        return jdbc.queryForObject(COUNT_USER_EMAIL_QUERY, Map.of("email", email), Integer.class);
+    }
 
-        private SqlParameterSource getSqlParameterSource (User user){
-            return new MapSqlParameterSource()
-                    .addValue("id", user.getId())
-                    .addValue("firstName", user.getFirstName())
-                    .addValue("middleName", user.getMiddleName())
-                    .addValue("lastName", user.getLastName())
-                    .addValue("email", user.getEmail())
-                    .addValue("phone", user.getPhone())
-                    .addValue("address", user.getAddress())
-                    .addValue("password", (user.getPassword()));
-        }
+    private SqlParameterSource getSqlParameterSource(User user) {
+        return new MapSqlParameterSource()
+                .addValue("id", user.getId())
+                .addValue("firstName", user.getFirstName())
+                .addValue("middleName", user.getMiddleName())
+                .addValue("lastName", user.getLastName())
+                .addValue("email", user.getEmail())
+                .addValue("phone", user.getPhone())
+                .addValue("address", user.getAddress())
+                .addValue("password", (user.getPassword()));
 
 
-//    private String getVerificationUrl(String key, String type) {
-//        return ServletUriComponentsBuilder.fromCurrentContextPath()
-//                .path("/user/verify/" + key + "/" + type)
-//                .toUriString();
-//    }
-
+    }
 }
 

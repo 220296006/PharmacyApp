@@ -1,0 +1,44 @@
+<div class="login-container">
+    <img src="assets/images/PharmacyApp.png" alt="Pharmacy App Logo" class="app-logo">
+  
+    <h2 class=h2>Admin Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="loginAsAdmin()">
+      <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" formControlName="email" required />
+      </div>
+      <div class="password-input">
+        <label for="password">Password:</label>
+        <input
+          type="{{ hidePassword ? 'password' : 'text' }}"
+          id="password"
+          name="password"
+          formControlName="password"
+          required
+        />
+        <button
+          type="button"
+          class="toggle-password"
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility()"
+        >
+          <mat-icon>{{
+            hidePassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </div>
+      <button type="submit" [disabled]="!loginForm.valid">Login</button>
+  
+      <!-- Registration link -->
+      <p>Don't have an account? <a [routerLink]="['/register']">Register</a></p>
+  
+      <p class="login-link">
+        Admin Login? <a href="/loginAsAdmin">Login</a>
+      </p>
+  
+      <!-- Forgot Password link -->
+      <p><a [routerLink]="['/forgot-password']">Forgot Password?</a></p>
+    </form>
+  </div>
+  

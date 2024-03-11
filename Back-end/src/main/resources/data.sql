@@ -76,13 +76,5 @@ VALUES
   (9,9, 'Amlodipine', 'Blood pressure medication', 55, '14.60'),
   (10,10, 'GrandPa', 'Pain medication', 55, '14.60');
 
-INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, password, enabled, not_locked, using_mfa, phone, address)
-VALUES (11, 'http://dummyimage.com/238x100.png/cc0000/ffffff','thabiso', 'patrick','matsaba','thabisomatsaba96@gmail.com', '$2a$10$KcXLFyv4PQ3i.JdMwQbiBey7lS.Z5ftoRnpfGB4W7aBo5TCe8wyYK', 1,1,1,'987-654-3210', '456 Oak St, Townsville');
 
-INSERT INTO UserRoles (user_id, role_id)
-SELECT u.id, r.id
-FROM Users u
-CROSS JOIN Roles r
-WHERE u.email = 'thabisomatsaba96@gmail.com'
-AND r.name = 'ROLE_ADMIN'
 

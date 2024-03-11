@@ -39,7 +39,7 @@ CREATE TABLE Invoices
     amount        INTEGER NOT NULL,
     due_date      DATETIME NOT NULL,
     payment_status  VARCHAR(255) DEFAULT 'PENDING',
-    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 -
 -- Table Prescriptions
@@ -51,7 +51,7 @@ CREATE TABLE Prescriptions
     doctor_name    VARCHAR(255) NOT NULL,
     doctor_address VARCHAR(255) NOT NULL,
     issue_date     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (customer_id) REFERENCES Customers (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 
@@ -64,7 +64,7 @@ CREATE TABLE Medications
     name              VARCHAR(255) NOT NULL,
     dosage            VARCHAR(255) NOT NULL,
     frequency         VARCHAR(255) NOT NULL,
-    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (prescription_id) REFERENCES Prescriptions (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Table Inventory
@@ -78,10 +78,10 @@ CREATE TABLE Inventory
     price         INTEGER NOT NULL,
     created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (medication_id) REFERENCES Medications (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-- Table Roles
+-- Table Roles
 DROP TABLE IF EXISTS Roles;
 CREATE TABLE Roles
 (
@@ -97,13 +97,12 @@ CREATE TABLE UserRoles
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     user_id    INT UNSIGNED NOT NULL,
     role_id    INT UNSIGNED NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-    FOREIGN KEY (role_id) REFERENCES Roles (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+    FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE RESTRICT,
+    FOREIGN KEY (role_id) REFERENCES Roles (id) ON DELETE CASCADE ON UPDATE RESTRICT,
     CONSTRAINT UQ_UserRole_User_Id UNIQUE (user_id)
 );
 
 -- Table Confirmations
-DROP TABLE IF EXISTS Confirmations;
 CREATE TABLE Confirmations
 (
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -129,7 +128,6 @@ CREATE TABLE TwoFactorVerifications
 );
 
 -- Table Events
-DROP TABLE IF EXISTS Events;
 CREATE TABLE Events
 (
    id           INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -140,7 +138,6 @@ CREATE TABLE Events
 );
 
 -- Table UserEvents
-DROP TABLE IF EXISTS UserEvents;
 CREATE TABLE UserEvents
 (
     id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -149,7 +146,7 @@ CREATE TABLE UserEvents
     device     VARCHAR(100) DEFAULT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (event_id) REFERENCES Events (id) ON DELETE RESTRICT ON UPDATE CASCADE
+    FOREIGN KEY (event_id) REFERENCES Events (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Table ResetPasswordVerifications

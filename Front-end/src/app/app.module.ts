@@ -54,6 +54,7 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
 import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
 import { ToastrModule, ToastrService  } from 'ngx-toastr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AdminLoginComponent } from './shared/components/admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RegistrationComponent,
     LoginComponent,
     ForgotPasswordComponent,
+    AdminLoginComponent,
   ],
   imports: [
     BrowserModule,
