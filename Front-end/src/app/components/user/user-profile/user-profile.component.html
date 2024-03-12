@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <!-- Profile Image and Upload Icon -->
+            <div class="col-md-12 profile-image-container">
+              <img [src]="profileImageUrl" alt="Profile Image" class="profile-image" id="profileImage">
+              <label for="fileInput" class="upload-icon">
+                <i class="bi bi-camera"></i> 
+              </label>
+              <input type="file" id="fileInput" class="file-input" (change)="handleFileInput($event)">
+            </div>
+            <!-- Side Nav Bar -->
+            <div class="col-md-3">
+                <ul class="nav flex-column">
+                    <li [ngClass]="{ active: selectedSection === 'profile' }">
+                        <a (click)="selectSection('profile')" class="nav-link">
+                            <i class="bi bi-person-fill mr-2"></i>Profile
+                        </a>
+                    </li>
+                    <li [ngClass]="{ active: selectedSection === 'password' }">
+                        <a (click)="selectSection('password')" class="nav-link">
+                            <i class="bi bi-shield-lock-fill mr-2"></i>Password
+                        </a>
+                    </li>
+                    <li [ngClass]="{ active: selectedSection === 'authorization' }">
+                        <a (click)="selectSection('authorization')" class="nav-link">
+                            <i class="bi bi-key-fill mr-2"></i>Authorization
+                        </a>
+                    </li>
+                    <li [ngClass]="{ active: selectedSection === 'account' }">
+                        <a (click)="selectSection('account')" class="nav-link">
+                            <i class="bi bi-person-circle mr-2"></i>Account
+                        </a>
+                    </li>
+                    <li [ngClass]="{ active: selectedSection === 'authentication' }">
+                        <a (click)="selectSection('authentication')" class="nav-link">
+                            <i class="bi bi-shield-lock-fill mr-2"></i>Authentication
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Profile Content -->
+            <div class="col-md-9">
+                <!-- Render child components based on selectedSection -->
+                <div *ngIf="selectedSection === 'profile'">
+                    <app-profile></app-profile>
+                </div>
+                <div *ngIf="selectedSection === 'password'">
+                    <app-password></app-password>
+                </div>
+                <div *ngIf="selectedSection === 'authorization'">
+                    <app-authorization></app-authorization>
+                </div>
+                <div *ngIf="selectedSection === 'account'">
+                    <app-account></app-account>
+                </div>
+                <div *ngIf="selectedSection === 'authentication'">
+                    <app-authentication></app-authentication>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Device</th>
+                                <th>IP Address</th>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Use Angular *ngFor directive to loop through activity logs -->
+                            <tr *ngFor="let log of activityLogs">
+                                <td>{{ log.device }}</td>
+                                <td>{{ log.ipAddress }}</td>
+                                <td>{{ log.date }}</td>
+                                <td>{{ log.type }}</td>
+                                <td>{{ log.description }}</td>
+                                <td>{{ log.action }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

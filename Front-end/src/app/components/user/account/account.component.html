@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account</title>
+</head>
+<body>
+    <!-- account/account.component.html -->
+<h2>Account</h2>
+<div class="form-group">
+    <label for="accountStatus">Account Status</label>
+    <select class="form-control" id="accountStatus" [(ngModel)]="accountStatus" name="accountStatus">
+        <option value="active">Active</option>
+        <option value="deactivate">Deactivate</option>
+    </select>
+</div>
+<button type="submit" class="btn btn-primary">Update Account Status</button>
+
+</body>
+</html>

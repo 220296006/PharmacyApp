@@ -76,54 +76,6 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/login/admin")
-    public  ResponseEntity<Map<String, Object>> loginAsAdmin(@RequestBody AuthenticationRequest authenticationRequest) {
-        log.info("Received login request for admin: {}", authenticationRequest.getEmail());
-        // Authenticate user as ROLE_ADMIN
-        User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
-        if (user == null) {
-            log.warn("User not found with email: {}", authenticationRequest.getEmail());
-            throw new UsernameNotFoundException("User not found");
-        }
-            log.debug("Entered password: {}", authenticationRequest.getPassword());
-            // Retrieve the hashed password stored in the database
-            String hashedPasswordFromDatabase = user.getPassword();
-            // Verify password
-            if (!passwordEncoder.matches(authenticationRequest.getPassword(), hashedPasswordFromDatabase)) {
-                log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-            // Log password match
-            log.debug("Password matched for user with email: {}", authenticationRequest.getEmail());
-
-        try {
-            Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
-                    authenticationRequest.getPassword());
-            // Authenticate the user
-            Authentication authenticated = authenticationManager.authenticate(authentication);
-            // Retrieve user details from the authenticated object
-            UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
-
-            Set<Role> roles = userDetails.getAuthorities().stream()
-                    .map(authority -> Role.builder().name(authority.getAuthority()).build())
-                    .collect(Collectors.toSet());
-            // Create and return JWT token if authentication is successful
-            String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
-            log.info("Generated JWT token for user: {}", userDetails.getUsername());
-            token = token.trim();
-            // Return token in response body
-            Map<String, Object> responseBody = new HashMap<>();
-            responseBody.put("token", token);
-            responseBody.put("message", "User authenticated successfully");
-            return ResponseEntity.ok(responseBody);
-        } catch (BadCredentialsException e) {
-            log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        } catch (Exception e) { // Catch and log any other exceptions for broader logging coverage
-            log.error("Unexpected error during login: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -173,19 +125,6 @@ public class UserController {
         }
     }
 
-    @PostMapping("/register/admin")
-    public ResponseEntity<Response> createAdminUser(@RequestBody @Validated User user) {
-        log.info("Registering a user: {}", user);
-        UserDTO userDTO = userService.createAdmin(user);
-        return ResponseEntity.created(getUri()).body(
-                Response.builder()
-                        .timeStamp(now())
-                        .data(Map.of("user", userDTO))
-                        .message("User Created")
-                        .status(CREATED)
-                        .statusCode(CREATED.value())
-                        .build());
-    }
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {
         log.info("Registering a user: {}", user);

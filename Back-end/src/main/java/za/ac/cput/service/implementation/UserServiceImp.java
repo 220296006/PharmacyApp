@@ -44,11 +44,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO createAdmin(User user) {
-        return UserDTOMapper.fromUser(userRepository.saveAdmin(user));
-    }
-
-    @Override
     public Collection<User> getAllUsers(String name, int page, int pageSize) {
 
         return userRepository.list("users", 1, 50);

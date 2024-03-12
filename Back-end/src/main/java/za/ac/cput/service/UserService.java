@@ -16,7 +16,6 @@ import java.util.Optional;
 public interface UserService {
     UserDTO createUser(User user);
 
-    UserDTO createAdmin(User user);
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
