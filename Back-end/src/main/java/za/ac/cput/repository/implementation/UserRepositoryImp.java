@@ -265,7 +265,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     // Additional methods for managing roles and permissions
     @Override
-    public void assignRole(Long userId, String roleName) {
+    public User assignRole(Long userId, String roleName) {
         // Implement logic to assign a role to a user
         try {
             Role role = roleRepository.findRoleByName(roleName);
@@ -279,10 +279,11 @@ public class UserRepositoryImp implements UserRepository<User> {
             log.error("Error while assigning role {} to user {}: {}", roleName, userId, exception.getMessage());
             throw new ApiException("Error while assigning role to user");
         }
+        return null;
     }
 
     @Override
-    public void revokeRole(Long userId, String roleName) {
+    public User revokeRole(Long userId, String roleName) {
         // Implement logic to revoke a role from a user
         try {
             Role role = roleRepository.findRoleByName(roleName);
@@ -296,6 +297,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             log.error("Error while revoking role {} from user {}: {}", roleName, userId, exception.getMessage());
             throw new ApiException("Error while revoking role from user");
         }
+        return null;
     }
 
 

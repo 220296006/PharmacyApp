@@ -23,11 +23,7 @@ public interface UserRepository <T extends User> {
       T findUserByEmailIgnoreCase(String email);
       Boolean existByEmail(String email);
       UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser);
-
-    List<User> getUsersByRole(String roleName);
-
-      // Additional methods for managing roles and permissions
-      void assignRole(Long userId, String roleName);
-
-      void revokeRole(Long userId, String roleName);
+      List<User> getUsersByRole(String roleName);
+      T assignRole(Long userId, String roleName);
+      T revokeRole(Long userId, String roleName);
 }
