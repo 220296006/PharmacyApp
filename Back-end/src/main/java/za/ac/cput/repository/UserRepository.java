@@ -14,6 +14,8 @@ import java.util.List;
 public interface UserRepository <T extends User> {
       T save(T t);
       T saveAdmin(T t);
+      T saveManager(T t);
+      T saveSysAdmin(T t);
       Collection<T> list(String name, int page, int pageSize);
       T read(Long id);
       T update(User t);
@@ -21,11 +23,7 @@ public interface UserRepository <T extends User> {
       T findUserByEmailIgnoreCase(String email);
       Boolean existByEmail(String email);
       UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser);
-
-    List<User> getUsersByRole(String roleName);
-
-      // Additional methods for managing roles and permissions
-      void assignRole(Long userId, String roleName);
-
-      void revokeRole(Long userId, String roleName);
+      List<User> getUsersByRole(String roleName);
+      T assignRole(Long userId, String roleName);
+      T revokeRole(Long userId, String roleName);
 }

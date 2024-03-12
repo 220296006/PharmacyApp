@@ -91,17 +91,18 @@ export class AuthService {
     if (!token) {
       return of(null);
     }
-
-    // Decode the token to get user details
     const decodedToken: any = jwtDecode(token);
-    console.log('Decoded Token:', decodedToken); // Log decoded token
+    console.log('Decoded Token:', decodedToken);
 
-
-    // Extract first name and last name from email
+    // Extract user information from the token
     const email = decodedToken.sub;
-    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim()); // Remove any extra dots
+    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim());
     const initials = firstName.charAt(0) + lastName.charAt(0);
-    // Assuming the token contains user information such as roles, iat, exp, etc.
+
+    // Extract user role from the token (assuming it's included in the token payload)
+    const userRole = decodedToken.role; // Adjust this according to your token structure
+
+    // Create user object including role
     const user: User = {
       email: initials,
       id: 0,
@@ -115,7 +116,8 @@ export class AuthService {
       enabled: false,
       isUsingMfa: false,
       createdAt: undefined,
-      isNotLocked: false
+      isNotLocked: false,
+      role: userRole // Add the role to the user object
     };
 
     return of(user);

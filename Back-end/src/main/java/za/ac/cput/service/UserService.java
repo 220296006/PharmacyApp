@@ -1,6 +1,7 @@
 package za.ac.cput.service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
+import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 
 import java.util.Collection;
@@ -16,8 +17,6 @@ import java.util.Optional;
 public interface UserService {
     UserDTO createUser(User user);
 
-    UserDTO createAdmin(User user);
-
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
     UserUpdateDTO updateSysAdmin(Long id, UserUpdateDTO updatedUser);
@@ -30,6 +29,6 @@ public interface UserService {
 
     UserDTO getUserInfo(String username);
 
-
+    User assignRoleToUser(Long userId, String roleName);
 
 }

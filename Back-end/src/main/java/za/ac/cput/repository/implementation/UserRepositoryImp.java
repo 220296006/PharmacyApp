@@ -25,8 +25,7 @@ import za.ac.cput.service.EmailService;
 
 import java.util.*;
 
-import static za.ac.cput.enumeration.RoleType.ROLE_ADMIN;
-import static za.ac.cput.enumeration.RoleType.ROLE_USER;
+import static za.ac.cput.enumeration.RoleType.*;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
 import static za.ac.cput.query.UserQuery.*;
 /**
@@ -77,22 +76,20 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User saveAdmin(User user) {
-        log.info("Saving A User");
+        log.info("Saving Admin User");
         try {
-            User adminUser = new User();
-            adminUser.setFirstName("Thabiso");
-            adminUser.setLastName("Matsaba");
-            adminUser.setEmail("thabisomatsaba96@gmail.com");
-            // Encrypt the password for the admin user
-            String adminPassword = "admin@2024"; // Set the desired admin password
+            user.setFirstName("Thabiso");
+            user.setLastName("Matsaba");
+            user.setEmail("thabisomatsaba96@gmail.com");
+            String adminPassword = "admin@2024";
             String hashedAdminPassword = passwordEncoder.encode(adminPassword);
-            adminUser.setPassword(hashedAdminPassword);
+            user.setPassword(hashedAdminPassword);
             // Save admin user to the database
             KeyHolder holder = new GeneratedKeyHolder();
-            SqlParameterSource parameters = getSqlParameterSource(adminUser);
+            SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
-            adminUser.setId(Objects.requireNonNull(holder.getKey()).longValue());
-            roleRepository.addRoleToUser(adminUser.getId(), ROLE_ADMIN.name());
+            user.setId(Objects.requireNonNull(holder.getKey()).longValue());
+            roleRepository.addRoleToUser(user.getId(), ROLE_ADMIN.name());
             user.setEnabled(true);
             user.setNotLocked(false);
             return user;
@@ -100,7 +97,60 @@ public class UserRepositoryImp implements UserRepository<User> {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
         }
+    }
 
+    @Override
+    public User saveManager(User user) {
+        log.info("Saving Manager User");
+        try {
+            // Set manager user details
+            user.setFirstName("Thabiso");
+            user.setLastName("Matsaba");
+            user.setEmail("thabisomatsaba96@gmail.com");
+            // Encrypt the password for the manager user
+            String managerPassword = "manager@2024"; // Set the desired manager password
+            String hashedManagerPassword = passwordEncoder.encode(managerPassword);
+            user.setPassword(hashedManagerPassword);
+            // Save manager user to the database
+            KeyHolder holder = new GeneratedKeyHolder();
+            SqlParameterSource parameters = getSqlParameterSource(user);
+            jdbc.update(INSERT_USER_QUERY, parameters, holder);
+            user.setId(Objects.requireNonNull(holder.getKey()).longValue());
+            roleRepository.addRoleToUser(user.getId(), ROLE_MANAGER.name());
+            user.setEnabled(true);
+            user.setNotLocked(false);
+            return user;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred. Please try again.");
+        }
+    }
+
+    @Override
+    public User saveSysAdmin(User user) {
+        log.info("Saving SysAdmin User");
+        try {
+            // Set sysadmin user details
+            user.setFirstName("Thabiso");
+            user.setLastName("Matsaba");
+            user.setEmail("thabisomatsaba96@gmail.com");
+            // Encrypt the password for the sysadmin user
+            String sysAdminPassword = "sysadmin@2024"; // Set the desired sysadmin password
+            String hashedSysAdminPassword = passwordEncoder.encode(sysAdminPassword);
+            user.setPassword(hashedSysAdminPassword);
+            // Save sysadmin user to the database
+            KeyHolder holder = new GeneratedKeyHolder();
+            SqlParameterSource parameters = getSqlParameterSource(user);
+            jdbc.update(INSERT_USER_QUERY, parameters, holder);
+            user.setId(Objects.requireNonNull(holder.getKey()).longValue());
+            roleRepository.addRoleToUser(user.getId(), ROLE_SYSADMIN.name());
+            user.setEnabled(true);
+            user.setNotLocked(false);
+            return user;
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred. Please try again.");
+        }
     }
 
 
@@ -215,7 +265,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     // Additional methods for managing roles and permissions
     @Override
-    public void assignRole(Long userId, String roleName) {
+    public User assignRole(Long userId, String roleName) {
         // Implement logic to assign a role to a user
         try {
             Role role = roleRepository.findRoleByName(roleName);
@@ -229,10 +279,11 @@ public class UserRepositoryImp implements UserRepository<User> {
             log.error("Error while assigning role {} to user {}: {}", roleName, userId, exception.getMessage());
             throw new ApiException("Error while assigning role to user");
         }
+        return null;
     }
 
     @Override
-    public void revokeRole(Long userId, String roleName) {
+    public User revokeRole(Long userId, String roleName) {
         // Implement logic to revoke a role from a user
         try {
             Role role = roleRepository.findRoleByName(roleName);
@@ -246,6 +297,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             log.error("Error while revoking role {} from user {}: {}", roleName, userId, exception.getMessage());
             throw new ApiException("Error while revoking role from user");
         }
+        return null;
     }
 
 

@@ -7,8 +7,9 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
 import { UpdateUserDialogComponent } from '../update-user-dialog/update-user-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
-import * as alertify from 'alertifyjs';
- 
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service/auth-service.service';
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -31,18 +32,23 @@ export class UserComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  getUserInfo: any;
 
   constructor(
     private userService: UserService,
     private updateUserDialog: MatDialog,
-    private createUserDialog: MatDialog
+    private createUserDialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private authService: AuthService 
   ) {}
 
   ngOnInit() {
     this.getAllUserData();
+    this.getUserInfo = this.authService.getUserInfo();
   }
 
   openCreateUserDialog(id: any) {
+    if (this.getUserInfo === 'ROLE_ADMIN') {
     const dialogRef = this.createUserDialog.open(CreateUserDialogComponent,{
       width: '400px',
       exitAnimationDuration: '1000ms',
@@ -55,6 +61,11 @@ export class UserComponent implements OnInit {
     dialogRef.afterClosed().subscribe(response=> {
       response = this.getAllUserData();
     });
+    } else {
+      this.snackBar.open('You do not have permission to perform this action.', 'Close', {
+        duration: 3000,
+      });
+    }
   }
   
   getAllUserData() {
@@ -81,27 +92,40 @@ export class UserComponent implements OnInit {
   }
 
   onDeleteUser(id: number) {
-    alertify.confirm('Are you sure you want to permanently delete this user?', () => {
-      this.userService.deleteUserById(id).subscribe({
-        next: (response) => {
-          console.log('Response from server:', response);
-          if (response.status === 'OK') {
-            alertify.success('User deleted successfully!');
-            this.getAllUserData(); // Refresh the user data
-          } else {
-            alertify.error('Error: ' + response.message);
-          }
-        },
-        error: (error) => {
-          console.error('Error deleting user:', error);
-          alertify.error('An error occurred while deleting the user.');
-        },
+    if (this.getUserInfo === 'ROLE_ADMIN') {
+     this.snackBar.open('You do not have permission to perform this action.', 'Close', {
+        duration: 3000,
       });
-    }, () => {
-    });
+          this.userService.deleteUserById(id).subscribe({
+            next: (response) => {
+              console.log('Response from server:', response);
+              if (response.status === 'OK') {
+                this.snackBar.open('User deleted successfully!', 'Close', {
+                  duration: 3000,
+                });
+                this.getAllUserData(); // Refresh the user data
+              } else {
+                this.snackBar.open('Error: ' + response.message, 'Close', {
+                  duration: 3000,
+                });
+              }
+            },
+            error: (error) => {
+              console.error('Error deleting user:', error);
+              this.snackBar.open('An error occurred while deleting the user.', 'Close', {
+                duration: 3000,
+              });
+            },
+        });
+    } else {
+      this.snackBar.open('You do not have permission to perform this action.', 'Close', {
+        duration: 3000,
+      });
+    }
   }
 
   onUpdateUser(userId: number) {
+    if (this.getUserInfo === 'ROLE_ADMIN') {
     this.userService.getUserById(userId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
@@ -122,7 +146,12 @@ export class UserComponent implements OnInit {
         console.error('Error fetching user:', error);
       },
     });
+  } else {
+    this.snackBar.open('You do not have permission to perform this action.', 'Close', {
+      duration: 3000,
+    });
   }
+}
 
   openUpdateDialog(user: User): void {
     console.log('User data passed to dialog:', user); 

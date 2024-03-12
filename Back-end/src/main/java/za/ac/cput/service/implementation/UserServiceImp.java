@@ -5,13 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
 import za.ac.cput.dtomapper.UserUpdateDTOMapper;
-import za.ac.cput.enumeration.RoleType;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
@@ -21,8 +19,6 @@ import za.ac.cput.service.UserService;
 
 import java.util.Collection;
 import java.util.Optional;
-
-import static za.ac.cput.enumeration.RoleType.ROLE_ADMIN;
 
 /**
  * @author : Thabiso Matsaba
@@ -41,11 +37,6 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDTO createUser(User user) {
         return UserDTOMapper.fromUser(userRepository.save(user));
-    }
-
-    @Override
-    public UserDTO createAdmin(User user) {
-        return UserDTOMapper.fromUser(userRepository.saveAdmin(user));
     }
 
     @Override
@@ -132,4 +123,9 @@ public class UserServiceImp implements UserService {
         }
         return null;
     }
+
+    @Override
+    public User assignRoleToUser(Long userId, String roleName) {
+        return userRepository.assignRole(userId, roleName);
     }
+}

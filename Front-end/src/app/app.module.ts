@@ -7,7 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularMaterialModule } from './modules/material.module';
-import { UserComponent } from './components/user/user.component';
+import { UserComponent } from './components/user-table/user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -55,6 +55,8 @@ import { ForgotPasswordComponent } from './shared/components/forgot-password/for
 import { ToastrModule, ToastrService  } from 'ngx-toastr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AdminLoginComponent } from './shared/components/admin-login/admin-login.component';
+import { UserProfileRoutingModule } from './modules/user-profile-routing.module';
+import { UserProfileModule } from './modules/user-profile.module';
 
 @NgModule({
   declarations: [
@@ -90,7 +92,7 @@ import { AdminLoginComponent } from './shared/components/admin-login/admin-login
     AdminLoginComponent,
   ],
   imports: [
-    BrowserModule,
+  BrowserModule,
     AppRoutingModule,
     AngularMaterialModule,
     FormsModule,
@@ -112,6 +114,8 @@ import { AdminLoginComponent } from './shared/components/admin-login/admin-login
       positionClass: 'toast-top-right', // Set default position to top-right
     }),
     MatSnackBarModule,
+    UserProfileRoutingModule,
+    UserProfileModule
   ],
   providers: [
     {

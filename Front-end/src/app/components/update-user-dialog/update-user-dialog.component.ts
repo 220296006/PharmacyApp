@@ -16,7 +16,8 @@ export class UpdateUserDialogComponent implements OnInit {
     enabled: false,
     isUsingMfa: false,
     createdAt: undefined,
-    isNotLocked: false
+    isNotLocked: false,
+    role: ''
   };
 
   constructor(
