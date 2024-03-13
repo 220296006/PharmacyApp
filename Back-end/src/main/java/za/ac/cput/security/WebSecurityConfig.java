@@ -47,25 +47,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                // Permit OPTIONS requests
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(HttpMethod.POST, "/user/login", "/user/register", "/user/register/admin",
-                        "/user/login/admin", "/customer/create", "/prescription/create", "/medication/create",
+                .antMatchers(HttpMethod.POST, "/user/login", "/user/register",
+                        "/customer/create", "/prescription/create", "/medication/create",
                         "/invoice/create", "/inventory/create").permitAll()
                 .antMatchers(HttpMethod.GET,
                         "/user/all", "/user/verify/{token}/account", "/user/read/**", "/prescription/all",
                         "/prescription/read/**",
                         "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount",
                         "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all",
-                        "/inventory/read/**", "/customer/count", "/customer/all", "/customer/read/**").permitAll()
+                        "/inventory/read/**", "/customer/count", "/customer/all", "/customer/read/**",
+                        "/roles/list", "/roles/read/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update",
                         "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("ROLE_ADMIN",
                         "ROLE_MANAGER", "ROLE_SYSADMIN")
                 .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**",
                         "/invoice/delete/**", "/inventory/delete/**",
                         "/customer/delete/**").hasAnyRole("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_SYSADMIN")
+                .antMatchers(HttpMethod.POST, "/roles/create").hasAnyRole("ROLE_ADMIN", "ROLE_SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**", "/roles/getRoleByUserEmail",
+                        "/roles/read/**").hasAnyRole("ROLE_ADMIN", "ROLE_SYSADMIN")
+                .antMatchers(HttpMethod.PUT, "/roles/updateUserRole").hasAnyRole("ROLE_ADMIN", "ROLE_SYSADMIN")
                 .anyRequest().authenticated();
     }
+
 
 
     @Override @Bean

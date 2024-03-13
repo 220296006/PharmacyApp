@@ -1,2 +1,22 @@
-package za.ac.cput.service;public interface RoleService {
+package za.ac.cput.service;
+
+import za.ac.cput.model.Role;
+
+import java.util.Collection;
+import java.util.List;
+
+public interface RoleService {
+    Role save(Role role);
+    Collection<Role> list(String name, int page, int pageSize);
+    Role read(Long id);
+    Role update(Role role);
+    boolean delete(Long id);
+    void addRoleToUser(Long userId, String roleName);
+    List<Role> getRolesByUserId(Long userId);
+    Role getRoleByUserEmail(String email);
+    Role updateUserRole(Long userId, String roleName);
+    Role findRoleByName(String roleName);
+    Long findUserIdByEmail(String email);
+    Long findRoleIdByName(String roleName);
+    void assignRolesToUser(String email);
 }

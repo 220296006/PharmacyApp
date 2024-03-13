@@ -1,9 +1,6 @@
 package za.ac.cput.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,12 +38,14 @@ public class JwtTokenProvider {
         claims.put("roles", roles.stream().map(Role::getName).collect(Collectors.toSet()));
         Date now = new Date();
         Date validity = new Date(now.getTime() + validityInMilliseconds);
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+        log.info("Generated JWT token: {}", token);
+        return token;
     }
 
     public Authentication getAuthentication(String token) {
@@ -57,8 +56,18 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        String username;
+        try {
+            Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
+            username = claims.getSubject().trim();
+            log.debug("Decoded username from JWT token: {}", username);
+        } catch (Exception e) {
+            log.error("Error decoding username from JWT token: {}", e.getMessage());
+            throw new JwtAuthenticationException("Error decoding JWT token", e, HttpStatus.UNAUTHORIZED);
+        }
+        return username;
     }
+
 
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
@@ -70,11 +79,12 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+            return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
             log.error("JWT token validation failed: {}", e.getMessage());
-            throw new JwtAuthenticationException("Expired or invalid JWT token", HttpStatus.UNAUTHORIZED);
+            return false;
         }
     }
 }
+

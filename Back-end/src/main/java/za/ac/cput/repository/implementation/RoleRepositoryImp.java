@@ -51,7 +51,7 @@ public Role save(Role role) {
 }
 
    @Override
-public Collection<Role> list(int page, int pageSize) {
+public Collection<Role> list(String name, int page, int pageSize) {
     log.info("Retrieving list of roles (Page: {}, PageSize: {})", page, pageSize);
     try {
         int offset = (page - 1) * pageSize;
@@ -212,25 +212,20 @@ public Role updateUserRole(Long userId, String roleName) {
              // Handle user not found
              return;
          }
-
          // Fetch role IDs for ROLE_ADMIN, ROLE_MANAGER, and ROLE_SYSADMIN
          Long roleIdAdmin = findRoleIdByName("ROLE_ADMIN");
          Long roleIdManager = findRoleIdByName("ROLE_MANAGER");
          Long roleIdSysAdmin = findRoleIdByName("ROLE_SYSADMIN");
-
          // Insert records into UserRoles table to assign roles to the user
          String assignRolesQuery = "INSERT INTO UserRoles (user_id, role_id) VALUES (:userId, :roleId)";
          Map<String, Object> params = new HashMap<>();
          params.put("userId", userId);
-
          // Assign ROLE_ADMIN
          params.put("roleId", roleIdAdmin);
          jdbc.update(assignRolesQuery, params);
-
          // Assign ROLE_MANAGER
          params.put("roleId", roleIdManager);
          jdbc.update(assignRolesQuery, params);
-
          // Assign ROLE_SYSADMIN
          params.put("roleId", roleIdSysAdmin);
          jdbc.update(assignRolesQuery, params);

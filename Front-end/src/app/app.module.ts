@@ -54,7 +54,6 @@ import { NavigationComponent } from './shared/components/navigation/navigation.c
 import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
 import { ToastrModule, ToastrService  } from 'ngx-toastr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AdminLoginComponent } from './shared/components/admin-login/admin-login.component';
 import { UserProfileRoutingModule } from './modules/user-profile-routing.module';
 import { UserProfileModule } from './modules/user-profile.module';
 
@@ -89,7 +88,6 @@ import { UserProfileModule } from './modules/user-profile.module';
     RegistrationComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    AdminLoginComponent,
   ],
   imports: [
   BrowserModule,

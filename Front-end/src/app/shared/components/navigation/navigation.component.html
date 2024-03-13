@@ -117,7 +117,7 @@
                 style="font-size: 10px; color: rgb(0, 0, 0); font-weight: bold;"
 
               >
-              Welcome, {{ loggedInUser.email | uppercase}}</a>
+              Welcome, {{ user?.firstName  | uppercase}} {{user?.lastName  | uppercase}}</a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
                   <button mat-icon-button>

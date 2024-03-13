@@ -19,7 +19,7 @@ public interface UserService {
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
-    UserUpdateDTO updateSysAdmin(Long id, UserUpdateDTO updatedUser);
+    UserUpdateDTO updateAdmin(Long id, UserUpdateDTO updatedUser);
 
     User findUserById(Long id);
 
@@ -29,6 +29,6 @@ public interface UserService {
 
     UserDTO getUserInfo(String username);
 
-    User assignRoleToUser(Long userId, String roleName);
+
 
 }

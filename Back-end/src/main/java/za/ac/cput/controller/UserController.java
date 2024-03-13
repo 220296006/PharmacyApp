@@ -28,6 +28,7 @@ import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
+import za.ac.cput.service.RoleService;
 import za.ac.cput.service.UserService;
 
 import javax.annotation.security.RolesAllowed;
@@ -140,12 +141,14 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Response> getAllUsers(@RequestParam Optional<String> name, @RequestParam Optional<Integer> page, @RequestParam Optional<Integer> pageSize){
+    public ResponseEntity<Response> getAllUsers(@RequestParam Optional<String> name, @RequestParam Optional<Integer>
+            page, @RequestParam Optional<Integer> pageSize){
         log.info("Fetching users for page {} of size {}:", page, pageSize);
            return ResponseEntity.ok().body(
                    Response.builder()
                     .timeStamp(now())
-                    .data(Map.of("page", userService.getAllUsers(name.orElse(""), page.orElse(0), pageSize.orElse(10))))
+                    .data(Map.of("page", userService.getAllUsers(name.orElse(""),
+                            page.orElse(0), pageSize.orElse(10))))
                     .message("Users retrieved")
                     .status(HttpStatus.OK)
                     .statusCode(OK.value())
@@ -170,7 +173,7 @@ public class UserController {
     public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
         log.info("Update User: {}: {}", id, user);
         try {
-            UserUpdateDTO userUpdateDTO = userService.updateSysAdmin(id, user);
+            UserUpdateDTO userUpdateDTO = userService.updateAdmin(id, user);
             if (userUpdateDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()

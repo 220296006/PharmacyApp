@@ -13,7 +13,6 @@ import { CreateUserDialogComponent } from './components/create-user-dialog/creat
 import { RegistrationComponent } from './shared/components/registration/registration.component';
 import { LoginComponent } from './shared/components/login/login.component';
 import { ForgotPasswordComponent } from './shared/components/forgot-password/forgot-password.component';
-import { AdminLoginComponent } from './shared/components/admin-login/admin-login.component';
 import { UserProfileComponent } from './components/user/user-profile/user-profile.component';
 import { AccountComponent } from './components/user/account/account.component';
 import { AuthenticationComponent } from './components/user/authentication/authentication.component';
@@ -23,7 +22,6 @@ import { ProfileComponent } from './components/user/profile/profile.component';
 
 const routes: Routes = [
   { path: 'login', pathMatch: 'full', component: LoginComponent },
-  { path: 'loginAsAdmin', pathMatch: 'full', component: AdminLoginComponent },
   {path:  'user-profile', pathMatch: 'full', component: UserProfileComponent,},
   { path: 'register', pathMatch: 'full', component: RegistrationComponent },
   { path: 'forgot-password', pathMatch: 'full', component: ForgotPasswordComponent },

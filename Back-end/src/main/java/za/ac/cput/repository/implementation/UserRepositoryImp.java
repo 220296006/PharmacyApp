@@ -46,26 +46,42 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User save(User user) {
-        log.info("Saving A User");
+        log.info("Registering A User");
         if (user.getPassword() == null) {
             throw new ApiException("Password cannot be null");
         }
-        if (getEmailCount(user.getEmail().trim().toLowerCase()) > 0) throw new
-                ApiException("Email already in use. Please use different email and try again");
+        if (getEmailCount(user.getEmail().trim().toLowerCase()) > 0) {
+            throw new ApiException("Email already in use. Please use a different email and try again.");
+        }
         try {
-            log.info("Password before encoding: {}", user.getPassword()); // Log password before encoding
+            // Set password and encode it
             String hashedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(hashedPassword);
-            log.info("Password after encoding: {}", user.getPassword()); // Log password after encoding
+            // Save user
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(INSERT_USER_QUERY, parameters, holder);
             user.setId(Objects.requireNonNull(holder.getKey()).longValue());
-            roleRepository.addRoleToUser(user.getId(), ROLE_USER.name());
+            // Define email to role mapping
+            Map<String, String> emailToRole = new HashMap<>();
+            emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_ADMIN.name());
+            emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_MANAGER.name());
+            emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_SYSADMIN.name());
+            // Add more mappings as needed
+            // Assign role based on email
+            String email = user.getEmail().toLowerCase();
+            if (emailToRole.containsKey(email)) {
+                String roleName = emailToRole.get(email);
+                roleRepository.addRoleToUser(user.getId(), roleName);
+            } else {
+                roleRepository.addRoleToUser(user.getId(), ROLE_USER.name());
+            }
+            // Generate confirmation token and send confirmation email (if needed)
             String token = UUID.randomUUID().toString();
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", token));
             emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), token);
-            user.setEnabled(true);
+            // Set user properties
+            user.setEnabled(false);
             user.setNotLocked(false);
             return user;
         } catch (Exception exception) {
@@ -74,84 +90,7 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
-    @Override
-    public User saveAdmin(User user) {
-        log.info("Saving Admin User");
-        try {
-            user.setFirstName("Thabiso");
-            user.setLastName("Matsaba");
-            user.setEmail("thabisomatsaba96@gmail.com");
-            String adminPassword = "admin@2024";
-            String hashedAdminPassword = passwordEncoder.encode(adminPassword);
-            user.setPassword(hashedAdminPassword);
-            // Save admin user to the database
-            KeyHolder holder = new GeneratedKeyHolder();
-            SqlParameterSource parameters = getSqlParameterSource(user);
-            jdbc.update(INSERT_USER_QUERY, parameters, holder);
-            user.setId(Objects.requireNonNull(holder.getKey()).longValue());
-            roleRepository.addRoleToUser(user.getId(), ROLE_ADMIN.name());
-            user.setEnabled(true);
-            user.setNotLocked(false);
-            return user;
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("An error occurred. Please try again.");
-        }
-    }
 
-    @Override
-    public User saveManager(User user) {
-        log.info("Saving Manager User");
-        try {
-            // Set manager user details
-            user.setFirstName("Thabiso");
-            user.setLastName("Matsaba");
-            user.setEmail("thabisomatsaba96@gmail.com");
-            // Encrypt the password for the manager user
-            String managerPassword = "manager@2024"; // Set the desired manager password
-            String hashedManagerPassword = passwordEncoder.encode(managerPassword);
-            user.setPassword(hashedManagerPassword);
-            // Save manager user to the database
-            KeyHolder holder = new GeneratedKeyHolder();
-            SqlParameterSource parameters = getSqlParameterSource(user);
-            jdbc.update(INSERT_USER_QUERY, parameters, holder);
-            user.setId(Objects.requireNonNull(holder.getKey()).longValue());
-            roleRepository.addRoleToUser(user.getId(), ROLE_MANAGER.name());
-            user.setEnabled(true);
-            user.setNotLocked(false);
-            return user;
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("An error occurred. Please try again.");
-        }
-    }
-
-    @Override
-    public User saveSysAdmin(User user) {
-        log.info("Saving SysAdmin User");
-        try {
-            // Set sysadmin user details
-            user.setFirstName("Thabiso");
-            user.setLastName("Matsaba");
-            user.setEmail("thabisomatsaba96@gmail.com");
-            // Encrypt the password for the sysadmin user
-            String sysAdminPassword = "sysadmin@2024"; // Set the desired sysadmin password
-            String hashedSysAdminPassword = passwordEncoder.encode(sysAdminPassword);
-            user.setPassword(hashedSysAdminPassword);
-            // Save sysadmin user to the database
-            KeyHolder holder = new GeneratedKeyHolder();
-            SqlParameterSource parameters = getSqlParameterSource(user);
-            jdbc.update(INSERT_USER_QUERY, parameters, holder);
-            user.setId(Objects.requireNonNull(holder.getKey()).longValue());
-            roleRepository.addRoleToUser(user.getId(), ROLE_SYSADMIN.name());
-            user.setEnabled(true);
-            user.setNotLocked(false);
-            return user;
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("An error occurred. Please try again.");
-        }
-    }
 
 
     @Override
@@ -196,7 +135,7 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
-    public UserUpdateDTO updateSysAdmin(UserUpdateDTO updatedUser) {
+    public UserUpdateDTO updateAdmin(UserUpdateDTO updatedUser) {
         // Convert UserUpdateDTO to User and call the existing update method
         User user = UserUpdateDTOMapper.toUser(updatedUser);
         update(user);
@@ -236,69 +175,7 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
-    @Override
-    public Boolean existByEmail(String email) {
-        log.info("Fetch User by Email");
-        try {
-            jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email), new UserRowMapper());
-        } catch (EmptyResultDataAccessException exception) {
-            return null;
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("Email not found. Please use different email and try again");
-        }
-        return null;
-    }
 
-    @Override
-    public List<User> getUsersByRole(String roleName) {
-        // Implement logic to fetch users by role
-        try {
-            return jdbc.query(GET_USERS_BY_ROLE_QUERY,
-                    Map.of("roleName", roleName),
-                    new UserRowMapper());
-        } catch (Exception exception) {
-            log.error("Error while fetching users by role {}: {}", roleName, exception.getMessage());
-            throw new ApiException("Error while fetching users by role");
-        }
-    }
-
-    // Additional methods for managing roles and permissions
-    @Override
-    public User assignRole(Long userId, String roleName) {
-        // Implement logic to assign a role to a user
-        try {
-            Role role = roleRepository.findRoleByName(roleName);
-            if (role != null) {
-                jdbc.update(ASSIGN_ROLE_QUERY,
-                        Map.of("userId", userId, "roleId", role.getId()));
-            } else {
-                throw new ApiException("Role not found: " + roleName);
-            }
-        } catch (Exception exception) {
-            log.error("Error while assigning role {} to user {}: {}", roleName, userId, exception.getMessage());
-            throw new ApiException("Error while assigning role to user");
-        }
-        return null;
-    }
-
-    @Override
-    public User revokeRole(Long userId, String roleName) {
-        // Implement logic to revoke a role from a user
-        try {
-            Role role = roleRepository.findRoleByName(roleName);
-            if (role != null) {
-                jdbc.update(REVOKE_ROLE_QUERY,
-                        Map.of("userId", userId, "roleId", role.getId()));
-            } else {
-                throw new ApiException("Role not found: " + roleName);
-            }
-        } catch (Exception exception) {
-            log.error("Error while revoking role {} from user {}: {}", roleName, userId, exception.getMessage());
-            throw new ApiException("Error while revoking role from user");
-        }
-        return null;
-    }
 
 
     private Integer getEmailCount(String email) {
