@@ -81,8 +81,8 @@ public class UserRepositoryImp implements UserRepository<User> {
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", token));
             emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), token);
             // Set user properties
-            user.setEnabled(false);
-            user.setNotLocked(false);
+            user.setEnabled(true);
+            user.setNotLocked(true);
             return user;
         } catch (Exception exception) {
             log.error(exception.getMessage());

@@ -68,7 +68,7 @@ EMAIL_PASSWORD: ysjqkbfnhvpnfzwo
 VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
 
 jwt:
-  secret: 1uZlOQgyNyQNUFTHh7ZXmBQK0eD6TLoGG5gPMqk3gcE
+  secret: 339e342a830a1526094d805b60c422e15bb4bf0f8797f2d99846f381ac6566b8
   expiration: 3600000
 #Server
 SERVER_PORT: 8080

@@ -20,8 +20,10 @@ import za.ac.cput.repository.UserRepository;
 import za.ac.cput.repository.implementation.RoleRepositoryImp;
 import za.ac.cput.rowmapper.UserRowMapper;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -56,7 +58,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                             "WHERE u.email = :email " +
                             "GROUP BY u.id",
                     Map.of("email", email),
-                    new UserRowMapper()
+                    (rs, rowNum) -> {
+                        User u = new User();
+                        u.setId(rs.getLong("id"));
+                        u.setFirstName(rs.getString("first_name"));
+                        u.setMiddleName(rs.getString("middle_name"));
+                        u.setLastName(rs.getString("last_name"));
+                        u.setEmail(rs.getString("email"));
+                        u.setPassword(rs.getString("password"));
+                        u.setPhone(rs.getString("phone"));
+                        u.setAddress(rs.getString("address"));
+                        u.setImageUrl(rs.getString("image_url"));
+                        u.setEnabled(rs.getBoolean("enabled"));
+                        u.setNotLocked(rs.getBoolean("not_locked"));
+                        u.setUsingMfa(rs.getBoolean("using_mfa"));
+                        u.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
+                        // Map roles to Role objects or create new Role objects with role names
+                        u.setRoles(Arrays.stream(rs.getString("roles").split(","))
+                                .map(roleName -> new Role(null, roleName, null))
+                                .collect(Collectors.toSet()));
+                        return u;
+                    }
             );
 
             if (user == null) {
@@ -72,7 +94,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     true, // Account not expired
                     true, // Credentials not expired
                     true, // Account not locked
-                    getAuthorities(roleRepository.getRolesByUserId(user.getId())) // Authorities (roles)
+                    getAuthorities(user.getRoles()) // Authorities (roles)
             );
         } catch (DataAccessException exception) {
             log.error("Error loading user by email: " + email, exception);
@@ -82,11 +104,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new ApiException("An unexpected error occurred");
         }
     }
-        private List<GrantedAuthority> getAuthorities (List < Role > roles) {
-            return roles.stream()
-                    .map(role -> new SimpleGrantedAuthority(role.getName()))
-                    .collect(Collectors.toList());
-        }
+
+    private Set<GrantedAuthority> getAuthorities(Set<Role> roles) { // Use Set instead of List
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName()))
+                .collect(Collectors.toSet());
+    }
 
 
 }

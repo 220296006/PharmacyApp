@@ -47,7 +47,7 @@ export class AuthInterceptor implements HttpInterceptor {
             verticalPosition: 'top',
           });
           // Navigate to the access denied page
-          this.router.navigate(['/access-denied']);
+          //this.router.navigate(['/access-denied']);
         } else {
           console.error('HTTP error occurred:', error);
           this.snackBar.open('An unexpected error occurred. Please try again later.', 'Close', {

@@ -29,7 +29,8 @@ import static javax.persistence.CascadeType.ALL;
 @Data
 @SuperBuilder
 @AllArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
 public class User  implements UserDetails {
@@ -62,6 +63,9 @@ public class User  implements UserDetails {
     private Set<Role> roles = new HashSet<>();
     @Column(name = "confirmations")
     private Confirmation confirmation;
+
+    public User(Long id, String firstName, String middleName, String lastName, String email, String password, String phone, String address, String imageUrl, boolean enabled, boolean isUsingMfa, boolean isNotLocked, Set<GrantedAuthority> authorities) {
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -30,6 +30,7 @@ import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.RoleService;
 import za.ac.cput.service.UserService;
+import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
@@ -60,6 +61,7 @@ import static org.springframework.http.HttpStatus.*;
 public class UserController {
     private final UserService userService;
     private final ConfirmationService confirmationService;
+
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
@@ -99,9 +101,10 @@ public class UserController {
         // Log password match
         log.debug("Password matched for user with email: {}", authenticationRequest.getEmail());
         try {
+            // Authenticate the user
             Authentication authentication = new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
                     authenticationRequest.getPassword());
-            // Authenticate the user
+
             Authentication authenticated = authenticationManager.authenticate(authentication);
             // Retrieve user details from the authenticated object
             UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
@@ -115,6 +118,7 @@ public class UserController {
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
+            responseBody.put("user", user);
             responseBody.put("message", "User authenticated successfully");
             return ResponseEntity.ok(responseBody);
         } catch (BadCredentialsException e) {
