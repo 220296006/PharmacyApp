@@ -2,16 +2,16 @@ USE pharmacyapp;
 
 INSERT INTO Users (id, image_url, first_name, middle_name, last_name, email, password, enabled, not_locked, using_mfa, phone, address)
  VALUES
-    (1, 'https://randomuser.me/api/portraits/','Chris', 'G', 'Taylor', 'chris.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
-   (2, 'https://randomuser.me/api/portraits/', 'Jane', 'A', 'Johnson', 'jane.johnson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '987-654-3210', '456 Oak St, Townsville'),
-   (3, 'https://randomuser.me/api/portraits/', 'Michael', 'B', 'Brown', 'michael.brown@example.com', 'hashed_password', TRUE, TRUE, FALSE, '555-123-4567', '789 Pine St, Villagetown'),
-   (4, 'https://randomuser.me/api/portraits/','Emily', 'C', 'Davis', 'emily.davis@example.com', 'hashed_password', TRUE, TRUE, FALSE, '333-999-7777', '101 Elm St, Healthcity'),
-   (5, 'https://randomuser.me/api/portraits/','Christopher', 'D', 'Miller', 'christopher.miller@example.com', 'hashed_password', TRUE, TRUE, FALSE, '111-444-8888', '202 Maple St, Remedytown'),
-   (6, 'https://randomuser.me/api/portraits/','Sophia', 'E', 'Wilson', 'sophia.wilson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '777-222-5555', '303 Birch St, Ailmentville'),
-   (7, 'https://randomuser.me/api/portraits/','Matthew', 'F', 'Moore', 'matthew.moore@example.com', 'hashed_password', TRUE, TRUE, FALSE, '999-666-3333', '404 Cedar St, Cureburg'),
-   (8, 'https://randomuser.me/api/portraits/','Olivia', 'G', 'Taylor', 'olivia.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
-   (9, 'https://randomuser.me/api/portraits/','Emma', 'H', 'Clark', 'emma.clark@example.com', 'hashed_password', TRUE, TRUE, FALSE, '444-111-9999', '606 Spruce St, Medicineville'),
-   (10, 'https://randomuser.me/api/portraits/','William', 'I', 'Hall', 'william.hall@example.com', 'hashed_password', TRUE, TRUE, FALSE, '666-333-2222', '707 Sycamore St, Remedytown');
+    (1, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Chris', 'G', 'Taylor', 'chris.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
+   (2, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png', 'Jane', 'A', 'Johnson', 'jane.johnson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '987-654-3210', '456 Oak St, Townsville'),
+   (3, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png', 'Michael', 'B', 'Brown', 'michael.brown@example.com', 'hashed_password', TRUE, TRUE, FALSE, '555-123-4567', '789 Pine St, Villagetown'),
+   (4, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Emily', 'C', 'Davis', 'emily.davis@example.com', 'hashed_password', TRUE, TRUE, FALSE, '333-999-7777', '101 Elm St, Healthcity'),
+   (5, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Christopher', 'D', 'Miller', 'christopher.miller@example.com', 'hashed_password', TRUE, TRUE, FALSE, '111-444-8888', '202 Maple St, Remedytown'),
+   (6, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Sophia', 'E', 'Wilson', 'sophia.wilson@example.com', 'hashed_password', TRUE, TRUE, FALSE, '777-222-5555', '303 Birch St, Ailmentville'),
+   (7, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Matthew', 'F', 'Moore', 'matthew.moore@example.com', 'hashed_password', TRUE, TRUE, FALSE, '999-666-3333', '404 Cedar St, Cureburg'),
+   (8, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Olivia', 'G', 'Taylor', 'olivia.taylor@example.com', 'hashed_password', TRUE, TRUE, FALSE, '222-777-4444', '505 Willow St, Recoveryville'),
+   (9, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','Emma', 'H', 'Clark', 'emma.clark@example.com', 'hashed_password', TRUE, TRUE, FALSE, '444-111-9999', '606 Spruce St, Medicineville'),
+   (10, 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png','William', 'I', 'Hall', 'william.hall@example.com', 'hashed_password', TRUE, TRUE, FALSE, '666-333-2222', '707 Sycamore St, Remedytown');
 
 INSERT INTO Customers (id, user_id, city, state, zip_code)
 VALUES

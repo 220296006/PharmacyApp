@@ -118,7 +118,7 @@ public class UserController {
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
-            responseBody.put("user", user);
+            responseBody.put("user", userDetails);
             responseBody.put("message", "User authenticated successfully");
             return ResponseEntity.ok(responseBody);
         } catch (BadCredentialsException e) {

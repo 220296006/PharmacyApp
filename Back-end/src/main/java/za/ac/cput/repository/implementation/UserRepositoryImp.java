@@ -72,9 +72,18 @@ public class UserRepositoryImp implements UserRepository<User> {
             String email = user.getEmail().toLowerCase();
             if (emailToRole.containsKey(email)) {
                 String roleName = emailToRole.get(email);
-                roleRepository.addRoleToUser(user.getId(), roleName);
+                Role role = new Role();
+                role.setName(roleName);
+                role.setPermissions(getPermissionsForRole(roleName)); // Get permissions for the role
+                roleRepository.save(role); // Save the role
+                roleRepository.addRoleToUser(user.getId(), roleName); // Add role to user
             } else {
-                roleRepository.addRoleToUser(user.getId(), ROLE_USER.name());
+                String roleName = "ROLE_USER"; // Default role for other users
+                Role role = new Role();
+                role.setName(roleName);
+                role.setPermissions(getPermissionsForRole(roleName)); // Get permissions for the role
+                roleRepository.save(role); // Save the role
+                roleRepository.addRoleToUser(user.getId(), roleName); // Add role to user
             }
             // Generate confirmation token and send confirmation email (if needed)
             String token = UUID.randomUUID().toString();
@@ -90,7 +99,44 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
-
+    private Set<String> getPermissionsForRole(String roleName) {
+        Set<String> permissions = new HashSet<>();
+        // Logic to retrieve permissions for the role
+        switch (roleName) {
+            case "ROLE_ADMIN":
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                permissions.add("CREATE:USER");
+                permissions.add("DELETE:USER");
+                // Add more permissions as needed
+                break;
+            case "ROLE_MANAGER":
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                permissions.add("UPDATE:USER");
+                permissions.add("UPDATE:CUSTOMER");
+                // Add more permissions as needed
+                break;
+            case "ROLE_SYSADMIN":
+                // ROLE_SYSADMIN has all permissions
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                permissions.add("CREATE:USER");
+                permissions.add("CREATE:CUSTOMER");
+                permissions.add("DELETE:USER");
+                permissions.add("DELETE:CUSTOMER");
+                permissions.add("UPDATE:USER");
+                permissions.add("UPDATE:CUSTOMER");
+                // Add more permissions as needed
+                break;
+            default:
+                // Default permissions for other roles
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                break;
+        }
+        return permissions;
+    }
 
 
     @Override
@@ -188,6 +234,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                 .addValue("firstName", user.getFirstName())
                 .addValue("middleName", user.getMiddleName())
                 .addValue("lastName", user.getLastName())
+                .addValue("imageUrl", user.getImageUrl())
                 .addValue("email", user.getEmail())
                 .addValue("phone", user.getPhone())
                 .addValue("address", user.getAddress())

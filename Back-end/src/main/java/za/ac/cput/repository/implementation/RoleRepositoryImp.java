@@ -38,10 +38,17 @@ public Role save(Role role) {
         KeyHolder holder = new GeneratedKeyHolder();
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("name", role.getName())
-                .addValue("permission", role.getPermission());
+                .addValue("permission", String.join(",", role.getPermissions()));
 
         jdbc.update(INSERT_ROLE_QUERY, parameters, holder);
-        role.setId(Objects.requireNonNull(holder.getKey()).longValue());
+        List<Map<String, Object>> keys = holder.getKeyList();
+        if (!keys.isEmpty()) {
+            // Assuming the first generated key is the one you need
+            Number key = (Number) keys.get(0).get("GENERATED_KEY");
+            role.setId(key.longValue());
+        } else {
+            throw new ApiException("No generated key found after inserting Role.");
+        }
 
         return role;
     } catch (Exception exception) {
@@ -90,7 +97,7 @@ public Role update(Role role) {
         SqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("id", role.getId())
                 .addValue("name", role.getName())
-                .addValue("permission", role.getPermission());
+                .addValue("permission", String.join(",", role.getPermissions()));
 
         jdbc.update(UPDATE_ROLE_QUERY, parameters);
         return role;
@@ -161,25 +168,30 @@ public Role getRoleByUserEmail(String email) {
 
 
  @Override
-public Role updateUserRole(Long userId, String roleName) {
-    log.info("Updating role of user with ID: {} to role: {}", userId, roleName);
-    try {
-        Role role = jdbc.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName), new RoleRowMapper());
-        if (role == null) {
-            throw new ApiException("Role not found. Please provide a valid role name.");
-        }
-        SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("userId", userId)
-                .addValue("roleId", role.getId());
-        jdbc.update(UPDATE_USER_ROLE_QUERY, parameters);
-        return role;
-    } catch (EmptyResultDataAccessException exception) {
-        throw new ApiException("No role found by name: " + roleName);
-    } catch (Exception exception) {
-        log.error(exception.getMessage());
-        throw new ApiException("An error occurred while updating the user role. Please try again.");
-    }
-}
+ public Role updateUserRole(Long userId, String roleName) {
+     log.info("Updating role of user with ID: {} to role: {}", userId, roleName);
+     try {
+         Role role = jdbc.queryForObject(SELECT_ROLE_BY_NAME_QUERY, Map.of("name", roleName), new RoleRowMapper());
+         if (role == null) {
+             throw new ApiException("Role not found. Please provide a valid role name.");
+         }
+         // Fetch permissions associated with the role
+         Set<String> permissions = role.getPermissions(); // Assuming your Role class has a 'permissions' field
+         // Update user's permissions in the database
+         SqlParameterSource parameters = new MapSqlParameterSource()
+                 .addValue("userId", userId)
+                 .addValue("roleId", role.getId())
+                 .addValue("permissions", String.join(",", permissions)); // Convert permissions set to comma-separated string
+         jdbc.update(UPDATE_USER_ROLE_QUERY, parameters);
+         return role;
+     } catch (EmptyResultDataAccessException exception) {
+         throw new ApiException("No role found by name: " + roleName);
+     } catch (Exception exception) {
+         log.error(exception.getMessage());
+         throw new ApiException("An error occurred while updating the user role. Please try again.");
+     }
+ }
+
 
      @Override
      public Role findRoleByName(String roleName) {

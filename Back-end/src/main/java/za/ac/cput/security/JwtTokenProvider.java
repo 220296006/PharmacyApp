@@ -19,9 +19,12 @@ import za.ac.cput.model.Role;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.Locale.filter;
 
 
 @Component
@@ -33,17 +36,31 @@ public class JwtTokenProvider {
 
     public String createToken(String username, Set<Role> roles) {
         log.info("Creating JWT token for user: {}", username);
+
+        // Extract roles and permissions from Role objects
+        Set<String> roleNames = roles.stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+
+        Set<String> permissions = roles.stream()
+                .flatMap(role -> role.getPermissions().stream()) // Flatten permissions
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
         String token = Jwts
                 .builder()
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(getSignInKey())
-                .claim("roles", roles.stream().map(Role::getName).collect(Collectors.toSet()))
+                .claim("roles", roleNames) // Add roles to the token claim
+                .claim("permissions", permissions) // Add permissions to the token claim
                 .compact();
         log.info("Generated JWT token: {}", token);
         return token;
     }
+
+
 
     private SecretKey getSignInKey() {
         String SECRET_KEY = "339e342a830a1526094d805b60c422e15bb4bf0f8797f2d99846f381ac6566b8";

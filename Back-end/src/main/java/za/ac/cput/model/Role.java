@@ -5,6 +5,9 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp
@@ -21,5 +24,10 @@ public class Role {
     @Id
     private Long id;
     private String name;
-    private String permission;
+    @Setter
+    private Set<String> permissions  = new HashSet<>();
+
+    public Set<String> getPermissions() {
+        return permissions != null ? permissions : new HashSet<>();
+    }
 }
