@@ -9,6 +9,7 @@ import za.ac.cput.service.RoleService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -42,8 +43,8 @@ public class RoleServiceImp implements RoleService {
     }
 
     @Override
-    public void addRoleToUser(Long userId, String roleName) {
-        roleRepository.addRoleToUser(userId, roleName);
+    public void addRoleToUser(Long userId, String roleName, Set<String> permissions) {
+        roleRepository.addRoleToUser(userId, roleName, permissions);
     }
 
     @Override

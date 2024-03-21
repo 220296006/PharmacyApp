@@ -14,6 +14,7 @@ import java.util.Set;
  * @Date : 2023/07/07
  * @Time : 16:58
  **/
+
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -24,10 +25,9 @@ public class Role {
     @Id
     private Long id;
     private String name;
+
+    @Getter
     @Setter
     private Set<String> permissions  = new HashSet<>();
 
-    public Set<String> getPermissions() {
-        return permissions != null ? permissions : new HashSet<>();
-    }
 }

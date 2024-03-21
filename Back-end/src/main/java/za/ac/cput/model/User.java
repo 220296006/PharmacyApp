@@ -1,12 +1,14 @@
 package za.ac.cput.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
+
 
 /**
  * @author : Thabiso Matsaba
@@ -64,7 +67,9 @@ public class User  implements UserDetails {
     @Column(name = "confirmations")
     private Confirmation confirmation;
 
-    public User(Long id, String firstName, String middleName, String lastName, String email, String password, String phone, String address, String imageUrl, boolean enabled, boolean isUsingMfa, boolean isNotLocked, Set<GrantedAuthority> authorities) {
+    public User(Long id, String firstName, String middleName, String lastName, String email, String password,
+                String phone, String address, String imageUrl, boolean enabled, boolean isUsingMfa, boolean isNotLocked,
+                Set<GrantedAuthority> authorities) {
     }
 
     @Override
@@ -81,7 +86,7 @@ public class User  implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // You may implement custom logic if needed
+        return true;
     }
 
     @Override
@@ -91,7 +96,7 @@ public class User  implements UserDetails {
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // You may implement custom logic if needed
+        return true;
     }
 }
 

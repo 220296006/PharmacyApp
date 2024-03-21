@@ -15,11 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.thymeleaf.TemplateEngine;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
@@ -28,11 +26,8 @@ import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
-import za.ac.cput.service.RoleService;
 import za.ac.cput.service.UserService;
-import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.HashMap;
@@ -71,6 +66,7 @@ public class UserController {
 
     @GetMapping("/info")
     public ResponseEntity<UserDTO> getUserInfo(@RequestHeader("Authorization") String token) {
+        log.info("Fetching user info with token: {}", token);
         String username = jwtTokenProvider.getUsername(token).trim();
         UserDTO userDTO = userService.getUserInfo(username);
         if (userDTO != null) {
@@ -78,7 +74,6 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
-
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
@@ -118,7 +113,7 @@ public class UserController {
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
-            responseBody.put("user", userDetails);
+            responseBody.put("user", user);
             responseBody.put("message", "User authenticated successfully");
             return ResponseEntity.ok(responseBody);
         } catch (BadCredentialsException e) {

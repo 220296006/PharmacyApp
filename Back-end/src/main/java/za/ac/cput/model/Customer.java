@@ -3,10 +3,7 @@ package za.ac.cput.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.proxy.HibernateProxy;
 import org.springframework.data.annotation.Id;
-
-import java.util.Objects;
 
 /**
  * @author : Thabiso Matsaba

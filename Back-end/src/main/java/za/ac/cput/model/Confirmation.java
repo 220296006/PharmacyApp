@@ -1,14 +1,14 @@
 package za.ac.cput.model;
 
+
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.jpa.repository.Temporal;
+
 
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.TemporalType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

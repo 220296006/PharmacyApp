@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import za.ac.cput.exception.JwtAuthenticationException;
 import za.ac.cput.model.Role;
+import za.ac.cput.model.User;
 
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import static java.util.Locale.filter;
+import java.util.stream.Stream;
 
 
 @Component
@@ -36,6 +36,13 @@ public class JwtTokenProvider {
 
     public String createToken(String username, Set<Role> roles) {
         log.info("Creating JWT token for user: {}", username);
+        // Fetch user details including roles and permissions
+        User user = (User) userDetailsService.loadUserByUsername(username);
+
+
+        // Log the roles and their permissions
+        log.info("Roles and permissions:");
+        roles.forEach(role -> log.info("Role: {}, Permissions: {}", role.getName(), role.getPermissions()));
 
         // Extract roles and permissions from Role objects
         Set<String> roleNames = roles.stream()
@@ -43,7 +50,7 @@ public class JwtTokenProvider {
                 .collect(Collectors.toSet());
 
         Set<String> permissions = roles.stream()
-                .flatMap(role -> role.getPermissions().stream()) // Flatten permissions
+                .flatMap(role -> role.getPermissions() == null ? Stream.empty() : role.getPermissions().stream()) // Handle null permissions
                 .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
@@ -54,13 +61,11 @@ public class JwtTokenProvider {
                 .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
                 .signWith(getSignInKey())
                 .claim("roles", roleNames) // Add roles to the token claim
-                .claim("permissions", permissions) // Add permissions to the token claim
+                .claim("permissions", user.getRoles()) // Add permissions to the token claim
                 .compact();
         log.info("Generated JWT token: {}", token);
         return token;
     }
-
-
 
     private SecretKey getSignInKey() {
         String SECRET_KEY = "339e342a830a1526094d805b60c422e15bb4bf0f8797f2d99846f381ac6566b8";

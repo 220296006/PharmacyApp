@@ -7,7 +7,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -16,12 +15,9 @@ import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.RoleRepository;
-import za.ac.cput.repository.UserRepository;
-import za.ac.cput.repository.implementation.RoleRepositoryImp;
-import za.ac.cput.rowmapper.UserRowMapper;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,7 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final NamedParameterJdbcTemplate jdbc;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         if (email == null) {
             log.warn("Email is null during user loading.");
             throw new UsernameNotFoundException("Email cannot be null");
@@ -85,17 +81,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 throw new UsernameNotFoundException("User not found with email: " + email);
             }
 
+            // Fetch roles and permissions for the user
+            Set<Role> roles = user.getRoles();
+            roles.forEach(role -> {
+                Set<String> permissions = getPermissionsForRole(role.getName());
+                role.setPermissions(permissions); // Set permissions for the role
+            });
             log.info("User found: {}", user);
 
-            return new org.springframework.security.core.userdetails.User(
-                    user.getEmail(), // Username
-                    user.getPassword(), // Password (already encoded)
-                    user.isEnabled(), // Enabled status
-                    true, // Account not expired
-                    true, // Credentials not expired
-                    true, // Account not locked
-                    getAuthorities(user.getRoles()) // Authorities (roles)
-            );
+            return user;
         } catch (DataAccessException exception) {
             log.error("Error loading user by email: " + email, exception);
             throw new UsernameNotFoundException("User not found with email: " + email);
@@ -104,12 +98,45 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new ApiException("An unexpected error occurred");
         }
     }
-
+    private Set<String> getPermissionsForRole(String roleName) {
+        Set<String> permissions = new HashSet<>();
+        permissions.add("READ:USER");
+        permissions.add("READ:CUSTOMER");
+        switch (roleName) {
+            case "ROLE_ADMIN":
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                permissions.add("CREATE:USER");
+                permissions.add("DELETE:USER");
+                break;
+            case "ROLE_MANAGER":
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                permissions.add("UPDATE:USER");
+                permissions.add("UPDATE:CUSTOMER");
+                break;
+            case "ROLE_SYSADMIN":
+                permissions.add("READ:USER");
+                permissions.add("READ:CUSTOMER");
+                permissions.add("CREATE:USER");
+                permissions.add("CREATE:CUSTOMER");
+                permissions.add("DELETE:USER");
+                permissions.add("DELETE:CUSTOMER");
+                permissions.add("UPDATE:USER");
+                permissions.add("UPDATE:CUSTOMER");
+                break;
+            case "ROLE_USER":
+                permissions.add("READ:USER"); // Allow user to see their own profile information
+                permissions.add("READ:CUSTOMER");
+                break;
+        }
+        // Logging statements to verify permissions
+        log.info("Permissions for role {}: {}", roleName, permissions);
+        return permissions;
+    }
     private Set<GrantedAuthority> getAuthorities(Set<Role> roles) { // Use Set instead of List
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
                 .collect(Collectors.toSet());
     }
-
-
 }

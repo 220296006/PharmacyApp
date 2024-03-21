@@ -1,6 +1,5 @@
 package za.ac.cput.repository.implementation;
 
-import com.twilio.rest.api.v2010.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
-import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.RoleRepository;
@@ -65,8 +63,8 @@ public class UserRepositoryImp implements UserRepository<User> {
             // Define email to role mapping
             Map<String, String> emailToRole = new HashMap<>();
             emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_ADMIN.name());
-            emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_MANAGER.name());
-            emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_SYSADMIN.name());
+            emailToRole.put("thabisomatsaba96@gmail.com", ROLE_MANAGER.name());
+            emailToRole.put("220296006@mycput.ac.za", ROLE_SYSADMIN.name());
             // Add more mappings as needed
             // Assign role based on email
             String email = user.getEmail().toLowerCase();
@@ -75,15 +73,17 @@ public class UserRepositoryImp implements UserRepository<User> {
                 Role role = new Role();
                 role.setName(roleName);
                 role.setPermissions(getPermissionsForRole(roleName)); // Get permissions for the role
-                roleRepository.save(role); // Save the role
-                roleRepository.addRoleToUser(user.getId(), roleName); // Add role to user
+                user.getRoles().add(role);
+                // Set userId parameter before adding role to user
+                roleRepository.addRoleToUser(user.getId(), roleName, role.getPermissions()); // Add role to user
             } else {
-                String roleName = "ROLE_USER"; // Default role for other users
+                String roleName = "ROLE_USER";
                 Role role = new Role();
                 role.setName(roleName);
-                role.setPermissions(getPermissionsForRole(roleName)); // Get permissions for the role
-                roleRepository.save(role); // Save the role
-                roleRepository.addRoleToUser(user.getId(), roleName); // Add role to user
+                role.setPermissions(getPermissionsForRole(roleName)); // Get permissions for the default role
+                user.getRoles().add(role);
+                // Set userId parameter before adding role to user
+                roleRepository.addRoleToUser(user.getId(), roleName, role.getPermissions()); // Add role to user
             }
             // Generate confirmation token and send confirmation email (if needed)
             String token = UUID.randomUUID().toString();
@@ -99,9 +99,12 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
+
     private Set<String> getPermissionsForRole(String roleName) {
         Set<String> permissions = new HashSet<>();
-        // Logic to retrieve permissions for the role
+        // Default permissions for other roles
+        permissions.add("READ:USER");
+        permissions.add("READ:CUSTOMER");
         switch (roleName) {
             case "ROLE_ADMIN":
                 permissions.add("READ:USER");
@@ -129,14 +132,18 @@ public class UserRepositoryImp implements UserRepository<User> {
                 permissions.add("UPDATE:CUSTOMER");
                 // Add more permissions as needed
                 break;
-            default:
-                // Default permissions for other roles
-                permissions.add("READ:USER");
+            case "ROLE_USER":
+                // Define permissions for ROLE_USER
+                permissions.add("READ:USER"); // Allow user to see their own profile information
                 permissions.add("READ:CUSTOMER");
+                // Add more permissions for ROLE_USER as needed
                 break;
         }
+        // Logging statements to verify permissions
+        log.info("Permissions for role {}: {}", roleName, permissions);
         return permissions;
     }
+
 
 
     @Override

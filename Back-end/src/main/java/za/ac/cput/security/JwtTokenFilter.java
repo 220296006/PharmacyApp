@@ -1,5 +1,6 @@
 package za.ac.cput.security;
 
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import za.ac.cput.exception.JwtAuthenticationException;
 import za.ac.cput.service.implementation.UserDetailsServiceImpl;
+
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

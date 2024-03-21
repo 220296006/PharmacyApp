@@ -16,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import za.ac.cput.service.implementation.UserDetailsServiceImpl;
 
-import javax.sql.DataSource;
-
 /**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp

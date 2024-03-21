@@ -13,6 +13,7 @@ import za.ac.cput.service.RoleService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequiredArgsConstructor
@@ -69,9 +70,10 @@ public class RoleController {
     }
 
     @PostMapping("/addRoleToUser/{userId}")
-    public ResponseEntity<Void> addRoleToUser(@RequestParam Long userId, @RequestParam String roleName) {
+    public ResponseEntity<Void> addRoleToUser(@RequestParam Long userId, @RequestParam String roleName,
+                                              @RequestParam Set<String> permissions)  {
         log.info("Adding role {} to user with ID: {}", roleName, userId);
-        roleService.addRoleToUser(userId, roleName);
+        roleService.addRoleToUser(userId, roleName,permissions);
         return ResponseEntity.ok().build();
     }
 
