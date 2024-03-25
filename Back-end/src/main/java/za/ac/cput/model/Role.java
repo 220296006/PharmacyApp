@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,11 +22,10 @@ import java.util.Set;
 @Getter @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class Role {
+public class Role implements Serializable {
     @Id
     private Long id;
     private String name;
-
     @Getter
     @Setter
     private Set<String> permissions  = new HashSet<>();

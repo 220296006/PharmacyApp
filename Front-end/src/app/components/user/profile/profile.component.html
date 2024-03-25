@@ -1,40 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile</title>
-</head>
-<body>
+  </head>
+  <body>
     <!-- profile/profile.component.html -->
-<h2>Profile Settings</h2>
-<form (ngOnSubmit)="onUpdateUser" [formGroup]="updateUserForm">
-    <div class="form-group">
+    <h2>Profile Settings</h2>
+    <form (ngSubmit)="onUpdateUser()" [formGroup]="updateUserForm">
+      <div class="form-group">
         <label for="firstName">First Name</label>
-        <input type="text" class="form-control" id="firstName" formControlName="firstName" name="firstName">
-    </div>
-    <div class="form-group">
-        <label for="lastName">Last Name</label>
-        <input type="text" class="form-control" id="lastName" formControlName="lastName" name="lastName">
-    </div>
-    <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="firstName"
+          formControlName="firstName"
+          name="firstName"
+          placeholder=""
+        />
+        <div
+          *ngIf="
+            updateUserForm.controls['firstName'].invalid &&
+            (updateUserForm.controls['firstName'].dirty ||
+              updateUserForm.controls['firstName'].touched)
+          "
+        >
+          <small class="text-danger">First name is required.</small>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="middleName">Middle Name</label>
-        <input type="text" class="form-control" id="middleName" formControlName="middleName" name="middleName">
-    </div>
-    <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="middleName"
+          formControlName="middleName"
+          name="middleName"
+          placeholder=""
+        />
+        <div
+          *ngIf="
+            updateUserForm.controls['middleName'].invalid &&
+            (updateUserForm.controls['middleName'].dirty ||
+              updateUserForm.controls['middleName'].touched)
+          "
+        >
+          <small class="text-danger">Middle name is required.</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          class="form-control"
+          id="lastName"
+          formControlName="lastName"
+          name="lastName"
+          placeholder=""
+        />
+        <div
+          *ngIf="
+            updateUserForm.controls['lastName'].invalid &&
+            (updateUserForm.controls['lastName'].dirty ||
+              updateUserForm.controls['lastName'].touched)
+          "
+        >
+          <small class="text-danger">Last name is required.</small>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" formControlName="email" name="email">
-    </div>
-    <div class="form-group">
+        <input
+          type="email"
+          class="form-control"
+          id="email"
+          formControlName="email"
+          name="email"
+          placeholder=""
+        />
+        <div
+          *ngIf="
+            updateUserForm.controls['email'].invalid &&
+            (updateUserForm.controls['email'].dirty ||
+              updateUserForm.controls['email'].touched)
+          "
+        >
+          <small class="text-danger">Please enter a valid email address.</small>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="phone">Phone</label>
-        <input type="tel" class="form-control" id="phone" formControlName="phone" name="phone">
-    </div>
-    <div class="form-group">
+        <input
+          type="tel"
+          class="form-control"
+          id="phone"
+          formControlName="phone"
+          name="phone"
+          placeholder=""
+        />
+        <div
+          *ngIf="
+            updateUserForm.controls['phone'].invalid &&
+            (updateUserForm.controls['phone'].dirty ||
+              updateUserForm.controls['phone'].touched)
+          "
+        >
+          <small class="text-danger">Please enter a valid phone number.</small>
+        </div>
+      </div>
+      <div class="form-group">
         <label for="address">Address</label>
-        <input type="text" class="form-control" id="address" formControlName="address" name="address">
-    </div>
-    <button type="submit" class="btn btn-primary">Save</button>
-</form>
-
-</body>
+        <input
+          type="text"
+          class="form-control"
+          id="address"
+          formControlName="address"
+          name="address"
+          placeholder=""
+        />
+        <div
+          *ngIf="
+            updateUserForm.controls['address'].invalid &&
+            (updateUserForm.controls['address'].dirty ||
+              updateUserForm.controls['address'].touched)
+          "
+        >
+          <small class="text-danger">Address is required.</small>
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="updateUserForm.invalid"
+      >
+        Save
+      </button>
+    </form>
+  </body>
 </html>

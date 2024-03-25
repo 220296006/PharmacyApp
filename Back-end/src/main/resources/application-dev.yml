@@ -4,7 +4,6 @@ spring:
     url: jdbc:mysql://localhost:3306/PharmacyApp?createDatabaseIfNotExist=true
     username: root # Database username
     password: Shaun@96 # Database password
-    initialization-mode: always
 
   # CORS Configuration
   servlet:
@@ -12,42 +11,17 @@ spring:
       cors:
         allowed-origins: http://localhost:4200 # Allowed CORS origins
 
-  # Session
+  # Spring JDBC Sesssion
+    server:
+    servlet:
+      session:
+        timeout: 1800 # Session timeout. If a duration suffix is not specified, seconds are used.
   session:
-    store-type: jdbc
     jdbc:
+      schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
+      table-name: SPRING_SESSION
       initialize-schema: always
-      schema: create-if-not-exists # Create the schema if not exists
-
-
-
-
-  # Redis Configuration
-#  redis:
-#    host: localhost # Redis server host
-#    port: 6379 # Redis server port
-#    pool:
-#      maxActive: 8 # Maximum number of active connections (default: 8)
-#      maxIdle: 8 # Maximum number of idle connections (default: 8)
-#      minIdle: 0 # Minimum number of idle connections (default: 0)
-#      testOnBorrow: true # Test connection validity before borrowing (default: true)
-
-# GitHub Login
-#  security:
-#    oauth2:
-#      client:
-#        registration:
-#          github:
-#            client-id: GITHUB_CLIENT_ID
-#            client-secret: GITHUB_CLIENT_SECRET
-
-# Google Login
-#  oauth2:
-#      client:
-#        registration:
-#          google:
-#            client-id: GOOGLE_CLIENT_ID
-#            client-secret: GOOGLE_CLIENT_SECRET
+      store-type: jdbc
 
 # Logging Configuration
   logging:
@@ -55,8 +29,6 @@ spring:
     org:
       springframework:
         security: TRACE
-
-
 
  # Thymeleaf Configuration
   thymeleaf:

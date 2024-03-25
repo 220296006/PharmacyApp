@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, map, retry, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/model/api-response';
 import { User } from 'src/app/model/user';
 import { jwtDecode } from 'jwt-decode';
@@ -15,25 +15,43 @@ export class AuthService {
   public currentUser: Observable<User | null>;
 
 
-  constructor(private http: HttpClient){
+  constructor(private http: HttpClient) {
     this.currentUser = this.userSubject.asObservable();
     const token = this.getToken();
-    console.log(token);
     if (token) {
       this.decodeTokenAndSetUser(token); // Set initial user from token if available
     }
   }
 
-
   decodeTokenAndSetUser(token: string) {
     try {
       const decodedToken: any = jwtDecode(token);
-      const user = this.buildUserFromToken(decodedToken);
-      this.userSubject.next(user);
+      this.getUserInfoFromServer().subscribe({
+        next: (user) => {
+          this.userSubject.next(user);
+        },
+        error: (error) => {
+          console.error('Error fetching user info:', error);
+        }
+      });
     } catch (error) {
       console.error('Error decoding token:', error);
-      this.userSubject.next(null); // Set user to null on decode error
     }
+  }
+
+  getUserInfoFromServer(): Observable<User> {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error('No token available');
+    }
+    return this.http.get<User>(`${this.apiUrl}/user/profile`, {
+      headers: { Authorization: token }
+    }).pipe(
+      catchError((error) => {
+        console.error('Error fetching user info from server:', error);
+        return throwError('Error fetching user info');
+      })
+    );
   }
 
   updateCurrentUser(user: User) {
@@ -42,17 +60,17 @@ export class AuthService {
 
   buildUserFromToken(decodedToken: any): User {
     const email = decodedToken.sub || '';
-    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim());
+    const [firstName, lastName, middleName, address, phone] = email.split('@')[0].split('.').filter((part: string) => part.trim());
     const userRole = decodedToken.roles ? decodedToken.roles[0] : '';
 
     return {
       email,
       id: decodedToken.id || 0,
       firstName,
-      middleName: decodedToken.middleName || '',
+      middleName,
       lastName,
-      address: decodedToken.address || '',
-      phone: decodedToken.phone || '',
+      address,
+      phone,
       password: '',
       imageUrl: decodedToken.imageUrl || '',
       enabled: decodedToken.enabled || false,
@@ -124,58 +142,21 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
-   decodeToken(): User {
-    const token = this.getToken();
-  if (!token) {
-    throw new Error('No token available');
-  }
 
-  // Trim the token to remove any whitespace characters
-  const trimmedToken = token.trim();
-
-  // Decode the trimmed token
-    const decodedToken: any = jwtDecode(trimmedToken);
-    const email = decodedToken.sub || '';
-    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim());
-    const userRole = decodedToken.roles ? decodedToken.roles[0] : '';
-  
-    return {
-      email: email,
-      id: decodedToken.id || 0,
-      firstName: firstName || '',
-      middleName: decodedToken.middleName || '',
-      lastName: lastName || '',
-      address: decodedToken.address || '',
-      phone: decodedToken.phone || '',
-      password: '',
-      imageUrl: decodedToken.imageUrl || '',
-      enabled: decodedToken.enabled || false,
-      isUsingMfa: decodedToken.isUsingMfa || false,
-      createdAt: decodedToken.createdAt ? new Date(decodedToken.createdAt) : new Date(),
-      isNotLocked: decodedToken.isNotLocked || false,
-      role: userRole || ''
-    };
-  }
-
-  getUserInfo(): Observable<ApiResponse<User>> {
-    // Retrieve token from storage (localStorage or sessionStorage)
-    const token = this.getToken();
-  
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-  
-    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/user/info`, { headers })
-      .pipe(
-        catchError(error => {
+  getUserInfo():Observable<User> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('No token available');
+    }
+    return this.http.get<User>(`${this.apiUrl}/user/profile`, {
+      headers: { Authorization: token }
+  }).pipe(
+      catchError(error => {
           console.error('Error fetching user info:', error);
-          return throwError(error);
-        })
-      );
+          return throwError('Error fetching user info');
+      })
+  );
   }
-  
-  
-  
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

@@ -10,7 +10,6 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -18,30 +17,27 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
-    console.log(token);
+    
+    console.log('Interceptor: Token from localStorage:', token);
 
     if (token) {
-      try {
-        const decodedToken: any = jwtDecode(token);
-        const roles: string[] = decodedToken.roles || [];
+      console.log('Interceptor: Adding Authorization header');
+      const authReq = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-        // Check if the user has any of the allowed roles
-        if (roles.includes('ROLE_ADMIN') || roles.includes('ROLE_MANAGER') || roles.includes('ROLE_SYSADMIN')) {
-          request = request.clone({
-            setHeaders: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-        }
-      } catch (error) {
-        console.error('Error decoding JWT token:', error);
-      }
+      console.log('Interceptor: Request after adding Authorization header:', authReq);
+      return next.handle(authReq);
     }
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        console.error('Interceptor: HTTP error occurred:', error);
+
         if (error.status === 403) {
-          console.error('Forbidden request. Redirecting to access denied page.');
+          console.error('Interceptor: Forbidden request. Redirecting to access denied page.');
           this.snackBar.open('You don\'t have permission to access this resource.', 'Close', {
             duration: 5000,
             horizontalPosition: 'center',
@@ -50,13 +46,14 @@ export class AuthInterceptor implements HttpInterceptor {
           // Navigate to the access denied page
           //this.router.navigate(['/access-denied']);
         } else {
-          console.error('HTTP error occurred:', error);
+          console.error('Interceptor: An unexpected error occurred. Please try again later.');
           this.snackBar.open('An unexpected error occurred. Please try again later.', 'Close', {
             duration: 5000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
         }
+
         // Throw the error to propagate it further
         return throwError(error);
       })

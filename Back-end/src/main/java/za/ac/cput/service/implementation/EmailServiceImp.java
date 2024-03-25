@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamSource;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,8 +15,6 @@ import za.ac.cput.exception.ApiException;
 import za.ac.cput.service.EmailService;
 
 import javax.mail.internet.MimeMessage;
-import java.io.InputStream;
-import java.util.Scanner;
 
 /**
  * @author : Thabiso Matsaba
@@ -28,6 +26,7 @@ import java.util.Scanner;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Configuration
 public class EmailServiceImp implements EmailService {
     public static final String UTF_8_ENCODING = "UTF-8";
     public static final String EMAIL_TEMPLATE = "NEW USER VERIFICATION";
@@ -65,6 +64,4 @@ public class EmailServiceImp implements EmailService {
             throw new ApiException(exception.getMessage());
         }
     }
-
-
 }

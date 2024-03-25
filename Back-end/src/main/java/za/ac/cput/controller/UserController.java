@@ -12,9 +12,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +57,7 @@ import static org.springframework.http.HttpStatus.*;
 @ComponentScan
 @CrossOrigin(origins = "http://localhost:4200")
 @Controller
+@EnableJdbcHttpSession
 public class UserController {
     private final UserService userService;
     private final ConfirmationService confirmationService;
@@ -68,10 +69,18 @@ public class UserController {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @GetMapping("/info")
+    @GetMapping("/profile")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
         log.info("Fetching user info from session");
-        HttpSession session = request.getSession(true); // Create session if needed
+        HttpSession session = request.getSession(false); // Retrieve existing session if available
+        if (session == null) {
+            log.error("Session not found");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        // Log the session ID
+        log.info("Session ID: {}", session.getId());
+
         UserDetails userDetails = (UserDetails) session.getAttribute("user"); // Access DTO here
         if (userDetails == null) {
             log.error("User details not found in session");
@@ -82,12 +91,11 @@ public class UserController {
         return ResponseEntity.ok(userDto);
     }
 
-
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody
-                                                                    AuthenticationRequest authenticationRequest,
+    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest,
                                                                 HttpServletRequest request) {
         log.info("Received login request for user: {}", authenticationRequest.getEmail());
+
         // Retrieve user from database
         User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
         if (user == null) {
@@ -96,13 +104,16 @@ public class UserController {
         }
         // Log the entered password
         log.debug("Entered password: {}", authenticationRequest.getPassword());
+
         // Retrieve the hashed password stored in the database
         String hashedPasswordFromDatabase = user.getPassword();
+
         // Verify password
         if (!passwordEncoder.matches(authenticationRequest.getPassword(), hashedPasswordFromDatabase)) {
             log.error("Invalid password for user with email: {}", authenticationRequest.getEmail());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
         // Log password match
         log.debug("Password matched for user with email: {}", authenticationRequest.getEmail());
         try {
@@ -111,19 +122,26 @@ public class UserController {
                     authenticationRequest.getPassword());
 
             Authentication authenticated = authenticationManager.authenticate(authentication);
+
             // Retrieve user details from the authenticated object
             UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
+
+            // Store user details in session
+            HttpSession session = request.getSession(true);
+            session.setAttribute("user", user);
+
+            // Log the session ID
+            log.info("Session ID: {}", session.getId());
+
             // Map authorities (roles) to Role objects
             Set<Role> roles = userDetails.getAuthorities().stream()
                     .map(authority -> Role.builder().name(authority.getAuthority()).build())
                     .collect(Collectors.toSet());
+
             // Generate JWT token
             String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
-            log.info("Generated JWT token for user: {}", userDetails.getUsername());
+            log.info("Generated JWT token for user: {}, Roles: {}", userDetails.getUsername(), roles);
 
-            // Store user details in session
-            HttpSession session = request.getSession(true); // Create a new session if none exists
-            session.setAttribute("user", user);
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
@@ -138,6 +156,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
     @PostMapping("/register")
     public ResponseEntity<Response> createUser(@RequestBody @Validated User user) {

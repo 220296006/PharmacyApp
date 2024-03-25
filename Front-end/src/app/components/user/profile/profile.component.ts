@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiResponse } from 'src/app/model/api-response';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { UserService } from 'src/app/services/user-service/userservice.service';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -12,61 +13,71 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
 })
 export class ProfileComponent implements OnInit {
   updateUserForm: FormGroup;
-  user: User;
+  currentUser: User;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private userService: UserService) {
-    this.updateUserForm = this.fb.group({
-      firstName: ['', Validators.required],
-      middleName: [''],
-      lastName: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      address: ['', [Validators.required]],
-    });
-  }
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
 
   ngOnInit(): void {
-    this.authService.getUserInfo().subscribe({
-      next: (response: ApiResponse<User>) => {
-        if (response && response.data) {
-          this.user = response.data.user;
-          console.log('Response from server:', this.user);
-          // Populate the form with user data
-          this.updateUserForm.patchValue({
-            firstName: this.user.firstName,
-            lastName: this.user.lastName,
-            middleName: this.user.middleName,
-            email: this.user.email,
-            phone: this.user.phone,
-            address: this.user.address
-          });
-        } else {
-          console.error('No user data found in the response');
-        }
-      },
-      error: (error) => {
-        console.error('Error fetching user info:', error);
-        // Handle the error here, e.g., display an error message to the user
-      },
+    // Initialize form and load current user details
+    this.updateUserForm = this.formBuilder.group({
+      firstName: [''],
+      middleName: [''], // Ensure all form controls are initialized
+      lastName: [''],
+      email: [''],
+      phone: [''],
+      address: [''],
+      
+    });
+
+    // Retrieve current user details
+    this.authService.currentUser.subscribe((user) => {
+      if (user) {
+        this.currentUser = user;
+        console.log(this.currentUser);
+
+        this.updateUserForm.patchValue({
+          firstName: user.firstName  || '',
+          middleName: user.middleName  || '',
+          lastName: user.lastName || '',
+          email: user.email || '',
+          phone: user.middleName || '',
+          address: user.address || '',
+        });
+      }
     });
   }
-  
 
-  onUpdateUser() {
-    const updatedUser = this.updateUserForm.value;
-    const userId = this.user.id; // Assuming id is stored in the user object
-
-    this.userService.updateUserData(userId, updatedUser).subscribe(
-      (response) => {
-        console.log('User updated successfully:', response);
-        // Handle success (e.g., show a success message)
-        // Update currentUser in AuthService (if applicable)
-        this.authService.updateCurrentUser(updatedUser);
-      },
-      (error) => {
-        console.error('Failed to update user:', error);
-        // Handle error (e.g., show an error message based on error details)
-      },
-    );
+  onUpdateUser(): void {
+    const updatedUser = this.updateUserForm.value as User;
+    // Handle null values for middleName, phone, and address
+    updatedUser.middleName = updatedUser.middleName || '';
+    updatedUser.phone = updatedUser.phone || '';
+    updatedUser.address = updatedUser.address || '';
+    this.userService
+      .updateUserData(this.currentUser.id, updatedUser)
+      .pipe(
+        catchError((error) => {
+          console.error('Network error:', error);
+          return throwError('Network error occurred');
+        })
+      )
+      .subscribe(
+        (response) => {
+          if (response) {
+            // Update current user details in AuthService
+            this.authService.updateCurrentUser(updatedUser);
+            console.log('User updated successfully:', response.message);
+          } else {
+            console.error('Failed to update user:', response.message);
+          }
+        },
+        (error) => {
+          console.error('Server error:', error);
+        }
+      );
   }
 }
