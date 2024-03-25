@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, retry, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/model/api-response';
 import { User } from 'src/app/model/user';
 import { jwtDecode } from 'jwt-decode';
@@ -18,6 +18,7 @@ export class AuthService {
   constructor(private http: HttpClient){
     this.currentUser = this.userSubject.asObservable();
     const token = this.getToken();
+    console.log(token);
     if (token) {
       this.decodeTokenAndSetUser(token); // Set initial user from token if available
     }
@@ -125,11 +126,15 @@ export class AuthService {
 
    decodeToken(): User {
     const token = this.getToken();
-    if (!token) {
-      throw new Error('No token available');
-    }
-  
-    const decodedToken: any = jwtDecode(token);
+  if (!token) {
+    throw new Error('No token available');
+  }
+
+  // Trim the token to remove any whitespace characters
+  const trimmedToken = token.trim();
+
+  // Decode the trimmed token
+    const decodedToken: any = jwtDecode(trimmedToken);
     const email = decodedToken.sub || '';
     const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim());
     const userRole = decodedToken.roles ? decodedToken.roles[0] : '';
@@ -152,20 +157,25 @@ export class AuthService {
     };
   }
 
-  getUserInfo():Observable<ApiResponse<User>> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('No token available');
-    }
-    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/user/info`, {
-      headers: { Authorization: token }
-  }).pipe(
-      catchError(error => {
+  getUserInfo(): Observable<ApiResponse<User>> {
+    // Retrieve token from storage (localStorage or sessionStorage)
+    const token = this.getToken();
+  
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
+  
+    return this.http.get<ApiResponse<User>>(`${this.apiUrl}/user/info`, { headers })
+      .pipe(
+        catchError(error => {
           console.error('Error fetching user info:', error);
-          return throwError('Error fetching user info');
-      })
-  );
+          return throwError(error);
+        })
+      );
   }
+  
+  
+  
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

@@ -1,3 +1,5 @@
+import { Role } from "./role";
+
 export interface User {
   id: number;
   firstName: string;
@@ -12,5 +14,5 @@ export interface User {
   isUsingMfa: boolean;
   createdAt: Date;
   isNotLocked: boolean;
-  role: string; // Add the role property
+  role: Role; // Add the role property
 }

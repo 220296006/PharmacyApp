@@ -44,7 +44,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User save(User user) {
-        log.info("Registering A User");
+        log.info("Registering a User");
         if (user.getPassword() == null) {
             throw new ApiException("Password cannot be null");
         }
@@ -52,9 +52,6 @@ public class UserRepositoryImp implements UserRepository<User> {
             throw new ApiException("Email already in use. Please use a different email and try again.");
         }
         try {
-            // Set password and encode it
-            String hashedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(hashedPassword);
             // Save user
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(user);
@@ -89,7 +86,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             String token = UUID.randomUUID().toString();
             jdbc.update(INSERT_CONFIRMATION_QUERY, Map.of("userId", user.getId(), "token", token));
             emailService.sendMimeMessageWithAttachments(user.getFirstName(), user.getEmail(), token);
-            // Set user properties
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setEnabled(true);
             user.setNotLocked(true);
             return user;
@@ -111,6 +108,9 @@ public class UserRepositoryImp implements UserRepository<User> {
                 permissions.add("READ:CUSTOMER");
                 permissions.add("CREATE:USER");
                 permissions.add("DELETE:USER");
+                permissions.add("DELETE:CUSTOMER");
+                permissions.add("UPDATE:USER");
+                permissions.add("UPDATE:CUSTOMER");
                 // Add more permissions as needed
                 break;
             case "ROLE_MANAGER":
@@ -245,7 +245,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                 .addValue("email", user.getEmail())
                 .addValue("phone", user.getPhone())
                 .addValue("address", user.getAddress())
-                .addValue("password", (user.getPassword()));
+                .addValue("password",(passwordEncoder.encode(user.getPassword())));
 
 
     }

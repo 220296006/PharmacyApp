@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
+import za.ac.cput.dtomapper.UserDTOMapper;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
@@ -28,6 +30,8 @@ import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.HashMap;
@@ -65,18 +69,24 @@ public class UserController {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("/info")
-    public ResponseEntity<UserDTO> getUserInfo(@RequestHeader("Authorization") String token) {
-        log.info("Fetching user info with token: {}", token);
-        String username = jwtTokenProvider.getUsername(token).trim();
-        UserDTO userDTO = userService.getUserInfo(username);
-        if (userDTO != null) {
-            return ResponseEntity.ok(userDTO);
+    public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
+        log.info("Fetching user info from session");
+        HttpSession session = request.getSession(true); // Create session if needed
+        UserDetails userDetails = (UserDetails) session.getAttribute("user"); // Access DTO here
+        if (userDetails == null) {
+            log.error("User details not found in session");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        return ResponseEntity.notFound().build();
+        log.info("User details retrieved from session: {}", userDetails);
+        User userDto = UserDTOMapper.toUser((User) userDetails); // Map to DTO for response
+        return ResponseEntity.ok(userDto);
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody
+                                                                    AuthenticationRequest authenticationRequest,
+                                                                HttpServletRequest request) {
         log.info("Received login request for user: {}", authenticationRequest.getEmail());
         // Retrieve user from database
         User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
@@ -110,6 +120,10 @@ public class UserController {
             // Generate JWT token
             String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
             log.info("Generated JWT token for user: {}", userDetails.getUsername());
+
+            // Store user details in session
+            HttpSession session = request.getSession(true); // Create a new session if none exists
+            session.setAttribute("user", user);
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);

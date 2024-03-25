@@ -17,7 +17,7 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder, private authService: AuthService, private userService: UserService) {
     this.updateUserForm = this.fb.group({
       firstName: ['', Validators.required],
-      middleName: ['', Validators.required],
+      middleName: [''],
       lastName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required]],
@@ -30,18 +30,27 @@ export class ProfileComponent implements OnInit {
       next: (response: ApiResponse<User>) => {
         if (response && response.data) {
           this.user = response.data.user;
-          console.log('Response from server:', response);
-          // Pre-populate the form
-          this.updateUserForm.patchValue(this.user);
+          console.log('Response from server:', this.user);
+          // Populate the form with user data
+          this.updateUserForm.patchValue({
+            firstName: this.user.firstName,
+            lastName: this.user.lastName,
+            middleName: this.user.middleName,
+            email: this.user.email,
+            phone: this.user.phone,
+            address: this.user.address
+          });
         } else {
           console.error('No user data found in the response');
         }
       },
       error: (error) => {
         console.error('Error fetching user info:', error);
+        // Handle the error here, e.g., display an error message to the user
       },
     });
   }
+  
 
   onUpdateUser() {
     const updatedUser = this.updateUserForm.value;

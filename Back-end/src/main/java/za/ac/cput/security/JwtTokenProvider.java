@@ -5,8 +5,12 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,16 +24,18 @@ import za.ac.cput.model.User;
 import javax.crypto.SecretKey;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class JwtTokenProvider {
+
+    @Value("${jwt.secret}") // Use environment variable for secret key
+    private String secretKey;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -38,20 +44,12 @@ public class JwtTokenProvider {
         log.info("Creating JWT token for user: {}", username);
         // Fetch user details including roles and permissions
         User user = (User) userDetailsService.loadUserByUsername(username);
-
-
         // Log the roles and their permissions
         log.info("Roles and permissions:");
-        roles.forEach(role -> log.info("Role: {}, Permissions: {}", role.getName(), role.getPermissions()));
-
+        roles.forEach(role -> log.info("Role: {}, Permissions: {}", role.getName(), user.getRoles()));
         // Extract roles and permissions from Role objects
         Set<String> roleNames = roles.stream()
                 .map(Role::getName)
-                .collect(Collectors.toSet());
-
-        Set<String> permissions = roles.stream()
-                .flatMap(role -> role.getPermissions() == null ? Stream.empty() : role.getPermissions().stream()) // Handle null permissions
-                .filter(Objects::nonNull)
                 .collect(Collectors.toSet());
 
         String token = Jwts
@@ -64,23 +62,28 @@ public class JwtTokenProvider {
                 .claim("permissions", user.getRoles()) // Add permissions to the token claim
                 .compact();
         log.info("Generated JWT token: {}", token);
-        return token;
+        return token.trim();
     }
 
     private SecretKey getSignInKey() {
-        String SECRET_KEY = "339e342a830a1526094d805b60c422e15bb4bf0f8797f2d99846f381ac6566b8";
-        byte[] keyBytes = Decoders.BASE64URL.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64URL.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
+        try {
+            return Jwts
                 .parser()
                 .verifyWith(getSignInKey())
                 .build()
-                .parseSignedClaims(token)
+                .parseSignedClaims(token.trim())
                 .getPayload();
+        } catch (JwtException e) {
+            log.error("Error parsing JWT token claims: {}", e.getMessage());
+            throw new JwtAuthenticationException("Error parsing JWT token claims", e, HttpStatus.UNAUTHORIZED);
+        }
     }
+
     public <T> T extractClaim(String token, Function<Claims, T> resolver) {
         Claims claims = extractAllClaims(token);
         return resolver.apply(claims);
@@ -89,12 +92,11 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(getUsername(token));
         log.info("Retrieved UserDetails for user: {}", userDetails.getUsername());
-        log.debug("Retrieved password for user: {}", userDetails.getPassword());
+        log.info("Retrieved password for user: {}", userDetails.getPassword());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
     public String getUsername(String token) {
-        String username;
         try {
             return extractClaim(token, Claims::getSubject);
         } catch (Exception e) {
@@ -113,8 +115,15 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token, UserDetails user) {
         try {
+            // Extract username after verification
             String username = getUsername(token);
-            return (username.equals(user.getUsername()) && !isTokenExpired(token));
+            // Check if the provided user details match the decoded username
+            if (user != null && !username.equals(user.getUsername())) {
+                log.error("Token username doesn't match user details");
+                return false;
+            }
+            // Check token expiration
+            return !isTokenExpired(token);
         } catch (JwtException | IllegalArgumentException e) {
             log.error("JWT token validation failed: {}", e.getMessage());
             return false;
@@ -123,8 +132,8 @@ public class JwtTokenProvider {
 
     private boolean isTokenExpired(String token) {
         Date expirationDate = extractClaim(token, Claims::getExpiration);
-        return expirationDate.before(new Date());
+        return expirationDate != null && expirationDate.before(new Date());
     }
-
 }
+
 
