@@ -43,7 +43,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.warn("Email is null during user loading.");
             throw new UsernameNotFoundException("Email cannot be null");
         }
-
         try {
             log.info("Fetching user details for email: {}", email);
             User user = jdbc.queryForObject(
@@ -80,7 +79,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (user == null) {
                 throw new UsernameNotFoundException("User not found with email: " + email);
             }
-
             // Fetch roles and permissions for the user
             Set<Role> roles = user.getRoles();
             roles.forEach(role -> {
@@ -88,7 +86,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 role.setPermissions(permissions); // Set permissions for the role
             });
             log.info("User found: {}", user);
-
             return user;
         } catch (DataAccessException exception) {
             log.error("Error loading user by email: " + email, exception);

@@ -48,17 +48,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // Public endpoints (no authentication required)
-                .antMatchers(HttpMethod.POST, "/user/login", "/user/register")
+                .antMatchers(HttpMethod.POST, "/user/image/{userId}","/user/login", "/user/register")
+                .permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/image/{userId}")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/user/profile", "/user/verify/{token}/account")
                 .permitAll()
                 // User endpoints (authenticated users only)
-                .antMatchers(HttpMethod.GET, "/user/profile", "/user/verify/{token}/account",  "/user/read/**")
+                .antMatchers(HttpMethod.GET,  "/user/read/**")
                 .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN") // Restrict based on your needs
 
                 // Customer endpoints (access based on roles)
                 .antMatchers(HttpMethod.GET, "/customer/count", "/customer/all")
                 .hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/customer/read/**")
-                .hasAnyRole("MANAGER") // Restrict based on your needs
+                .hasAnyRole("MANAGER", "ADMIN", "SYSADMIN") // Restrict based on your needs
 
                 // Prescription, Medication, Invoice, Inventory endpoints (access based on roles)
                 .antMatchers(HttpMethod.GET, "/prescription/all", "/prescription/read/**",

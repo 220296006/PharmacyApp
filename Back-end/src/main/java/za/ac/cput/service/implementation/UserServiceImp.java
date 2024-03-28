@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
@@ -17,6 +18,7 @@ import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.service.UserService;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -116,4 +118,19 @@ public class UserServiceImp implements UserService {
         return null;
     }
 
+    @Override
+    public void saveImage(Long userId,  MultipartFile file) {
+        try {
+            // Convert MultipartFile to byte array
+            byte[] imageData = file.getBytes();
+            // Call the repository method to save the image data
+            userRepository.saveImage(userId, imageData);
+        } catch (IOException exception) {
+            log.error("Error reading image file: " + exception.getMessage());
+            throw new ApiException("An error occurred while reading the image file.");
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while uploading user image. Please try again.");
+        }
+    }
 }

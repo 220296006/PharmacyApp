@@ -14,6 +14,7 @@ import { throwError } from 'rxjs';
 export class ProfileComponent implements OnInit {
   updateUserForm: FormGroup;
   currentUser: User;
+  loggedInUser: User | null = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,33 +23,31 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Initialize form and load current user details
+    // Retrieve logged-in user's information from session storage
+    this.loggedInUser = this.authService.getLoggedInUser();
+    // Initialize form and populate with user information
     this.updateUserForm = this.formBuilder.group({
-      firstName: [''],
-      middleName: [''], // Ensure all form controls are initialized
-      lastName: [''],
-      email: [''],
-      phone: [''],
-      address: [''],
-      
+      firstName: [this.loggedInUser ? this.loggedInUser.firstName : ''],
+      middleName: [this.loggedInUser ? this.loggedInUser.middleName : ''],
+      lastName: [this.loggedInUser ? this.loggedInUser.lastName : ''],
+      email: [this.loggedInUser ? this.loggedInUser.email : ''],
+      phone: [this.loggedInUser ? this.loggedInUser.phone : ''],
+      address: [this.loggedInUser ? this.loggedInUser.address : '']
     });
+  }
+  
 
-    // Retrieve current user details
-    this.authService.currentUser.subscribe((user) => {
-      if (user) {
-        this.currentUser = user;
-        console.log(this.currentUser);
-
-        this.updateUserForm.patchValue({
-          firstName: user.firstName  || '',
-          middleName: user.middleName  || '',
-          lastName: user.lastName || '',
-          email: user.email || '',
-          phone: user.middleName || '',
-          address: user.address || '',
-        });
-      }
-    });
+   updateFormWithUserData(): void {
+    if (this.currentUser) {
+      this.updateUserForm.patchValue({
+        firstName: this.currentUser.firstName || '',
+        middleName: this.currentUser.middleName || '',
+        lastName: this.currentUser.lastName || '',
+        email: this.currentUser.email || '',
+        phone: this.currentUser.phone || '',
+        address: this.currentUser.address || '',
+      });
+    }
   }
 
   onUpdateUser(): void {
@@ -57,8 +56,7 @@ export class ProfileComponent implements OnInit {
     updatedUser.middleName = updatedUser.middleName || '';
     updatedUser.phone = updatedUser.phone || '';
     updatedUser.address = updatedUser.address || '';
-    this.userService
-      .updateUserData(this.currentUser.id, updatedUser)
+    this.userService.updateUserData(this.currentUser.id, updatedUser)
       .pipe(
         catchError((error) => {
           console.error('Network error:', error);
@@ -69,7 +67,7 @@ export class ProfileComponent implements OnInit {
         (response) => {
           if (response) {
             // Update current user details in AuthService
-            this.authService.updateCurrentUser(updatedUser);
+            this.authService.updateCurrentUser(updatedUser); // Corrected from currentUser to updateCurrentUser
             console.log('User updated successfully:', response.message);
           } else {
             console.error('Failed to update user:', response.message);

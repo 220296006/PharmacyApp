@@ -96,7 +96,6 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
-
     private Set<String> getPermissionsForRole(String roleName) {
         Set<String> permissions = new HashSet<>();
         // Default permissions for other roles
@@ -188,13 +187,6 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
-    public UserUpdateDTO updateAdmin(UserUpdateDTO updatedUser) {
-        // Convert UserUpdateDTO to User and call the existing update method
-        User user = UserUpdateDTOMapper.toUser(updatedUser);
-        update(user);
-        return updatedUser;
-    }
-
     @Override
     public void delete(Long id) {
         log.info("Deleting user by Id");
@@ -228,6 +220,20 @@ public class UserRepositoryImp implements UserRepository<User> {
         }
     }
 
+    @Override
+    public void saveImage(Long userId, byte[] imageData) {
+        log.info("Upload User Id {} ImageData {}", userId, imageData);
+        try {
+            SqlParameterSource parameters = new MapSqlParameterSource()
+                    .addValue("imageUrl", imageData)
+                    .addValue("id", userId);
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbc.update(UPDATE_USER_PROFILE_IMAGE_SQL, parameters, keyHolder);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while uploading user image. Please try again.");
+        }
+    }
 
 
 

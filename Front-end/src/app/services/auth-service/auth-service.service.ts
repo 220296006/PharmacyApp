@@ -26,16 +26,11 @@ export class AuthService {
   decodeTokenAndSetUser(token: string) {
     try {
       const decodedToken: any = jwtDecode(token);
-      this.getUserInfoFromServer().subscribe({
-        next: (user) => {
-          this.userSubject.next(user);
-        },
-        error: (error) => {
-          console.error('Error fetching user info:', error);
-        }
-      });
+      const user = this.buildUserFromToken(decodedToken);
+      this.userSubject.next(user);
     } catch (error) {
       console.error('Error decoding token:', error);
+      this.userSubject.next(null); // Set user to null on decode error
     }
   }
 
@@ -60,17 +55,17 @@ export class AuthService {
 
   buildUserFromToken(decodedToken: any): User {
     const email = decodedToken.sub || '';
-    const [firstName, lastName, middleName, address, phone] = email.split('@')[0].split('.').filter((part: string) => part.trim());
+    const [firstName, lastName] = email.split('@')[0].split('.').filter((part: string) => part.trim());
     const userRole = decodedToken.roles ? decodedToken.roles[0] : '';
 
     return {
       email,
       id: decodedToken.id || 0,
       firstName,
-      middleName,
+      middleName: decodedToken.middleName || '',
       lastName,
-      address,
-      phone,
+      address: decodedToken.address || '',
+      phone: decodedToken.phone || '',
       password: '',
       imageUrl: decodedToken.imageUrl || '',
       enabled: decodedToken.enabled || false,
@@ -80,6 +75,7 @@ export class AuthService {
       role: userRole || '',
     };
   }
+
 
 
   updateUserRole(userId: number, newRole: string): Observable<any> {
@@ -113,19 +109,22 @@ export class AuthService {
     return this.http.post<any>(loginUrl, body).pipe(
       tap((response) => console.log('Login response:', response)),
       tap((response) => {
-        // Check if the response contains a valid token
-        if (response.token) {
+        // Check if the response contains a valid token and user object
+        if (response.token && response.user) {
           this.saveToken(response.token);
           console.log('Token saved successfully:', response.token);
+          // Store user info in session storage
+          this.storeUserInfo(response.user);
+          // Update user upon successful login using token information
+          this.decodeTokenAndSetUser(response.token);
         } else {
-          console.error("Login response doesn't contain a token");
+          console.error("Login response doesn't contain a token or user object");
         }
       }),
       catchError(this.handleError<any>('Login'))
     );
   }
   
-
   public saveToken(token: string){
     localStorage.setItem('token', token);
   }
@@ -142,22 +141,36 @@ export class AuthService {
     return this.getToken() !== null;
   }
 
+  storeUserInfo(userInfo: User) {
+    sessionStorage.setItem('loggedInUser', JSON.stringify(userInfo));
+  }
 
-  getUserInfo():Observable<User> {
-    const token = localStorage.getItem('token');
+  getLoggedInUser(): User | null {
+    const userInfo = sessionStorage.getItem('loggedInUser');
+    return userInfo ? JSON.parse(userInfo) : null;
+  }
+
+  updateUserProfileImage(userId: number, imageUrl: string): Observable<any> {
+    const updateUrl = `${this.apiUrl}/user/image/${userId}`;
+    return this.http.put(updateUrl, { imageUrl });
+  }
+  
+
+
+  getUserInfo(): Observable<User> {
+    const token = this.getToken();
     if (!token) {
       throw new Error('No token available');
     }
-    return this.http.get<User>(`${this.apiUrl}/user/profile`, {
-      headers: { Authorization: token }
-  }).pipe(
+     return this.http.get<User>(`${this.apiUrl}/user/profile`, {
+      headers: { Authorization: token },
+    }).pipe(
       catchError(error => {
-          console.error('Error fetching user info:', error);
-          return throwError('Error fetching user info');
+        console.error('Error fetching user info:', error);
+        return throwError('Error fetching user info');
       })
-  );
+    );
   }
-
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

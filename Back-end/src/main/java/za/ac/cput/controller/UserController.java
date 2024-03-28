@@ -18,11 +18,11 @@ import org.springframework.session.jdbc.config.annotation.web.http.EnableJdbcHtt
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
-import za.ac.cput.dtomapper.UserDTOMapper;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
@@ -34,10 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.time.LocalDateTime.now;
@@ -71,31 +68,42 @@ public class UserController {
 
     @GetMapping("/profile")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {
-        log.info("Fetching user info from session");
         HttpSession session = request.getSession(false); // Retrieve existing session if available
         if (session == null) {
             log.error("Session not found");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
+        log.info("Fetching user info from session");
         // Log the session ID
         log.info("Session ID: {}", session.getId());
+        log.info("Session attributes: {}", session.getAttributeNames());
 
-        UserDetails userDetails = (UserDetails) session.getAttribute("user"); // Access DTO here
+        UserDetails userDetails = (UserDetails) session.getAttribute("user"); // Access UserDetails from session
         if (userDetails == null) {
             log.error("User details not found in session");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         log.info("User details retrieved from session: {}", userDetails);
-        User userDto = UserDTOMapper.toUser((User) userDetails); // Map to DTO for response
+
+        // Now, you can construct the user DTO from the UserDetails object
+        User userDto = new User();
+        userDto.setId(((User) userDetails).getId());
+        userDto.setFirstName(((User) userDetails).getFirstName());
+        userDto.setMiddleName(((User) userDetails).getMiddleName());
+        userDto.setLastName(((User) userDetails).getLastName());
+        userDto.setEmail(((User) userDetails).getEmail());
+        userDto.setAddress(((User) userDetails).getAddress());
+        userDto.setPhone(((User) userDetails).getPhone());
+        userDto.setImageUrl(((User) userDetails).getImageUrl());
+        userDto.setEnabled(userDetails.isEnabled());
         return ResponseEntity.ok(userDto);
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest,
                                                                 HttpServletRequest request) {
         log.info("Received login request for user: {}", authenticationRequest.getEmail());
-
         // Retrieve user from database
         User user = userService.findUserByEmailIgnoreCase(authenticationRequest.getEmail());
         if (user == null) {
@@ -126,12 +134,27 @@ public class UserController {
             // Retrieve user details from the authenticated object
             UserDetails userDetails = (UserDetails) authenticated.getPrincipal();
 
+            // Log user details
+            log.info("Authenticated user details: {}", userDetails);
+
             // Store user details in session
             HttpSession session = request.getSession(true);
-            session.setAttribute("user", user);
+            session.setAttribute("userDetails", userDetails);
 
-            // Log the session ID
+            // Log session ID
             log.info("Session ID: {}", session.getId());
+
+            // Log session attributes
+            Enumeration<String> attributeNames = session.getAttributeNames();
+            while (attributeNames.hasMoreElements()) {
+                String attributeName = attributeNames.nextElement();
+                log.info("Session attribute - Name: {}, Value: {}", attributeName, session.getAttribute(attributeName));
+            }
+
+            // Check if user details are present in session
+            if (session.getAttribute("userDetails") == null) {
+                log.error("User details not found in session");
+            }
 
             // Map authorities (roles) to Role objects
             Set<Role> roles = userDetails.getAuthorities().stream()
@@ -156,6 +179,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
 
 
     @PostMapping("/register")
@@ -254,7 +278,7 @@ public class UserController {
         StringBuilder html = new StringBuilder();
         if (userId != null) {
             // Token exists, build verification message in HTML
-            html.append("<!DOCTYPE html>")
+            html.append("<!DOC TYPE html>")
                     .append("<html>")
                     .append("<body>")
                     .append("<h2>User Verification</h2>")
@@ -268,6 +292,26 @@ public class UserController {
         }
 
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html.toString());
+    }
+
+    @PostMapping("image/{userId}")
+    public ResponseEntity<Map<String, Object>> uploadImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            if (file.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Image file is empty");
+                return ResponseEntity.badRequest().body(response);
+            }
+            userService.saveImage(userId, file);
+            response.put("success", true);
+            response.put("message", "Image uploaded successfully");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Failed to upload image: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     private URI getUri(){

@@ -11,7 +11,7 @@ spring:
       cors:
         allowed-origins: http://localhost:4200 # Allowed CORS origins
 
-  # Spring JDBC Sesssion
+  # Spring JDBC Session
     server:
     servlet:
       session:

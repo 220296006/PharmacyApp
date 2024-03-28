@@ -1,4 +1,5 @@
 package za.ac.cput.service;
+import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.model.Role;
@@ -28,7 +29,6 @@ public interface UserService {
     User findUserByEmailIgnoreCase(String email);
 
     UserDTO getUserInfo(String username);
-
-
+    void saveImage(Long userId, MultipartFile file);
 
 }

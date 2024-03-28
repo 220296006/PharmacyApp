@@ -44,7 +44,7 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUserData();
-    this.getUserInfo = this.authService.getUserInfo();
+    this.getUserInfo = this.authService.getLoggedInUser();
   }
 
   openCreateUserDialog(id: any) {
