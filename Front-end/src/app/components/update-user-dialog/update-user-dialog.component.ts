@@ -2,6 +2,8 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user-service/userservice.service';
+import { Role } from 'src/app/model/role';
+
 
 @Component({
   selector: 'app-update-user-dialog',
@@ -17,7 +19,11 @@ export class UpdateUserDialogComponent implements OnInit {
     isUsingMfa: false,
     createdAt: undefined,
     isNotLocked: false,
-    role: ''
+    role:{
+      id: null,
+      name: '',
+      permission: ''
+    }
   };
 
   constructor(

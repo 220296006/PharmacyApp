@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
+import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.Role;
 
 import javax.persistence.FetchType;
@@ -49,4 +50,5 @@ public class UserDTO{
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> roles = new HashSet<>();
+    private Confirmation confirmation;
 }

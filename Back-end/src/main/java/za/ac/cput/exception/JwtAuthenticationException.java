@@ -9,7 +9,7 @@ public class JwtAuthenticationException extends AuthenticationException {
 
     private final HttpStatus httpStatus;
 
-    public JwtAuthenticationException(String message, HttpStatus httpStatus) {
+    public JwtAuthenticationException(String message, Exception e, HttpStatus httpStatus) {
         super(message);
         this.httpStatus = httpStatus;
     }

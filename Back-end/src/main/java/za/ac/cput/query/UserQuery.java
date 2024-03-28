@@ -21,7 +21,10 @@ public class UserQuery {
      public static final String UPDATE_USER_QUERY = "UPDATE Users SET first_name = :firstName," +
              " middle_name = :middleName, last_name = :lastName, email = :email, phone = :phone, " +
              "address = :address WHERE id = :id";
-      public static final String GET_USERS_BY_ROLE_QUERY =
+
+     public static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE Users SET image_url = :imageUrl WHERE id = :id";
+
+     public static final String GET_USERS_BY_ROLE_QUERY =
               "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
                       "FROM Users u " +
                       "JOIN UserRoles ur ON u.id = ur.user_id " +

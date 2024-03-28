@@ -6,56 +6,56 @@ import {
   HttpInterceptor,
   HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBar
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private snackBar: MatSnackBar, private router: Router) {} // Inject MatSnackBar
+  constructor(private snackBar: MatSnackBar, private router: Router) {}
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = localStorage.getItem('token');
+    
+    console.log('Interceptor: Token from localStorage:', token);
 
     if (token) {
-      request = request.clone({
+      console.log('Interceptor: Adding Authorization header');
+      const authReq = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      console.log('Interceptor: Request after adding Authorization header:', authReq);
+      return next.handle(authReq);
     }
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          console.error('Unauthorized request. Redirecting to login page.');
-          this.snackBar.open('Unauthorized request. Please log in.', 'Close', {
+        console.error('Interceptor: HTTP error occurred:', error);
+
+        if (error.status === 403) {
+          console.error('Interceptor: Forbidden request. Redirecting to access denied page.');
+          this.snackBar.open('You don\'t have permission to access this resource.', 'Close', {
             duration: 5000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          this.router.navigate(['/login']);
-          // Handle unauthorized access, e.g., redirect to login page
-        } else if (error.status === 403) {
-          console.error('Forbidden request. Redirecting to access denied page.');
-          this.snackBar.open('Forbidden request. You don\'t have permission to access this resource.', 'Close', {
-            duration: 5000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-          });
-          // Handle forbidden access, e.g., redirect to access denied page
+          // Navigate to the access denied page
+          //this.router.navigate(['/access-denied']);
         } else {
-          console.error('HTTP error occurred:', error);
+          console.error('Interceptor: An unexpected error occurred. Please try again later.');
           this.snackBar.open('An unexpected error occurred. Please try again later.', 'Close', {
             duration: 5000,
             horizontalPosition: 'center',
             verticalPosition: 'top',
           });
-          this.router.navigate(['/login']);
-          // Handle other HTTP errors as needed
         }
-        throw error; // Throw the error directly
+
+        // Throw the error to propagate it further
+        return throwError(error);
       })
     );
   }

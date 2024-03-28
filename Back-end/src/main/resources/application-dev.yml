@@ -1,32 +1,56 @@
+# Database Configuration
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/PharmacyApp
-    username: root
-    password: Shaun@96
+    url: jdbc:mysql://localhost:3306/PharmacyApp?createDatabaseIfNotExist=true
+    username: root # Database username
+    password: Shaun@96 # Database password
+
+  # CORS Configuration
   servlet:
     filter:
       cors:
-        allowed-origins: http://localhost:4200
+        allowed-origins: http://localhost:4200 # Allowed CORS origins
 
+  # Spring JDBC Session
+    server:
+    servlet:
+      session:
+        timeout: 1800 # Session timeout. If a duration suffix is not specified, seconds are used.
+  session:
+    jdbc:
+      schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
+      table-name: SPRING_SESSION
+      initialize-schema: always
+      store-type: jdbc
+
+# Logging Configuration
+  logging:
+  level:
+    org:
+      springframework:
+        security: TRACE
+
+ # Thymeleaf Configuration
   thymeleaf:
-    enabled: true
-    prefix: classpath:/templates/
-    suffix: .html
-    cache: false
+    enabled: true # Enable Thymeleaf template engine
+    prefix: classpath:/templates/ # Template prefix
+    suffix: .html # Template suffix
+    cache: false # Disable template caching
 
+  # JPA/Hibernate Configuration
   jpa:
     sql:
       init:
-        mode: always
-    show-sql: true
-    database-platform: org.hibernate.dialect.MySQLDialect
+        mode: always # Initialize SQL on startup
+    show-sql: true # Show SQL queries in logs
+    database-platform: org.hibernate.dialect.MySQLDialect # Database dialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: none # Disable automatic schema creation
       logging:
         level:
           org:
             hibernate:
-              SQL: DEBUG
+              SQL: DEBUG # Hibernate SQL logging level
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
@@ -34,41 +58,40 @@ spring:
         globally_quoted_identifiers: true
       format-sql: true
 
+  # SQL Initialization Configuration
   sql:
     init:
-      mode: always
-      continue-on-error: true
+      mode: always # Initialize SQL on startup
+      continue-on-error: true # Continue initialization on error
 
+  # Email Configuration
   mail:
-    host: ${EMAIL_HOST}
-    port: ${EMAIL_PORT}
-    username: ${EMAIL_ID}
-    password: ${EMAIL_PASSWORD}
-    default-encoding: UTF-8
+    host: ${EMAIL_HOST} # SMTP host for sending emails
+    port: ${EMAIL_PORT} # SMTP port
+    username: ${EMAIL_ID} # Email account username
+    password: ${EMAIL_PASSWORD} # Email account password
+    default-encoding: UTF-8 # Default email encoding
     properties:
       mail:
         mime:
-          charset: UTF
+          charset: UTF # MIME charset
         smtp:
-          writetimeout: 10000
-          connectiontimeout: 10000
-          timeout: 10000
-          auth: true
+          writetimeout: 10000 # Write timeout for SMTP connection
+          connectiontimeout: 10000 # Connection timeout for SMTP connection
+          timeout: 10000 # Timeout for SMTP connection
+          auth: true # Enable authentication
           starttls:
-            enable: true
-            required: true
+            enable: true # Enable STARTTLS
+            required: true # Require STARTTLS
     verify:
-      host: ${VERIFY_EMAIL_HOST}
+      host: ${VERIFY_EMAIL_HOST} # Verification email host URL
 
-#Email Config
-EMAIL_HOST: smtp.gmail.com
-EMAIL_PORT: 587
-EMAIL_ID: thabisomatsaba96@gmail.com
-EMAIL_PASSWORD: ysjqkbfnhvpnfzwo
-VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT}
+# Email Configuration Variables
+EMAIL_HOST: smtp.gmail.com # Email host
+EMAIL_PORT: 587 # Email port
+EMAIL_ID: thabisomatsaba96@gmail.com # Email account username
+EMAIL_PASSWORD: ysjqkbfnhvpnfzwo # Email account password
+VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT} # Verification email host URL
 
-jwt:
-  secret: 1uZlOQgyNyQNUFTHh7ZXmBQK0eD6TLoGG5gPMqk3gcE
-  expiration: 3600000
-#Server
-SERVER_PORT: 8080
+# Server Configuration
+SERVER_PORT: 8080 # Server port

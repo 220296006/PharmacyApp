@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ToastrService } from 'ngx-toastr'; // Import ToastrService
 import { Router } from '@angular/router';
 
 @Component({
@@ -19,7 +18,6 @@ export class RegistrationComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar, // Inject MatSnackBar
-    private toastr: ToastrService // Inject ToastrService
   ) {
     this.registrationForm = this.fb.group({
       firstName: ['', Validators.required],

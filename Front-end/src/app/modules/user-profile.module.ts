@@ -7,7 +7,7 @@ import { AuthorizationComponent } from '../components/user/authorization/authori
 import { PasswordComponent } from '../components/user/password/password.component';
 import { ProfileComponent } from '../components/user/profile/profile.component';
 import { UserProfileComponent } from '../components/user/user-profile/user-profile.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     UserProfileRoutingModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule 
   ]
 })
 export class UserProfileModule { }
