@@ -16,6 +16,8 @@ export class UserProfileComponent implements OnInit {
   activityLogs: any;
   uploadInProgress: boolean = false;
   loggedInUser: User | null = null;
+  errorMessage: string| null = null;
+  successMessage: string| null = null;
 
   constructor(
     private authService: AuthService,
@@ -23,31 +25,24 @@ export class UserProfileComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    this.authService.currentUser.subscribe(user => {
-      if (user) {
-        this.userId = user.id;
-        if (user.imageUrl) {
-          this.profileImageUrl = user.imageUrl;
-        }
-        console.log('User ID:', this.userId);
-      } else {
-        // If user is not available from observable, try to fetch from local storage
-        const userInfo = this.authService.getLoggedInUser();
-        if (userInfo && userInfo.id) {
-          this.userId = userInfo.id;
-          if (userInfo.imageUrl) {
-            this.profileImageUrl = userInfo.imageUrl;
-          }
-          console.log('User ID:', this.userId);
-        } else {
-          console.error('Failed to retrieve user information. User ID unavailable for upload.');
-        }
+    // Retrieve logged-in user's information from session storage
+    this.loggedInUser = this.authService.getLoggedInUser();
+    console.log('User object:', this.loggedInUser);
+  
+    // Use the user's ID directly from the loggedInUser object
+    if (this.loggedInUser) {
+      this.userId = this.loggedInUser.id;
+      if (this.loggedInUser.imageUrl) {
+        this.profileImageUrl = this.loggedInUser.imageUrl;
       }
-    });
+      console.log('User ID:', this.userId);
+    } else {
+      console.error('Failed to retrieve user information. User ID unavailable for upload.');
+    }
   }
   
   
-
+  
   selectSection(section: string) {
     this.selectedSection = section;
   }
@@ -70,36 +65,40 @@ export class UserProfileComponent implements OnInit {
 
   onUpload() {
     if (!this.userId) {
-      console.error('User ID not available. Please refresh the page and try again.');
+      this.errorMessage = 'User ID not available. Please refresh the page and try again.';
       return;
     }
-  
+
     if (!this.selectedFile) {
-      console.error('No file selected');
+      this.errorMessage = 'No file selected';
       return;
     }
 
     this.uploadInProgress = true; // Set flag to indicate upload is in progress
-  
+
     this.userService.uploadProfileImage(this.userId, this.selectedFile).subscribe(
-      (response) => {
+      (response: any) => {
         console.log('Image uploaded successfully:', response);
-        if (response.success) {
+        if (response && response.success && response.imageData) {
           // Assuming the server returns the updated image URL
-          this.profileImageUrl = response.imageUrl;
+          this.profileImageUrl = 'data:image/jpeg;base64,<base64_encoded_image_data>,'+ response.imageData;
           this.selectedFile = null; // Clear the selected file
           // Optionally, display success message to user
+          this.successMessage = 'Image uploaded successfully';
         } else {
-          console.error('Failed to upload image:', response.message);
+          console.error('Failed to upload image:', response);
           // Optionally, display error message to user
+          this.errorMessage = response;
         }
         this.uploadInProgress = false; // Reset the flag after upload completes
       },
       (error) => {
         console.error('Error uploading image:', error);
         // Optionally, display error message to user
+        this.errorMessage = 'Failed to upload image. Please try again later.';
         this.uploadInProgress = false; // Reset the flag after upload completes
       }
     );
   }
+
 }

@@ -2,11 +2,9 @@ package za.ac.cput.service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dto.UserUpdateDTO;
-import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * @author : Thabiso Matsba
@@ -20,7 +18,7 @@ public interface UserService {
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
-    UserUpdateDTO updateAdmin(Long id, UserUpdateDTO updatedUser);
+    UserUpdateDTO updateUser(Long id, UserUpdateDTO updatedUser);
 
     User findUserById(Long id);
 
@@ -29,6 +27,5 @@ public interface UserService {
     User findUserByEmailIgnoreCase(String email);
 
     UserDTO getUserInfo(String username);
-    void saveImage(Long userId, MultipartFile file);
 
 }

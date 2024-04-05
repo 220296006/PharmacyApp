@@ -43,9 +43,9 @@ spring:
       init:
         mode: always # Initialize SQL on startup
     show-sql: true # Show SQL queries in logs
-    database-platform: org.hibernate.dialect.MySQLDialect # Database dialect
+    database-platform: org.hibernate.dialect.MySQL8Dialect # Database dialect
     hibernate:
-      ddl-auto: none # Disable automatic schema creation
+      ddl-auto: update # Disable automatic schema creation
       logging:
         level:
           org:
@@ -53,7 +53,7 @@ spring:
               SQL: DEBUG # Hibernate SQL logging level
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
+        dialect: org.hibernate.dialect.MySQL8Dialect
         format_sql: true
         globally_quoted_identifiers: true
       format-sql: true

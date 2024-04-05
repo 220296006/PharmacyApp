@@ -31,8 +31,6 @@ public class PharmacyApp {
     public BCryptPasswordEncoder customPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -42,7 +40,8 @@ public class PharmacyApp {
         config.setAllowedHeaders(Arrays.asList(
                 "Origin", "Access-Control-Allow-Origin", "Content-Type",
                 "Accept", "Jwt-Token", "Authorization", "X-Requested-With",
-                "Access-Control-Request-Method", "Access-Control-Request-Headers"));
+                "Access-Control-Request-Method", "Access-Control-Request-Headers",
+                "File-Name")); // Add "File-Name" to the allowed headers
         config.setExposedHeaders(Arrays.asList(
                 "Origin", "Content-Type", "Accept", "Jwt-Token", "Authorization",
                 "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials", "File-Name"));
@@ -53,4 +52,5 @@ public class PharmacyApp {
 
         return new CorsFilter(source);
     }
+
 }

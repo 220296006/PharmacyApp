@@ -11,8 +11,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-import za.ac.cput.dto.UserUpdateDTO;
-import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
@@ -161,7 +159,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User read(Long id) {
-        log.info("Fetch User by Id");
+        log.info("Fetch User by Id {}", id);
         try {
             return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), new UserRowMapper());
         } catch (EmptyResultDataAccessException exception) {
@@ -202,14 +200,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     public User findUserByEmailIgnoreCase(String email) {
         log.info("Fetch User by Email {}", email);
         try {
-            return jdbc.queryForObject(
-                    "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
-                            "FROM Users u " +
-                            "JOIN UserRoles ur ON u.id = ur.user_id " +
-                            "JOIN Roles r ON ur.role_id = r.id " +
-                            "WHERE u.email = :email " +
-                            "GROUP BY u.id",
-                    Map.of("email", email), // Pass the email parameter here
+            return jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email),
                     new UserRowMapper()
             );
         } catch (EmptyResultDataAccessException exception) {
@@ -219,22 +210,6 @@ public class UserRepositoryImp implements UserRepository<User> {
             throw new ApiException("Error while fetching user by email");
         }
     }
-
-    @Override
-    public void saveImage(Long userId, byte[] imageData) {
-        log.info("Upload User Id {} ImageData {}", userId, imageData);
-        try {
-            SqlParameterSource parameters = new MapSqlParameterSource()
-                    .addValue("imageUrl", imageData)
-                    .addValue("id", userId);
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbc.update(UPDATE_USER_PROFILE_IMAGE_SQL, parameters, keyHolder);
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("An error occurred while uploading user image. Please try again.");
-        }
-    }
-
 
 
     private Integer getEmailCount(String email) {
@@ -251,9 +226,8 @@ public class UserRepositoryImp implements UserRepository<User> {
                 .addValue("email", user.getEmail())
                 .addValue("phone", user.getPhone())
                 .addValue("address", user.getAddress())
+                .addValue("imageData", user.getImageData())
                 .addValue("password",(passwordEncoder.encode(user.getPassword())));
-
-
     }
 }
 

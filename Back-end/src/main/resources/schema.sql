@@ -23,7 +23,6 @@ CREATE TABLE SPRING_SESSION_ATTRIBUTES (
 );
 
 
--- Table Users
 CREATE TABLE Users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(45) NOT NULL,
@@ -34,7 +33,9 @@ CREATE TABLE Users (
     enabled BOOLEAN DEFAULT TRUE,
     not_locked BOOLEAN DEFAULT TRUE,
     using_mfa BOOLEAN DEFAULT TRUE,
+    not_expired BOOLEAN DEFAULT TRUE,
     image_url VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+    image_data LONGBLOB,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     phone VARCHAR(15) DEFAULT NULL,
     address VARCHAR(255) DEFAULT NULL,

@@ -29,6 +29,7 @@ import za.ac.cput.model.User;
 import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.UserService;
+import za.ac.cput.service.implementation.ImageDataService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -58,6 +59,7 @@ import static org.springframework.http.HttpStatus.*;
 public class UserController {
     private final UserService userService;
     private final ConfirmationService confirmationService;
+    private final ImageDataService imageDataService;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -73,30 +75,13 @@ public class UserController {
             log.error("Session not found");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        log.info("Fetching user info from session");
-        // Log the session ID
-        log.info("Session ID: {}", session.getId());
         log.info("Session attributes: {}", session.getAttributeNames());
-
         UserDetails userDetails = (UserDetails) session.getAttribute("user"); // Access UserDetails from session
         if (userDetails == null) {
-            log.error("User details not found in session");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         log.info("User details retrieved from session: {}", userDetails);
-
-        // Now, you can construct the user DTO from the UserDetails object
-        User userDto = new User();
-        userDto.setId(((User) userDetails).getId());
-        userDto.setFirstName(((User) userDetails).getFirstName());
-        userDto.setMiddleName(((User) userDetails).getMiddleName());
-        userDto.setLastName(((User) userDetails).getLastName());
-        userDto.setEmail(((User) userDetails).getEmail());
-        userDto.setAddress(((User) userDetails).getAddress());
-        userDto.setPhone(((User) userDetails).getPhone());
-        userDto.setImageUrl(((User) userDetails).getImageUrl());
-        userDto.setEnabled(userDetails.isEnabled());
-        return ResponseEntity.ok(userDto);
+        return null;
     }
 
 
@@ -229,7 +214,7 @@ public class UserController {
     public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
         log.info("Update User: {}: {}", id, user);
         try {
-            UserUpdateDTO userUpdateDTO = userService.updateAdmin(id, user);
+            UserUpdateDTO userUpdateDTO = userService.updateUser(id, user);
             if (userUpdateDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()
@@ -294,25 +279,28 @@ public class UserController {
         return ResponseEntity.ok().contentType(MediaType.TEXT_HTML).body(html.toString());
     }
 
-    @PostMapping("image/{userId}")
-    public ResponseEntity<Map<String, Object>> uploadImage(@PathVariable Long userId, @RequestParam("image") MultipartFile file) {
+    @PostMapping("/image/{id}")
+    public ResponseEntity<Map<String, Object>> uploadImage(@PathVariable("id") Long id,
+                                                           @RequestParam("image") MultipartFile file) {
+        log.info("Uploading User ID {} Image {}", id, file);
         Map<String, Object> response = new HashMap<>();
         try {
-            if (file.isEmpty()) {
-                response.put("success", false);
-                response.put("message", "Image file is empty");
-                return ResponseEntity.badRequest().body(response);
-            }
-            userService.saveImage(userId, file);
-            response.put("success", true);
-            response.put("message", "Image uploaded successfully");
+            imageDataService.uploadImage(id, file);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("success", false);
-            response.put("message", "Failed to upload image: " + e.getMessage());
+            response.put("message", "An internal server error occurred during upload. Please try again later.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+//    @GetMapping("/image/{id}/{fileName}")
+//    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
+//        byte[] imageData= imageDataService.downloadImage(id, fileName);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .contentType(MediaType.valueOf("image/png"))
+//                .body(imageData);
+//    }
 
     private URI getUri(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());

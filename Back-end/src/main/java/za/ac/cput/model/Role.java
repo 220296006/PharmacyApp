@@ -3,8 +3,8 @@ package za.ac.cput.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,10 +24,10 @@ import java.util.Set;
 @NoArgsConstructor
 public class Role implements Serializable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @Getter
     @Setter
     private Set<String> permissions  = new HashSet<>();
-
 }

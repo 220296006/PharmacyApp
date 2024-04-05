@@ -7,11 +7,13 @@ package za.ac.cput.query;
  **/
 public class UserQuery {
      public static final String COUNT_USER_EMAIL_QUERY = "SELECT COUNT(*) FROM Users WHERE email = :email";
-     public static final String FETCH_USER_BY_EMAIL_QUERY = "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
-                     "FROM Users u " + "JOIN UserRoles ur ON u.id = ur.user_id " +
-                     "JOIN Roles r ON ur.role_id = r.id " +
-                     "WHERE u.email = ?" +
-                     "GROUP BY u.id";
+     public static final String FETCH_USER_BY_EMAIL_QUERY = "SELECT u.*, GROUP_CONCAT(r.name) as roles, u.image_data as imageData " +
+             "FROM Users u " +
+             "JOIN UserRoles ur ON u.id = ur.user_id " +
+             "JOIN Roles r ON ur.role_id = r.id " +
+             "WHERE u.email = :email " +
+             "GROUP BY u.id";
+
      public static final String INSERT_USER_QUERY = "INSERT INTO Users (first_name, middle_name, last_name, email, "
              + "password, phone, address) VALUES (:firstName, :middleName, :lastName, :email, :password, :phone, " +
              ":address)" ;
@@ -22,7 +24,7 @@ public class UserQuery {
              " middle_name = :middleName, last_name = :lastName, email = :email, phone = :phone, " +
              "address = :address WHERE id = :id";
 
-     public static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE Users SET image_url = :imageUrl WHERE id = :id";
+     public static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE Users SET image_data = :imageData WHERE id = :id";
 
      public static final String GET_USERS_BY_ROLE_QUERY =
               "SELECT u.*, GROUP_CONCAT(r.name) as roles " +

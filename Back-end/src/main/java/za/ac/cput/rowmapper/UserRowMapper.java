@@ -3,6 +3,7 @@ package za.ac.cput.rowmapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import za.ac.cput.model.ImageData;
 import za.ac.cput.model.User;
 
 import java.sql.ResultSet;
@@ -26,7 +27,9 @@ public class UserRowMapper implements RowMapper<User> {
         user.setEmail(resultSet.getString("email"));
         user.setPhone(resultSet.getString("phone"));
         user.setAddress(resultSet.getString("address"));
-        user.setEnabled(resultSet.getBoolean("enabled"));
+        ImageData imageData = new ImageData();
+        imageData.setImageData(resultSet.getBytes("image_data"));
+        user.setImageData(imageData);
         return user;
     }
 }

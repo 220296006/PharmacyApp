@@ -44,7 +44,7 @@ public class ConfirmationRepositoryImp implements ConfirmationRepository<Confirm
         try {
             return jdbc.queryForObject(query, params, Confirmation.class);
         } catch (EmptyResultDataAccessException ex) {
-            log.warn("Token not found for User ID: {}", userId);
+            log.error("Token not found for User ID: {}", userId);
             return null;
         }
     }
