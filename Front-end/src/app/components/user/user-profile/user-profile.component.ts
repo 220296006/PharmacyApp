@@ -64,11 +64,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   onUpload() {
+    // Check if user ID and file are available
     if (!this.userId) {
       this.errorMessage = 'User ID not available. Please refresh the page and try again.';
       return;
     }
-
     if (!this.selectedFile) {
       this.errorMessage = 'No file selected';
       return;
@@ -80,23 +80,22 @@ export class UserProfileComponent implements OnInit {
       (response: any) => {
         console.log('Image uploaded successfully:', response);
         if (response && response.success && response.imageData) {
-          // Assuming the server returns the updated image URL
-          this.profileImageUrl = 'data:image/jpeg;base64,<base64_encoded_image_data>,'+ response.imageData;
-          this.selectedFile = null; // Clear the selected file
-          // Optionally, display success message to user
-          this.successMessage = 'Image uploaded successfully';
+          // Fetch the updated user information
+          this.userService.getUserById(this.userId).subscribe((user) => {
+            this.profileImageUrl = user.data.user.imageUrl; // Update profile image URL
+            this.selectedFile = null; // Clear the selected file
+            this.successMessage = 'Image uploaded successfully';
+          });
         } else {
           console.error('Failed to upload image:', response);
-          // Optionally, display error message to user
-          this.errorMessage = response;
+          this.errorMessage = response.message || 'Failed to upload image. Please try again later.';
         }
-        this.uploadInProgress = false; // Reset the flag after upload completes
+        this.uploadInProgress = false;
       },
       (error) => {
         console.error('Error uploading image:', error);
-        // Optionally, display error message to user
         this.errorMessage = 'Failed to upload image. Please try again later.';
-        this.uploadInProgress = false; // Reset the flag after upload completes
+        this.uploadInProgress = false;
       }
     );
   }

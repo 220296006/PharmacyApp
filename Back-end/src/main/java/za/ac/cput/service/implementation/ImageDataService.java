@@ -2,11 +2,11 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import za.ac.cput.exception.ImageNotFoundException;
+import za.ac.cput.exception.ApiException;
 import za.ac.cput.exception.ImageUploadException;
-import za.ac.cput.model.ImageData;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.ImageDataRepository;
 import za.ac.cput.repository.UserRepository;
@@ -14,7 +14,9 @@ import za.ac.cput.utils.ImageUtils;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
-import java.util.Optional;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author : Thabiso Matsaba
@@ -27,20 +29,35 @@ import java.util.Optional;
 @Slf4j
 @Transactional
 public class ImageDataService {
-
+    private final NamedParameterJdbcTemplate jdbc;
     private final ImageDataRepository imageDataRepository;
     private final UserRepository<User> userRepository;
 
     public void uploadImage(Long userId, MultipartFile file) throws IOException {
+        log.info("Image uploaded successfully for user with ID {}", userId);
         try {
             User user = userRepository.read(userId);
-            ImageData imageData = imageDataRepository.save(ImageData.builder()
-                    .user(user)
-                    .name(file.getOriginalFilename())
-                    .type(file.getContentType())
-                    .imageData(ImageUtils.compressImage(file.getBytes()))
-                    .build());
-            log.info("Image uploaded successfully for user with ID {}", userId);
+            if (user != null) {
+                byte[] compressedImageData = ImageUtils.compressImage(file.getBytes());
+                String name = file.getOriginalFilename();
+                String type = file.getContentType();
+                // Save image data to the image_data table using named parameters
+                String sql = "INSERT INTO image_data (user_id, image_data, name, type) " +
+                        "VALUES (:userId, :imageData, :name, :type)";
+                Map<String, Object> params = new HashMap<>();
+                params.put("userId", userId);
+                params.put("imageData", compressedImageData);
+                params.put("name", name);
+                params.put("type", type);
+                jdbc.update(sql, params);
+                // Update user's image URL
+                String base64ImageData = Base64.getEncoder().encodeToString(compressedImageData);
+                user.setImageUrl("data:image/jpeg;base64," + base64ImageData);
+                userRepository.update(user);
+            } else {
+                log.error("User with ID {} not found", userId);
+                throw new ApiException("User not found with ID " + userId);
+            }
         } catch (Exception e) {
             log.error("Error uploading image: {}", e.getMessage());
             throw new ImageUploadException("Error uploading image", e); // Custom API exception

@@ -1,4 +1,5 @@
 export interface ApiResponse<T> {
+  imageData: string | ArrayBuffer;
   token: any;
   timeStamp: string;
   statusCode: number;

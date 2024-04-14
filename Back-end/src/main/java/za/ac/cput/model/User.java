@@ -14,9 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -68,9 +66,10 @@ public class User  implements UserDetails {
     @Column(name = "confirmations")
     @Transient
     private Confirmation confirmation;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "image_data")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ImageData imageData;
+
+
 
     public User(Long id, String firstName, String middleName, String lastName, String email, String password,
                 String phone, String address, String imageUrl, boolean enabled, boolean isUsingMfa, boolean isNotLocked,

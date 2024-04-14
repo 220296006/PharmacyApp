@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @Time : 19:24
  **/
 @Entity
-@Table(name = "ImageData")
+@Table(name = "image_data")
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -29,8 +29,6 @@ public class ImageData {
     @Lob
     @Column(name = "image_data", length = 1000)
     private byte[] imageData;
-    @Transient
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id") // Foreign key column
+    private Long userId;
 }

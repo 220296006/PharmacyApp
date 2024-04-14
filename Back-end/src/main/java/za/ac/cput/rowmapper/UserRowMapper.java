@@ -1,17 +1,11 @@
 package za.ac.cput.rowmapper;
 
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import za.ac.cput.model.ImageData;
 import za.ac.cput.model.User;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserRowMapper implements RowMapper<User> {
 
@@ -27,7 +21,12 @@ public class UserRowMapper implements RowMapper<User> {
         user.setEmail(resultSet.getString("email"));
         user.setPhone(resultSet.getString("phone"));
         user.setAddress(resultSet.getString("address"));
+
+        // Fetching image data
         ImageData imageData = new ImageData();
+        imageData.setId(resultSet.getLong("image_id"));
+        imageData.setName(resultSet.getString("name"));
+        imageData.setType(resultSet.getString("type"));
         imageData.setImageData(resultSet.getBytes("image_data"));
         user.setImageData(imageData);
         return user;

@@ -286,6 +286,12 @@ public class UserController {
         Map<String, Object> response = new HashMap<>();
         try {
             imageDataService.uploadImage(id, file);
+            // Fetch the updated user with the image data
+            User user = userService.findUserById(id);
+            // Add necessary user data or image URL to the response
+            response.put("success", true);
+            response.put("message", "Image uploaded successfully");
+            response.put("imageData", user.getImageData()); // Add the updated user object
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             response.put("success", false);
@@ -293,6 +299,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
 //    @GetMapping("/image/{id}/{fileName}")
 //    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
