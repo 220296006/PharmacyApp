@@ -161,7 +161,9 @@ public class UserRepositoryImp implements UserRepository<User> {
     public User read(Long id) {
         log.info("Fetch User by Id {}", id);
         try {
-            return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), new UserRowMapper());
+            return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY,
+                    Collections.singletonMap("userId", id),
+                    new UserRowMapper());
         } catch (EmptyResultDataAccessException exception) {
             return null;
         } catch (Exception exception) {

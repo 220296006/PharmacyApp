@@ -9,16 +9,16 @@ public class UserQuery {
      public static final String COUNT_USER_EMAIL_QUERY = "SELECT COUNT(*) FROM Users WHERE email = :email";
 
      public static final String FETCH_USER_BY_EMAIL_QUERY =
-             """
-                     SELECT u.*, GROUP_CONCAT(r.name) as roles, GROUP_CONCAT(i.id) as image_id, GROUP_CONCAT(i.image_data) \
-                     as imageData
-                     FROM Users u
-                     JOIN UserRoles ur ON u.id = ur.user_id
-                     JOIN Roles r ON ur.role_id = r.id\s
-                     LEFT JOIN image_data i ON u.id = i.user_id\s
-                     WHERE u.email = :email
-                     GROUP BY u.id;
-                     """;
+             "SELECT u.*, GROUP_CONCAT(r.name) as name, GROUP_CONCAT(i.id) as image_id, GROUP_CONCAT(i.type) as type, " +
+                     "GROUP_CONCAT(i.image_data) as imageData " +
+                     "FROM Users u " +
+                     "JOIN UserRoles ur ON u.id = ur.user_id " +
+                     "JOIN Roles r ON ur.role_id = r.id " +
+                     "LEFT JOIN image_data i ON u.id = i.user_id " +
+                     "WHERE u.email = :email " +
+                     "GROUP BY u.id ";
+
+
 
      public static final String INSERT_USER_QUERY = "INSERT INTO Users (first_name, middle_name, last_name, email, "
              + "password, phone, address) VALUES (:firstName, :middleName, :lastName, :email, :password, :phone, " +

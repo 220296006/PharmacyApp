@@ -42,8 +42,7 @@ public class ImageDataService {
                 String name = file.getOriginalFilename();
                 String type = file.getContentType();
                 // Save image data to the image_data table using named parameters
-                String sql = "INSERT INTO image_data (user_id, image_data, name, type) " +
-                        "VALUES (:userId, :imageData, :name, :type)";
+                String sql = "UPDATE Users SET image_data = :imageData, name = :name, type = :type WHERE id = :userId";
                 Map<String, Object> params = new HashMap<>();
                 params.put("userId", userId);
                 params.put("imageData", compressedImageData);
@@ -55,7 +54,7 @@ public class ImageDataService {
                 user.setImageUrl("data:image/jpeg;base64," + base64ImageData);
                 userRepository.update(user);
             } else {
-                log.error("User with ID {} not found", userId);
+                log.error("User with ID: {} not found", userId);
                 throw new ApiException("User not found with ID " + userId);
             }
         } catch (Exception e) {
