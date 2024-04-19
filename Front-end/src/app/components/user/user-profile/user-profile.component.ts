@@ -9,62 +9,71 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  selectedSection: string = 'profile';
-  profileImageUrl: string | ArrayBuffer | null = 'assets/images/default.jpeg';
+  selectedSection = 'profile';
+  profileImageUrl: string | null ='assets/images/default.jpeg';
   selectedFile: File | null = null;
   userId: number | null = null;
-  activityLogs: any;
-  uploadInProgress: boolean = false;
   loggedInUser: User | null = null;
-  errorMessage: string| null = null;
-  successMessage: string| null = null;
+  errorMessage: string | null = null;
+  successMessage: string | null = null;
+  uploadInProgress = false;
+  activityLogs: any;
 
   constructor(
     private authService: AuthService,
     private userService: UserService
-  ) { }
-  
+  ) {}
+
   ngOnInit(): void {
-    // Retrieve logged-in user's information from session storage
     this.loggedInUser = this.authService.getLoggedInUser();
-    console.log('User object:', this.loggedInUser);
-  
-    // Use the user's ID directly from the loggedInUser object
     if (this.loggedInUser) {
       this.userId = this.loggedInUser.id;
       if (this.loggedInUser.imageUrl) {
-        this.profileImageUrl = this.loggedInUser.imageUrl;
+        this.loadProfileImage(this.userId);
       }
-      console.log('User ID:', this.userId);
     } else {
       console.error('Failed to retrieve user information. User ID unavailable for upload.');
     }
   }
+
+  loadProfileImage(userId: number): void {
+    this.userService.getImageData(userId).subscribe(
+      (data: Blob) => {
+        // Convert Blob to base64 data URL
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          this.profileImageUrl = reader.result as string;
+        };
+        reader.readAsDataURL(data);
+      },
+      (error) => {
+        console.error('Error loading profile image:', error);
+        this.errorMessage = 'Failed to load profile image. Please try again later.';
+      }
+    );
+  }
   
-  
-  
-  selectSection(section: string) {
+
+  selectSection(section: string): void {
     this.selectedSection = section;
   }
 
-  triggerFileInput() {
+  triggerFileInput(): void {
     document.getElementById('fileInput')?.click();
   }
 
-  onFileSelected(event: any) {
+  onFileSelected(event: any): void {
     const files = event.target.files;
     if (files && files.length > 0) {
       this.selectedFile = files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.profileImageUrl = reader.result;
-      };
-      reader.readAsDataURL(this.selectedFile);
+      // You can optionally display the selected image preview here
+    } else {
+      console.error('No file selected');
+      this.errorMessage = 'No file selected. Please select an image file.';
     }
   }
 
-  onUpload() {
-    // Check if user ID and file are available
+  onUpload(): void {
     if (!this.userId) {
       this.errorMessage = 'User ID not available. Please refresh the page and try again.';
       return;
@@ -74,18 +83,16 @@ export class UserProfileComponent implements OnInit {
       return;
     }
 
-    this.uploadInProgress = true; // Set flag to indicate upload is in progress
+    this.uploadInProgress = true;
 
     this.userService.uploadProfileImage(this.userId, this.selectedFile).subscribe(
       (response: any) => {
         console.log('Image uploaded successfully:', response);
-        if (response && response.success && response.imageData) {
-          // Fetch the updated user information
-          this.userService.getUserById(this.userId).subscribe((user) => {
-            this.profileImageUrl = user.data.user.imageUrl; // Update profile image URL
-            this.selectedFile = null; // Clear the selected file
-            this.successMessage = 'Image uploaded successfully';
-          });
+        // Assuming the server returns the updated image URL in the response
+        if (response && response.success && response.imageUrl) {
+          this.profileImageUrl = response.imageUrl;
+          this.selectedFile = null;
+          this.successMessage = 'Image uploaded successfully';
         } else {
           console.error('Failed to upload image:', response);
           this.errorMessage = response.message || 'Failed to upload image. Please try again later.';
@@ -99,5 +106,4 @@ export class UserProfileComponent implements OnInit {
       }
     );
   }
-
 }

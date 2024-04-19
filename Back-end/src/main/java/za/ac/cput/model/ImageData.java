@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author : Thabiso Matsaba
@@ -20,7 +21,7 @@ import javax.persistence.*;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class ImageData {
+public class ImageData implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

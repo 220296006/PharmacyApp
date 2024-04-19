@@ -1,12 +1,8 @@
 package za.ac.cput.repository;
-import org.springframework.web.multipart.MultipartFile;
-import za.ac.cput.dto.UserUpdateDTO;
 
 import za.ac.cput.model.User;
 
-import java.io.IOException;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author : Thabiso Matsaba

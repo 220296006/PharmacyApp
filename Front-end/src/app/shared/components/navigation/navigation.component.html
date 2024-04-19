@@ -115,9 +115,10 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 style="font-size: 10px; color: rgb(0, 0, 0); font-weight: bold;"
-
               >
-              Welcome, {{ user?.firstName  | uppercase}} {{user?.lastName  | uppercase}}</a>
+                <img [src]="profileImageUrl" alt="Profile Image" class="profile-image" *ngIf="profileImageUrl" />
+                Welcome, {{ user?.firstName  | uppercase}} {{user?.lastName  | uppercase}}
+              </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li>
                   <button mat-icon-button>
@@ -126,15 +127,15 @@
                   <a class="dropdown-item" [routerLink]="'/user-profile'">Account</a>
                 </li>
                 <li>
-                  <button mat-icon-button >
+                  <button mat-icon-button>
                     <mat-icon>exit_to_app</mat-icon>
                   </button>
                   <a class="dropdown-item" href="#" (click)="onLogout()">Log Out</a>
                 </li>
               </ul>
-              
             </li>
           </ul>
+          
         </div>
       </div>
     </nav>

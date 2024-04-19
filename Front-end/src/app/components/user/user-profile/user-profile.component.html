@@ -20,7 +20,7 @@
  <!-- Profile Image and Upload Icon -->
 <div class="col-md-3">
   <div class="profile-image-container">
-    <img [src]="profileImageUrl" alt="Profile Image" class="profile-image" id="profileImage" />
+    <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile Image" class="profile-image" id="profileImage" />
     <label for="fileInput" class="upload-icon" [class.uploading]="uploadInProgress">
       <i class="bi bi-camera" [class.disabled]="uploadInProgress" (click)="triggerFileInput()"></i>
     </label>
@@ -35,10 +35,7 @@
   <!-- Add a button for manual upload -->
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
   <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
-
 </div>
-
-
         <!-- Side Nav Bar -->
         <div class="col-md-3">
           <ul class="nav flex-column">

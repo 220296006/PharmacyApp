@@ -70,12 +70,6 @@ public class User  implements UserDetails {
     private ImageData imageData;
 
 
-
-    public User(Long id, String firstName, String middleName, String lastName, String email, String password,
-                String phone, String address, String imageUrl, boolean enabled, boolean isUsingMfa, boolean isNotLocked,
-                Set<GrantedAuthority> authorities) {
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();

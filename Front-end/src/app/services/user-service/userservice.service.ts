@@ -8,6 +8,7 @@ import { User } from 'src/app/model/user';
   providedIn: 'root',
 })
 export class UserService {
+ 
 
   private readonly serverUrl: string = 'http://localhost:8080';
 
@@ -90,7 +91,16 @@ export class UserService {
     );
   }
   
-
+  getImageData(userId: number): Observable<any> {
+    const url = `${this.serverUrl}/user/image/${userId}`;
+    return this.http.get(url, { responseType: 'blob' }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Failed to fetch image data');
+      })
+    );
+  }
+  
+  
   handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       console.error('An error occurred:', error.error);

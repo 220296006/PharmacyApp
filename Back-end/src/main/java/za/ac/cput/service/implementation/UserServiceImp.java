@@ -6,9 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
-import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
-import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
@@ -44,48 +42,37 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserUpdateDTO updateUser(Long userId, UserUpdateDTO updatedUser) {
+    public UserDTO updateUser(Long userId, UserDTO updatedUser) {
         try {
-            // Check if the current user has the Admin role
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication != null && authentication.getAuthorities().stream()
-                    .anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"))) {
-                // If the user has Admin role, proceed with the update
-                Optional<User> optionalExistingUser = Optional.ofNullable(userRepository.read(userId));
-                if (optionalExistingUser.isPresent()) {
-                    User existingUser = getUser(updatedUser, optionalExistingUser);
-                    // Save the updated user using the new updateWithDTO method
-                    userRepository.update(existingUser);
-                    // Return the updated UserUpdateDTO
-                    return UserUpdateDTOMapper.fromUser(existingUser);
-                } else {
-                    // If the user does not exist, return null
-                    return null;
-                }
-            } else {
-                // If the user does not have Sys Admin role, throw an exception
-                throw new ApiException("Unauthorized: Insufficient permissions to update user with Admin role.");
-            }
+            User user = userRepository.read(userId);
+            user.setFirstName(updatedUser.getFirstName());
+            user.setLastName(updatedUser.getLastName());
+            user.setMiddleName(updatedUser.getMiddleName());
+            user.setEmail(updatedUser.getEmail());
+            user.setPhone(updatedUser.getPhone());
+            user.setAddress(updatedUser.getAddress());
+            User updated = userRepository.update(user);
+            return convertToDto(updated);
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while updating the user. Please try again.");
         }
     }
-
-    private static User getUser(UserUpdateDTO updatedUser, Optional<User> optionalExistingUser) {
-        User existingUser = optionalExistingUser.get();
-        // Update the existing user with the new data
-        existingUser.setFirstName(updatedUser.getFirstName());
-        existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setMiddleName(updatedUser.getMiddleName());
-        // Update the email address if provided
-        if (updatedUser.getEmail() != null && !updatedUser.getEmail().isEmpty()) {
-            existingUser.setEmail(updatedUser.getEmail());
-        }
-        existingUser.setAddress(updatedUser.getAddress());
-        existingUser.setPhone(updatedUser.getPhone());
-        return existingUser;
+    // Helper method to convert User entity to UserDTO
+    private UserDTO convertToDto(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setMiddleName(user.getMiddleName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhone(user.getPhone());
+        userDTO.setAddress(user.getAddress());
+        userDTO.setImageUrl(user.getImageUrl());
+        userDTO.setImageData(user.getImageData());
+        return userDTO;
     }
+
 
     @Override
     public User findUserById(Long id) {

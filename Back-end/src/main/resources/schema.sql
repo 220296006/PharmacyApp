@@ -34,8 +34,8 @@ CREATE TABLE Users (
     not_locked BOOLEAN DEFAULT TRUE,
     using_mfa BOOLEAN DEFAULT TRUE,
     not_expired BOOLEAN DEFAULT TRUE,
-    image_url VARCHAR(255) DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
-    image_data LONGBLOB,
+    image_url VARCHAR(1000) NULL
+    DEFAULT 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     phone VARCHAR(15) DEFAULT NULL,
     address VARCHAR(255) DEFAULT NULL,

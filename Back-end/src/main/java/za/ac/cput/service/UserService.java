@@ -1,7 +1,5 @@
 package za.ac.cput.service;
-import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
-import za.ac.cput.dto.UserUpdateDTO;
 import za.ac.cput.model.User;
 
 import java.util.Collection;
@@ -18,7 +16,7 @@ public interface UserService {
 
     Collection<User> getAllUsers(String name, int page, int pageSize);
 
-    UserUpdateDTO updateUser(Long id, UserUpdateDTO updatedUser);
+    UserDTO updateUser(Long id, UserDTO updatedUser);
 
     User findUserById(Long id);
 

@@ -33,6 +33,7 @@ export class UserComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   getUserInfo: any;
+  user: User;
 
   constructor(
     private userService: UserService,

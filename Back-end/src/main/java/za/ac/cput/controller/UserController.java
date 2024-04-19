@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +23,14 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
-import za.ac.cput.dto.UserUpdateDTO;
+import za.ac.cput.exception.ImageUploadException;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.UserService;
-import za.ac.cput.service.implementation.ImageDataService;
+import za.ac.cput.service.implementation.ImageDataServiceImp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -59,7 +60,7 @@ import static org.springframework.http.HttpStatus.*;
 public class UserController {
     private final UserService userService;
     private final ConfirmationService confirmationService;
-    private final ImageDataService imageDataService;
+    private final ImageDataServiceImp imageDataServiceImp;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
@@ -211,10 +212,10 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO user) {
+    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO user) {
         log.info("Update User: {}: {}", id, user);
         try {
-            UserUpdateDTO userUpdateDTO = userService.updateUser(id, user);
+            UserDTO userUpdateDTO = userService.updateUser(id, user);
             if (userUpdateDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()
@@ -282,28 +283,55 @@ public class UserController {
     @PostMapping("/image/{id}")
     public ResponseEntity<Map<String, Object>> uploadImage(@PathVariable("id") Long id,
                                                            @RequestParam("image") MultipartFile file) {
-        log.info("Uploading User ID {} Image {}", id, file);
+        log.info("Uploading User ID {} Image {}", id, file.getOriginalFilename());
         Map<String, Object> response = new HashMap<>();
         try {
-            imageDataService.uploadImage(id, file);
+            imageDataServiceImp.uploadImage(id, file);
             // Fetch the updated user with the image data
             User user = userService.findUserById(id);
             // Add necessary user data or image URL to the response
             response.put("success", true);
             response.put("message", "Image uploaded successfully");
-            response.put("imageData", user.getImageData()); // Add the updated user object
+            response.put("image", user.getImageUrl()); // Add the updated user object
             return ResponseEntity.ok(response);
+        } catch (ImageUploadException e) {
+            log.error("Error uploading image for User ID {}: {}", id, e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error uploading image: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         } catch (Exception e) {
+            log.error("An internal server error occurred during image upload for User ID {}: {}", id, e.getMessage());
             response.put("success", false);
             response.put("message", "An internal server error occurred during upload. Please try again later.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> getUserImage(@PathVariable("id") Long userId) {
+        try {
+            // Retrieve the image data for the specified user ID
+            byte[] imageData = imageDataServiceImp.getImageData(userId);
+            if (imageData != null) {
+                // If image data is found, return it with appropriate headers
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.IMAGE_JPEG); // Adjust content type based on image type
+                headers.setContentLength(imageData.length);
+                return ResponseEntity.ok().headers(headers).body(imageData);
+            } else {
+                // If no image data found, return a not found response
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            // If an error occurs, return an internal server error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
 //    @GetMapping("/image/{id}/{fileName}")
 //    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
-//        byte[] imageData= imageDataService.downloadImage(id, fileName);
+//        byte[] imageData= imageDataServiceImp.downloadImage(id, fileName);
 //        return ResponseEntity.status(HttpStatus.OK)
 //                .contentType(MediaType.valueOf("image/png"))
 //                .body(imageData);

@@ -2,21 +2,26 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.exception.ImageUploadException;
+import za.ac.cput.model.ImageData;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.ImageDataRepository;
-import za.ac.cput.service.UserService;
 import za.ac.cput.utils.ImageUtils;
 
 import javax.transaction.Transactional;
+
+import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+
+import static za.ac.cput.query.UserQuery.UPDATE_USER_PROFILE_IMAGE_SQL;
 
 /**
  * @author : Thabiso Matsaba
@@ -28,7 +33,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class ImageDataService {
+public class ImageDataServiceImp {
     private final NamedParameterJdbcTemplate jdbc;
     private final ImageDataRepository imageDataRepository;
     private final UserServiceImp userServiceImp;
@@ -36,55 +41,95 @@ public class ImageDataService {
     public void uploadImage(Long userId, MultipartFile file) {
         log.info("Image uploaded successfully for user with ID {}", userId);
         try {
-            log.info("User ID to fetch: {}", userId);
-            UserDTO userDTO = userServiceImp.findUserById(userId);
-            if (userDTO != null) {
-                byte[] compressedImageData = ImageUtils.compressImage(file.getBytes());
+            log.info("Fetching user with ID: {}", userId);
+            User user = userServiceImp.findUserById(userId);
+            if (user != null) {
+                byte[] imageDataBytes = file.getBytes();
                 String name = file.getOriginalFilename();
                 String type = file.getContentType();
 
-                // Save image data to the image_data table using named parameters
-                String sql = "INSERT INTO image_data (user_id, image_data, name, type) " +
-                        "VALUES (:userId, :imageData, :name, :type)";
-                Map<String, Object> params = new HashMap<>();
-                params.put("userId", userId);
-                params.put("imageData", compressedImageData);
-                params.put("name", name);
-                params.put("type", type);
-                jdbc.update(sql, params);
+                log.info("Received image data for user ID {}: {} bytes", userId, imageDataBytes.length);
 
-                // Update user's image URL
-                String base64ImageData = Base64.getEncoder().encodeToString(compressedImageData);
-                userDTO.setImageUrl("data:image/jpeg;base64," + base64ImageData);
+                // Persist image data
+                ImageData imageData = new ImageData();
+                imageData.setImageData(imageDataBytes);
+                imageData.setName(name);
+                imageData.setType(type);
+                imageData.setUserId(userId);
+                imageDataRepository.save(imageData);
 
-                // Convert UserDTO to User
-                User user = convertUserDTOToUser(userDTO);
+                // Generate unique image ID
+                Long generatedImageId = generateUniqueImageId();
 
-                // Update user using UserDTO
-                userServiceImp.updateUser(userId, userDTO);
+                // Update user's image URL in the Users table
+                String imageUrl = generateImageUrl(generatedImageId);
+                MapSqlParameterSource parameters = new MapSqlParameterSource()
+                        .addValue("userId", userId)
+                        .addValue("imageUrl", imageUrl);
+                jdbc.update(UPDATE_USER_PROFILE_IMAGE_SQL, parameters);
+
+                // Set imageUrl in User object
+                log.info("Fetching user Image URL: {}", imageUrl);
+                user.setImageUrl(imageUrl);
+
+                // Fetch the image data associated with the user
+                byte[] userImageData = imageData.getImageData();
+
+                // Update user in the database
+                userServiceImp.updateUser(userId, convertToDto(user));
+
+                // Log and return success message
+                log.info("Updated User: {}", user);
             } else {
                 log.error("User with ID: {} not found", userId);
                 throw new ApiException("User not found with ID " + userId);
             }
         } catch (Exception e) {
             log.error("Error uploading image: {}", e.getMessage());
-            throw new ImageUploadException("Error uploading image", e); // Custom API exception
+            throw new ImageUploadException("Error uploading image", e);
         }
     }
 
-    private User convertUserDTOToUser(UserDTO userDTO) {
-        // Perform conversion from UserDTO to User object here
-        User user = new User();
-        user.setId(userDTO.getId());
-        user.setFirstName(userDTO.getFirstName());
-        user.setMiddleName(userDTO.getMiddleName());
-        user.setLastName(userDTO.getLastName());
-        user.setEmail(userDTO.getEmail());
-        user.setPhone(userDTO.getPhone());
-        user.setAddress(userDTO.getAddress());
-        user.setImageUrl(userDTO.getImageUrl());
-        // Set other properties as needed
-        return user;
+
+    // Generate unique image ID (You can use a different approach if needed)
+    private Long generateUniqueImageId() {
+        return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    }
+
+    // Generate image URL based on the image ID
+    private String generateImageUrl(Long imageId) {
+        return "https://pharmacyapp.com/images/" + imageId ;
+    }
+
+    public byte[] getImageData(Long id) {
+        log.info("Fetching image data for user ID: {}", id);
+        Optional<ImageData> imageDataOptional = imageDataRepository.findByUserId(id);
+        // Return null if no image data found for the user ID
+        byte[] imageData = imageDataOptional.map(ImageData::getImageData).orElse(null);
+        if (imageData != null) {
+            log.info("Retrieved image data for user ID {}: {} bytes", id, imageData.length);
+        } else {
+            log.info("No image data found for user ID: {}", id);
+        }
+        return imageDataOptional.map(ImageData::getImageData).orElse(null);
+    }
+
+
+
+    private UserDTO convertToDto(User user) {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setFirstName(user.getFirstName());
+        userDTO.setLastName(user.getLastName());
+        userDTO.setMiddleName(user.getMiddleName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setPhone(user.getPhone());
+        userDTO.setAddress(user.getAddress());
+        userDTO.setImageUrl(user.getImageUrl());
+        userDTO.setImageData(user.getImageData());
+        log.info("UserDTO: {}", userDTO );
+        return userDTO;
+
     }
 
 //    public byte[] downloadImage(Long userId, String fileName) {
