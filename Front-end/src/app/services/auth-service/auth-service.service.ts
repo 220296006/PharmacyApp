@@ -10,7 +10,7 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080';
+  private readonly  apiUrl: string = 'http://localhost:8080'; 
   private userSubject = new BehaviorSubject<User | null>(null);
   public currentUser: Observable<User | null>;
 
@@ -149,13 +149,6 @@ export class AuthService {
     const userInfo = sessionStorage.getItem('loggedInUser');
     return userInfo ? JSON.parse(userInfo) : null;
   }
-
-  updateUserProfileImage(userId: number, imageUrl: string): Observable<any> {
-    const updateUrl = `${this.apiUrl}/user/image/${userId}`;
-    return this.http.put(updateUrl, { imageUrl });
-  }
-  
-
 
   getUserInfo(): Observable<User> {
     const token = this.getToken();

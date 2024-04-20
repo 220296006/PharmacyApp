@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.data.annotation.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +14,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 
@@ -54,10 +51,12 @@ public class User  implements UserDetails {
     private String address;
     private String phone;
     private String imageUrl;
+    private boolean accountNonExpired;
     private boolean enabled;
     private boolean isUsingMfa;
     private LocalDateTime createdAt;
     private boolean isNotLocked;
+    @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
     @JoinTable(
             name = "user_roles",
@@ -65,12 +64,11 @@ public class User  implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
     @Column(name = "confirmations")
+    @Transient
     private Confirmation confirmation;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private ImageData imageData;
 
-    public User(Long id, String firstName, String middleName, String lastName, String email, String password,
-                String phone, String address, String imageUrl, boolean enabled, boolean isUsingMfa, boolean isNotLocked,
-                Set<GrantedAuthority> authorities) {
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

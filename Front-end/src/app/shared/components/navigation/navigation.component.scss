@@ -6,7 +6,12 @@
     z-index: 100;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
   }
-
+  .profile-image {
+    width: 60px; /* Adjust the width as needed */
+    height: 60px; /* Ensure the height matches the width for a square image */
+    border-radius: 50%; /* Makes the image round */
+  }
+  
   /* Style the icons and text inside the navigation bar */
   .navbar-nav .nav-item {
     display: flex;

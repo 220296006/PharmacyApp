@@ -5,12 +5,10 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 import za.ac.cput.model.Confirmation;
+import za.ac.cput.model.ImageData;
 import za.ac.cput.model.Role;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -44,11 +42,17 @@ public class UserDTO{
     private boolean isUsingMfa;
     private LocalDateTime createdAt;
     private boolean isNotLocked;
+    @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    public Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
+    @Column(name = "confirmations")
+    @Transient
     private Confirmation confirmation;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_data")
+    private ImageData imageData;
 }

@@ -88,10 +88,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.info("User found: {}", user);
             return user;
         } catch (DataAccessException exception) {
-            log.error("Error loading user by email: " + email, exception);
+            log.error("Error loading user by email: {}", email, exception);
             throw new UsernameNotFoundException("User not found with email: " + email);
         } catch (Exception exception) {
-            log.error("Unexpected error loading user by email: " + email, exception);
+            log.error("Unexpected error loading user by email: {}", email, exception);
             throw new ApiException("An unexpected error occurred");
         }
     }

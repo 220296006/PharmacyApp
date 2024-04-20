@@ -13,40 +13,29 @@
       rel="stylesheet"
     />
   </head>
-
+ 
   <body>
     <div class="container">
       <div class="row">
-        <!-- Profile Image and Upload Icon -->
-        <div class="col-md-3">
-          <div class="profile-image-container">
-            <img
-              [src]="profileImageUrl"
-              alt="Profile Image"
-              class="profile-image"
-              id="profileImage"
-            />
-            <label for="fileInput" class="upload-icon">
-              <i class="bi bi-camera" (click)="triggerFileInput()"></i>
-            </label>
-          </div>
-        </div>
-        <div class="col-md-9">
-          <input
-            type="file"
-            id="fileInput"
-            class="file-input"
-            (change)="onFileSelected($event)"
-          />
-          <button
-            (click)="onUpload()"
-            class="btn btn-primary upload-btn"
-          >
-            Upload
-          </button>
-          <!-- Add a button for manual upload -->
-        </div>
-
+ <!-- Profile Image and Upload Icon -->
+<div class="col-md-3">
+  <div class="profile-image-container">
+    <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile Image" class="profile-image" id="profileImage" />
+    <label for="fileInput" class="upload-icon" [class.uploading]="uploadInProgress">
+      <i class="bi bi-camera" [class.disabled]="uploadInProgress" (click)="triggerFileInput()"></i>
+    </label>
+    <div *ngIf="uploadInProgress" class="loading-spinner"></div>
+  </div>
+</div>
+<div class="col-md-9">
+  <input type="file" id="fileInput" class="file-input" (change)="onFileSelected($event)" [disabled]="uploadInProgress" />
+  <button (click)="onUpload()" class="btn btn-primary upload-btn" [disabled]="!selectedFile || uploadInProgress">
+    {{ uploadInProgress ? 'Uploading...' : 'Upload' }}
+  </button>
+  <!-- Add a button for manual upload -->
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
+</div>
         <!-- Side Nav Bar -->
         <div class="col-md-3">
           <ul class="nav flex-column">

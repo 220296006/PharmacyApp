@@ -1,5 +1,8 @@
 package za.ac.cput.rowmapper;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 import za.ac.cput.model.Role;
 
 import java.sql.ResultSet;
@@ -14,8 +17,9 @@ import java.util.Set;
  * @Date : 2023/07/09
  * @Time : 16:00
  **/
+@Component
  public class RoleRowMapper implements RowMapper<Role> {
-     @Override
+    @Override
      public Role mapRow(ResultSet resultSet, int rowNum) throws SQLException {
          Role role = new Role();
          role.setId(resultSet.getLong("id"));

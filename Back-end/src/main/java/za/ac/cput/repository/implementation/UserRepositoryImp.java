@@ -3,7 +3,9 @@ package za.ac.cput.repository.implementation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -11,16 +13,19 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-import za.ac.cput.dto.UserUpdateDTO;
-import za.ac.cput.dtomapper.UserUpdateDTOMapper;
 import za.ac.cput.exception.ApiException;
+import za.ac.cput.model.ImageData;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.repository.UserRepository;
+import za.ac.cput.rowmapper.ImageDataRowMapper;
+import za.ac.cput.rowmapper.RoleRowMapper;
 import za.ac.cput.rowmapper.UserRowMapper;
 import za.ac.cput.service.EmailService;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 import static za.ac.cput.enumeration.RoleType.*;
@@ -41,6 +46,8 @@ public class UserRepositoryImp implements UserRepository<User> {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ImageDataRowMapper imageDataRowMapper;
+    private final RoleRowMapper roleRowMapper;
 
     @Override
     public User save(User user) {
@@ -144,33 +151,54 @@ public class UserRepositoryImp implements UserRepository<User> {
     }
 
 
-
     @Override
     public Collection<User> list(String name, int page, int pageSize) {
         log.info("Fetch All Users");
         try {
+            int offset = (page - 1) * pageSize; // Calculate offset for pagination
+            // Create parameter source with values for pagination
             SqlParameterSource parameters = new MapSqlParameterSource()
-                    .addValue("size", pageSize)
-                    .addValue("page", (page - 1) * pageSize);
-            return jdbc.query(FETCH_ALL_USERS_QUERY, parameters, new UserRowMapper());
+                    .addValue("limit", pageSize)
+                    .addValue("offset", offset);
+            // Execute the query with parameters and process the result set
+            return jdbc.query(FETCH_ALL_USERS_QUERY, parameters, resultSet -> {
+                Map<Long, User> userMap = new LinkedHashMap<>(); // Using LinkedHashMap to maintain insertion order
+                while (resultSet.next()) {
+                    long userId = resultSet.getLong("id");
+                    User user = userMap.computeIfAbsent(userId, id -> {
+                        try {
+                            UserRowMapper userRowMapper = new UserRowMapper(); // Create an instance of UserRowMapper
+                            return userRowMapper.mapRow(resultSet, -1); // Call the instance method mapRow
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }); // Map basic user information
+                }
+                return userMap.values();
+            });
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("No users found. Please try again.");
         }
     }
 
+
     @Override
     public User read(Long id) {
-        log.info("Fetch User by Id");
+        log.info("Fetching User by Id: {}", id);
         try {
-            return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY, Map.of("user_id", id), new UserRowMapper());
+            return jdbc.queryForObject(FETCH_USER_BY_ID_QUERY,
+                    Collections.singletonMap("user_id", id),
+                    new UserRowMapper());
         } catch (EmptyResultDataAccessException exception) {
-            return null;
+            log.warn("No user found with ID: {}", id);
+            return null; // Return null when no user is found
         } catch (Exception exception) {
             log.error(exception.getMessage());
-            throw new ApiException("No user with ID" + id + "found. Please try again.");
+            throw new ApiException("An error occurred while fetching user with ID " + id);
         }
     }
+
 
     @Override
     public User update(User user) {
@@ -202,14 +230,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     public User findUserByEmailIgnoreCase(String email) {
         log.info("Fetch User by Email {}", email);
         try {
-            return jdbc.queryForObject(
-                    "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
-                            "FROM Users u " +
-                            "JOIN UserRoles ur ON u.id = ur.user_id " +
-                            "JOIN Roles r ON ur.role_id = r.id " +
-                            "WHERE u.email = :email " +
-                            "GROUP BY u.id",
-                    Map.of("email", email), // Pass the email parameter here
+            return jdbc.queryForObject(FETCH_USER_BY_EMAIL_QUERY, Map.of("email", email),
                     new UserRowMapper()
             );
         } catch (EmptyResultDataAccessException exception) {
@@ -219,22 +240,6 @@ public class UserRepositoryImp implements UserRepository<User> {
             throw new ApiException("Error while fetching user by email");
         }
     }
-
-    @Override
-    public void saveImage(Long userId, byte[] imageData) {
-        log.info("Upload User Id {} ImageData {}", userId, imageData);
-        try {
-            SqlParameterSource parameters = new MapSqlParameterSource()
-                    .addValue("imageUrl", imageData)
-                    .addValue("id", userId);
-            KeyHolder keyHolder = new GeneratedKeyHolder();
-            jdbc.update(UPDATE_USER_PROFILE_IMAGE_SQL, parameters, keyHolder);
-        } catch (Exception exception) {
-            log.error(exception.getMessage());
-            throw new ApiException("An error occurred while uploading user image. Please try again.");
-        }
-    }
-
 
 
     private Integer getEmailCount(String email) {
@@ -251,9 +256,8 @@ public class UserRepositoryImp implements UserRepository<User> {
                 .addValue("email", user.getEmail())
                 .addValue("phone", user.getPhone())
                 .addValue("address", user.getAddress())
+                .addValue("imageData", user.getImageData())
                 .addValue("password",(passwordEncoder.encode(user.getPassword())));
-
-
     }
 }
 

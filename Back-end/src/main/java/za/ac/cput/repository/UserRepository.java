@@ -1,9 +1,8 @@
 package za.ac.cput.repository;
-import za.ac.cput.dto.UserUpdateDTO;
 
 import za.ac.cput.model.User;
+
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -18,5 +17,5 @@ public interface UserRepository <T extends User> {
       T update(User t);
       void delete(Long id);
       T findUserByEmailIgnoreCase(String email);
-      void saveImage(Long userId, byte[] imageData);
+
 }
