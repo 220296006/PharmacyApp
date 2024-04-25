@@ -69,6 +69,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
 
   ngOnDestroy(): void {
     if (this.userSubscription) {

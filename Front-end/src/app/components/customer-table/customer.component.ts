@@ -76,6 +76,9 @@ export class CustomerComponent implements OnInit {
           this.tableDataSource.data = response.data.page;
           this.tableDataSource.paginator = this.paginator;
           this.tableDataSource.sort = this.sort;
+
+          // Load profile images for customers
+          this.loadCustomerProfileImages();
         } else {
           console.error('Error: ' + response.message);
         }
@@ -88,6 +91,30 @@ export class CustomerComponent implements OnInit {
       },
     });
   }
+
+  loadCustomerProfileImages(): void {
+    if (Array.isArray(this.tableDataSource.data)) {
+      this.tableDataSource.data.forEach((customer: any) => {
+        if (customer.user && customer.user.id) {
+          this.customerService.getCustomerImageData(customer.user.id).subscribe(
+            (data: Blob) => {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                customer.user.imageUrl = reader.result as string;
+              };
+              reader.readAsDataURL(data);
+            },
+            (error) => {
+              console.error('Error loading profile image:', error);
+              // Handle error (e.g., display default image)
+            }
+          );
+        }
+      });
+    }
+  }
+
+  
 
   onUpdateCustomer(customerId: number) {
     const permissions = this.authService.getPermissionsFromToken();

@@ -33,7 +33,6 @@ export class UserComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  getUserInfo: any;
   user: User;
 
   constructor(
@@ -73,7 +72,7 @@ export class UserComponent implements OnInit {
     }
   }
 
-  
+
   loadProfileImage(userId: number, imageUrl: string): void {
     // Check if the image URL includes the query parameter 'includeData=true'
     const includeData = imageUrl.includes('includeData=true');

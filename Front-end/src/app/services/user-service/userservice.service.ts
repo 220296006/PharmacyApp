@@ -94,7 +94,7 @@ export class UserService {
   getImageData(userId: number): Observable<any> {
     const url = `${this.serverUrl}/user/image/${userId}`;
     return this.http.get(url, { responseType: 'blob' }).pipe(
-      catchError((error: HttpErrorResponse) => {
+      catchError(() => {
         return throwError('Failed to fetch image data');
       })
     );
