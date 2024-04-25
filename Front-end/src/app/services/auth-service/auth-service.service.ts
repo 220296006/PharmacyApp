@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
 import { ApiResponse } from 'src/app/model/api-response';
-import { User } from 'src/app/model/user';
 import { jwtDecode } from 'jwt-decode';
+import { User } from 'src/app/model/user';
 
 @Injectable({
   providedIn: 'root',
@@ -23,31 +23,34 @@ export class AuthService {
     }
   }
 
+  getPermissionsFromToken(): string[] {
+    const token = this.getToken();
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.permissions?.flatMap((role: any) => role.permissions) || [];
+    } else {
+      return [];
+    }
+  }
+
   decodeTokenAndSetUser(token: string) {
     try {
       const decodedToken: any = jwtDecode(token);
+      console.log('Decoded token:', decodedToken);
       const user = this.buildUserFromToken(decodedToken);
       this.userSubject.next(user);
+      // Extract and log permissions
+      if (decodedToken.permissions) {
+        console.log('User permissions:', decodedToken.permissions);
+      } else {
+        console.log('No permissions found in the token.');
+      }
     } catch (error) {
       console.error('Error decoding token:', error);
       this.userSubject.next(null); // Set user to null on decode error
     }
   }
 
-  getUserInfoFromServer(): Observable<User> {
-    const token = this.getToken();
-    if (!token) {
-      throw new Error('No token available');
-    }
-    return this.http.get<User>(`${this.apiUrl}/user/profile`, {
-      headers: { Authorization: token }
-    }).pipe(
-      catchError((error) => {
-        console.error('Error fetching user info from server:', error);
-        return throwError('Error fetching user info');
-      })
-    );
-  }
 
   updateCurrentUser(user: User) {
     this.userSubject.next(user);
@@ -143,27 +146,18 @@ export class AuthService {
 
   storeUserInfo(userInfo: User) {
     sessionStorage.setItem('loggedInUser', JSON.stringify(userInfo));
+    //console.log('User information stored in session storage:', userInfo);
   }
 
   getLoggedInUser(): User | null {
     const userInfo = sessionStorage.getItem('loggedInUser');
-    return userInfo ? JSON.parse(userInfo) : null;
+    const loggedInUser = userInfo ? JSON.parse(userInfo) : null;
+    //console.log('Retrieved logged-in user information from session storage:', loggedInUser);
+    return loggedInUser;
   }
 
-  getUserInfo(): Observable<User> {
-    const token = this.getToken();
-    if (!token) {
-      throw new Error('No token available');
-    }
-     return this.http.get<User>(`${this.apiUrl}/user/profile`, {
-      headers: { Authorization: token },
-    }).pipe(
-      catchError(error => {
-        console.error('Error fetching user info:', error);
-        return throwError('Error fetching user info');
-      })
-    );
-  }
+
+
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

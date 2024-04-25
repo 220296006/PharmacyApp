@@ -329,13 +329,13 @@ public class UserController {
     }
 
 
-//    @GetMapping("/image/{id}/{fileName}")
-//    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
-//        byte[] imageData= imageDataServiceImp.downloadImage(id, fileName);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .contentType(MediaType.valueOf("image/png"))
-//                .body(imageData);
-//    }
+    @GetMapping("/image/{id}/{fileName}")
+    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
+        byte[] imageData= imageDataServiceImp.downloadImage(id, fileName);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(imageData);
+    }
 
     private URI getUri(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());

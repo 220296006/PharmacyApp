@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.exception.ApiException;
+import za.ac.cput.exception.ImageNotFoundException;
 import za.ac.cput.exception.ImageUploadException;
 import za.ac.cput.model.ImageData;
 import za.ac.cput.model.User;
@@ -96,23 +97,24 @@ public class ImageDataServiceImp {
         return UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
     }
 
-    // Generate image URL based on the image ID
+    // Generate image URL including image data query parameter
     private String generateImageUrl(Long imageId) {
-        return "https://pharmacyapp.com/images/" + imageId ;
+        return "https://pharmacyapp.com/images/" + imageId + "?includeData=true";
     }
 
+    // Fetch image data based on user ID
     public byte[] getImageData(Long id) {
         log.info("Fetching image data for user ID: {}", id);
         Optional<ImageData> imageDataOptional = imageDataRepository.findByUserId(id);
-        // Return null if no image data found for the user ID
         byte[] imageData = imageDataOptional.map(ImageData::getImageData).orElse(null);
         if (imageData != null) {
             log.info("Retrieved image data for user ID {}: {} bytes", id, imageData.length);
         } else {
             log.info("No image data found for user ID: {}", id);
         }
-        return imageDataOptional.map(ImageData::getImageData).orElse(null);
+        return imageData;
     }
+
 
 
 
@@ -132,20 +134,20 @@ public class ImageDataServiceImp {
 
     }
 
-//    public byte[] downloadImage(Long userId, String fileName) {
-//        try {
-//            User user = userRepository.read(userId);
-//            Optional<ImageData> dbImageData = imageDataRepository.findByNameAndUserId(fileName, userId);
-//            if (dbImageData.isPresent()) {
-//                return ImageUtils.decompressImage(dbImageData.get().getImageData());
-//            } else {
-//                throw new ImageNotFoundException("Image not found for user " + userId, fileName); // Custom API exception
-//            }
-//        } catch (Exception e) {
-//            log.error("Error downloading image: {}", e.getMessage());
-//            throw new ImageNotFoundException("Error downloading image", e.getMessage()); // Custom API exception
-//        }
-//    }
+    public byte[] downloadImage(Long userId, String fileName) {
+        try {
+            User user = userServiceImp.findUserById(userId);
+            Optional<ImageData> dbImageData = imageDataRepository.findByNameAndUserId(fileName, userId);
+            if (dbImageData.isPresent()) {
+                return ImageUtils.decompressImage(dbImageData.get().getImageData());
+            } else {
+                throw new ImageNotFoundException("Image not found for user " + userId, fileName); // Custom API exception
+            }
+        } catch (Exception e) {
+            log.error("Error downloading image: {}", e.getMessage());
+            throw new ImageNotFoundException("Error downloading image", e.getMessage()); // Custom API exception
+        }
+    }
 }
 
 

@@ -6,11 +6,11 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss']
+  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent implements OnInit {
   selectedSection = 'profile';
-  profileImageUrl: string | null ='assets/images/default.jpeg';
+  profileImageUrl: string | null = 'assets/images/default.jpeg';
   selectedFile: File | null = null;
   userId: number | null = null;
   loggedInUser: User | null = null;
@@ -32,7 +32,9 @@ export class UserProfileComponent implements OnInit {
         this.loadProfileImage(this.userId);
       }
     } else {
-      console.error('Failed to retrieve user information. User ID unavailable for upload.');
+      console.error(
+        'Failed to retrieve user information. User ID unavailable for upload.'
+      );
     }
   }
 
@@ -48,11 +50,11 @@ export class UserProfileComponent implements OnInit {
       },
       (error) => {
         console.error('Error loading profile image:', error);
-        this.errorMessage = 'Failed to load profile image. Please try again later.';
+        this.errorMessage =
+          'Failed to load profile image. Please try again later.';
       }
     );
   }
-  
 
   selectSection(section: string): void {
     this.selectedSection = section;
@@ -75,7 +77,8 @@ export class UserProfileComponent implements OnInit {
 
   onUpload(): void {
     if (!this.userId) {
-      this.errorMessage = 'User ID not available. Please refresh the page and try again.';
+      this.errorMessage =
+        'User ID not available. Please refresh the page and try again.';
       return;
     }
     if (!this.selectedFile) {
@@ -85,25 +88,29 @@ export class UserProfileComponent implements OnInit {
 
     this.uploadInProgress = true;
 
-    this.userService.uploadProfileImage(this.userId, this.selectedFile).subscribe(
-      (response: any) => {
-        console.log('Image uploaded successfully:', response);
-        // Assuming the server returns the updated image URL in the response
-        if (response && response.success && response.imageUrl) {
-          this.profileImageUrl = response.imageUrl;
-          this.selectedFile = null;
-          this.successMessage = 'Image uploaded successfully';
-        } else {
-          console.error('Failed to upload image:', response);
-          this.errorMessage = response.message || 'Failed to upload image. Please try again later.';
+    this.userService
+      .uploadProfileImage(this.userId, this.selectedFile)
+      .subscribe(
+        (response: any) => {
+          console.log('Image uploaded successfully:', response);
+          // Assuming the server returns the updated image URL in the response
+          if (response && response.success && response.imageUrl) {
+            this.profileImageUrl = response.imageUrl;
+            this.selectedFile = null;
+            this.successMessage = 'Image uploaded successfully';
+          } else {
+            console.error('Failed to upload image:', response);
+            this.errorMessage =
+              response.message ||
+              'Failed to upload image. Please try again later.';
+          }
+          this.uploadInProgress = false;
+        },
+        (error) => {
+          console.error('Error uploading image:', error);
+          this.errorMessage = 'Failed to upload image. Please try again later.';
+          this.uploadInProgress = false;
         }
-        this.uploadInProgress = false;
-      },
-      (error) => {
-        console.error('Error uploading image:', error);
-        this.errorMessage = 'Failed to upload image. Please try again later.';
-        this.uploadInProgress = false;
-      }
-    );
+      );
   }
 }

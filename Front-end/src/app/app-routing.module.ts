@@ -2,7 +2,7 @@ import { CustomerDetailsComponent } from './components/customer-details/customer
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
-import { CustomerComponent } from './components/customer/customer.component';
+import { CustomerComponent } from './components/customer-table/customer.component';
 import { InvoiceComponent } from './components/invoice/invoice.component';
 import { MedicationComponent } from './components/medication/medication.component';
 import { PrescriptionComponent } from './components/prescription/prescription.component';
