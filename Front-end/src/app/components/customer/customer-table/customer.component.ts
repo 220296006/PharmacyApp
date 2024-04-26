@@ -155,6 +155,13 @@ export class CustomerComponent implements OnInit {
   onDeleteCustomer(id: number) {
     const permissions = this.authService.getPermissionsFromToken();
     if (permissions.includes('DELETE:CUSTOMER')) {
+      const dialogRef = this.snackBar.open('Are you sure you want to delete this user?', 'Delete', {
+        duration: 5000, // Adjust duration as needed
+        verticalPosition: 'top',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-confirm'],
+      });
+      dialogRef.onAction().subscribe(() => {
       this.customerService.deleteCustomerById(id).subscribe({
         next: (response) => {
           console.log('Response from server:', response);
@@ -174,6 +181,7 @@ export class CustomerComponent implements OnInit {
           });
         },
       });
+    });
     } else {
       this.snackBar.open('You do not have permission to delete a customer.', 'Close', {
         duration: 3000,

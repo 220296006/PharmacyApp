@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { InvoiceService } from './../../services/invoice-service/invoice.service';
+import { InvoiceService } from '../../../services/invoice-service/invoice.service';
 import * as alertify from 'alertifyjs';
 import { PaymentStatus } from 'src/app/model/payment-status';
 

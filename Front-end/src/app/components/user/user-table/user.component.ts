@@ -1,4 +1,4 @@
-import { User } from '../../model/user';
+import { User } from '../../../model/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -124,9 +124,17 @@ export class UserComponent implements OnInit {
       },
     });
   }
+
   onDeleteUser(id: number) {
     const userPermissions = this.authService.getPermissionsFromToken();
     if (userPermissions.includes('DELETE:USER')) {
+      const dialogRef = this.snackBar.open('Are you sure you want to delete this user?', 'Delete', {
+        duration: 5000, // Adjust duration as needed
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-confirm'],
+      });
+      dialogRef.onAction().subscribe(() => {
           this.userService.deleteUserById(id).subscribe({
             next: (response) => {
               console.log('Response from server:', response);
@@ -148,6 +156,7 @@ export class UserComponent implements OnInit {
               });
             },
         });
+      });
     } else {
       this.snackBar.open('You do not have permission to perform this action.', 'Close', {
         duration: 3000,

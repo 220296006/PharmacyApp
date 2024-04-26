@@ -1,103 +1,104 @@
-body {
-  background-color: #f5f5f5;
-  margin-top: 150px; 
-}
+    /* Custom styling */
+    body {
+      background-color: #ffffff;
+      color: white;
+      margin-top: 140px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-.loading-spinner {
-  border: 4px solid rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  animation: spin 1s linear infinite;
-}
+    /* Style the container with rounded corners and a slight shadow */
+    .container {
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+    .profile-image-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+    }
+    
+    .profile-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-.uploading {
-  pointer-events: none; /* Disable clicking while uploading */
-}
+    /* Style the upload icon with a blue color and hover effect */
+    .upload-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      color: #007bff;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+    .upload-icon:hover {
+      opacity: 0.8;
+    }
 
+    /* Style the navigation bar with a dark background and white text */
+    .nav {
+      background-color: #000000;
+      border-radius: 10px;
+    }
 
-.container {
-  margin-top: 20px;
-}
+    .nav-link {
+      color: rgb(245, 245, 245);
+      padding: 10px 20px;
+      transition: all 0.3s ease;
+    }
 
-.profile-image-container {
-  position: relative;
-  text-align: center;
-  margin-bottom: 20px;
-}
+    .nav-link:hover,
+    .nav-link.active {
+      background-color: #498577;
+      color: #f8f9fa;
+    }
 
-.profile-image {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid #fff;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-}
+    /* Style the buttons with a rounded border and hover effect */
+    .btn {
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
 
-.upload-icon {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 5px;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-}
+    .btn:hover {
+      opacity: 0.8;
+    }
 
-.upload-icon i {
-  font-size: 24px;
-}
+    /* Style the activity logs table with a dark background and white text */
+    .table {
+      background-color: #f9f9f9;
+      color: rgb(0, 0, 0);
+      border-radius: 10px;
+    }
 
-.nav-link {
-  color: #333;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
+    .table thead th {
+      border-bottom: 1px solid #000000;
+    }
 
-.nav-link:hover {
-  color: #007bff;
-}
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #007bff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
-.active .nav-link {
-  color: #007bff;
-}
-
-.activity-logs-container {
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  padding: 20px;
-  margin-top: 20px;
-}
-
-.table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f9f9f9;
-}
-
-.snackbar-success {
-  background-color: green;
-  color: white;
-}
-
-.snackbar-error {
-  background-color: red;
-  color: white;
-}
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
