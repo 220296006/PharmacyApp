@@ -6,9 +6,7 @@ import { Prescription } from 'src/app/model/prescription'; // Import Prescriptio
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
 import { forkJoin } from 'rxjs';
 import { Medication } from 'src/app/model/medication';
-import { InventoryComponent } from '../inventory/inventory.component';
 import { Invoice } from 'src/app/model/invoice';
-import { InvoiceComponent } from '../invoice/invoice.component';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
 import { Customer } from 'src/app/model/Customer';
 
@@ -25,7 +23,7 @@ export class CustomerDetailsComponent implements OnInit {
     this.selectedTab = tab;
   }
 
-  customer: Customer | undefined;
+  customers: Customer | undefined;
   prescriptions: Prescription []| undefined; 
   medications: Medication []| undefined; 
   invoices: Invoice []| undefined; 
@@ -51,7 +49,8 @@ export class CustomerDetailsComponent implements OnInit {
       }).subscribe({
         next: (responses: any) => {
           console.log('Response from server:', responses);
-          this.customer = responses.customer.data.customer;
+          this.customers = responses.customer.data.customer;
+          this.loadProfileImage(this.customers);
           this.prescriptions = responses.prescriptions.data.prescription;
           this.medications = responses.medications.data.medications;
           this.invoices = responses.invoices.data.invoices;
@@ -61,10 +60,28 @@ export class CustomerDetailsComponent implements OnInit {
           this.handleError(error);
         },
         complete: () => {
-          console.log('Data fetch operation completed.');
+          //console.log('Data fetch operation completed.');
         },
       });
     });
+  }
+
+  loadProfileImage(customer: Customer): void {
+    if (customer.user && customer.user.id) {
+      this.customerService.getCustomerImageData(customer.user.id).subscribe(
+        (data: Blob) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            customer.user.imageUrl = reader.result as string;
+          };
+          reader.readAsDataURL(data);
+        },
+        (error) => {
+          console.error('Error loading profile image:', error);
+          // Handle error (e.g., display default image)
+        }
+      );
+    }
   }
   
 
@@ -73,9 +90,13 @@ export class CustomerDetailsComponent implements OnInit {
     this.customerService.getCustomerById(customerId).subscribe({
       next: (response: any) => {
         console.log('Response from server:', response);
-        this.customer = response.data.customer;
-        this.prescriptions = response.data.prescriptions
-        this.medications= response.data.medications;
+        this.customers = response.data.customer;
+        console.log('Customer Url:', this.customers.user.imageUrl);
+        if (this.customers.user) {
+          this.customers.user.imageUrl = response.data.customer.user.imageUrl;
+        }
+        this.prescriptions = response.data.prescriptions;
+        this.medications = response.data.medications;
       },
       error: (error) => {
         console.error('Error fetching customer details:', error);
@@ -86,6 +107,7 @@ export class CustomerDetailsComponent implements OnInit {
       },
     });
   }
+  
 
   getInvoicesByCustomerId(customerId: number) {
     console.log('Loading invoices for customer ID:', customerId);

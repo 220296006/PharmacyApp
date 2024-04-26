@@ -193,7 +193,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User update(User user) {
-        log.info("Updating user");
+        log.info("Updating user: {}", user);
         try {
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UPDATE_USER_QUERY, parameters);

@@ -56,6 +56,7 @@ import { ToastrModule, ToastrService  } from 'ngx-toastr';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserProfileRoutingModule } from './modules/user-profile-routing.module';
 import { UserProfileModule } from './modules/user-profile.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -113,7 +114,8 @@ import { UserProfileModule } from './modules/user-profile.module';
     }),
     MatSnackBarModule,
     UserProfileRoutingModule,
-    UserProfileModule
+    UserProfileModule,
+    MatTooltipModule
   ],
   providers: [
     {

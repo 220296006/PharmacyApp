@@ -16,5 +16,4 @@ import java.util.Optional;
 public interface ImageDataRepository extends JpaRepository<ImageData, Long> {
     Optional<ImageData> findByNameAndUserId(String fileName, Long userId);
     Optional<ImageData> findByUserId(Long userId);
-
 }

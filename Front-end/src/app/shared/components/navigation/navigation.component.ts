@@ -24,25 +24,26 @@ export class NavigationComponent implements OnInit, OnDestroy {
     private router: Router,
     private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.userSubscription = this.authService.currentUser.subscribe((user) => {
-      this.loggedInUser = this.authService.getLoggedInUser();
-      if (this.loggedInUser) {
-        this.userId = this.loggedInUser.id;
-        if (this.loggedInUser.imageUrl) {
-          this.loadProfileImage(this.userId);
+    ngOnInit(): void {
+      this.userSubscription = this.authService.currentUser.subscribe((user) => {
+        this.loggedInUser = this.authService.getLoggedInUser();
+        if (this.loggedInUser) {
+          this.userId = this.loggedInUser.id;
+          if (this.loggedInUser.imageUrl) {
+            this.loadProfileImage(this.userId);
+          }
+        } else {
+          this.errorMessage = 'Failed to load profile image. Please try again later.';
         }
-      } else {
-        this.errorMessage = 'Failed to load profile image. Please try again later.';
-      }
-      this.user = user;
-      if (user) {
-        this.loadProfileImage(user.id); // Fetch profile image URL
-      } else {
-        this.profileImageUrl = null; // Reset profile image URL when user is not logged in
-      }
-    });
-  }
+        this.user = user;
+        if (user && user.id) {
+          this.loadProfileImage(user.id); // Fetch profile image URL
+        } else {
+          this.profileImageUrl = null; // Reset profile image URL when user is not logged in
+        }
+      });
+    }
+  
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
@@ -69,6 +70,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       }
     );
   }
+
   
 
   ngOnDestroy(): void {

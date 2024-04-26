@@ -91,3 +91,13 @@ body {
 .table-striped tbody tr:nth-of-type(odd) {
   background-color: #f9f9f9;
 }
+
+.snackbar-success {
+  background-color: green;
+  color: white;
+}
+
+.snackbar-error {
+  background-color: red;
+  color: white;
+}

@@ -36,12 +36,12 @@ export class AuthService {
   decodeTokenAndSetUser(token: string) {
     try {
       const decodedToken: any = jwtDecode(token);
-      console.log('Decoded token:', decodedToken);
+      //console.log('Decoded token:', decodedToken);
       const user = this.buildUserFromToken(decodedToken);
       this.userSubject.next(user);
       // Extract and log permissions
       if (decodedToken.permissions) {
-        console.log('User permissions:', decodedToken.permissions);
+        //console.log('User permissions:', decodedToken.permissions);
       } else {
         console.log('No permissions found in the token.');
       }

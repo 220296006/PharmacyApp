@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { UserService } from 'src/app/services/user-service/userservice.service';
@@ -21,7 +22,8 @@ export class UserProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -89,28 +91,75 @@ export class UserProfileComponent implements OnInit {
     this.uploadInProgress = true;
 
     this.userService
-      .uploadProfileImage(this.userId, this.selectedFile)
-      .subscribe(
-        (response: any) => {
-          console.log('Image uploaded successfully:', response);
-          // Assuming the server returns the updated image URL in the response
-          if (response && response.success && response.imageUrl) {
-            this.profileImageUrl = response.imageUrl;
-            this.selectedFile = null;
-            this.successMessage = 'Image uploaded successfully';
-          } else {
-            console.error('Failed to upload image:', response);
-            this.errorMessage =
-              response.message ||
-              'Failed to upload image. Please try again later.';
-          }
-          this.uploadInProgress = false;
-        },
-        (error) => {
-          console.error('Error uploading image:', error);
-          this.errorMessage = 'Failed to upload image. Please try again later.';
-          this.uploadInProgress = false;
+    .uploadProfileImage(this.userId, this.selectedFile)
+    .subscribe({
+      next: (response: any) => {
+        console.log('Image uploaded successfully:', response);
+        // Assuming the server returns the updated image URL in the response
+        if (response && response.success && response.imageUrl) {
+          this.profileImageUrl = response.imageUrl;
+          this.selectedFile = null;
+          this.successMessage = 'Image uploaded successfully';
+          this.snackBar.open('Image uploaded successfully', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+          });
+        } else {
+          console.error('Failed to upload image:', response);
+          this.snackBar.open(this.errorMessage || 'Failed to upload image', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
         }
-      );
+        this.uploadInProgress = false;
+      },
+      error: (error: any) => {
+        console.error('Error uploading image:', error);
+        this.snackBar.open(this.errorMessage || 'Error uploading image', 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error']
+        });
+        this.uploadInProgress = false;
+      }
+    });
+  }  
+
+  onDelete(): void {
+    if (!this.userId) {
+      this.errorMessage = 'User ID not available. Please refresh the page and try again.';
+      return;
+    }
+  
+    this.uploadInProgress = true;
+  
+    this.userService.deleteProfileImage(this.userId).subscribe(
+      (response: any) => {
+        console.log('Image deleted successfully:', response);
+        // Assuming the server returns a success message
+        if (response && response.success) {
+          this.profileImageUrl = 'assets/images/default.jpeg'; // Set a default image URL
+          this.snackBar.open('Image deleted successfully', 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-success']
+          });
+        } else {
+          console.error('Failed to delete image:', response);
+          this.snackBar.open(this.errorMessage, 'Close', {
+            duration: 3000,
+            panelClass: ['snackbar-error']
+          });
+        }
+        this.uploadInProgress = false;
+      },
+      (error) => {
+        console.error('Error deleting image:', error);
+        this.snackBar.open(this.errorMessage, 'Close', {
+          duration: 3000,
+          panelClass: ['snackbar-error']
+        });
+        this.uploadInProgress = false;
+      }
+    );
   }
+  
 }

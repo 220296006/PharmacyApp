@@ -50,8 +50,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // Public endpoints (no authentication required)
                 .antMatchers(HttpMethod.POST, "/user/image/**","/user/login", "/user/register")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, "/user/image/**")
+                .antMatchers(HttpMethod.DELETE, "/user/image/**")
                 .permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/update/**")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/user/image/**")
+                .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/user/verify/{token}/account")
                 .permitAll()
                 // User endpoints (authenticated users only)
@@ -74,7 +78,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
 
                 // Update endpoints (access based on roles)
-                .antMatchers(HttpMethod.PUT, "/prescription/update", "/medication/update",
+                .antMatchers(HttpMethod.PUT, "/user/update/**","/prescription/update", "/medication/update",
                         "/invoice/update", "/inventory/update", "/customer/update")
                 .hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
 

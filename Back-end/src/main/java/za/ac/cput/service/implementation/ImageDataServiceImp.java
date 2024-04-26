@@ -2,6 +2,7 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,13 @@ public class ImageDataServiceImp {
             log.info("Fetching user with ID: {}", userId);
             User user = userServiceImp.findUserById(userId);
             if (user != null) {
+                // Check if the user already has an image
+                ImageData existingImageData = user.getImageData();
+                if (existingImageData != null) {
+                    // Delete the existing image before uploading a new one
+                    imageDataRepository.delete(existingImageData);
+                }
+
                 byte[] imageDataBytes = file.getBytes();
                 String name = file.getOriginalFilename();
                 String type = file.getContentType();
@@ -115,7 +123,15 @@ public class ImageDataServiceImp {
         return imageData;
     }
 
-
+   // Delete Image
+    public void deleteImage(Long userId) {
+        log.info("Deleting image data for user ID: {}", userId);
+        User user = userServiceImp.findUserById(userId);
+        ImageData imageData = user.getImageData();
+        if (imageData != null) {
+            imageDataRepository.delete(imageData);
+        }
+    }
 
 
     private UserDTO convertToDto(User user) {

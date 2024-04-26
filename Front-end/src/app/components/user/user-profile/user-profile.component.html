@@ -33,6 +33,10 @@
     {{ uploadInProgress ? 'Uploading...' : 'Upload' }}
   </button>
   <!-- Add a button for manual upload -->
+  <button (click)="onDelete()" class="btn btn-danger delete-btn" [disabled]="uploadInProgress || !profileImageUrl">
+    Delete
+  </button>
+  <!-- Add a button for manual upload -->
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
   <div *ngIf="successMessage" class="success">{{ successMessage }}</div>
 </div>
@@ -88,6 +92,7 @@
         </div>
       </div>
     </div>
+          <!-- Display User Activity -->
 
     <div class="container activity-logs-container">
       <h2>Activity Logs</h2>

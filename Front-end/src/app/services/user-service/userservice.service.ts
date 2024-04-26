@@ -100,6 +100,11 @@ export class UserService {
     );
   }
   
+
+  deleteProfileImage(userId: number): Observable<any> {
+    return this.http.delete(`${this.serverUrl}/user/image/${userId}`);
+  }
+  
   
   handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
