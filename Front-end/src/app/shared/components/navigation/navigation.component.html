@@ -1,143 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Navigation</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css"
-    />
-  </head>
-
-  <body>
-    <nav class="navbar navbar-expand-lg fixed-top" *ngIf="isLoggedIn()">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/home"
-          ><img
-            src="assets/images/PharmacyApp.png"
-            alt="Logo-Image"
-            width="90"
-            height="94"
-        /></a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-center nav-underline"
-          id="navbarSupportedContent"
-        >
-          <ul class="navbar-nav mb-2 mb-lg-0 align-center">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="/home">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAPNJREFUSEvlldkRgkAQRJtMNBPNRCNBI9FMNBPNROwq1po95gBqv9wfimLo13PBgM5n6KyPpYDHbOgM4B0xtwRA8cMs+gQQgkQBUjwZvwK4e5lEALevyEkpByEXq1QegC+PTq1NiAWga7qPHBWiAdjMNDERAGPYdPYkOy3AGvEkui+bXgJ2AF5Ry4047sZRQiRAE5cznyaGpWA8e8SrPBlEArRxtAZBKydNMZPsU6EBqroKu1bWFUCm+RE31pyXe1Jlq6UvAWS1IK09WQ0oIdoSbgIkCKdE2/DNAG9F/gjAz0W5oV55fsslA73/gSfqPu8OmABU5zQZ2ZawJQAAAABJRU5ErkJggg=="
-                  />Home
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/customer">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAO5JREFUSEvVldENwjAMRK+bwCTAJjAJMAlsApsAkwCHEtS6jm0ligSWqvaj9bPPznVA5xg650cUsACwB7B9X3cAVwDH9GzWGAGsAVyULATtEqwIiQBuANiBFoQsrRY8ACU5OXPaWF14gEPS3mJwFnxPDQ9Q0n+cjHM41wKoPQfcbQYszOrC1J8fexLlzvM5IIyRV5T35nPg5fhtANdvleYgK82W8ahZU2rNA1baHg2m2oY25Mjul3SfbZUGsLzHG/jMmyQgYg0eZGIdEkDdaXAtwX8FpfqEBLTIk3NOZJKAZ0vpo2+/eaNWUc39f8ALCDsoGfKFTMgAAAAASUVORK5CYII="
-                  />
-                  Customers
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/invoice">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAALFJREFUSEvtlW0OQDAMht/dhJu4GU7iKm7CTVBBZrp2H1kioX+WqPbZ+q6rQWEzhfODAzQAWgC0StZvzk7bIAeYAFRa4OFXIRxgCUhOiemUZCIkFUBxVB4VkgOg3auQXIAK0QC239bGjbNPcvOlAqR7EAUIuFCPX94FCH1KvPrEaCCVKxnwa8A+11JD+Ur2MQ1iBo5bshlAbX/0jcwhYqqd+cZj+NB6WWinpvTDHlMcsAKflCgZY2UmWgAAAABJRU5ErkJggg=="
-                  />
-                  Invoices
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/medication">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAKVJREFUSEvtlMENhDAMBIdOoBOoDFEJrdAJdAIXBFKCiNaBywOBP3lY8XjXiQsyR5G5PgpQAy3gzrMYgO6Xd+dpKMAIlEKlK95cBczbxVgjKi8tUgVUPgAov63vIZiLL93idwpknYsPkHKN1YM6qQBLEy8E7JKtfynZouwAv/NvyKsbasOq/xYd8j9XxQRUx27dsusN+18piC47dfFS/q7fEvp8wAJQ6S8ZEVHDqQAAAABJRU5ErkJggg=="
-                  />
-                  Medications
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/prescription">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAONJREFUSEvVldENwjAMRK+bwCYwCpPAJowCbMIm0JNqZJwExyYVIl9N69y7pHY8YeUxrawPD3ABsHNM3AFsWzEWQLEzgE1yZ4QdZlNXWW8BPY499tuOLOCxrJb3MvdEbfxL9+cAz7n9bk+gyKIiIEgYCmCm8YfqMQxAcabzbVY/KUIaoN2KOGvGFlkKQKcU2y9OZV6r4DCAbll8sgOK1pzLKYUBXKghnH+6e1IADeFz82IDkAYIxKblfxdarci/OqKeW8MFjOgHbDZSM8Vlxxw/drTJ1m7cjtZzDKEYr+mHxGrBT40kPRlxXU83AAAAAElFTkSuQmCC"
-                  />
-                  Prescriptions
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/inventory">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAALdJREFUSEvtldERgzAMQx+b0E3aURilk3QU2IRuUhBX7gwEiEnT9oP85CO2ZAlOLsh8isz4hAhK4AFcneQNUAFP2zcnOAo+Ygr8ZkksgQVX4cWhQL01oHtCYglU4LVlbQbZJSWTb/ByTBxTOgxvFZwEc9uiLBotXLNv6/2/CPb+mpBCl4JsBHvAW+9RCk6C70ZF+47bFN/tXhji3oadolqbTJmechTV9z76dQdXZgr4ovcnS/+jCjoZ7CUZHHLNNgAAAABJRU5ErkJggg=="
-                  />
-                  Inventory
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/user">
-                  <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAUNJREFUSEu1lYFtwzAMBN+bpJMk2aSdJM0kaSZJO0nbSdJcIBk0TdFygxAwZMAyn/p/UoOeHMOT86sHYCeJZ1vWn9v6Kem3rLw3IwPYSDqVpFkOAPeSWGfRAngtyXsZJPn5tvnd/xABrE1ucx49iAeAlu/esoN9M7o8wCXhvFZHEZzy0CgE0dHkHhYgo+ZN0odLmO0H4O4uC4BArapeApdkdI5aWAAsSVVRRADsuy7RZAEQl6qimLmjFENRUSA2RU0oygCsz5dEnuhrT5A5aK1zMQTG6BaZE9SngrX04nsoMgONU/iILMoeqOKfSIfxn6VGG/2ccOTt2my0WpUdFemkLKfwE3di6Z5hV+f/V+1OQ49vzNmJW+M66+oWW1GvpDda74UD54i66sKxVeIUwOqVyTeSVcr+fWWuba5wf8+l/xDQH/+ESxlufBg7AAAAAElFTkSuQmCC"
-                  />
-                  Users
-                </a>
-              </li>
-            </ul>
-          </ul>
-          <form class="d-flex" *ngIf="isLoggedIn()">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
-          <ul class="navbar-nav ms-2">
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style="font-size: 10px; color: rgb(0, 0, 0); font-weight: bold;"
-              >
-                <img [src]="profileImageUrl" alt="Profile Image" class="profile-image" *ngIf="profileImageUrl" />
-                Welcome, {{ user?.firstName  | uppercase}} {{user?.lastName  | uppercase}}
+<nav class="navbar navbar-expand-lg fixed-top" *ngIf="isLoggedIn()">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/home">
+      <img src="assets/images/PharmacyApp.png" alt="Logo-Image" width="90" height="94" />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center nav-underline" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0 align-center">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/home">
+            <mat-icon>home</mat-icon>
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/customer">
+            <mat-icon>people</mat-icon>
+            Customers
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/invoice">
+            <mat-icon>receipt</mat-icon>
+            Invoices
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/medication">
+            <mat-icon>local_pharmacy</mat-icon>
+            Medications
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/prescription">
+            <mat-icon>description</mat-icon>
+            Prescriptions
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/inventory">
+            <mat-icon>storage</mat-icon>
+            Inventory
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/user">
+            <mat-icon>person</mat-icon>
+            Users
+          </a>
+        </li>
+      </ul>
+      <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+      <ul class="navbar-nav ms-2">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <img [src]="profileImageUrl" alt="Profile Image" class="profile-image" *ngIf="profileImageUrl" />
+            Welcome, {{ user?.firstName | uppercase }} {{ user?.lastName | uppercase }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item" [routerLink]="'/user-profile'">
+                <mat-icon>account_circle</mat-icon>
+                Account
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li>
-                  <button mat-icon-button>
-                    <mat-icon>account_circle</mat-icon>
-                  </button>
-                  <a class="dropdown-item" [routerLink]="'/user-profile'">Account</a>
-                </li>
-                <li>
-                  <button mat-icon-button>
-                    <mat-icon>exit_to_app</mat-icon>
-                  </button>
-                  <a class="dropdown-item" href="#" (click)="onLogout()">Log Out</a>
-                </li>
-              </ul>
+            </li>
+            <li>
+              <a class="dropdown-item" href="#" (click)="onLogout()">
+                <mat-icon>exit_to_app</mat-icon>
+                Log Out
+              </a>
             </li>
           </ul>
-          
-        </div>
-      </div>
-    </nav>
-  </body>
-</html>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
