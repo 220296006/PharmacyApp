@@ -1,7 +1,5 @@
 package za.ac.cput.rowmapper;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import za.ac.cput.model.ImageData;

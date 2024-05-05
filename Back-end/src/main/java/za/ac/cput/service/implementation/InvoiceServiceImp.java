@@ -1,5 +1,6 @@
 package za.ac.cput.service.implementation;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import za.ac.cput.model.Invoice;

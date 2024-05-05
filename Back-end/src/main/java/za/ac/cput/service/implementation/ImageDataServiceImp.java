@@ -2,7 +2,6 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,6 @@ import za.ac.cput.utils.ImageUtils;
 
 import javax.transaction.Transactional;
 
-import java.util.Arrays;
-import java.util.Base64;
 import java.util.Optional;
 import java.util.UUID;
 
