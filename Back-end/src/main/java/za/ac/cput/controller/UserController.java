@@ -215,12 +215,12 @@ public class UserController {
     public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO user) {
         log.info("Update User: {}: {}", id, user);
         try {
-            UserDTO userUpdateDTO = userService.updateUser(id, user);
-            if (userUpdateDTO != null) {
+            UserDTO userDTO = userService.updateUser(id, user);
+            if (userDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()
                                 .timeStamp(now())
-                                .data(Map.of("user", userUpdateDTO))
+                                .data(Map.of("user", userDTO))
                                 .message("User Updated")
                                 .status(OK)
                                 .statusCode(HttpStatus.OK.value())
@@ -307,6 +307,20 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/image/{id}")
+    public ResponseEntity<Map<String, Object>> deleteImage(@PathVariable("id") Long id) {
+        try {
+            // Implement logic to delete the image associated with the user ID
+            imageDataServiceImp.deleteImage(id);
+            return ResponseEntity.ok(Map.of("success", true, "message", "Image deleted successfully"));
+        } catch (Exception e) {
+            log.error("Error deleting image for User ID {}: {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("success", false, "message", "Failed to delete image"));
+        }
+    }
+
+
     @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> getUserImage(@PathVariable("id") Long userId) {
         try {
@@ -329,13 +343,13 @@ public class UserController {
     }
 
 
-//    @GetMapping("/image/{id}/{fileName}")
-//    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
-//        byte[] imageData= imageDataServiceImp.downloadImage(id, fileName);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .contentType(MediaType.valueOf("image/png"))
-//                .body(imageData);
-//    }
+    @GetMapping("/image/{id}/{fileName}")
+    public ResponseEntity<?> downloadImage(@PathVariable("id") Long id, @RequestParam("image") String fileName){
+        byte[] imageData= imageDataServiceImp.downloadImage(id, fileName);
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(imageData);
+    }
 
     private URI getUri(){
         return  URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/user/get/<userId>").toUriString());

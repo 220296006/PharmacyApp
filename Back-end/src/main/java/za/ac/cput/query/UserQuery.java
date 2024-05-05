@@ -26,8 +26,7 @@ public class UserQuery {
              + "password, phone, address) VALUES (:firstName, :middleName, :lastName, :email, :password, :phone, " +
              ":address)" ;
 
-     public static final String FETCH_ALL_USERS_QUERY =
-             "SELECT * FROM Users";
+     public static final String FETCH_ALL_USERS_QUERY = "SELECT * FROM Users";
 
      public static final String FETCH_USER_BY_ID_QUERY = "SELECT * FROM Users WHERE id = :user_id";
 

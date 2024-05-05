@@ -1,11 +1,10 @@
 package za.ac.cput.repository.implementation;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -14,7 +13,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
-import za.ac.cput.model.ImageData;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
 import za.ac.cput.repository.RoleRepository;
@@ -24,7 +22,6 @@ import za.ac.cput.rowmapper.RoleRowMapper;
 import za.ac.cput.rowmapper.UserRowMapper;
 import za.ac.cput.service.EmailService;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -109,9 +106,10 @@ public class UserRepositoryImp implements UserRepository<User> {
         permissions.add("READ:USER");
         permissions.add("READ:CUSTOMER");
         switch (roleName) {
-            case "ROLE_ADMIN":
+            case "ROLE_ADMIN", "ROLE_MANAGER":
                 permissions.add("READ:USER");
                 permissions.add("READ:CUSTOMER");
+                permissions.add("CREATE:CUSTOMER");
                 permissions.add("CREATE:USER");
                 permissions.add("DELETE:USER");
                 permissions.add("DELETE:CUSTOMER");
@@ -119,13 +117,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                 permissions.add("UPDATE:CUSTOMER");
                 // Add more permissions as needed
                 break;
-            case "ROLE_MANAGER":
-                permissions.add("READ:USER");
-                permissions.add("READ:CUSTOMER");
-                permissions.add("UPDATE:USER");
-                permissions.add("UPDATE:CUSTOMER");
-                // Add more permissions as needed
-                break;
+            // Add more permissions as needed
             case "ROLE_SYSADMIN":
                 // ROLE_SYSADMIN has all permissions
                 permissions.add("READ:USER");
@@ -202,7 +194,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User update(User user) {
-        log.info("Updating user");
+        log.info("Updating user: {}", user);
         try {
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UPDATE_USER_QUERY, parameters);

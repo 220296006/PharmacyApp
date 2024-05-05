@@ -100,18 +100,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         permissions.add("READ:USER");
         permissions.add("READ:CUSTOMER");
         switch (roleName) {
-            case "ROLE_ADMIN":
+            case "ROLE_ADMIN", "ROLE_MANAGER":
                 permissions.add("READ:USER");
                 permissions.add("READ:CUSTOMER");
                 permissions.add("CREATE:USER");
                 permissions.add("DELETE:USER");
                 permissions.add("DELETE:CUSTOMER");
-                permissions.add("UPDATE:USER");
-                permissions.add("UPDATE:CUSTOMER");
-                break;
-            case "ROLE_MANAGER":
-                permissions.add("READ:USER");
-                permissions.add("READ:CUSTOMER");
                 permissions.add("UPDATE:USER");
                 permissions.add("UPDATE:CUSTOMER");
                 break;

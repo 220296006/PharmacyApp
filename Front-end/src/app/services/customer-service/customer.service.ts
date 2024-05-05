@@ -12,6 +12,11 @@ export class CustomerService {
 
   constructor(private http: HttpClient) {}
 
+  // Method to fetch customer image data by customer ID
+  getCustomerImageData(customerId: number): Observable<Blob> {
+    return this.http.get(`${this.serverUrl}/user/image/${customerId}`, { responseType: 'blob' });
+  }
+
   createCustomer(customer: Customer): Observable<ApiResponse<Customer>>{
     console.log(customer)
     return this.http.post<ApiResponse<Customer>>

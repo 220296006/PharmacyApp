@@ -1,42 +1,29 @@
+/* Add your custom CSS here */
 .navbar {
-    background-color: rgb(83, 99, 97);
-    transition: background-color 0.3s ease-in-out;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  }
-  .profile-image {
-    width: 60px; /* Adjust the width as needed */
-    height: 60px; /* Ensure the height matches the width for a square image */
-    border-radius: 50%; /* Makes the image round */
-  }
-  
-  /* Style the icons and text inside the navigation bar */
-  .navbar-nav .nav-item {
-    display: flex;
-    align-items: center;
-  }
+  background-color: #ffffff; /* Set your desired background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+}
 
-  .navbar-nav .nav-item:hover {
-    background-color: rgb(55, 204, 214);
-  }
+.navbar-brand img {
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.2)); /* Add a drop shadow to the logo */
+}
 
-  .navbar-nav .nav-item a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    color: #ffffff;
-    padding: 0.5rem 1rem;
-    transition: color 0.3s ease-in-out; /* Smooth text color transition */
-  }
+.nav-link {
+  color: #333; /* Set the link color */
+}
 
-  /* Style the mat-icon */
-  .navbar-nav .nav-item mat-icon {
-    margin-right: 0.5rem; /* Adjust spacing between icon and text */
-    transition: margin-right 0.3s ease-in-out; /* Smooth margin transition */
-  }
+.nav-link:hover {
+  color: #007bff; /* Change the link color on hover */
+}
 
-  .navbar-nav .nav-item:hover a {
-    color: #333; /* Change text color on hover */
-  }
+.dropdown-menu {
+  background-color: #fff; /* Set the background color of dropdown menu */
+}
+
+.profile-image {
+  width: 60px; /* Adjust the profile image size */
+  height: 60px;
+  border-radius: 50%; /* Make the profile image round */
+}
+
+/* Customize other elements as needed */

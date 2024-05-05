@@ -7,7 +7,8 @@ import { Medication } from 'src/app/model/medication';
 import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 import { UpdateMedicationDialogComponent } from '../update-medication-dialog/update-medication-dialog.component';
 import { CreateMedicationDialogComponent } from '../create-medication-dialog/create-medication-dialog.component';
-import * as alertify from 'alertifyjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 
 @Component({
   selector: 'app-medication',
@@ -34,12 +35,21 @@ throw new Error('Method not implemented.');
   constructor(
     private medicationService: MedicationService,
     private updateMedicationDialog: MatDialog,
-    private createMedicationDialog: MatDialog) {}
+    private createMedicationDialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(){
     this.getAllMedicationData();
+    const permissions = this.authService.getPermissionsFromToken();
+    console.log('User permissions:', permissions);
   }
+
+
   onCreateMedicationDialog(id: any){
+    const permissions = this.authService.getPermissionsFromToken();
+    if (permissions.includes('CREATE:MEDICATION')) {
     const dialogRef = this.createMedicationDialog.open(CreateMedicationDialogComponent,{
     width: '400px',
     exitAnimationDuration: '1000ms',
@@ -51,7 +61,16 @@ throw new Error('Method not implemented.');
   })
   dialogRef.afterClosed().subscribe(response=> {
     response = this.getAllMedicationData();
-  });}
+    this.snackBar.open('Medication created successfully!', 'Close', {
+      duration: 3000,
+    });
+  });
+} else {
+  this.snackBar.open('You do not have permission to create an Medication.', 'Close', {
+    duration: 3000,
+  });
+}
+}
 
 
   getAllMedicationData(){
@@ -74,12 +93,16 @@ throw new Error('Method not implemented.');
       },
       error: (error) => {
         console.error('Error fetching data:', error);
+        this.snackBar.open('An error occurred while fetching medication data.', 'Close', {
+          duration: 3000,
+        });
       },
     });
-
   }
 
   onUpdateMedication(medicationId: number) {
+    const permissions = this.authService.getPermissionsFromToken();
+    if (permissions.includes('UPDATE:MEDICATION')) {
     this.medicationService.getMedicationById(medicationId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
@@ -98,17 +121,32 @@ throw new Error('Method not implemented.');
       },
       error: (error) => {
         console.error('Error fetching user:', error);
+        this.snackBar.open('An error occurred while fetching medicaton data.', 'Close', {
+          duration: 3000,
+        });
       },
     });
+  } else {
+    this.snackBar.open('You do not have permission to update an medicaton.', 'Close', {
+      duration: 3000,
+    });
   }
+}
 
   onDeleteMedication(id: number) {
-    alertify.confirm('Are you sure you want to permanently delete this medication?', () => {
+    const permissions = this.authService.getPermissionsFromToken();
+    if (permissions.includes('DELETE:MEDICATION')) {
+      const dialogRef = this.snackBar.open('Are you sure you want to delete this Medication?', 'Delete', {
+        duration: 5000, // Adjust duration as needed
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-confirm'],
+      });
+      dialogRef.onAction().subscribe(() => {
     this.medicationService.deleteMedicationById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
-          alertify.success('Medication deleted successfully!');
           this.getAllMedicationData();
         } else {
           console.error('Error: ' + response.message);
@@ -116,11 +154,17 @@ throw new Error('Method not implemented.');
       },
       error: (error) => {
         console.error('Error deleting medication:', error);
-        alertify.error('An error occurred while deleting the customer.');
+        this.snackBar.open('An error occurred while deleting the medicaton.', 'Close', {
+          duration: 3000,
+        });
       },
     });
-  }, () => {
   });
+} else {
+  this.snackBar.open('You do not have permission to delete an medicaton.', 'Close', {
+    duration: 3000,
+  });
+}
 }
 
   openUpdateDialog(medication: Medication): void {

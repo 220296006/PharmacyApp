@@ -1,7 +1,5 @@
 package za.ac.cput.rowmapper;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 import za.ac.cput.model.ImageData;
@@ -27,7 +25,7 @@ public class ImageDataRowMapper implements RowMapper<ImageData> {
         imageData.setName(resultSet.getString("name"));
         imageData.setType(resultSet.getString("type"));
         imageData.setImageData(resultSet.getBytes("image_data"));
-        imageData.setUserId(resultSet.getLong("user_id")); // Change to resultSet.getLong("id")
+        imageData.setUserId(resultSet.getLong("user_id")); // Set the user ID property
 
         User user = new User();
         user.setImageData(imageData);

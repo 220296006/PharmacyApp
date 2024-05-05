@@ -1,4 +1,4 @@
-import { User } from '../../model/user';
+import { User } from '../../../model/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
+import { jwtDecode } from 'jwt-decode';
 
 @Component({
   selector: 'app-user',
@@ -32,7 +33,6 @@ export class UserComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  getUserInfo: any;
   user: User;
 
   constructor(
@@ -45,40 +45,73 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
     this.getAllUserData();
-    this.getUserInfo = this.authService.getLoggedInUser();
+    const token = this.authService.getToken();
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      const permissions = decodedToken.permissions?.map((role: any) => role.permissions).flat();
+      console.log('User permissions:', permissions);
+    }
   }
 
   openCreateUserDialog(id: any) {
-    if (this.getUserInfo === 'ROLE_ADMIN') {
-    const dialogRef = this.createUserDialog.open(CreateUserDialogComponent,{
-      width: '400px',
-      exitAnimationDuration: '1000ms',
-      enterAnimationDuration: '1000ms',
-      data:
-      {
-        id: id
-      }
-    })
-    dialogRef.afterClosed().subscribe(response=> {
-      response = this.getAllUserData();
-    });
+    const userPermissions = this.authService.getPermissionsFromToken();
+    if (userPermissions.includes('UPDATE:USER')) {
+      const dialogRef = this.createUserDialog.open(CreateUserDialogComponent,{
+        width: '400px',
+        exitAnimationDuration: '1000ms',
+        enterAnimationDuration: '1000ms',
+        data: { id: id }
+      });
+      dialogRef.afterClosed().subscribe(response => {
+        response = this.getAllUserData();
+      });
     } else {
       this.snackBar.open('You do not have permission to perform this action.', 'Close', {
         duration: 3000,
       });
     }
   }
-  
+
+
+  loadProfileImage(userId: number, imageUrl: string): void {
+    // Check if the image URL includes the query parameter 'includeData=true'
+    const includeData = imageUrl.includes('includeData=true');
+    if (includeData) {
+      // Fetch image data if 'includeData' parameter is true
+      this.userService.getImageData(userId).subscribe(
+        (data: Blob) => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            // Update the 'imageUrl' field with the data URI
+            this.tableDataSource.data.forEach((user: User) => {
+              if (user.id === userId) {
+                user.imageUrl = reader.result as string;
+              }
+            });
+          };
+          reader.readAsDataURL(data);
+        },
+        (error) => {
+          console.error('Error loading profile image:', error);
+          // Handle error (e.g., display default image)
+        }
+      );
+    }
+  }
+
   getAllUserData() {
     this.userService.getAllUserData().subscribe({
       next: (response) => {
-        console.log('Response from server:', response);
         if (
           response.status === 'OK' &&
           response.data &&
           Array.isArray(response.data.page)
         ) {
           console.log('Data received:', response.data);
+          // Iterate through each user data and load profile image if 'includeData' is true
+          response.data.page.forEach((user: User) => {
+            this.loadProfileImage(user.id, user.imageUrl);
+          });
           this.tableDataSource.data = response.data.page;
           this.tableDataSource.paginator = this.paginator;
           this.tableDataSource.sort = this.sort;
@@ -93,10 +126,15 @@ export class UserComponent implements OnInit {
   }
 
   onDeleteUser(id: number) {
-    if (this.getUserInfo === 'ROLE_ADMIN') {
-     this.snackBar.open('You do not have permission to perform this action.', 'Close', {
-        duration: 3000,
+    const userPermissions = this.authService.getPermissionsFromToken();
+    if (userPermissions.includes('DELETE:USER')) {
+      const dialogRef = this.snackBar.open('Are you sure you want to delete this user?', 'Delete', {
+        duration: 5000, // Adjust duration as needed
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-confirm'],
       });
+      dialogRef.onAction().subscribe(() => {
           this.userService.deleteUserById(id).subscribe({
             next: (response) => {
               console.log('Response from server:', response);
@@ -118,6 +156,7 @@ export class UserComponent implements OnInit {
               });
             },
         });
+      });
     } else {
       this.snackBar.open('You do not have permission to perform this action.', 'Close', {
         duration: 3000,
@@ -125,8 +164,9 @@ export class UserComponent implements OnInit {
     }
   }
 
-  onUpdateUser(userId: number) {
-    if (this.getUserInfo === 'ROLE_ADMIN') {
+  onUpdateUser(userId: number) { 
+    const userPermissions = this.authService.getPermissionsFromToken();
+    if (userPermissions.includes('UPDATE:USER')) {
     this.userService.getUserById(userId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);

@@ -6,8 +6,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Invoice } from 'src/app/model/invoice';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
 import { UpdateInvoiceDialogComponent } from '../update-invoice-dialog/update-invoice-dialog.component';
-import * as alertify from 'alertifyjs';
 import { CreateInvoiceDialogComponent } from '../create-invoice-dialog/create-invoice-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 
 @Component({
   selector: 'app-invoice',
@@ -33,14 +34,20 @@ export class InvoiceComponent implements OnInit {
   constructor(
     private invoiceService: InvoiceService,
     private updateDialog: MatDialog,
-    private createInvoiceDialog: MatDialog
+    private createInvoiceDialog: MatDialog,
+    private snackBar: MatSnackBar,
+    private authService: AuthService 
   ) {}
 
   ngOnInit(): void {
     this.getAllInvoiceData();
+    const permissions = this.authService.getPermissionsFromToken();
+    console.log('User permissions:', permissions);
   }
 
   onCreateInvoiceDialog(id: any) {
+    const permissions = this.authService.getPermissionsFromToken();
+    if (permissions.includes('CREATE:INVOICE')) {
     const dialogRef = this.createInvoiceDialog.open(CreateInvoiceDialogComponent,{
       width: '400px',
       exitAnimationDuration: '1000ms',
@@ -49,10 +56,19 @@ export class InvoiceComponent implements OnInit {
       {
         id: id
       }
-    })
+    });
     dialogRef.afterClosed().subscribe(response=> {
       response = this.getAllInvoiceData();
-    });    }
+      this.snackBar.open('Invoice created successfully!', 'Close', {
+        duration: 3000,
+      });
+    });
+  } else {
+    this.snackBar.open('You do not have permission to create an Invoice.', 'Close', {
+      duration: 3000,
+    });
+  }
+}
 
     getPaymentStatusClass(paymentStatus: string): string {
       switch (paymentStatus) {
@@ -68,6 +84,7 @@ export class InvoiceComponent implements OnInit {
           return '';
       }
     }
+
 
   getAllInvoiceData() {
     this.invoiceService.getAllInvoiceData().subscribe({
@@ -87,12 +104,17 @@ export class InvoiceComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.error('Error fetching data:', error);
+      console.error('Error fetching data:', error);
+      this.snackBar.open('An error occurred while fetching invoice data.', 'Close', {
+          duration: 3000,
+        });
       },
     });
   }
 
   onUpdateInvoice(invoiceId: number) {
+    const permissions = this.authService.getPermissionsFromToken();
+    if (permissions.includes('UPDATE:INVOICE')) {
     this.invoiceService.getInvoiceById(invoiceId).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
@@ -113,30 +135,51 @@ export class InvoiceComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error fetching  Invoice:', error);
+        this.snackBar.open('An error occurred while fetching invoice data.', 'Close', {
+          duration: 3000,
+        });
       },
     });
+  } else {
+    this.snackBar.open('You do not have permission to update an invoice.', 'Close', {
+      duration: 3000,
+    });
   }
+}
+
 
   onDeleteInvoice(id: number) {
-    alertify.confirm('Are you sure you want to permanently delete this invoice?', () => {
-    this.invoiceService.deleteInvoiceById(id).subscribe({
+    const permissions = this.authService.getPermissionsFromToken();
+    if (permissions.includes('DELETE:INVENTORY')) {
+      const dialogRef = this.snackBar.open('Are you sure you want to delete this Inventory?', 'Delete', {
+        duration: 5000, // Adjust duration as needed
+        verticalPosition: 'bottom',
+        horizontalPosition: 'center',
+        panelClass: ['snackbar-confirm'],
+      });
+      dialogRef.onAction().subscribe(() => {   
+      this.invoiceService.deleteInvoiceById(id).subscribe({
       next: (response) => {
         console.log('Response from server:', response);
         if (response.status === 'OK') {
-          alertify.success('Invoice deleted successfully!');
+          this.snackBar.open('Inventory deleted successfully!', 'Close', {
+            duration: 3000,
+          });
           this.getAllInvoiceData();
         } else {
           console.error('Error: ' + response.message);
         }
-      },
-      error: (error) => {
-        console.error('Error deleting invoice:', error);
-        alertify.error('An error occurred while deleting the invoice.');
-
-      },
+          this.snackBar.open('An error occurred while deleting the invoice.', 'Close', {
+            duration: 3000,
+          });
+        },
+      });
     });
-  }, () => {
-  });
+  } else {
+    this.snackBar.open('You do not have permission to delete an invoice.', 'Close', {
+      duration: 3000,
+    });
+  }
 }
 
   openUpdateDialog(invoice: Invoice): void {
