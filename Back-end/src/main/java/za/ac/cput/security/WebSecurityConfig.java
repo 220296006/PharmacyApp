@@ -61,6 +61,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // User endpoints (authenticated users only)
                 .antMatchers(HttpMethod.GET,  "/user/read/**")
                 .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN") // Restrict based on your needs
+                .antMatchers(HttpMethod.POST,  "/user/password-reset/forgot", "/user/password-reset/reset",
+                        "/user/change-password")
+                .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN") // Restrict based on your needs
 
                 // Customer endpoints (access based on roles)
                 .antMatchers(HttpMethod.GET, "/customer/count", "/customer/all")

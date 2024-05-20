@@ -25,22 +25,16 @@
     <label for="password">Password:</label>
     <div class="password-input">
       <input
-        type="{{ hidePassword ? 'password' : 'text' }}"
-        id="password"
-        name="password"
-        formControlName="password"
-        required
-      />
-      <button
-        class="toggle-password"
-        mat-icon-button
-        matSuffix
-        (click)="togglePasswordVisibility()"
-      >
-        <mat-icon>
-          {{ hidePassword ? "visibility_off" : "visibility"}}
-        </mat-icon>
-      </button>
+      type="{{ hidePassword ? 'password' : 'text' }}"
+      id="password"
+      formControlName="password"
+      matInput
+    />
+    <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+      <mat-icon>{{
+        hidePassword ? "visibility_off" : "visibility"
+      }}</mat-icon>
+    </button>
     </div>
 
     <button type="submit" [disabled]="!registrationForm.valid">Register</button>

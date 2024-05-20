@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
+import za.ac.cput.exception.ApiException;
 import za.ac.cput.exception.ImageUploadException;
 import za.ac.cput.model.Response;
 import za.ac.cput.model.Role;
@@ -31,6 +32,7 @@ import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
 import za.ac.cput.service.UserService;
 import za.ac.cput.service.implementation.ImageDataServiceImp;
+import za.ac.cput.service.implementation.PasswordResetServiceImp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -61,13 +63,25 @@ public class UserController {
     private final UserService userService;
     private final ConfirmationService confirmationService;
     private final ImageDataServiceImp imageDataServiceImp;
+    private final PasswordResetServiceImp passwordResetService;
 
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
     private AuthenticationManager authenticationManager;
-
     private final BCryptPasswordEncoder passwordEncoder;
+
+    @PostMapping("/change-password")
+    public ResponseEntity<String> changePassword(@RequestParam Long userId,
+                                                 @RequestParam String currentPassword,
+                                                 @RequestParam String newPassword) {
+        try {
+            passwordResetService.changePassword(userId, currentPassword, newPassword);
+            return ResponseEntity.ok("Password has been changed successfully.");
+        } catch (ApiException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
     @GetMapping("/profile")
     public ResponseEntity<?> getUserInfo(HttpServletRequest request) {

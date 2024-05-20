@@ -75,7 +75,7 @@ public Collection<Customer> list(String name, int page, int pageSize) {
 
 @Override
 public Customer read(Long id) {
-        log.info("Fetch Customer by Id");
+        log.info("Fetch Customer by Id {}", id);
     try {
         return jdbc.queryForObject(FETCH_CUSTOMER_BY_ID_QUERY,Map.of("id", id), new CustomerRowMapper());
     } catch (EmptyResultDataAccessException exception) {

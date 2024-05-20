@@ -8,8 +8,12 @@ import { User } from 'src/app/model/user';
   providedIn: 'root',
 })
 export class UserService {
- 
 
+  changePassword(id: number, currentPassword: string, newPassword: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.serverUrl}/user/change-password`, {id,  currentPassword, newPassword }, { headers });
+  }
+ 
   private readonly serverUrl: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}

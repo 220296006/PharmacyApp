@@ -13,11 +13,8 @@ public enum PaymentStatus {
 
         PAID("PAID"), PENDING("PENDING"), CANCELLED("CANCELLED"), OVERDUE("OVERDUE");
 
-        private final String value;
-
-        PaymentStatus(String value) {
-            this.value = value;
-        }
+    PaymentStatus(String value) {
+    }
 
 }
 

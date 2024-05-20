@@ -12,5 +12,5 @@ import za.ac.cput.model.Confirmation;
 @Service
 public interface EmailService {
     void sendMimeMessageWithAttachments(String name, String to, String token);
-
+    void sendPasswordResetEmail(String email, String token);
 }
