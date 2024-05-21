@@ -43,59 +43,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()  // Enable CORS and disable CSRF
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // Public endpoints (no authentication required)
-                .antMatchers(HttpMethod.POST, "/user/image/**","/user/login", "/user/register")
-                .permitAll()
-                .antMatchers(HttpMethod.DELETE, "/user/image/**")
-                .permitAll()
-                .antMatchers(HttpMethod.PUT, "/user/update/**")
-                .permitAll()
-                .antMatchers(HttpMethod.GET, "/user/image/**")
-                .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN")
-                .antMatchers(HttpMethod.GET, "/user/verify/{token}/account")
-                .permitAll()
+                .antMatchers(HttpMethod.POST, "/user/image/**", "/user/login", "/user/register").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/user/image/**").permitAll()
+                .antMatchers(HttpMethod.PUT, "/user/update/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/image/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/user/verify/{token}/account").permitAll()
                 // User endpoints (authenticated users only)
-                .antMatchers(HttpMethod.GET,  "/user/read/**")
-                .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN") // Restrict based on your needs
-
+                .antMatchers(HttpMethod.GET, "/user/read/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.POST, "/user/password-reset/forgot", "/user/password-reset/reset", "/user/change-password").permitAll()
+                .antMatchers(HttpMethod.GET, "/user/current-password").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 // Customer endpoints (access based on roles)
-                .antMatchers(HttpMethod.GET, "/customer/count", "/customer/all")
-                .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN")
-                .antMatchers(HttpMethod.GET, "/customer/read/**")
-                .hasAnyRole("USER","MANAGER", "ADMIN", "SYSADMIN") // Restrict based on your needs
-
+                .antMatchers(HttpMethod.GET, "/customer/count", "/customer/all").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/customer/read/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 // Prescription, Medication, Invoice, Inventory endpoints (access based on roles)
-                .antMatchers(HttpMethod.GET, "/prescription/all", "/prescription/read/**",
-                        "/medication/all", "/medication/read/**",
-                        "/invoice/count", "/invoice/total-billed-amount",
-                        "/invoice/all", "/invoice/read/**",
-                        "/inventory/medications", "/inventory/all",
-                        "/inventory/read/**")
-                .hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
-
+                .antMatchers(HttpMethod.GET, "/prescription/all", "/prescription/read/**", "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount", "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**").hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
                 // Update endpoints (access based on roles)
-                .antMatchers(HttpMethod.PUT, "/user/update/**","/prescription/update", "/medication/update",
-                        "/invoice/update", "/inventory/update", "/customer/update")
-                .hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
-
+                .antMatchers(HttpMethod.PUT, "/user/update/**", "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
                 // Delete endpoints (access based on roles)
-                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**",
-                        "/invoice/delete/**", "/inventory/delete/**",
-                        "/customer/delete/**")
-                .hasAnyRole("ADMIN", "SYSADMIN")
-
+                .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "SYSADMIN")
                 // Role endpoints (restricted access)
                 .antMatchers(HttpMethod.POST, "/roles/create").hasRole("SYSADMIN")
-                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**",
-                        "/roles/getRoleByUserEmail")
-                .hasAnyRole("ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**", "/roles/getRoleByUserEmail").hasAnyRole("ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/roles/read/**").hasRole("SYSADMIN")
-                .antMatchers(HttpMethod.PUT, "/roles/updateUserRole")
-                .hasAnyRole("ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.PUT, "/roles/updateUserRole").hasAnyRole("ADMIN", "SYSADMIN")
                 .and()
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
@@ -105,6 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 )
                 .logout(logout -> logout.deleteCookies("SESSION-ID").invalidateHttpSession(true));
     }
+
 
     @Override @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {

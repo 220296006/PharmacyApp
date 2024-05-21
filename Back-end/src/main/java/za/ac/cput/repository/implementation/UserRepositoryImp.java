@@ -46,6 +46,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     private final ImageDataRowMapper imageDataRowMapper;
     private final RoleRowMapper roleRowMapper;
 
+
     @Override
     public User save(User user) {
         log.info("Registering a User");
@@ -63,9 +64,9 @@ public class UserRepositoryImp implements UserRepository<User> {
             user.setId(Objects.requireNonNull(holder.getKey()).longValue());
             // Define email to role mapping
             Map<String, String> emailToRole = new HashMap<>();
-            emailToRole.put("thabiso.matsaba@younglings.africa", ROLE_ADMIN.name());
-            emailToRole.put("thabisomatsaba96@gmail.com", ROLE_MANAGER.name());
-            emailToRole.put("220296006@mycput.ac.za", ROLE_SYSADMIN.name());
+            emailToRole.put("thabiso.matsaba@liquidc2.com", ROLE_ADMIN.name());
+            emailToRole.put("220296006@mycput.ac.za", ROLE_MANAGER.name());
+            emailToRole.put("thabisomatsaba96@gmail.com", ROLE_SYSADMIN.name());
             // Add more mappings as needed
             // Assign role based on email
             String email = user.getEmail().toLowerCase();
@@ -123,11 +124,24 @@ public class UserRepositoryImp implements UserRepository<User> {
                 permissions.add("READ:USER");
                 permissions.add("READ:CUSTOMER");
                 permissions.add("CREATE:USER");
+                permissions.add("CREATE:INVOICE");
+                permissions.add("CREATE:MEDICATION");
+                permissions.add("CREATE:PRESCRIPTION");
+                permissions.add("CREATE:INVENTORY");
                 permissions.add("CREATE:CUSTOMER");
                 permissions.add("DELETE:USER");
                 permissions.add("DELETE:CUSTOMER");
+                permissions.add("DELETE:INVOICE");
+                permissions.add("DELETE:MEDICATION");
+                permissions.add("DELETE:PRESCRIPTION");
+                permissions.add("DELETE:INVENTORY");
                 permissions.add("UPDATE:USER");
                 permissions.add("UPDATE:CUSTOMER");
+                permissions.add("UPDATE:INVOICE");
+                permissions.add("UPDATE:MEDICATION");
+                permissions.add("UPDATE:PRESCRIPTION");
+                permissions.add("UPDATE:INVENTORY");
+
                 // Add more permissions as needed
                 break;
             case "ROLE_USER":

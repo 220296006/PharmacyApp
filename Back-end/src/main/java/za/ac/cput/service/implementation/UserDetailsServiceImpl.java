@@ -113,11 +113,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 permissions.add("READ:USER");
                 permissions.add("READ:CUSTOMER");
                 permissions.add("CREATE:USER");
+                permissions.add("CREATE:INVOICE");
+                permissions.add("CREATE:MEDICATION");
+                permissions.add("CREATE:PRESCRIPTION");
+                permissions.add("CREATE:INVENTORY");
                 permissions.add("CREATE:CUSTOMER");
                 permissions.add("DELETE:USER");
                 permissions.add("DELETE:CUSTOMER");
+                permissions.add("DELETE:INVOICE");
+                permissions.add("DELETE:MEDICATION");
+                permissions.add("DELETE:PRESCRIPTION");
+                permissions.add("DELETE:INVENTORY");
                 permissions.add("UPDATE:USER");
                 permissions.add("UPDATE:CUSTOMER");
+                permissions.add("UPDATE:INVOICE");
+                permissions.add("UPDATE:MEDICATION");
+                permissions.add("UPDATE:PRESCRIPTION");
+                permissions.add("UPDATE:INVENTORY");
                 break;
             case "ROLE_USER":
                 permissions.add("READ:USER"); // Allow user to see their own profile information

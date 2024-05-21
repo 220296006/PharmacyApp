@@ -87,9 +87,8 @@ export class AuthService {
 
   
   forgotPassword(email: string): Observable<ApiResponse<any>> {
-    const forgotPasswordUrl = `${this.apiUrl}/user/forgot-password`;
+    const forgotPasswordUrl = `${this.apiUrl}/user/password-reset/forgot`;
     const body = { email };
-
     return this.http.post<ApiResponse<any>>(forgotPasswordUrl, body);
   }
 

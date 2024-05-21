@@ -1,5 +1,6 @@
 package za.ac.cput.repository.implementation;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -36,17 +37,24 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
     private final NamedParameterJdbcTemplate jdbc;
     private final CustomerRepository<Customer> customerRepository;
 
+
     @Override
     public Invoice save(Invoice invoice) {
         log.info("Saving an Invoice: {}", invoice);
         // Check if the associated customer exists
         Customer customer = customerRepository.read(invoice.getCustomer().getId());
-        if (customer == null || customer.getId() == null)  {
+        log.info("Customer ID: {}", invoice.getCustomer().getId());
+
+        // Check if the associated customer exists
+        if (invoice.getCustomer() == null || invoice.getCustomer().getId() == null) {
             throw new ApiException("Associated customer not found. Please provide a valid customer ID");
         }
+        // Log the payment status before inserting
+        log.info("Payment status: {}", invoice.getPaymentStatus());
         try {
             KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(invoice);
+            log.info("Executing SQL: {} with parameters: {}", INSERT_INVOICE_QUERY, parameters);
             jdbc.update(INSERT_INVOICE_QUERY, parameters, holder);
             invoice.setId(Objects.requireNonNull(holder.getKey()).longValue());
             Map<String, Object> linkCustomerParams = new HashMap<>();
@@ -161,6 +169,6 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
                 .addValue("customerId", invoice.getCustomer().getId())
                 .addValue("amount", invoice.getAmount())
                 .addValue("dueDate", invoice.getDueDate())
-                .addValue("paymentStatus", invoice.getPaymentStatus());
+                .addValue("paymentStatus", invoice.getPaymentStatus().name());
     }
 }

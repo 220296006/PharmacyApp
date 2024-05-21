@@ -2,8 +2,6 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
@@ -16,7 +14,7 @@ import za.ac.cput.service.UserService;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.Optional;
+
 /**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp

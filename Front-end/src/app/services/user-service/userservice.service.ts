@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
 import { ApiResponse } from 'src/app/model/api-response';
 import { User } from 'src/app/model/user';
@@ -8,11 +8,12 @@ import { User } from 'src/app/model/user';
   providedIn: 'root',
 })
 export class UserService {
- 
 
+  
   private readonly serverUrl: string = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
+
 
   createUser(user: User): Observable<ApiResponse<User>>{
     console.log(user)
@@ -119,4 +120,34 @@ export class UserService {
       () => new Error('Something bad happened; please try again later.')
     );
   }
+
+  getCurrentPassword(userId: number): Observable<string> {
+    console.log(`Fetching current password for user ID: ${userId}`);
+    return this.http.get(`${this.serverUrl}/user/current-password`, {
+      params: { userId: userId.toString() },
+      responseType: 'text'
+    }).pipe(
+      map(response => {
+        console.log('Raw password response:', response);
+        return response;
+      }),
+      catchError(error => {
+        console.error('Error in getCurrentPassword:', error);
+        throw error;
+      })
+    );
+  }
+  
+  changePassword(userId: number, currentPassword: string, newPassword: string): Observable<string> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const params = new HttpParams()
+      .set('userId', userId.toString())
+      .set('currentPassword', currentPassword)
+      .set('newPassword', newPassword);
+  
+    return this.http.post(`${this.serverUrl}/user/change-password`, null, { headers, params, responseType: 'text' }).pipe(
+      catchError(error => { throw error; })
+    );
+  }
+  
 }
