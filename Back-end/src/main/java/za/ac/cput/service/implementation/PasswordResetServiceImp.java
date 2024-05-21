@@ -2,15 +2,18 @@ package za.ac.cput.service.implementation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.ResetPasswordVerification;
 import za.ac.cput.model.User;
+import za.ac.cput.repository.UserRepository;
 import za.ac.cput.repository.implementation.PasswordResetRepositoryImp;
 import za.ac.cput.service.EmailService;
 
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,6 +31,7 @@ public class PasswordResetServiceImp {
     private final PasswordResetRepositoryImp passwordResetRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final UserRepository<User> userRepository;
 
     public String getCurrentPassword(Long userId) {
         String password = passwordResetRepository.getCurrentPassword(userId);
@@ -39,14 +43,38 @@ public class PasswordResetServiceImp {
 
     // For forgot password flow
     public void createPasswordResetTokenForUser(String email) {
-        User user = passwordResetRepository.findUserByEmail(email);
+        User user = userRepository.findUserByEmailIgnoreCase(email);
         if (user == null) {
             throw new ApiException("User with the provided email does not exist");
         }
+
+        // Generate temporary password
+        String temporaryPassword = generateTemporaryPassword();
+
+        // Update user's password in the database
+        user.setPassword(passwordEncoder.encode(temporaryPassword));
+        userRepository.update(user);
+
+        // Generate reset token
         String token = UUID.randomUUID().toString();
         Date expirationDate = new Date(System.currentTimeMillis() + 3600 * 1000); // 1 hour expiration
         passwordResetRepository.saveResetToken(token, expirationDate, user.getId());
-        emailService.sendPasswordResetEmail(user.getEmail(), token);
+
+        // Send password reset email
+        emailService.sendPasswordResetEmail(user.getFirstName(), user.getEmail(), token, temporaryPassword);
+    }
+
+
+    private String generateTemporaryPassword() {
+        int length = 10;
+        String allowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+        StringBuilder password = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(allowedChars.length());
+            password.append(allowedChars.charAt(randomIndex));
+        }
+        return password.toString();
     }
 
     public void resetPassword(String token, String newPassword) {

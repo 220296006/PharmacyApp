@@ -21,16 +21,22 @@
 
     <label for="address">Address:</label>
     <input type="text" id="address" formControlName="address" />
-
-    <label for="password">Password:</label>
+    
     <div class="password-input">
+      <label for="password">Password:</label>
       <input
       type="{{ hidePassword ? 'password' : 'text' }}"
       id="password"
       formControlName="password"
       matInput
     />
-    <button mat-icon-button matSuffix (click)="togglePasswordVisibility()">
+    <button 
+    type="button"
+    class="toggle-password"
+    mat-icon-button
+    matSuffix
+    (click)="togglePasswordVisibility()"
+    >
       <mat-icon>{{
         hidePassword ? "visibility_off" : "visibility"
       }}</mat-icon>

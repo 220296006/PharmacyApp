@@ -29,6 +29,8 @@ spring:
     org:
       springframework:
         security: TRACE
+        session: DEBUG
+        com.za.ac.cput: DEBUG
 
  # Thymeleaf Configuration
   thymeleaf:

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.service.implementation.PasswordResetServiceImp;
 
+import java.util.Map;
+
 /**
  * @author : Thabiso Matsaba
  * @Project : Back-end
@@ -28,12 +30,16 @@ public class PasswordResetController {
     private final PasswordResetServiceImp passwordResetService;
 
     @PostMapping("/forgot")
-    public ResponseEntity<String> createPasswordResetToken(@RequestParam String email) {
+    public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        if (email == null || email.isEmpty()) {
+            return ResponseEntity.badRequest().body("Email is required");
+        }
         try {
             passwordResetService.createPasswordResetTokenForUser(email);
-            return ResponseEntity.ok("Password reset token has been sent to your email.");
-        } catch (ApiException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.ok("Password reset email sent");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred: " + e.getMessage());
         }
     }
 
