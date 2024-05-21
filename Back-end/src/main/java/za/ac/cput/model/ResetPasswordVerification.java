@@ -23,5 +23,5 @@ public class ResetPasswordVerification {
     private Long id;
     private String url;
     private Date expirationDate;
-    private Long userId;
+    private User user;
 }

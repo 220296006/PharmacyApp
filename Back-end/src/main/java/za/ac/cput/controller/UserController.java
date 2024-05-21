@@ -71,6 +71,15 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    @GetMapping("/current-password")
+    public ResponseEntity<String> getCurrentPassword(@RequestParam Long userId) {
+        try {
+            String currentPassword = passwordResetService.getCurrentPassword(userId);
+            return ResponseEntity.ok(currentPassword);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
     @PostMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestParam Long userId,
                                                  @RequestParam String currentPassword,

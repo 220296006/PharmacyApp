@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.ResetPasswordVerification;
 import za.ac.cput.model.User;
@@ -28,6 +29,14 @@ public class PasswordResetServiceImp {
     private final BCryptPasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
+    public String getCurrentPassword(Long userId) {
+        String password = passwordResetRepository.getCurrentPassword(userId);
+        if (password == null) {
+            throw new ApiException("Could not retrieve current password for user ID: " + userId);
+        }
+        return password;
+    }
+
     // For forgot password flow
     public void createPasswordResetTokenForUser(String email) {
         User user = passwordResetRepository.findUserByEmail(email);
@@ -46,20 +55,24 @@ public class PasswordResetServiceImp {
             throw new ApiException("Invalid or expired password reset token");
         }
         String encodedPassword = passwordEncoder.encode(newPassword);
-        passwordResetRepository.updateUserPassword(verification.getUserId(), encodedPassword);
+        passwordResetRepository.updateUserPassword(verification.getUser().getId(), encodedPassword);
     }
 
     // For change password flow
-    public void changePassword(Long userId, String currentPassword, String newPassword) {
-        User user = passwordResetRepository.findUserById(userId);
-        if (user == null) {
-            throw new ApiException("User not found");
+    @Transactional
+    public void changePassword(Long userId, String currentPassword, String newPassword) throws ApiException {
+        try {
+            String storedPasswordHash = passwordResetRepository.getCurrentPassword(userId);
+            if (passwordEncoder.matches(currentPassword, storedPasswordHash)) {
+                String newPasswordHash = passwordEncoder.encode(newPassword);
+                passwordResetRepository.updateUserPassword(userId, newPasswordHash);
+                log.info("Password changed for user ID: {}", userId);
+            } else {
+                throw new ApiException("Current password is incorrect.");
+            }
+        } catch (Exception e) {
+            log.error("Error changing password for user ID: {}", userId, e);
+            throw new ApiException("Error changing password: " + e.getMessage());
         }
-        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
-            throw new ApiException("Current password is incorrect");
-        }
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        passwordResetRepository.updateUserPassword(userId, encodedPassword);
     }
 }
-
