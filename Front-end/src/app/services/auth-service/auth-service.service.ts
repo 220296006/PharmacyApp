@@ -53,8 +53,10 @@ export class AuthService {
 
 
   updateCurrentUser(user: User) {
+    sessionStorage.setItem('loggedInUser', JSON.stringify(user));
     this.userSubject.next(user);
   }
+
 
   buildUserFromToken(decodedToken: any): User {
     const email = decodedToken.sub || '';
@@ -76,6 +78,7 @@ export class AuthService {
       createdAt: decodedToken.createdAt ? new Date(decodedToken.createdAt) : new Date(),
       isNotLocked: decodedToken.isNotLocked || false,
       role: userRole || '',
+      
     };
   }
 

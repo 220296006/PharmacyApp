@@ -6,25 +6,25 @@
     <title>Authorization</title>
 </head>
 <body>
-    <!-- authorization/authorization.component.html -->
+<!-- authorization.component.html -->
 <h2>Authorization Settings</h2>
 <div class="form-group">
-    <label for="roleName">Role Name</label>
-    <select class="form-control" id="roleName" [(ngModel)]="selectedRole" name="roleName">
-        <option value="ROLE_USER">ROLE_USER</option>
-        <option value="ROLE_ADMIN">ROLE_ADMIN</option>
-        <option value="ROLE_MANAGER">ROLE_MANAGER</option>
-        <option value="ROLE_SYSADMIN">ROLE_SYSADMIN</option>
-    </select>
+  <label for="roleName">Role Name</label>
+  <select class="form-control" id="roleName" [(ngModel)]="selectedRole" name="roleName">
+    <option value="ROLE_USER">ROLE_USER</option>
+    <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+    <option value="ROLE_MANAGER">ROLE_MANAGER</option>
+    <option value="ROLE_SYSADMIN">ROLE_SYSADMIN</option>
+  </select>
 </div>
 <div *ngFor="let rolePermission of rolePermissions">
-    <h3>Role: {{ rolePermission.role }}</h3>
-    <ul>
-      <li *ngFor="let permission of rolePermission.permissions">{{ permission }}</li>
-    </ul>
-  </div>
-  
-<button type="submit" class="btn btn-primary">Save</button>
+  <h3>Role: {{ rolePermission.role }}</h3>
+  <ul>
+    <li *ngFor="let permission of rolePermission.permission">{{ permission }}</li>
+  </ul>
+</div>
+<button (click)="updateRole()" type="button" class="btn btn-primary">Update</button>
+
 
 </body>
 </html>

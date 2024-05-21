@@ -68,7 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "SYSADMIN")
                 // Role endpoints (restricted access)
                 .antMatchers(HttpMethod.POST, "/roles/create").hasRole("SYSADMIN")
-                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**", "/roles/getRoleByUserEmail").hasAnyRole("ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**", "/roles/getRoleByUserEmail",  "/roles/list").hasAnyRole("ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/roles/read/**").hasRole("SYSADMIN")
                 .antMatchers(HttpMethod.PUT, "/roles/updateUserRole").hasAnyRole("ADMIN", "SYSADMIN")
                 .and()
