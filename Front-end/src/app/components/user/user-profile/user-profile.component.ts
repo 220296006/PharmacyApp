@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { UserEvent } from 'src/app/model/UserEvent';
 import { User } from 'src/app/model/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
+import { UserEventService } from 'src/app/services/user-event-service/user-event.service';
 import { UserService } from 'src/app/services/user-service/userservice.service';
 
 @Component({
@@ -19,18 +21,20 @@ export class UserProfileComponent implements OnInit {
   errorMessage: string | null = null;
   successMessage: string | null = null;
   uploadInProgress = false;
-  activityLogs: any;
-  
+  activityLogs: UserEvent[] = [];
   private subscriptions: Subscription[] = [];
+  userEvents: UserEvent[] = [];
 
   constructor(
     private authService: AuthService,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    
+    private userEventService: UserEventService,
   ) {}
 
   ngOnInit(): void {
+    this.loadUserEvents();
+    console.log('LoadUserEvents: ', this.loadUserEvents);
     this.loggedInUser = this.authService.getLoggedInUser();
     if (this.loggedInUser) {
       this.userId = this.loggedInUser.id;
@@ -42,6 +46,23 @@ export class UserProfileComponent implements OnInit {
         'Failed to retrieve user information. User ID unavailable for upload.'
       );
     }
+  }
+
+  report(userEvent: any): void {
+    // Perform the reporting logic here
+    console.log('Reporting user event:', userEvent);
+    // You can add more logic here, such as sending a report to the server or displaying a modal for reporting
+  }
+
+  loadUserEvents(): void {
+    this.userEventService.getUserEvents().subscribe(
+      (events: UserEvent[]) => {
+        this.userEvents = events;
+      },
+      (error) => {
+        console.error('Error fetching user events:', error);
+      }
+    );
   }
 
   loadProfileImage(userId: number): void {

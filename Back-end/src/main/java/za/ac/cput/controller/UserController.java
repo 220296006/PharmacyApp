@@ -25,22 +25,25 @@ import za.ac.cput.dto.AuthenticationRequest;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.exception.ImageUploadException;
-import za.ac.cput.model.Response;
-import za.ac.cput.model.Role;
-import za.ac.cput.model.User;
+import za.ac.cput.model.*;
 import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
+import za.ac.cput.service.EventService;
 import za.ac.cput.service.UserService;
+import za.ac.cput.service.implementation.EventServiceImpl;
 import za.ac.cput.service.implementation.ImageDataServiceImp;
 import za.ac.cput.service.implementation.PasswordResetServiceImp;
+import za.ac.cput.service.implementation.UserEventServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
 import static java.time.LocalDateTime.now;
 import static org.springframework.http.HttpStatus.*;
 
@@ -64,7 +67,8 @@ public class UserController {
     private final ConfirmationService confirmationService;
     private final ImageDataServiceImp imageDataServiceImp;
     private final PasswordResetServiceImp passwordResetService;
-
+    private final UserEventServiceImpl userEventService;
+    private final EventServiceImpl eventService;
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
     @Autowired
@@ -174,6 +178,28 @@ public class UserController {
             String token = jwtTokenProvider.createToken(userDetails.getUsername(), roles);
             log.info("Generated JWT token for user: {}, Roles: {}", userDetails.getUsername(), roles);
 
+            // Create a user login event
+            Event loginEvent = new Event();
+            loginEvent.setType("LOGIN_ATTEMPT_SUCCESS");
+            loginEvent.setDescription("User logged in successfully");
+            eventService.save(loginEvent); // Assuming eventService is autowired
+
+            // Get the device information
+            String userAgent = request.getHeader("User-Agent");
+            String deviceInfo = extractDeviceInfo(userAgent);
+
+            // Get the user's IP address
+            String ipAddress = request.getRemoteAddr();
+
+            // Create a UserEvent linking the user to the login event
+            UserEvent userLoginEvent = new UserEvent();
+            userLoginEvent.setUser(user);
+            userLoginEvent.setEvent(loginEvent);
+            userLoginEvent.setDevice(deviceInfo);
+            userLoginEvent.setIpAddress(ipAddress);
+            userLoginEvent.setCreatedAt(String.valueOf(LocalDateTime.now()));
+            userEventService.save(userLoginEvent);
+
             // Return token in response body
             Map<String, Object> responseBody = new HashMap<>();
             responseBody.put("token", token);
@@ -189,6 +215,29 @@ public class UserController {
         }
     }
 
+    private String extractDeviceInfo(String userAgent) {
+        // Implement logic to extract device information from the User-Agent string
+        // For example, you can use a library like DeviceDetector
+        // Here's a simple example using regex to extract device information
+        // Note: This is just a basic example and might not cover all cases
+        String deviceInfo = "Unknown";
+        if (userAgent != null) {
+            if (userAgent.contains("Android")) {
+                deviceInfo = "Android";
+            } else if (userAgent.contains("iPhone") || userAgent.contains("iPad")) {
+                deviceInfo = "iOS";
+            } else if (userAgent.contains("Windows Phone")) {
+                deviceInfo = "Windows Phone";
+            } else if (userAgent.contains("Windows")) {
+                deviceInfo = "Windows";
+            } else if (userAgent.contains("Macintosh")) {
+                deviceInfo = "Macintosh";
+            } else if (userAgent.contains("Linux")) {
+                deviceInfo = "Linux";
+            }
+        }
+        return deviceInfo;
+    }
 
 
     @PostMapping("/register")

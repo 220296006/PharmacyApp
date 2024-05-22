@@ -18,7 +18,7 @@ import org.springframework.data.annotation.Id;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class Events {
+public class Event {
     @Id
     private Long id;
     private String type;

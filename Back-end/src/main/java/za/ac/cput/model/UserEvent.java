@@ -20,11 +20,12 @@ import java.time.LocalDateTime;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-public class UserEvents {
+public class UserEvent {
     @Id
     private Long id;
-    private Long userId;
-    private Long eventId;
     private String device;
-    private LocalDateTime createdAt;
+    private String ipAddress;
+    private String createdAt;
+    private User user;
+    private Event event;
 }

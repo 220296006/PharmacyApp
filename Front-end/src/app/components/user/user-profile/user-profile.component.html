@@ -92,38 +92,44 @@
   </div>
   
   <!-- Display User Activity -->
-  <div class="container activity-logs-container">
-    <h2>Activity Logs</h2>
-    <div class="row">
-      <div class="col-md-12">
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Device</th>
-                <th>IP Address</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Use Angular *ngFor directive to loop through activity logs -->
-              <tr *ngFor="let log of activityLogs">
-                <td>{{ log.device }}</td>
-                <td>{{ log.ipAddress }}</td>
-                <td>{{ log.date }}</td>
-                <td>{{ log.type }}</td>
-                <td>{{ log.description }}</td>
-                <td>{{ log.action }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+<div class="container activity-logs-container">
+  <h2>Activity Logs</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <div *ngIf="userEvents.length > 0" class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Device</th>
+              <th>IP Address</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Use Angular *ngFor directive to loop through user events -->
+            <tr *ngFor="let userEvent of userEvents">
+              <td>{{ userEvent.device }}</td>
+              <td>{{ userEvent.ipAddress }}</td>
+              <td>{{ userEvent.createdAt }}</td>
+              <td>{{ userEvent.event.type }}</td>
+              <td>{{ userEvent.event.description }}</td>
+              <td><button class="btn btn-primary" (click)="report(userEvent)">Report</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div *ngIf="userEvents.length === 0">
+        <p>No user events found.</p>
       </div>
     </div>
   </div>
+</div>
+
+  
 </body>
 
 </html>
