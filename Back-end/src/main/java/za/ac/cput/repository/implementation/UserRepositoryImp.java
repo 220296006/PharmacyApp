@@ -49,7 +49,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public User save(User user) {
-        log.info("Registering a User");
+        log.info("Registering a User {}", user);
         if (user.getPassword() == null) {
             throw new ApiException("Password cannot be null");
         }
@@ -159,7 +159,7 @@ public class UserRepositoryImp implements UserRepository<User> {
 
     @Override
     public Collection<User> list(String name, int page, int pageSize) {
-        log.info("Fetch All Users");
+        log.info("Fetching All Users");
         try {
             int offset = (page - 1) * pageSize; // Calculate offset for pagination
             // Create parameter source with values for pagination

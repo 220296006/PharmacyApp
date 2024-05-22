@@ -53,6 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PUT, "/user/update/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/image/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/user/verify/{token}/account").permitAll()
+                .antMatchers(HttpMethod.GET, "/user-events/read/**", "/user-events/all", "/user-events/user/{userId}",
+                        "/user-events/delete/**", "/user-events/update/**", "/user-events/create").permitAll()
+
                 // User endpoints (authenticated users only)
                 .antMatchers(HttpMethod.GET, "/user/read/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.POST, "/user/password-reset/forgot", "/user/password-reset/reset", "/user/change-password").permitAll()
@@ -68,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/prescription/delete/**", "/medication/delete/**", "/invoice/delete/**", "/inventory/delete/**", "/customer/delete/**").hasAnyRole("ADMIN", "SYSADMIN")
                 // Role endpoints (restricted access)
                 .antMatchers(HttpMethod.POST, "/roles/create").hasRole("SYSADMIN")
-                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**", "/roles/getRoleByUserEmail").hasAnyRole("ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/roles/getRolesByUserId/**", "/roles/getRoleByUserEmail",  "/roles/list").hasAnyRole("ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/roles/read/**").hasRole("SYSADMIN")
                 .antMatchers(HttpMethod.PUT, "/roles/updateUserRole").hasAnyRole("ADMIN", "SYSADMIN")
                 .and()

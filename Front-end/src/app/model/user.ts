@@ -14,5 +14,5 @@ export interface User {
   isUsingMfa: boolean;
   createdAt: Date;
   isNotLocked: boolean;
-  role: Role; // Add the role property
+  role: string;
 }

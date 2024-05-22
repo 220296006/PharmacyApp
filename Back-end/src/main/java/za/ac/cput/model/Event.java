@@ -5,6 +5,12 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.Id;
 
+/**
+ * @author : Thabiso Matsaba
+ * @Project : Back-end
+ * @Date : 2024/05/21
+ * @Time : 23:58
+ **/
 @Data
 @SuperBuilder
 @AllArgsConstructor

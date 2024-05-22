@@ -7,6 +7,12 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author : Thabiso Matsaba
+ * @Project : Back-end
+ * @Date : 2024/05/22
+ * @Time : 00:02
+ **/
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -17,8 +23,9 @@ import java.time.LocalDateTime;
 public class UserEvent {
     @Id
     private Long id;
-    private Long userId;
-    private Long eventId;
     private String device;
-    private LocalDateTime createdAt;
+    private String ipAddress;
+    private String createdAt;
+    private User user;
+    private Event event;
 }

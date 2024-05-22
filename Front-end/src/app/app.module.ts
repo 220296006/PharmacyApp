@@ -57,6 +57,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UserProfileRoutingModule } from './modules/user-profile-routing.module';
 import { UserProfileModule } from './modules/user-profile.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { RoleService } from './services/role-service/role-service.service';
+import { UserEventService } from './services/user-event-service/user-event.service';
 
 @NgModule({
   declarations: [
@@ -127,7 +129,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     AuthService,
     UserService,
     HomeService,
+    RoleService,
     CustomerService,
+    UserEventService,
     InvoiceService,
     InventoryService,
     MedicationService,
