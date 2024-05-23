@@ -12,13 +12,9 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.UserEvent;
 import za.ac.cput.repository.UserEventRepository;
-import za.ac.cput.rowmapper.EventRowMapper;
 import za.ac.cput.rowmapper.UserEventRowMapper;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author : Thabiso Matsaba
@@ -30,6 +26,7 @@ import java.util.Objects;
 @Repository
 @Slf4j
 public class UserEventRepositoryImpl implements UserEventRepository<UserEvent> {
+    private static final String UPDATE_USER_EVENT_LINKED_TO_EVENT_QUERY = "UPDATE UserEvents SET event_id = :eventId WHERE id = :id";
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
@@ -73,6 +70,10 @@ public class UserEventRepositoryImpl implements UserEventRepository<UserEvent> {
             String sql = "INSERT INTO UserEvents (user_id, event_id, device, ip_address, created_at)" +
                     " VALUES (:userId, :eventId, :device, :ipAddress, :createdAt)";
             jdbcTemplate.update(sql, parameters, holder);
+            Map<String, Object> linkUserParams = new HashMap<>();
+            linkUserParams.put("user_id", userEvent.getUser().getId());
+            linkUserParams.put("event_id", userEvent.getEvent().getId());
+            jdbcTemplate.update(UPDATE_USER_EVENT_LINKED_TO_EVENT_QUERY, linkUserParams);
             userEvent.setId(Objects.requireNonNull(holder.getKey()).longValue());
         } catch (Exception exception) {
             log.error(exception.getMessage());
