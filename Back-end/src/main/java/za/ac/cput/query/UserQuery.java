@@ -40,6 +40,9 @@ public class UserQuery {
      public static final String UPDATE_USER_PROFILE_IMAGE_SQL =
              "UPDATE Users SET image_url = :imageUrl WHERE id = :userId\n";
 
+     public static final String SELECT_USER_COUNT_QUERY = "SELECT COUNT(*) as userCount FROM Users";
+
+
      public static final String GET_USERS_BY_ROLE_QUERY =
               "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
                       "FROM Users u " +

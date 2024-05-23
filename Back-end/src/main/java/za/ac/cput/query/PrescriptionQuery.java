@@ -9,7 +9,7 @@ package za.ac.cput.query;
 public class PrescriptionQuery {
     public static final String INSERT_PRESCRIPTION_QUERY = "INSERT INTO Prescriptions (customer_id, doctor_name, doctor_address, issue_date) VALUES (:customerId, :doctorName, :doctorAddress, :issueDate)";
     public static final String SELECT_PRESCRIPTION_BY_ID_QUERY = "SELECT * FROM Prescriptions WHERE id = :id";
-
+    public static final String SELECT_PRESCRIPTION_COUNT_QUERY = "SELECT COUNT(*) as prescriptionCount FROM Prescriptions";
     public static  final String SELECT_PRESCRIPTION_BY_CUSTOMER_ID_QUERY = "SELECT * FROM Prescriptions WHERE customer_id = :customerId";
     public static final String UPDATE_PRESCRIPTION_QUERY = "UPDATE Prescriptions SET customer_id = :customerId, doctor_name = :doctorName, doctor_address = :doctorAddress, issue_date = :issueDate WHERE id = :id";
     public static final String DELETE_PRESCRIPTION_QUERY = "DELETE FROM Prescriptions WHERE id = :id";

@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/user/image/**", "/user/login", "/user/register").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/user/image/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/update/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/user/image/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/user/count","/user/image/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/user/verify/{token}/account").permitAll()
                 .antMatchers(HttpMethod.GET, "/user-events/read/**", "/user-events/all", "/user-events/user/{userId}",
                         "/user-events/delete/**", "/user-events/update/**", "/user-events/create").permitAll()
@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/customer/count", "/customer/all").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/customer/read/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 // Prescription, Medication, Invoice, Inventory endpoints (access based on roles)
-                .antMatchers(HttpMethod.GET, "/prescription/all", "/prescription/read/**", "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount", "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**").hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
+                .antMatchers(HttpMethod.GET, "/prescription/count", "/medication/count", "/prescription/all", "/prescription/read/**", "/medication/all", "/medication/read/**", "/invoice/count", "/invoice/total-billed-amount", "/invoice/all", "/invoice/read/**", "/inventory/medications", "/inventory/all", "/inventory/read/**").hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
                 // Update endpoints (access based on roles)
                 .antMatchers(HttpMethod.PUT, "/user/update/**", "/prescription/update", "/medication/update", "/invoice/update", "/inventory/update", "/customer/update").hasAnyRole("MANAGER", "ADMIN", "SYSADMIN")
                 // Delete endpoints (access based on roles)

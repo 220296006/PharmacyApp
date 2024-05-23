@@ -99,4 +99,9 @@ public class UserServiceImp implements UserService {
         return null;
     }
 
+    @Override
+    public Integer getUserCount() {
+        return userRepository.countUsers();
+    }
+
 }

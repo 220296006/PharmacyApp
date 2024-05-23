@@ -16,6 +16,21 @@ export class HomeService {
     .pipe(catchError(this.handleError));
   }
 
+  getUsersCount(): Observable<number>{
+    return this.http.get<number>(`${this.serverUrl}/user/count`)
+    .pipe(catchError(this.handleError));
+  }
+
+  getPrescriptionCount(): Observable<number> {
+    return this.http.get<number>(`${this.serverUrl}/prescription/count`)
+    .pipe(catchError(this.handleError));
+  }
+
+  getMedicationCount(): Observable<number> {
+    return this.http.get<number>(`${this.serverUrl}/medication/count`)
+    .pipe(catchError(this.handleError));
+  }
+
   getInvoicesCount(): Observable<number> {
     return this.http.get<number>(`${this.serverUrl}/invoice/count`)
     .pipe(catchError(this.handleError));

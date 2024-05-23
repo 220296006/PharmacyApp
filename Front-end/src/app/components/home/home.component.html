@@ -8,36 +8,65 @@
 </head>
 <body>
   <div class="home-container" *ngIf="isLoggedIn()">
-
-<div class="box customer-box">
-  <div class="box-content">
-    <mat-icon class="box-icon">supervised_user_circle</mat-icon>
-    <div class="box-info">
-      <div class="box-heading">Customers</div>
-      <div class="box-data">{{ customersCount }}</div>
+    <div class="box customer-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">supervised_user_circle</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Customers</div>
+          <div class="box-data">{{ customersCount }}</div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="box invoice-box">
-  <div class="box-content">
-    <mat-icon class="box-icon">description</mat-icon>
-    <div class="box-info">
-      <div class="box-heading">Invoices</div>
-      <div class="box-data">{{ invoicesCount }}</div>
+    <div class="box user-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">person</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Users</div>
+          <div class="box-data">{{ usersCount }}</div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div class="box total-billed-box">
-  <div class="box-content">
-    <mat-icon class="box-icon">attach_money</mat-icon>
-    <div class="box-info">
-      <div class="box-heading">Total Billed</div>
-      <div class="box-data">{{ totalBilledAmount | currency: 'ZAR' }}</div>
+    <div class="box prescription-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">local_hospital</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Prescriptions</div>
+          <div class="box-data">{{ prescriptionsCount }}</div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
+
+    <div class="box medication-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">healing</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Medications</div>
+          <div class="box-data">{{ medicationsCount }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box invoice-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">description</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Invoices</div>
+          <div class="box-data">{{ invoicesCount }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box total-billed-box">
+      <div class="box-content">
+        <mat-icon class="box-icon">attach_money</mat-icon>
+        <div class="box-info">
+          <div class="box-heading">Total Billed</div>
+          <div class="box-data">{{ totalBilledAmount | currency: 'ZAR' }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <section id="hero" *ngIf="isLoggedIn()">

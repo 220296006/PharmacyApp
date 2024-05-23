@@ -27,6 +27,7 @@ import java.util.*;
 
 import static za.ac.cput.enumeration.RoleType.*;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
+import static za.ac.cput.query.CustomerQuery.SELECT_CUSTOMER_COUNT_QUERY;
 import static za.ac.cput.query.UserQuery.*;
 /**
  * @author : Thabiso Matsaba
@@ -244,6 +245,17 @@ public class UserRepositoryImp implements UserRepository<User> {
         } catch (Exception exception) {
             log.error("Error while fetching user by email: {}", exception.getMessage());
             throw new ApiException("Error while fetching user by email");
+        }
+    }
+
+    @Override
+    public Integer countUsers() {
+        log.info("Fetching Total Users");
+        try {
+            return jdbc.queryForObject(SELECT_USER_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching users count. Please try again.");
         }
     }
 

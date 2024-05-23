@@ -75,6 +75,14 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCustomerCount() {
+        log.info("Fetching Customer Count");
+        Integer customerCount = userService.getUserCount();
+        return ResponseEntity.ok(customerCount);
+    }
+
+
     @GetMapping("/current-password")
     public ResponseEntity<String> getCurrentPassword(@RequestParam Long userId) {
         try {

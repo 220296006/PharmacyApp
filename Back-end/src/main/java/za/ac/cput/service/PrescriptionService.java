@@ -14,15 +14,11 @@ import java.util.List;
  **/
 public interface PrescriptionService {
      void createPrescription( Prescription prescription);
-
      Collection<Prescription> getAllPrescriptions(String name, int page, int pageSize);
-
      Prescription findPrescriptionById(Long id);
-
      void updatePrescription( Prescription prescription);
-
      boolean deletePrescription(Long id);
-
      List<Prescription> getPrescriptionsByCustomerId(Long customerId);
+     Integer getPrescriptionCount();
 
 }

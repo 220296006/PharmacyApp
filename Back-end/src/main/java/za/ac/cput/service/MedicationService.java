@@ -19,5 +19,5 @@ public interface MedicationService {
     void updateMedication(Medication medication);
     boolean deleteMedication(Long id);
     List<Medication> getMedicationsByPrescriptionId(Long prescription_id);
-
+    Integer getMedicationCount();
 }
