@@ -29,6 +29,8 @@ public class UserEventRowMapper implements RowMapper<UserEvent> {
 
         Event event = new Event();
         event.setId(rs.getLong("event_id"));
+        event.setType(rs.getString("type"));
+        event.setDescription(rs.getString("description"));
         userEvent.setEvent(event);
         return userEvent;
     }

@@ -52,4 +52,9 @@ public class PrescriptionServiceImp implements PrescriptionService {
     public List<Prescription> getPrescriptionsByCustomerId(Long customerId) {
         return prescriptionRepository.findByCustomerId(customerId);
     }
+
+    @Override
+    public Integer getPrescriptionCount() {
+        return prescriptionRepository.prescriptionCount();
+    }
 }

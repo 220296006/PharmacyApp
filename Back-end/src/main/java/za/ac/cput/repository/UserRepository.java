@@ -17,5 +17,6 @@ public interface UserRepository <T extends User> {
       T update(User t);
       void delete(Long id);
       T findUserByEmailIgnoreCase(String email);
-
+      Integer countUsers();
+      void updateUserImageUrl(Long userId, String imageUrl);
 }

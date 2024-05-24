@@ -59,7 +59,7 @@ public class InvoiceRepositoryImp implements InvoiceRepository<Invoice> {
             invoice.setId(Objects.requireNonNull(holder.getKey()).longValue());
             Map<String, Object> linkCustomerParams = new HashMap<>();
             linkCustomerParams.put("id", invoice.getId());
-            linkCustomerParams.put("customer_id", customer.getId());
+            linkCustomerParams.put("customerId", customer.getId());
             jdbc.update(UPDATE_CUSTOMER_LINKED_TO_INVOICE_QUERY, linkCustomerParams);
             return invoice;
         } catch (Exception exception) {

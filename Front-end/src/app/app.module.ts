@@ -59,6 +59,9 @@ import { UserProfileModule } from './modules/user-profile.module';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RoleService } from './services/role-service/role-service.service';
 import { UserEventService } from './services/user-event-service/user-event.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [
@@ -108,6 +111,10 @@ import { UserEventService } from './services/user-event-service/user-event.servi
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTabsModule,
     MatCardModule,
     ToastrModule.forRoot({
       timeOut: 3000, // Set default toast duration to 3 seconds

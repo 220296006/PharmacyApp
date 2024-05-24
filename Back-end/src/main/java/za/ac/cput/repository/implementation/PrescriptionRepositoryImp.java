@@ -19,6 +19,7 @@ import za.ac.cput.rowmapper.PrescriptionRowMapper;
 import java.util.*;
 
 import static za.ac.cput.query.PrescriptionQuery.*;
+import static za.ac.cput.query.UserQuery.SELECT_USER_COUNT_QUERY;
 
 /**
  * @author : Thabiso Matsaba
@@ -131,6 +132,17 @@ public Collection<Prescription> list(String name, int page, int pageSize) {
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while fetching the prescription. Please try again.");
+        }
+    }
+
+    @Override
+    public Integer prescriptionCount() {
+        log.info("Fetching Total Prescriptions");
+        try {
+            return jdbc.queryForObject(SELECT_PRESCRIPTION_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching prescriptions count. Please try again.");
         }
     }
 

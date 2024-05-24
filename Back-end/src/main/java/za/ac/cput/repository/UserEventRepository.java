@@ -17,4 +17,5 @@ public interface UserEventRepository <T extends UserEvent> {
     T read(Long id);
     T update(UserEvent t);
     void delete(Long id);
+
 }

@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import za.ac.cput.dto.UserDTO;
 import za.ac.cput.dtomapper.UserDTOMapper;
 import za.ac.cput.exception.ApiException;
-import za.ac.cput.model.Confirmation;
 import za.ac.cput.model.User;
-import za.ac.cput.repository.ConfirmationRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.service.UserService;
 
@@ -27,7 +25,6 @@ import java.util.Collection;
 @Transactional
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
-    private final ConfirmationRepository<Confirmation> confirmationRepository;
 
     @Override
     public UserDTO createUser(User user) {
@@ -97,6 +94,11 @@ public class UserServiceImp implements UserService {
             return UserDTOMapper.fromUser(user);
         }
         return null;
+    }
+
+    @Override
+    public Integer getUserCount() {
+        return userRepository.countUsers();
     }
 
 }

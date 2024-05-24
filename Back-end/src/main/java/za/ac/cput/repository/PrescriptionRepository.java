@@ -19,4 +19,5 @@ public interface PrescriptionRepository <T extends Prescription> {
       boolean delete(Long id);
 
       List<Prescription> findByCustomerId(Long customerId);
+      Integer prescriptionCount();
 }

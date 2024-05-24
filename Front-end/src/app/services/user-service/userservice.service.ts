@@ -103,7 +103,7 @@ export class UserService {
   
 
   deleteProfileImage(userId: number): Observable<any> {
-    return this.http.delete(`${this.serverUrl}/user/image/${userId}`);
+    return this.http.delete(`${this.serverUrl}/user/delete/image/${userId}`);
   }
   
   

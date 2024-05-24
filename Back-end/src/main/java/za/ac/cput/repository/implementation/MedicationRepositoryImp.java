@@ -140,6 +140,17 @@ public class MedicationRepositoryImp implements MedicationRepository<Medication>
         }
     }
 
+    @Override
+    public Integer medicationCount() {
+        log.info("Fetching Total Medications");
+        try {
+            return jdbc.queryForObject(SELECT_MEDICATION_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching medications count. Please try again.");
+        }
+    }
+
     private SqlParameterSource getSqlParameterSource(Medication medication) {
     return new MapSqlParameterSource()
             .addValue("id", medication.getId())

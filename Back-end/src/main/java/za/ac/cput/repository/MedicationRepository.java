@@ -19,6 +19,5 @@ public interface MedicationRepository <T extends Medication> {
       T update(T t);
       boolean delete(Long id);
       List<Medication> findByPrescriptionId(Long prescription_id);
-
-
+     Integer medicationCount();
 }

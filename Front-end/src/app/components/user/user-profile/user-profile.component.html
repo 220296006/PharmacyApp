@@ -113,7 +113,7 @@
             <tr *ngFor="let userEvent of userEvents">
               <td>{{ userEvent.device }}</td>
               <td>{{ userEvent.ipAddress }}</td>
-              <td>{{ userEvent.createdAt }}</td>
+              <td>{{ userEvent.createdAt |  date:'medium' }}</td>
               <td>{{ userEvent.event.type }}</td>
               <td>{{ userEvent.event.description }}</td>
               <td><button class="btn btn-primary" (click)="report(userEvent)">Report</button>
@@ -128,8 +128,6 @@
     </div>
   </div>
 </div>
-
-  
 </body>
 
 </html>

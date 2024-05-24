@@ -9,6 +9,9 @@ import Typed from 'typed.js';
 })
 export class HomeComponent implements OnInit {
   customersCount = 0;
+  usersCount = 0;
+  prescriptionsCount = 0;
+  medicationsCount = 0;
   invoicesCount = 0;
   totalBilledAmount = 0;
 
@@ -29,6 +32,18 @@ export class HomeComponent implements OnInit {
   private fetchCounts(): void {
     this.homeService.getCustomersCount().subscribe((count) => {
       this.customersCount = count;
+    });
+
+    this.homeService.getUsersCount().subscribe((count) => {
+      this.usersCount = count;
+    });
+
+    this.homeService.getPrescriptionCount().subscribe((count) => {
+      this.prescriptionsCount = count;
+    });
+
+    this.homeService.getMedicationCount().subscribe((count) => {
+      this.medicationsCount = count;
     });
 
     this.homeService.getInvoicesCount().subscribe((count) => {

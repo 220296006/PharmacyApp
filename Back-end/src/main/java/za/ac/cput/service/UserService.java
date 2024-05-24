@@ -26,4 +26,5 @@ public interface UserService {
 
     UserDTO getUserInfo(String username);
 
+    Integer getUserCount();
 }

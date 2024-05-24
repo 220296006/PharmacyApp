@@ -27,6 +27,7 @@ import java.util.*;
 
 import static za.ac.cput.enumeration.RoleType.*;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
+import static za.ac.cput.query.CustomerQuery.SELECT_CUSTOMER_COUNT_QUERY;
 import static za.ac.cput.query.UserQuery.*;
 /**
  * @author : Thabiso Matsaba
@@ -45,6 +46,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     private final EmailService emailService;
     private final ImageDataRowMapper imageDataRowMapper;
     private final RoleRowMapper roleRowMapper;
+    private static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE users SET image_url = :imageUrl WHERE id = :userId";
 
 
     @Override
@@ -245,6 +247,32 @@ public class UserRepositoryImp implements UserRepository<User> {
             log.error("Error while fetching user by email: {}", exception.getMessage());
             throw new ApiException("Error while fetching user by email");
         }
+    }
+
+    @Override
+    public Integer countUsers() {
+        log.info("Fetching Total Users");
+        try {
+            return jdbc.queryForObject(SELECT_USER_COUNT_QUERY, new HashMap<>(), Integer.class);
+        } catch (Exception exception) {
+            log.error(exception.getMessage());
+            throw new ApiException("An error occurred while fetching users count. Please try again.");
+        }
+    }
+
+    @Override
+    public void updateUserImageUrl(Long userId, String imageUrl) {
+        log.info("Updating image URL for user ID: {}", userId);
+        MapSqlParameterSource parameters = new MapSqlParameterSource()
+                .addValue("userId", userId)
+                .addValue("imageUrl", imageUrl);
+
+        int updateCount = jdbc.update(UPDATE_USER_PROFILE_IMAGE_SQL, parameters);
+        if (updateCount != 1) {
+            log.error("Failed to update image URL for user ID: {}", userId);
+            throw new ApiException("Failed to update image URL for user ID: " + userId);
+        }
+        log.info("Successfully updated image URL for user ID: {}", userId);
     }
 
 

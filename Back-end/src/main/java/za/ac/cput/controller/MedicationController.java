@@ -33,6 +33,14 @@ import static org.springframework.http.HttpStatus.OK;
 public class MedicationController {
     private final MedicationService medicationService;
 
+    @GetMapping("/count")
+    public ResponseEntity<Integer> getCustomerCount() {
+        log.info("Fetching Customer Count");
+        Integer customerCount = medicationService.getMedicationCount();
+        return ResponseEntity.ok(customerCount);
+    }
+
+
     @PostMapping("/create")
     public ResponseEntity<Response> createCustomer(@RequestBody @Validated Medication medication){
         log.info("Saving a Medication {}:", medication);

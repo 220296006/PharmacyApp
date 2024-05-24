@@ -49,4 +49,9 @@ public class MedicationServiceImp implements MedicationService {
     public List<Medication> getMedicationsByPrescriptionId(Long prescription_id) {
         return medicationRepository.findByPrescriptionId(prescription_id);
     }
+
+    @Override
+    public Integer getMedicationCount() {
+        return medicationRepository.medicationCount();
+    }
 }
