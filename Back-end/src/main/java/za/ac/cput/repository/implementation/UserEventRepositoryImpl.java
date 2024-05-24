@@ -71,8 +71,9 @@ public class UserEventRepositoryImpl implements UserEventRepository<UserEvent> {
                     " VALUES (:userId, :eventId, :device, :ipAddress, :createdAt)";
             jdbcTemplate.update(sql, parameters, holder);
             Map<String, Object> linkUserParams = new HashMap<>();
-            linkUserParams.put("user_id", userEvent.getUser().getId());
-            linkUserParams.put("event_id", userEvent.getEvent().getId());
+            linkUserParams.put("userId", userEvent.getUser().getId());
+            linkUserParams.put("eventId", userEvent.getEvent().getId());
+            linkUserParams.put("id", userEvent.getId());
             jdbcTemplate.update(UPDATE_USER_EVENT_LINKED_TO_EVENT_QUERY, linkUserParams);
             userEvent.setId(Objects.requireNonNull(holder.getKey()).longValue());
         } catch (Exception exception) {

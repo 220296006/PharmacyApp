@@ -3,6 +3,7 @@ package za.ac.cput.repository;
 import za.ac.cput.model.Event;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author : Thabiso Matsaba
@@ -16,5 +17,7 @@ public interface EventRepository <T extends Event>{
     T save(T t);
     T update(Event t);
     void delete(Long id);
+
 }
+
 

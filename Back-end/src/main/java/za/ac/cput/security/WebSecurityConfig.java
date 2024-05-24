@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 // Public endpoints (no authentication required)
                 .antMatchers(HttpMethod.POST, "/user/image/**", "/user/login", "/user/register").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/user/image/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/user/delete/image/**").permitAll()
                 .antMatchers(HttpMethod.PUT, "/user/update/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/user/count","/user/image/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.GET, "/user/verify/{token}/account").permitAll()

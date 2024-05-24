@@ -28,7 +28,6 @@ import za.ac.cput.exception.ImageUploadException;
 import za.ac.cput.model.*;
 import za.ac.cput.security.JwtTokenProvider;
 import za.ac.cput.service.ConfirmationService;
-import za.ac.cput.service.EventService;
 import za.ac.cput.service.UserService;
 import za.ac.cput.service.implementation.EventServiceImpl;
 import za.ac.cput.service.implementation.ImageDataServiceImp;
@@ -366,9 +365,17 @@ public class UserController {
         log.info("Uploading User ID {} Image {}", id, file.getOriginalFilename());
         Map<String, Object> response = new HashMap<>();
         try {
-            imageDataServiceImp.uploadImage(id, file);
             // Fetch the updated user with the image data
             User user = userService.findUserById(id);
+
+            //Create an event
+            Event profileUpdateEvent = new Event();
+            profileUpdateEvent.setType("PROFILE_UPDATE");
+            profileUpdateEvent.setDescription("User profile updated");
+            // Save the event to the database
+            eventService.save(profileUpdateEvent);
+            imageDataServiceImp.uploadImage(id, file);
+
             // Add necessary user data or image URL to the response
             response.put("success", true);
             response.put("message", "Image uploaded successfully");
@@ -387,7 +394,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/image/{id}")
+    @DeleteMapping("/delete/image/{id}")
     public ResponseEntity<Map<String, Object>> deleteImage(@PathVariable("id") Long id) {
         try {
             // Implement logic to delete the image associated with the user ID

@@ -14,10 +14,7 @@ import za.ac.cput.model.Event;
 import za.ac.cput.repository.EventRepository;
 import za.ac.cput.rowmapper.EventRowMapper;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @author : Thabiso Matsaba
@@ -61,11 +58,12 @@ public class EventRepositoryImpl implements EventRepository<Event> {
     }
     @Override
     public Event save(Event event) {
-        log.info("Saving an a Event {}", event);
+        log.info("Saving an Event {}", event);
         try {
         KeyHolder holder = new GeneratedKeyHolder();
             SqlParameterSource parameters = getSqlParameterSource(event);
-        String sql = "INSERT INTO Events (type, description) VALUES (:type, :description)";
+            String sql = "INSERT INTO Events (type, description) VALUES (:type, :description)" +
+                    "ON DUPLICATE KEY UPDATE id = LAST_INSERT_ID(id), description = VALUES(description)";
             jdbcTemplate.update(sql, parameters, holder);
             event.setId(Objects.requireNonNull(holder.getKey()).longValue());
         } catch (Exception exception) {
@@ -102,6 +100,8 @@ public class EventRepositoryImpl implements EventRepository<Event> {
             throw new ApiException("An error occurred while deleting the event. Please try again.");
         }
     }
+
+
 
 
     private SqlParameterSource getSqlParameterSource(Event event) {
