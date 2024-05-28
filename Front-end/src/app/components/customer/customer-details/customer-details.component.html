@@ -11,12 +11,13 @@
     <div class="customer-container">
       <div class="customer-info">
         <h1 class="heading">Customer Information</h1>
-        <p><strong>Id:</strong> {{ customers?.id }}</p>
-        <p><strong>Name:</strong> {{ customers?.user?.firstName }}</p>
-        <p><strong>Address:</strong> {{ customers?.user?.address }}</p>
-        <p><strong>City:</strong> {{ customers?.city }}</p>
-        <p><strong>State:</strong> {{ customers?.state }}</p>
-        <p><strong>Zip Code:</strong> {{ customers?.zipCode }}</p>
+        <p><mat-icon>perm_identity</mat-icon> <strong>Id:</strong> {{ customers?.id }}</p>
+        <p><mat-icon>person</mat-icon> <strong>Name:</strong> {{ customers?.user?.firstName }}</p>
+        <p><mat-icon>home</mat-icon> <strong>Address:</strong> {{ customers?.user?.address }}</p>
+        <p><mat-icon>location_city</mat-icon> <strong>City:</strong> {{ customers?.city }}</p>
+        <p><mat-icon>map</mat-icon> <strong>State:</strong> {{ customers?.state }}</p>
+        <p><mat-icon>markunread_mailbox</mat-icon> <strong>Zip Code:</strong> {{ customers?.zipCode }}</p>
+        
       </div>
       <div class="customer-image">
         <img [src]="customers?.user?.imageUrl" alt="Customer Image">
