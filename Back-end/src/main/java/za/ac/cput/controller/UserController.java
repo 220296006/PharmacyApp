@@ -223,10 +223,6 @@ public class UserController {
     }
 
     private String extractDeviceInfo(String userAgent) {
-        // Implement logic to extract device information from the User-Agent string
-        // For example, you can use a library like DeviceDetector
-        // Here's a simple example using regex to extract device information
-        // Note: This is just a basic example and might not cover all cases
         String deviceInfo = "Unknown";
         if (userAgent != null) {
             if (userAgent.contains("Android")) {
@@ -291,15 +287,42 @@ public class UserController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO user) {
-        log.info("Update User: {}: {}", id, user);
+    public ResponseEntity<Response> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO,
+                                               HttpServletRequest request) {
+        log.info("Update User: {}: {}", id, userDTO);
         try {
-            UserDTO userDTO = userService.updateUser(id, user);
-            if (userDTO != null) {
+            // Create a profile update Event
+            Event updateProfileEvent = new Event();
+            updateProfileEvent.setType("UPDATE_PROFILE");
+            updateProfileEvent.setDescription("User profile updated");
+            eventService.save(updateProfileEvent);
+
+            // Get the device information
+            String userAgent = request.getHeader("User-Agent");
+            String deviceInfo = extractDeviceInfo(userAgent);
+
+            // Get the user's IP address
+            String ipAddress = request.getRemoteAddr();
+
+            // Convert UserDTO to User
+            User user = convertToEntity(userDTO);
+
+            // Create and save the UserEvent
+            UserEvent updateProfileUserEvent = new UserEvent();
+            updateProfileUserEvent.setUser(user);
+            updateProfileUserEvent.setEvent(updateProfileEvent);
+            updateProfileUserEvent.setDevice(deviceInfo);
+            updateProfileUserEvent.setIpAddress(ipAddress);
+            updateProfileUserEvent.setCreatedAt(String.valueOf(LocalDateTime.now()));
+            userEventService.save(updateProfileUserEvent);
+
+            // Update the user
+            UserDTO updatedUserDTO = userService.updateUser(id, userDTO);
+            if (updatedUserDTO != null) {
                 return ResponseEntity.ok()
                         .body(Response.builder()
                                 .timeStamp(now())
-                                .data(Map.of("user", userDTO))
+                                .data(Map.of("user", updatedUserDTO))
                                 .message("User Updated")
                                 .status(OK)
                                 .statusCode(HttpStatus.OK.value())
@@ -314,7 +337,7 @@ public class UserController {
                                 .build());
             }
         } catch (Exception e) {
-            log.error("Error updating user with id {}: {}", id, e.getMessage());
+            log.error("Error updating user with id {}: {}", id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Response.builder()
                             .timeStamp(now())
@@ -323,7 +346,27 @@ public class UserController {
                             .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                             .build());
         }
-}
+    }
+    public User convertToEntity(UserDTO userDTO) {
+        User user = new User();
+        user.setId(userDTO.getId());
+        user.setFirstName(userDTO.getFirstName());
+        user.setMiddleName(userDTO.getMiddleName());
+        user.setLastName(userDTO.getLastName());
+        user.setEmail(userDTO.getEmail());
+        user.setPhone(userDTO.getPhone());
+        user.setAddress(userDTO.getAddress());
+        user.setImageUrl(userDTO.getImageUrl());
+        user.setEnabled(userDTO.isEnabled());
+        user.setUsingMfa(userDTO.isUsingMfa());
+        user.setCreatedAt(userDTO.getCreatedAt());
+        user.setNotLocked(userDTO.isNotLocked());
+        user.setRoles(userDTO.getRoles());
+        user.setConfirmation(userDTO.getConfirmation());
+        user.setImageData(userDTO.getImageData());
+        return user;
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Response> deleteUser(@PathVariable Long id){
         log.info("Delete User: {}", id);
@@ -361,19 +404,36 @@ public class UserController {
 
     @PostMapping("/image/{id}")
     public ResponseEntity<Map<String, Object>> uploadImage(@PathVariable("id") Long id,
-                                                           @RequestParam("image") MultipartFile file) {
+                                                           @RequestParam("image") MultipartFile file,
+                                                           HttpServletRequest request) {
         log.info("Uploading User ID {} Image {}", id, file.getOriginalFilename());
         Map<String, Object> response = new HashMap<>();
         try {
             // Fetch the updated user with the image data
             User user = userService.findUserById(id);
 
-            //Create an event
-            Event profileUpdateEvent = new Event();
-            profileUpdateEvent.setType("PROFILE_UPDATE");
-            profileUpdateEvent.setDescription("User profile updated");
+            //Create a profile picture update event
+            Event profilePictureUpdateEvent = new Event();
+            profilePictureUpdateEvent.setType("PROFILE_PICTURE_UPDATE");
+            profilePictureUpdateEvent.setDescription("User profile picture updated");
             // Save the event to the database
-            eventService.save(profileUpdateEvent);
+            eventService.save(profilePictureUpdateEvent);
+
+            // Get the device information
+            String userAgent = request.getHeader("User-Agent");
+            String deviceInfo = extractDeviceInfo(userAgent);
+
+            // Get the user's IP address
+            String ipAddress = request.getRemoteAddr();
+
+            UserEvent updateProfilePictureEvent = new UserEvent();
+            updateProfilePictureEvent.setUser(user);
+            updateProfilePictureEvent.setEvent(profilePictureUpdateEvent);
+            updateProfilePictureEvent.setDevice(deviceInfo);
+            updateProfilePictureEvent.setIpAddress(ipAddress);
+            updateProfilePictureEvent.setCreatedAt(String.valueOf(LocalDateTime.now()));
+            userEventService.save(updateProfilePictureEvent);
+
             imageDataServiceImp.uploadImage(id, file);
 
             // Add necessary user data or image URL to the response
