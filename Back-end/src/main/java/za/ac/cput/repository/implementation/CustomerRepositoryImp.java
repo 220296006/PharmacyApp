@@ -85,6 +85,7 @@ public Customer read(Long id) {
         throw new ApiException("An error occurred while retrieving the customer. Please try again.");
     }
 }
+
 @Override
 public Customer update(Customer customer) {
         log.info("Updating Customer");

@@ -1,4 +1,4 @@
-import { User } from '../../../model/user';
+import { User } from '../../../interface/user';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,6 +10,7 @@ import { CreateUserDialogComponent } from '../create-user-dialog/create-user-dia
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { jwtDecode } from 'jwt-decode';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-user',
@@ -209,5 +210,57 @@ export class UserComponent implements OnInit {
         this.getAllUserData();
       }
     });
+  }
+  searchUsers(event: Event, type: string) {
+    const value = (event.target as HTMLInputElement).value;
+    console.log(`Searching users by ${type}:`, value);
+
+    if (value) {
+      let searchObservable: Observable<any>;
+      switch (type) {
+        case 'firstName':
+          searchObservable = this.userService.getUsersByFirstName(value);
+          break;
+        case 'middleName':
+          searchObservable = this.userService.getUsersByMiddleName(value);
+          break;
+        case 'lastName':
+          searchObservable = this.userService.getUsersByLastName(value);
+          break;
+        case 'email':
+          searchObservable = this.userService.getUsersByEmail(value);
+          break;
+        case 'address':
+          searchObservable = this.userService.getUsersByAddress(value);
+          break;
+        case 'phone':
+          searchObservable = this.userService.getUsersByPhone(value);
+          break;
+        default:
+          return;
+      }
+
+      searchObservable.subscribe({
+        next: (response: any) => {
+          console.log('Response from server:', response);
+          if (response.length > 0) {
+            this.tableDataSource.data = response;
+            this.tableDataSource.paginator = this.paginator;
+            this.tableDataSource.sort = this.sort;
+          } else {
+            console.log('No users found.');
+            this.tableDataSource.data = [];
+          }
+        },
+        error: (error) => {
+          console.error(`Error searching users by ${type}:`, error);
+          this.snackBar.open(`Error searching users by ${type}`, 'Close', {
+            duration: 3000,
+          });
+        },
+      });
+    } else {
+      this.getAllUserData();
+    }
   }
 }

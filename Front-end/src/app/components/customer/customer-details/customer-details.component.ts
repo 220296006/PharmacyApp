@@ -2,13 +2,13 @@ import { MedicationService } from 'src/app/services/medication-service/medicatio
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
-import { Prescription } from 'src/app/model/prescription'; // Import Prescription model
+import { Prescription } from 'src/app/interface/prescription'; // Import Prescription model
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
 import { forkJoin } from 'rxjs';
-import { Medication } from 'src/app/model/medication';
-import { Invoice } from 'src/app/model/invoice';
+import { Medication } from 'src/app/interface/medication';
+import { Invoice } from 'src/app/interface/invoice';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
-import { Customer } from 'src/app/model/Customer';
+import { Customer } from 'src/app/interface/customer';
 
 @Component({
   selector: 'app-customer-details',

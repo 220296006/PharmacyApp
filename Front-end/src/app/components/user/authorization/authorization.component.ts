@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RoleService } from 'src/app/services/role-service/role-service.service';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/interface/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
-import { Role } from 'src/app/model/role';
+import { Role } from 'src/app/interface/role';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { jwtDecode } from 'jwt-decode';
 

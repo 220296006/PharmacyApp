@@ -1,4 +1,4 @@
-import { Medication } from 'src/app/model/medication';
+import { Medication } from 'src/app/interface/medication';
 import { Component, Input } from '@angular/core';
 
 @Component({

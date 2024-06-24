@@ -1,8 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { UserEvent } from 'src/app/model/UserEvent';
-import { User } from 'src/app/model/user';
+import { UserEvent } from 'src/app/interface/UserEvent';
+import { User } from 'src/app/interface/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { UserEventService } from 'src/app/services/user-event-service/user-event.service';
 import { UserService } from 'src/app/services/user-service/userservice.service';
@@ -15,7 +15,7 @@ import { UserService } from 'src/app/services/user-service/userservice.service';
 export class UserProfileComponent implements OnInit {
   selectedSection = 'profile';
   profileImageUrl: string | null = 'assets/images/default.jpeg';
-  selectedFile: File | null = null;
+  selectedFile: File | null = null; 
   userId: number | null = null;
   loggedInUser: User | null = null;
   errorMessage: string | null = null;
@@ -130,7 +130,7 @@ export class UserProfileComponent implements OnInit {
           console.error('Failed to upload image:', response);
           this.snackBar.open('Failed to upload image', 'Close', {
             duration: 3000,
-            panelClass: ['snackbar-error']
+            panelClass: ['snackbar-error']   
           });
         }
         this.uploadInProgress = false;

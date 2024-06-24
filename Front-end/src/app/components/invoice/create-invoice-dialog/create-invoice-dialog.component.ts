@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { InvoiceService } from '../../../services/invoice-service/invoice.service';
 import * as alertify from 'alertifyjs';
-import { PaymentStatus } from 'src/app/model/payment-status';
+import { PaymentStatus } from 'src/app/interface/payment-status';
 
 @Component({
   selector: 'app-create-invoice-dialog',

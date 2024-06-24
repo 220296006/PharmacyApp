@@ -38,36 +38,48 @@
 
       <!-- First Name Column -->
       <ng-container matColumnDef="firstName">
+        <input class="form-control" type="search" 
+        placeholder="Search by First Name"   (input)="searchUsers($event, 'firstName')" />
         <th mat-header-cell *matHeaderCellDef>First Name</th>
         <td mat-cell *matCellDef="let row">{{ row.firstName }}</td>
       </ng-container>
 
       <!-- Middle Name Column -->
       <ng-container matColumnDef="middleName">
+        <input class="form-control" type="search"
+        placeholder="Search by Middle Name"  (input)="searchUsers($event, 'lastName')" />
         <th mat-header-cell *matHeaderCellDef>Middle Name</th>
         <td mat-cell *matCellDef="let row">{{ row.middleName }}</td>
       </ng-container>
 
       <!-- Last Name Column -->
       <ng-container matColumnDef="lastName">
+        <input class="form-control" type="search"
+        placeholder="Search by Last Name"(input)="searchUsers($event, 'email')"/>
         <th mat-header-cell *matHeaderCellDef>Last Name</th>
         <td mat-cell *matCellDef="let row">{{ row.lastName }}</td>
       </ng-container>
 
       <!-- Email Column -->
       <ng-container matColumnDef="email">
+        <input class="form-control" type="search"
+        placeholder="Search by Email" (input)="searchUsers($event, 'address')" />
         <th mat-header-cell *matHeaderCellDef>Email</th>
         <td mat-cell *matCellDef="let row">{{ row.email }}</td>
       </ng-container>
 
       <!-- Phone Column -->
       <ng-container matColumnDef="phone">
+        <input class="form-control" type="search"
+        placeholder="Search by Phone"   (input)="searchUsers($event, 'phone')" />
         <th mat-header-cell *matHeaderCellDef>Phone</th>
         <td mat-cell *matCellDef="let row">{{ row.phone }}</td>
       </ng-container>
 
       <!-- Address Column -->
       <ng-container matColumnDef="address">
+        <input class="form-control" type="search"
+        placeholder="Search by Address" ((input))="searchUsers ($event, 'address')" />
         <th mat-header-cell *matHeaderCellDef>Address</th>
         <td mat-cell *matCellDef="let row">{{ row.address }}</td>
       </ng-container>

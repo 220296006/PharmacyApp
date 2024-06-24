@@ -1,6 +1,5 @@
 package za.ac.cput.repository.implementation;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
+import za.ac.cput.repository.ElasticsearchUserRepository;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.rowmapper.ImageDataRowMapper;
-import za.ac.cput.rowmapper.RoleRowMapper;
 import za.ac.cput.rowmapper.UserRowMapper;
 import za.ac.cput.service.EmailService;
 
@@ -27,7 +26,6 @@ import java.util.*;
 
 import static za.ac.cput.enumeration.RoleType.*;
 import static za.ac.cput.query.ConfirmationQuery.INSERT_CONFIRMATION_QUERY;
-import static za.ac.cput.query.CustomerQuery.SELECT_CUSTOMER_COUNT_QUERY;
 import static za.ac.cput.query.UserQuery.*;
 /**
  * @author : Thabiso Matsaba
@@ -45,8 +43,8 @@ public class UserRepositoryImp implements UserRepository<User> {
     private BCryptPasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final ImageDataRowMapper imageDataRowMapper;
-    private final RoleRowMapper roleRowMapper;
     private static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE users SET image_url = :imageUrl WHERE id = :userId";
+    private final ElasticsearchUserRepository elasticsearchUserRepository;
 
 
     @Override
@@ -96,6 +94,10 @@ public class UserRepositoryImp implements UserRepository<User> {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setEnabled(true);
             user.setNotLocked(true);
+
+            // Elasticsearch part
+            elasticsearchUserRepository.save(user);
+
             return user;
         } catch (Exception exception) {
             log.error(exception.getMessage());
@@ -182,6 +184,10 @@ public class UserRepositoryImp implements UserRepository<User> {
                         }
                     }); // Map basic user information
                 }
+
+                elasticsearchUserRepository.findAll();
+
+                // Return the collection of mapped users
                 return userMap.values();
             });
         } catch (Exception exception) {
@@ -214,6 +220,8 @@ public class UserRepositoryImp implements UserRepository<User> {
         try {
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UPDATE_USER_QUERY, parameters);
+            // Elasticsearch part
+            elasticsearchUserRepository.save(user);
             return user;
         } catch (EmptyResultDataAccessException exception) {
             return null;
@@ -228,6 +236,8 @@ public class UserRepositoryImp implements UserRepository<User> {
         log.info("Deleting user by Id");
         try {
             jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
+            // Elasticsearch part
+            elasticsearchUserRepository.deleteById(id);
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while deleting the user. Please try again.");
@@ -266,7 +276,6 @@ public class UserRepositoryImp implements UserRepository<User> {
         MapSqlParameterSource parameters = new MapSqlParameterSource()
                 .addValue("userId", userId)
                 .addValue("imageUrl", imageUrl);
-
         int updateCount = jdbc.update(UPDATE_USER_PROFILE_IMAGE_SQL, parameters);
         if (updateCount != 1) {
             log.error("Failed to update image URL for user ID: {}", userId);

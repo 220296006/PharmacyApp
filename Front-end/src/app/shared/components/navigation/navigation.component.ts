@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/interface/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { Router } from '@angular/router';
 import * as alertify from 'alertifyjs';
@@ -18,6 +18,8 @@ export class NavigationComponent implements OnInit, OnDestroy {
   errorMessage: string | null = null;
   userId: number | null = null;
   loggedInUser: User | null = null;
+  searchKeyword: string = ''; // New property to hold search keyword
+  searchResults: User[] = []; // Array to hold search results
   
   constructor(
     private authService: AuthService, 
@@ -71,7 +73,22 @@ export class NavigationComponent implements OnInit, OnDestroy {
     );
   }
 
-  
+  // Function to search users
+  searchUsers() {
+    if (this.searchKeyword.trim() !== '') {
+      this.userService.getUsersByFirstName(this.searchKeyword).subscribe(
+        (users: User[]) => {
+          this.searchResults = users;
+        },
+        (error) => {
+          console.error('Error searching users:', error);
+          // Handle error
+        }
+      );
+    } else {
+      this.searchResults = []; // Clear search results if search keyword is empty
+    }
+  }
 
   ngOnDestroy(): void {
     if (this.userSubscription) {

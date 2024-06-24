@@ -1,8 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
-import { ApiResponse } from 'src/app/model/api-response';
-import { Prescription } from 'src/app/model/prescription';
+import { ApiResponse } from 'src/app/interface/api-response';
+import { Prescription } from 'src/app/interface/prescription';
 
 @Injectable({
   providedIn: 'root'

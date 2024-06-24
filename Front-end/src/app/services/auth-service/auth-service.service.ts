@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
-import { ApiResponse } from 'src/app/model/api-response';
+import { ApiResponse } from 'src/app/interface/api-response';
 import { jwtDecode } from 'jwt-decode';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/interface/user';
 
 @Injectable({
   providedIn: 'root',

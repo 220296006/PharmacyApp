@@ -28,8 +28,9 @@ public class ImageDataRowMapper implements RowMapper<ImageData> {
         imageData.setUserId(resultSet.getLong("user_id")); // Set the user ID property
 
         User user = new User();
+        user.setId(resultSet.getLong("user_id"));
+        user.setImageUrl(resultSet.getString("imageUrl"));
         user.setImageData(imageData);
-        imageData.setUserId(resultSet.getLong("user_id"));
         return imageData;
     }
 }

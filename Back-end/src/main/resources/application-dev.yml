@@ -2,8 +2,19 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/PharmacyApp?createDatabaseIfNotExist=true
-    username: root # Database username
-    password: Shaun@96 # Database password
+    username: root
+    password: Shaun@96
+
+  # Elasticsearch Configuration
+  data:
+    elasticsearch:
+      cluster-name: elasticsearch
+      repositories-enabled: true
+      rest:
+        uris: http://localhost:9200
+        username: root
+        password: Shaun@96
+
 
   # CORS Configuration
   servlet:

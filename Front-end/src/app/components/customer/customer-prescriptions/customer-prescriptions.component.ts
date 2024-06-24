@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Prescription } from 'src/app/model/prescription';
+import { Prescription } from 'src/app/interface/prescription';
 
 @Component({
   selector: 'app-customer-prescriptions',

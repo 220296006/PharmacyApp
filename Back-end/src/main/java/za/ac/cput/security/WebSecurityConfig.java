@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
+
                 // Public endpoints (no authentication required)
                 .antMatchers(HttpMethod.POST, "/user/image/**", "/user/login", "/user/register").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/user/delete/image/**").permitAll()
@@ -55,7 +56,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/user/verify/{token}/account").permitAll()
                 .antMatchers(HttpMethod.GET, "/user-events/read/**", "/user-events/all", "/user-events/user/{userId}",
                         "/user-events/delete/**", "/user-events/update/**", "/user-events/create").permitAll()
-
+                // Elasticsearch endpoints (access based on roles)
+                .antMatchers(HttpMethod.POST, "/elasticsearch/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/elasticsearch/users/**", "/elasticsearch/users/search/firstname",
+                        "/elasticsearch/users/search/middlename", "/elasticsearch/users/search/lastname",
+                        "/elasticsearch/users/search/email", "/elasticsearch/users/search/address",
+                        "/elasticsearch/phone").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/elasticsearch/delete/users/**").permitAll()
                 // User endpoints (authenticated users only)
                 .antMatchers(HttpMethod.GET, "/user/read/**").hasAnyRole("USER", "MANAGER", "ADMIN", "SYSADMIN")
                 .antMatchers(HttpMethod.POST, "/user/password-reset/forgot", "/user/password-reset/reset", "/user/change-password").permitAll()
