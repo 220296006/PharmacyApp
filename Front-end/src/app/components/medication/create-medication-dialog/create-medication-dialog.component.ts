@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import * as alertify from 'alertifyjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { InventoryService } from 'src/app/services/inventory-service/inventory.service';
 import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 
@@ -18,7 +18,8 @@ export class CreateMedicationDialogComponent implements OnInit {
     private fb: FormBuilder,
     private medicationService: MedicationService,
     private inventoryService: InventoryService, 
-    private dialogRef: MatDialogRef<CreateMedicationDialogComponent>
+    private dialogRef: MatDialogRef<CreateMedicationDialogComponent>,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -61,12 +62,22 @@ export class CreateMedicationDialogComponent implements OnInit {
     this.medicationService.createMedication(payload).subscribe({
       next: (response) => {
         console.log('Medication added successfully:', response.data.customer);
-        alertify.success('Medication added successfully');
+        this.snackBar.open('Medication added successfully', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        })
         this.dialogRef.close(response.data.customer);
+        this.snackBar.open('Medication added successfully', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        })
       },
       error: (error) => {
         console.error('Error adding medication:', error);
-        alertify.error('Error adding medication. Please try again.');
+        this.snackBar.open('An error occurred while adding the medication.', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        })
       },
     });
   }

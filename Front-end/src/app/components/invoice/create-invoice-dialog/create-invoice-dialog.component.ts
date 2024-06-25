@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { InvoiceService } from '../../../services/invoice-service/invoice.service';
-import * as alertify from 'alertifyjs';
 import { PaymentStatus } from 'src/app/interface/payment-status';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-invoice-dialog',
@@ -18,7 +18,8 @@ export class CreateInvoiceDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private invoiceService: InvoiceService,
-    private dialogRef: MatDialogRef<CreateInvoiceDialogComponent>
+    private dialogRef: MatDialogRef<CreateInvoiceDialogComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -49,12 +50,18 @@ export class CreateInvoiceDialogComponent implements OnInit {
     this.invoiceService.createInvoice(payload).subscribe({
       next: (response) => {
         console.log('Invoice created successfully:', response.data.invoice);
-        alertify.success('Invoice created successfully');
+        this.snackBar.open('Invoice created successfully', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        })
         this.dialogRef.close(response.data.invoice);
       },
       error: (error) => {
         console.error('Error creating invoice:', error);
-        alertify.error('Error creating invoice. Please try again.');
+        this.snackBar.open('Error creating invoice', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        })
       },
     });
   }

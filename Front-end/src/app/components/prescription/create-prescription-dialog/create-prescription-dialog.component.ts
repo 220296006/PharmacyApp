@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import * as alertify from 'alertifyjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
 
 @Component({
@@ -16,7 +16,8 @@ export class CreatePrescriptionDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private prescriptionService: PrescriptionService,
-    private dialogRef: MatDialogRef<CreatePrescriptionDialogComponent>
+    private dialogRef: MatDialogRef<CreatePrescriptionDialogComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -46,12 +47,18 @@ export class CreatePrescriptionDialogComponent implements OnInit {
     this.prescriptionService.createPrescription(payload).subscribe({
       next: (response) => {
         console.log('Prescription created successfully:', response.data.prescription);
-        alertify.success('Prescription created successfully');
+        this.snackBar.open('Prescription created successfully', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        })
         this.dialogRef.close(response.data.prescription);
       },
       error: (error) => {
         console.error('Error creating prescription:', error);
-        alertify.error('Error creating prescription. Please try again.');
+        this.snackBar.open('Error creating prescription', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        })
       },
     });
     }

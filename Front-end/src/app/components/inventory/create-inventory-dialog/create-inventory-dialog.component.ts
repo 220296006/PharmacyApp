@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { InventoryService } from '../../../services/inventory-service/inventory.service';
-import * as alertify from 'alertifyjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-inventory-dialog',
@@ -16,7 +16,8 @@ export class CreateInventoryDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private inventoryService: InventoryService,
-    private dialogRef: MatDialogRef<CreateInventoryDialogComponent>
+    private dialogRef: MatDialogRef<CreateInventoryDialogComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -50,13 +51,18 @@ export class CreateInventoryDialogComponent implements OnInit {
             'Inventory item added successfully:',
             response.data.inventory
           );
-          alertify.success('Inventory item added successfully');
           this.dialogRef.close(response.data.inventory);
+          this.snackBar.open('Inventory item added successfully!', 'Close', {
+            duration: 3000,
+            panelClass: ['success-snackbar'],
+          })
         },
         error: (error) => {
           console.error('Error adding inventory item:', error);
-          alertify.error('Error adding inventory item. Please try again.');
-        },
+          this.snackBar.open('An error occurred while adding the inventory item.', 'Close', {
+            duration: 3000,
+            panelClass: ['error-snackbar'],
+          })},
       });
     }
   }

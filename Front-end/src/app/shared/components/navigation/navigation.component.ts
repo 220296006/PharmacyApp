@@ -3,8 +3,8 @@ import { Subscription } from 'rxjs';
 import { User } from 'src/app/interface/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { Router } from '@angular/router';
-import * as alertify from 'alertifyjs';
 import { UserService } from 'src/app/services/user-service/userservice.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-navigation',
@@ -24,7 +24,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService, 
     private router: Router,
-    private userService: UserService) {}
+    private userService: UserService,
+    private snackBar: MatSnackBar
+  ) {}
 
     ngOnInit(): void {
       this.userSubscription = this.authService.currentUser.subscribe((user) => {
@@ -54,7 +56,10 @@ export class NavigationComponent implements OnInit, OnDestroy {
   onLogout() {
     this.authService.logout();
     this.router.navigate(['/login']);
-    alertify.success('You have been logged out');
+    this.snackBar.open('You have been logged out', 'Close', {
+      duration: 3000,
+      panelClass: ['success-snackbar'],
+    })
   }
 
   loadProfileImage(userId: number): void {
