@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Invoice } from 'src/app/model/invoice';
+import { Invoice } from 'src/app/interface/invoice';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
 
 @Component({

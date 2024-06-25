@@ -2,7 +2,7 @@ import { CustomerService } from '../../../services/customer-service/customer.ser
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import * as alertify from 'alertifyjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-customer-dialog',
@@ -15,7 +15,8 @@ export class CreateCustomerDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private customerService: CustomerService,
-    private dialogRef: MatDialogRef<CreateCustomerDialogComponent>
+    private dialogRef: MatDialogRef<CreateCustomerDialogComponent>,
+    private snackBar: MatSnackBar,
   ) {}
   ngOnInit(): void {
     this.initForm();
@@ -47,12 +48,17 @@ export class CreateCustomerDialogComponent implements OnInit {
       this.customerService.createCustomer(payload).subscribe({
         next: (response) => {
           console.log('Customer added successfully:', response.data.customer);
-          alertify.success('Customer added successfully');
           this.dialogRef.close(response.data.customer);
+          this.snackBar.open('Customer added successfully!', 'Close', {
+            duration: 3000,
+            panelClass: ['success-snackbar'],
+          })
         },
         error: (error) => {
           console.error('Error adding customer:', error);
-          alertify.error('Error adding customer. Please try again.');
+          this.snackBar.open('An error occurred while adding the customer.', 'Close', {
+            
+          })
         },
       });
     }

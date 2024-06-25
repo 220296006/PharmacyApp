@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, of } from 'rxjs';
-import { UserEvent } from 'src/app/model/UserEvent';
+import { UserEvent } from 'src/app/interface/UserEvent';
 
 @Injectable({
   providedIn: 'root'

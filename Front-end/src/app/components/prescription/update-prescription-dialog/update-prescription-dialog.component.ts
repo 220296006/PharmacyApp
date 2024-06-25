@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Prescription } from 'src/app/model/prescription';
+import { Prescription } from 'src/app/interface/prescription';
 import { PrescriptionService } from 'src/app/services/prescription-service/prescription-service.service';
 
 @Component({

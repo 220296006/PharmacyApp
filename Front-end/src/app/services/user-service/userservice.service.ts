@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, throwError } from 'rxjs';
-import { ApiResponse } from 'src/app/model/api-response';
-import { User } from 'src/app/model/user';
+import { ApiResponse } from 'src/app/interface/api-response';
+import { User } from 'src/app/interface/user';
 
 @Injectable({
   providedIn: 'root',
@@ -150,4 +150,54 @@ export class UserService {
     );
   }
   
+   // Search users
+   searchUsers(keyword: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search?keyword=${keyword}`);
+  }
+
+   // Search users by first name
+   getUsersByFirstName(firstName: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search/firstname`, {
+      params: { firstName }
+    });
+  }
+
+  // Search users by middle name
+  getUsersByMiddleName(middleName: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search/middlename`, {
+      params: { middleName }
+    });
+  }
+
+  // Search users by last name
+  getUsersByLastName(lastName: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search/lastname`, {
+      params: { lastName }
+    });
+  }
+
+  // Search users by email
+  getUsersByEmail(email: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search/email`, {
+      params: { email }
+    });
+  }
+
+  // Search users by address
+  getUsersByAddress(address: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search/address`, {
+      params: { address }
+    });
+  }
+
+  // Search users by phone
+  getUsersByPhone(phone: string): Observable<User[]> {
+    return this.http.get<User[]>(`${this.serverUrl}/elasticsearch/users/search/phone`, {
+      params: { phone }
+    });
+  }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.serverUrl}/elasticsearch/users/${id}`);
+  }
 }

@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/interface/user';
 import { UserService } from 'src/app/services/user-service/userservice.service';
-import { Role } from 'src/app/model/role';
+import { Role } from 'src/app/interface/role';
 
 
 @Component({

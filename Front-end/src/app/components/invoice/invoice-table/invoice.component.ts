@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Invoice } from 'src/app/model/invoice';
+import { Invoice } from 'src/app/interface/invoice';
 import { InvoiceService } from 'src/app/services/invoice-service/invoice.service';
 import { UpdateInvoiceDialogComponent } from '../update-invoice-dialog/update-invoice-dialog.component';
 import { CreateInvoiceDialogComponent } from '../create-invoice-dialog/create-invoice-dialog.component';

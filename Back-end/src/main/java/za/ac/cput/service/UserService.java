@@ -27,4 +27,6 @@ public interface UserService {
     UserDTO getUserInfo(String username);
 
     Integer getUserCount();
+
+    void updateUserImageUrl(Long userId, String imageUrl);
 }

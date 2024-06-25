@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Medication } from 'src/app/model/medication';
+import { Medication } from 'src/app/interface/medication';
 import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 import { UpdateCustomerDialogComponent } from '../../customer/update-customer-dialog/update-customer-dialog.component';
 

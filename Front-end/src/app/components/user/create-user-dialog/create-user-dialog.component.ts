@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from 'src/app/services/user-service/userservice.service';
-import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-create-user-dialog',
@@ -16,7 +16,8 @@ export class CreateUserDialogComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private dialogRef: MatDialogRef<CreateUserDialogComponent>
+    private dialogRef: MatDialogRef<CreateUserDialogComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -48,12 +49,18 @@ export class CreateUserDialogComponent implements OnInit {
     this.userService.createUser(this.userForm.getRawValue()).subscribe({
       next: (response) => {
         console.log('User added successfully:', response.data.user);
-        alertify.success('User added successfully');
+        this.snackBar.open('User added successfully', 'Close', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        })
         this.dialogRef.close(response.data.user);
       },
       error: (error) => {
         console.error('Error adding user:', error);
-        alertify.error('Error adding user. Please try again.');
+        this.snackBar.open('Error adding user. Please try again.', 'Close', {
+          duration: 3000,
+          panelClass: ['error-snackbar'],
+        })
       },
     });
   }

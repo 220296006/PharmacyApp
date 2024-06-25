@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Inventory } from 'src/app/model/inventory';
+import { Inventory } from 'src/app/interface/inventory';
 import { InventoryService } from 'src/app/services/inventory-service/inventory.service';
 
 @Component({

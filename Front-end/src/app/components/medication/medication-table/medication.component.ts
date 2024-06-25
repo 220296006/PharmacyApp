@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Medication } from 'src/app/model/medication';
+import { Medication } from 'src/app/interface/medication';
 import { MedicationService } from 'src/app/services/medication-service/medication-service.service';
 import { UpdateMedicationDialogComponent } from '../update-medication-dialog/update-medication-dialog.component';
 import { CreateMedicationDialogComponent } from '../create-medication-dialog/create-medication-dialog.component';

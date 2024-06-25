@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Invoice } from 'src/app/model/invoice';
+import { Invoice } from 'src/app/interface/invoice';
 
 @Component({
   selector: 'app-customer-invoice',

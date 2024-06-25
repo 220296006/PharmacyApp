@@ -7,8 +7,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerService } from 'src/app/services/customer-service/customer.service';
 import { UpdateCustomerDialogComponent } from '../update-customer-dialog/update-customer-dialog.component';
 import { CreateCustomerDialogComponent } from '../create-customer-dialog/create-customer-dialog.component';
-import { Customer } from 'src/app/model/Customer';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
+import { Customer } from 'src/app/interface/customer';
 
 @Component({
   selector: 'app-customer',

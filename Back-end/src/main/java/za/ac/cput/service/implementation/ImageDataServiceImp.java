@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import za.ac.cput.dto.UserDTO;
+import za.ac.cput.dtomapper.UserDTOMapper;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.exception.ImageNotFoundException;
 import za.ac.cput.exception.ImageUploadException;
@@ -16,7 +17,6 @@ import za.ac.cput.repository.ImageDataRepository;
 import za.ac.cput.utils.ImageUtils;
 
 import javax.transaction.Transactional;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -46,23 +46,24 @@ public class ImageDataServiceImp {
                 // Check if the user already has an image
                 ImageData existingImageData = user.getImageData();
                 if (existingImageData != null) {
-                    // Delete the existing image before uploading a new one
-                    imageDataRepository.delete(existingImageData);
+                    // Delete the existing image
+                    imageDataRepository.deleteById(existingImageData.getId());
                 }
-
+                // Save the new image data
                 byte[] imageDataBytes = file.getBytes();
                 String name = file.getOriginalFilename();
                 String type = file.getContentType();
 
                 log.info("Received image data for user ID {}: {} bytes", userId, imageDataBytes.length);
 
-                // Persist image data
-                ImageData imageData = new ImageData();
-                imageData.setImageData(imageDataBytes);
-                imageData.setName(name);
-                imageData.setType(type);
-                imageData.setUserId(userId);
-                imageDataRepository.save(imageData);
+                // Create and persist new image data
+                ImageData image = new ImageData();
+                image.setName(name);
+                image.setType(type);
+                image.setImageData(imageDataBytes);
+                image.setUserId(userId); // Set the user in the image data
+
+                imageDataRepository.save(image);
 
                 // Generate unique image ID
                 Long generatedImageId = generateUniqueImageId();
@@ -77,12 +78,13 @@ public class ImageDataServiceImp {
                 // Set imageUrl in User object
                 log.info("Fetching user Image URL: {}", imageUrl);
                 user.setImageUrl(imageUrl);
+               // user.setImageData(image);
 
                 // Fetch the image data associated with the user
-                byte[] userImageData = imageData.getImageData();
+                byte[] userImageData = image.getImageData();
 
                 // Update user in the database
-                userServiceImp.updateUser(userId, convertToDto(user));
+                userServiceImp.updateUserImageUrl(userId, imageUrl);
 
                 // Log and return success message
                 log.info("Updated User: {}", user);
@@ -121,31 +123,20 @@ public class ImageDataServiceImp {
     }
 
    // Delete Image
-    public void deleteImage(Long userId) {
-        log.info("Deleting image data for user ID: {}", userId);
-        User user = userServiceImp.findUserById(userId);
-        ImageData imageData = user.getImageData();
-        if (imageData != null) {
-            imageDataRepository.delete(imageData);
-        }
-    }
-
-
-    private UserDTO convertToDto(User user) {
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setFirstName(user.getFirstName());
-        userDTO.setLastName(user.getLastName());
-        userDTO.setMiddleName(user.getMiddleName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setPhone(user.getPhone());
-        userDTO.setAddress(user.getAddress());
-        userDTO.setImageUrl(user.getImageUrl());
-        userDTO.setImageData(user.getImageData());
-        log.info("UserDTO: {}", userDTO );
-        return userDTO;
-
-    }
+   public void deleteImage(Long userId) {
+       log.info("Attempting to delete image data for user ID: {}", userId);
+       User user = userServiceImp.findUserById(userId);
+       if (user != null) {
+           ImageData imageData = user.getImageData();
+           if (imageData != null) {
+               log.info("Found image data for user ID: {}. Deleting...", userId);
+               imageDataRepository.deleteById(imageData.getId());
+               log.info("Successfully deleted image data for user ID: {}", userId);
+           } else {
+               log.warn("No image data found for user ID: {}", userId);
+           }
+       }
+   }
 
     public byte[] downloadImage(Long userId, String fileName) {
         try {

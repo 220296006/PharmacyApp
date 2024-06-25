@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { User } from 'src/app/model/user';
+import { User } from 'src/app/interface/user';
 import { AuthService } from 'src/app/services/auth-service/auth-service.service';
 import { UserService } from 'src/app/services/user-service/userservice.service';
 import { catchError } from 'rxjs/operators';
