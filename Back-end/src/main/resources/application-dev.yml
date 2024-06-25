@@ -5,17 +5,6 @@ spring:
     username: root
     password: Shaun@96
 
-  # Elasticsearch Configuration
-  data:
-    elasticsearch:
-      cluster-name: elasticsearch
-      repositories-enabled: true
-      rest:
-        uris: http://localhost:9200
-        username: root
-        password: Shaun@96
-
-
   # CORS Configuration
   servlet:
     filter:
@@ -98,6 +87,10 @@ spring:
             required: true # Require STARTTLS
     verify:
       host: ${VERIFY_EMAIL_HOST} # Verification email host URL
+
+# JWT Configuration
+jwt:
+  secret: 2a5e8b366478ea066487867ac03944b255efea2f32bee10fa44da1e93ade331e
 
 # Email Configuration Variables
 EMAIL_HOST: smtp.gmail.com # Email host

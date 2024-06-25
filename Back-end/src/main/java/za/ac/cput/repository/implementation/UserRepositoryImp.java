@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import za.ac.cput.exception.ApiException;
 import za.ac.cput.model.Role;
 import za.ac.cput.model.User;
-import za.ac.cput.repository.ElasticsearchUserRepository;
+//import za.ac.cput.repository.ElasticsearchUserRepository;
 import za.ac.cput.repository.RoleRepository;
 import za.ac.cput.repository.UserRepository;
 import za.ac.cput.rowmapper.ImageDataRowMapper;
@@ -44,7 +44,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     private final EmailService emailService;
     private final ImageDataRowMapper imageDataRowMapper;
     private static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE users SET image_url = :imageUrl WHERE id = :userId";
-    private final ElasticsearchUserRepository elasticsearchUserRepository;
+//    private final ElasticsearchUserRepository elasticsearchUserRepository;
 
 
     @Override
@@ -96,9 +96,8 @@ public class UserRepositoryImp implements UserRepository<User> {
             user.setNotLocked(true);
 
             // Elasticsearch part
-            elasticsearchUserRepository.save(user);
-
-            return user;
+//            elasticsearchUserRepository.save(user);
+           return user;
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred. Please try again.");
@@ -185,7 +184,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                     }); // Map basic user information
                 }
 
-                elasticsearchUserRepository.findAll();
+//                elasticsearchUserRepository.findAll();
 
                 // Return the collection of mapped users
                 return userMap.values();
@@ -221,7 +220,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UPDATE_USER_QUERY, parameters);
             // Elasticsearch part
-            elasticsearchUserRepository.save(user);
+//            elasticsearchUserRepository.save(user);
             return user;
         } catch (EmptyResultDataAccessException exception) {
             return null;
@@ -237,7 +236,7 @@ public class UserRepositoryImp implements UserRepository<User> {
         try {
             jdbc.update(DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
             // Elasticsearch part
-            elasticsearchUserRepository.deleteById(id);
+//            elasticsearchUserRepository.deleteById(id);
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while deleting the user. Please try again.");
