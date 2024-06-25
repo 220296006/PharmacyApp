@@ -17,32 +17,17 @@ services:
       timeout: 5s
       retries: 5
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.7
-    environment:
-      - discovery.type=single-node
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
-
   backend:
     image: pharmacyapp/pharmacyapp:1.0.0
     depends_on:
       mysql:
         condition: service_healthy
-      elasticsearch:
-        condition: service_started
     ports:
       - "8080:8080"
     environment:
       - spring.datasource.url=jdbc:mysql://mysql-pharmacyapp:3306/PharmacyApp
       - spring.datasource.username=root
       - spring.datasource.password=Shaun@96
-      - spring.data.elasticsearch.rest.uris=http://elasticsearch:9200
-      - spring.data.elasticsearch.rest.username=root
-      - spring.data.elasticsearch.rest.password=Shaun@96
       - EMAIL_HOST=smtp.gmail.com
       - EMAIL_PORT=587
       - EMAIL_ID=thabisomatsaba96@gmail.com
@@ -57,4 +42,3 @@ services:
 
 volumes:
   mysql_data:
-  es_data:
