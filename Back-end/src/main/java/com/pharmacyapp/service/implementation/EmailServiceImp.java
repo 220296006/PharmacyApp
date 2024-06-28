@@ -1,18 +1,19 @@
 package com.pharmacyapp.service.implementation;
 
+import com.pharmacyapp.exception.ApiException;
+import com.pharmacyapp.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import com.pharmacyapp.exception.ApiException;
-import com.pharmacyapp.service.EmailService;
 
 import javax.mail.internet.MimeMessage;
 
@@ -26,31 +27,42 @@ import javax.mail.internet.MimeMessage;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@ComponentScan
+@Configuration
 public class EmailServiceImp implements EmailService {
 
-    private static final String UTF_8_ENCODING = "UTF-8";
-    private static final String EMAIL_TEMPLATE = "NEW USER VERIFICATION";
-    @Autowired
+    public static final String UTF_8_ENCODING = "UTF-8";
+    public static final String EMAIL_TEMPLATE = "NEW USER VERIFICATION";
+
     private final JavaMailSender emailSender;
-
-    @Value("${spring.mail.host}")
-    private String host;
-
-    @Value("${spring.mail.username}")
+    private final TemplateEngine templateEngine;
+    private final String host;
     private String fromEmail;
 
-    private final TemplateEngine templateEngine;
+    // Default constructor required for Spring proxying
+    public EmailServiceImp() {
+        this.emailSender = null;
+        this.templateEngine = null;
+        this.host = null;
+        this.fromEmail = null;
+    }
 
+    @Autowired
+    public EmailServiceImp(JavaMailSender emailSender, TemplateEngine templateEngine, Environment env) {
+        this.emailSender = emailSender;
+        this.templateEngine = templateEngine;
+        this.host = env.getProperty("VERIFY_EMAIL_HOST");
+        this.fromEmail = env.getProperty("EMAIL_ID");
+    }
     @Override
     @Async
     public void sendMimeMessageWithAttachments(String name, String to, String token) {
         try {
+            log.info("Attempting to send email to {}", name);
             MimeMessage message = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, UTF_8_ENCODING);
             helper.setPriority(1);
             helper.setSubject(EMAIL_TEMPLATE);
-            helper.setFrom(fromEmail);
+            helper.setFrom(fromEmail); // Set the 'from' email address here
             helper.setTo(to);
 
             Context context = new Context();
@@ -61,7 +73,9 @@ public class EmailServiceImp implements EmailService {
 
             helper.setText(htmlContent, true);
             emailSender.send(message);
+            log.info("Successfully sent email to {}", name);
         } catch (Exception exception) {
+            log.error("Failed to send email to {}: {}", name, exception.getMessage());
             throw new ApiException("Failed to send confirmation email to: " + name);
         }
     }
@@ -69,6 +83,7 @@ public class EmailServiceImp implements EmailService {
     @Override
     public void sendPasswordResetEmail(String name, String email, String token, String temporaryPassword) {
         try {
+            log.info("Attempting to send password reset email to {}", email);
             String subject = "Password Reset Request";
             String resetUrl = "http://localhost:8080/reset-password?token=" + token;
 
@@ -88,9 +103,11 @@ public class EmailServiceImp implements EmailService {
             helper.setSubject(subject);
             helper.setText(htmlContent, true);
             emailSender.send(message);
+            log.info("Successfully sent password reset email to {}", email);
         } catch (Exception exception) {
             log.error("Failed to send password reset email to {}: {}", email, exception.getMessage());
             throw new ApiException("Failed to send password reset email to: " + email);
         }
     }
+
 }

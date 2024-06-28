@@ -27,7 +27,6 @@ import com.pharmacyapp.dto.AuthenticationRequest;
 import com.pharmacyapp.dto.UserDTO;
 import com.pharmacyapp.exception.ApiException;
 import com.pharmacyapp.exception.ImageUploadException;
-import za.ac.cput.model.*;
 import com.pharmacyapp.security.JwtTokenProvider;
 import com.pharmacyapp.service.ConfirmationService;
 import com.pharmacyapp.service.implementation.EventServiceImpl;

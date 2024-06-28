@@ -9,10 +9,10 @@ spring:
   servlet:
     filter:
       cors:
-        allowed-origins: http://localhost:4200 # Allowed CORS origins
+        allowed-origins: http://localhost:4200,http://localhost:8080 # Allowed CORS origins
 
   # Spring JDBC Session
-    server:
+  server:
     servlet:
       session:
         timeout: 1800 # Session timeout. If a duration suffix is not specified, seconds are used.
@@ -23,55 +23,64 @@ spring:
       initialize-schema: always
       store-type: jdbc
 
+
 # Logging Configuration
-  logging:
+logging:
   level:
-    org:
-      springframework:
-        security: TRACE
-        session: DEBUG
-        com.za.ac.cput: DEBUG
+    org.springframework.mail: DEBUG
 
- # Thymeleaf Configuration
-  thymeleaf:
-    enabled: true # Enable Thymeleaf template engine
-    prefix: classpath:/templates/ # Template prefix
-    suffix: .html # Template suffix
-    cache: false # Disable template caching
 
-  # JPA/Hibernate Configuration
-  jpa:
-    sql:
-      init:
-        mode: always # Initialize SQL on startup
-    show-sql: true # Show SQL queries in logs
-    database-platform: org.hibernate.dialect.MySQL8Dialect # Database dialect
-    hibernate:
-      ddl-auto: update # Disable automatic schema creation
-      logging:
-        level:
-          org:
-            hibernate:
-              SQL: DEBUG # Hibernate SQL logging level
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-        globally_quoted_identifiers: true
-      format-sql: true
 
-  # SQL Initialization Configuration
+# Logging Configuration
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: TRACE
+#        session: DEBUG
+#        com.za.ac.cput: DEBUG
+
+# Thymeleaf Configuration
+thymeleaf:
+  enabled: true # Enable Thymeleaf template engine
+  prefix: classpath:/templates/ # Template prefix
+  suffix: .html # Template suffix
+  cache: false # Disable template caching
+
+# JPA/Hibernate Configuration
+jpa:
   sql:
     init:
       mode: always # Initialize SQL on startup
-      continue-on-error: true # Continue initialization on error
+  show-sql: true # Show SQL queries in logs
+  database-platform: org.hibernate.dialect.MySQL8Dialect # Database dialect
+  hibernate:
+    ddl-auto: update # Disable automatic schema creation
+    logging:
+      level:
+        org:
+          hibernate:
+            SQL: DEBUG # Hibernate SQL logging level
+  properties:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL8Dialect
+      format_sql: true
+      globally_quoted_identifiers: true
+    format-sql: true
 
+# SQL Initialization Configuration
+sql:
+  init:
+    mode: always # Initialize SQL on startup
+    continue-on-error: true # Continue initialization on error
+
+# Email Configuration
   # Email Configuration
   mail:
-    host: ${EMAIL_HOST} # SMTP host for sending emails
-    port: ${EMAIL_PORT} # SMTP port
-    username: ${EMAIL_ID} # Email account username
-    password: ${EMAIL_PASSWORD} # Email account password
+    host: smtp.gmail.com # SMTP host for sending emails
+    port: 587 # SMTP port
+    username: thabisomatsaba96@gmail.com # Email account username
+    password: ysjqkbfnhvpnfzwo # Email account password
     default-encoding: UTF-8 # Default email encoding
     properties:
       mail:
@@ -85,19 +94,15 @@ spring:
           starttls:
             enable: true # Enable STARTTLS
             required: true # Require STARTTLS
-    verify:
-      host: ${VERIFY_EMAIL_HOST} # Verification email host URL
+    from: thabisomatsaba96@gmail.com
 
 # JWT Configuration
 jwt:
   secret: 2a5e8b366478ea066487867ac03944b255efea2f32bee10fa44da1e93ade331e
 
-# Email Configuration Variables
-EMAIL_HOST: smtp.gmail.com # Email host
-EMAIL_PORT: 587 # Email port
-EMAIL_ID: thabisomatsaba96@gmail.com # Email account username
-EMAIL_PASSWORD: ysjqkbfnhvpnfzwo # Email account password
-VERIFY_EMAIL_HOST: http://localhost:${SERVER_PORT} # Verification email host URL
-
 # Server Configuration
-SERVER_PORT: 8080 # Server port
+server:
+  port: 8080
+
+
+
