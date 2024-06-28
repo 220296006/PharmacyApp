@@ -1,5 +1,6 @@
 package com.pharmacyapp.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,9 +17,16 @@ import java.util.Properties;
 @Configuration
 public class EmailConfig {
 
+    @Value("${email.id}")
     private String emailId;
+
+    @Value("${email.password}")
     private String emailPassword;
+
+    @Value("${email.host}")
     private String emailHost;
+
+    @Value("${email.port}")
     private int emailPort;
 
     @Bean

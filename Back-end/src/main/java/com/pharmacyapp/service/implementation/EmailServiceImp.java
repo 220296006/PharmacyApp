@@ -109,5 +109,4 @@ public class EmailServiceImp implements EmailService {
             throw new ApiException("Failed to send password reset email to: " + email);
         }
     }
-
 }
