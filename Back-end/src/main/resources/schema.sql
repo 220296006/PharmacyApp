@@ -1,3 +1,5 @@
+Use pharmacyapp;
+
 -- Table spring_session
 CREATE TABLE SPRING_SESSION (
 	PRIMARY_ID CHAR(36) NOT NULL,
@@ -50,6 +52,16 @@ CREATE TABLE Customers (
     state VARCHAR(100) NULL,
     zip_code VARCHAR(20) NULL,
     FOREIGN KEY (user_id) REFERENCES Users (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Table ImageData
+CREATE TABLE ImageData (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    user_id INT UNSIGNED NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    type VARCHAR(255) NOT NULL,
+    image_data MEDIUMBLOB NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Table Invoices
@@ -175,8 +187,7 @@ INSERT INTO Roles (name, permission) VALUES
     ('ROLE_SYSADMIN', 'READ:USER,READ:CUSTOMER,CREATE:USER,CREATE:CUSTOMER,UPDATE:USER,UPDATE:CUSTOMER,DELETE:USER,DELETE:CUSTOMER,CREATE:INVOICE,CREATE:MEDICATION,CREATE:PRESCRIPTION,CREATE:INVENTORY,DELETE:INVOICE,DELETE:MEDICATION,DELETE:PRESCRIPTION,DELETE:INVENTORY,UPDATE:INVOICE,UPDATE:MEDICATION,UPDATE:PRESCRIPTION,UPDATE:INVENTORY');
 
 
---Update Users
---UPDATE Users
---SET image_url = CONCAT('https://randomuser.me/api/portraits/',
---                      CASE WHEN RAND() < 0.5 THEN 'men/' ELSE 'women/' END,
---                      FLOOR(RAND() * 100), '.jpg');
+-- Update Users
+UPDATE Users SET image_url = CONCAT('https://randomuser.me/api/portraits/',
+                      CASE WHEN RAND() < 0.5 THEN 'men/' ELSE 'women/' END,
+                      FLOOR(RAND() * 100), '.jpg');
