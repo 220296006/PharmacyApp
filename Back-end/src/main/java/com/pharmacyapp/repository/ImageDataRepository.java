@@ -1,9 +1,8 @@
 package com.pharmacyapp.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.repository.query.Param;
+import com.pharmacyapp.rowmapper.ImageDataRowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import com.pharmacyapp.model.ImageData;
 
@@ -16,11 +15,41 @@ import java.util.Optional;
  * @Time : 19:37
  **/
 @Repository
-@EnableJpaRepositories
-public interface ImageDataRepository extends JpaRepository<ImageData, Long> {
-    @Query("SELECT i FROM ImageData i WHERE i.userId = :userId")
-    Optional<ImageData> findByUserId(@Param("userId") Long userId);
+public class ImageDataRepository {
 
-    @Query("SELECT i FROM ImageData i WHERE i.name = :fileName AND i.userId = :userId")
-    Optional<ImageData> findByNameAndUserId(@Param("fileName") String fileName, @Param("userId") Long userId);
+    private final NamedParameterJdbcTemplate jdbcTemplate;
+
+    public ImageDataRepository(NamedParameterJdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public Optional<ImageData> findByUserId(Long userId) {
+        String sql = "SELECT * FROM imagedata WHERE user_id = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource().addValue("userId", userId);
+        return jdbcTemplate.query(sql, params, new ImageDataRowMapper()).stream().findFirst();
+    }
+
+    public Optional<ImageData> findByNameAndUserId(String fileName, Long userId) {
+        String sql = "SELECT * FROM imagedata WHERE name = :fileName AND user_id = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("fileName", fileName)
+                .addValue("userId", userId);
+        return jdbcTemplate.query(sql, params, new ImageDataRowMapper()).stream().findFirst();
+    }
+
+    public void save(ImageData imageData) {
+        String sql = "INSERT INTO imagedata (name, type, image_data, user_id) VALUES (:name, :type, :imageData, :userId)";
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("name", imageData.getName())
+                .addValue("type", imageData.getType())
+                .addValue("imageData", imageData.getImageData())
+                .addValue("userId", imageData.getUserId());
+        jdbcTemplate.update(sql, params);
+    }
+
+    public void deleteById(Long id) {
+        String sql = "DELETE FROM imagedata WHERE id = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource().addValue("id", id);
+        jdbcTemplate.update(sql, params);
+    }
 }

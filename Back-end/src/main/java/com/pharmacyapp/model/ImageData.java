@@ -3,7 +3,10 @@ package com.pharmacyapp.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Lob;
 import java.io.Serializable;
 
 /**
@@ -12,8 +15,6 @@ import java.io.Serializable;
  * @Date : 2024/04/04
 // * @Time : 19:24
  **/
-@Entity
-@Table(name = "image_data")
 @Data
 @SuperBuilder
 @AllArgsConstructor
@@ -23,7 +24,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ImageData implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String type;

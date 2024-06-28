@@ -41,11 +41,9 @@ public class ImageDataServiceImp {
             User user = userServiceImp.findUserById(userId);
             if (user != null) {
                 // Check if the user already has an image
-                ImageData existingImageData = user.getImageData();
-                if (existingImageData != null) {
-                    // Delete the existing image
-                    imageDataRepository.deleteById(existingImageData.getId());
-                }
+                Optional<ImageData> existingImageData = imageDataRepository.findByUserId(userId);
+                existingImageData.ifPresent(imageData -> imageDataRepository.deleteById(imageData.getId()));
+
                 // Save the new image data
                 byte[] imageDataBytes = file.getBytes();
                 String name = file.getOriginalFilename();
@@ -65,8 +63,10 @@ public class ImageDataServiceImp {
                 // Generate unique image ID
                 Long generatedImageId = generateUniqueImageId();
 
-                // Update user's image URL in the Users table
+                // Generate image URL
                 String imageUrl = generateImageUrl(generatedImageId);
+
+                // Update user's image URL in the Users table
                 MapSqlParameterSource parameters = new MapSqlParameterSource()
                         .addValue("userId", userId)
                         .addValue("imageUrl", imageUrl);
@@ -75,10 +75,6 @@ public class ImageDataServiceImp {
                 // Set imageUrl in User object
                 log.info("Fetching user Image URL: {}", imageUrl);
                 user.setImageUrl(imageUrl);
-               // user.setImageData(image);
-
-                // Fetch the image data associated with the user
-                byte[] userImageData = image.getImageData();
 
                 // Update user in the database
                 userServiceImp.updateUserImageUrl(userId, imageUrl);
@@ -94,7 +90,6 @@ public class ImageDataServiceImp {
             throw new ImageUploadException("Error uploading image", e);
         }
     }
-
 
     // Generate unique image ID (You can use a different approach if needed)
     private Long generateUniqueImageId() {
@@ -119,21 +114,19 @@ public class ImageDataServiceImp {
         return imageData;
     }
 
-   // Delete Image
-   public void deleteImage(Long userId) {
-       log.info("Attempting to delete image data for user ID: {}", userId);
-       User user = userServiceImp.findUserById(userId);
-       if (user != null) {
-           ImageData imageData = user.getImageData();
-           if (imageData != null) {
-               log.info("Found image data for user ID: {}. Deleting...", userId);
-               imageDataRepository.deleteById(imageData.getId());
-               log.info("Successfully deleted image data for user ID: {}", userId);
-           } else {
-               log.warn("No image data found for user ID: {}", userId);
-           }
-       }
-   }
+    // Delete Image
+    public void deleteImage(Long userId) {
+        log.info("Attempting to delete image data for user ID: {}", userId);
+        User user = userServiceImp.findUserById(userId);
+        if (user != null) {
+            Optional<ImageData> imageDataOptional = imageDataRepository.findByUserId(userId);
+            imageDataOptional.ifPresent(imageData -> {
+                log.info("Found image data for user ID: {}. Deleting...", userId);
+                imageDataRepository.deleteById(imageData.getId());
+                log.info("Successfully deleted image data for user ID: {}", userId);
+            });
+        }
+    }
 
     public byte[] downloadImage(Long userId, String fileName) {
         try {

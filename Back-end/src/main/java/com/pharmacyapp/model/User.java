@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.data.annotation.Id;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -73,7 +73,6 @@ public class User  implements UserDetails {
     private LocalDateTime createdAt;
 //    @Field(type = FieldType.Text)
     private boolean isNotLocked;
-    @Transient
     @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
     @JoinTable(
             name = "user_roles",
@@ -81,10 +80,8 @@ public class User  implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
     @Column(name = "confirmations")
-    @Transient
     private Confirmation confirmation;
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @MapsId @JoinColumn(name = "image_data_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private ImageData imageData;
 
 

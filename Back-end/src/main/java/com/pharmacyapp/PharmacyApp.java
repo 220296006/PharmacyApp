@@ -20,7 +20,7 @@ import java.util.List;
 @ComponentScan
 @Slf4j
 @EnableJdbcHttpSession
-@ComponentScan(basePackages = "za.ac.cput")
+@ComponentScan(basePackages = "com.pharmacyapp")
 public class PharmacyApp {
 
     public static void main(String[] args) {SpringApplication.run(PharmacyApp.class, args);}

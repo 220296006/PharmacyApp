@@ -17,7 +17,7 @@ public class UserQuery {
                      "FROM Users u " +
                      "JOIN UserRoles ur ON u.id = ur.user_id " +
                      "JOIN Roles r ON ur.role_id = r.id " +
-                     "LEFT JOIN image_data i ON u.id = i.user_id " +
+                     "LEFT JOIN imagedata i ON u.id = i.user_id " +
                      "WHERE u.email = :email " +
                      "GROUP BY u.id ";
 
