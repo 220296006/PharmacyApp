@@ -1,3 +1,5 @@
+# docker-compose.yml
+
 version: '3.8'
 
 services:
@@ -5,12 +7,13 @@ services:
     container_name: mysql-pharmacyapp
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: Shaun@96
       MYSQL_DATABASE: PharmacyApp
     ports:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "--silent"]
       interval: 10s
@@ -25,14 +28,15 @@ services:
     ports:
       - "8080:8080"
     environment:
-     - spring.datasource.url=jdbc:mysql://mysql-pharmacyapp:3306/PharmacyApp
+      - spring.datasource.url=jdbc:mysql://mysql-pharmacyapp:3306/PharmacyApp?createDatabaseIfNotExist=true
       - spring.datasource.username=root
-      - spring.datasource.password=Shaun@96
+      - spring.datasource.password=${DB_PASSWORD}
       - EMAIL_HOST=smtp.gmail.com
       - EMAIL_PORT=587
       - EMAIL_ID=thabisomatsaba96@gmail.com
-      - EMAIL_PASSWORD=ysjqkbfnhvpnfzwo
+      - EMAIL_PASSWORD=tlbvmyaryjrljzgi
       - VERIFY_EMAIL_HOST=http://localhost:8080
+    restart: unless-stopped
 
   angular-client:
     build:

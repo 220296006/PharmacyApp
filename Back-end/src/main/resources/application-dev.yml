@@ -51,6 +51,7 @@ thymeleaf:
     database-platform: org.hibernate.dialect.MySQL8Dialect # Database dialect
     hibernate:
       ddl-auto: update # Disable automatic schema creation
+    enable-default-schema: true # Enable default schema
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect

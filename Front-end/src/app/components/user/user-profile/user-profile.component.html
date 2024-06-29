@@ -15,13 +15,16 @@
       <!-- Profile Image and Upload Icon -->
       <div class="col-md-3">
         <div class="profile-image-container">
-          <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile Image" class="profile-image"
-            id="profileImage" />
+          <img *ngIf="profileImageUrl" [src]="profileImageUrl" alt="Profile Image" class="profile-image" id="profileImage" />
           <label for="fileInput" class="upload-icon" [class.uploading]="uploadInProgress">
-            <i class="bi bi-camera" [class.disabled]="uploadInProgress" (click)="triggerFileInput()"></i>
+            <i class="bi bi-image" [class.disabled]="uploadInProgress" (click)="triggerFileInput()"></i>
+            <!-- Replace "Choose File" text with an image icon -->
           </label>
+          <input type="file" id="fileInput" class="visually-hidden file-input" (change)="onFileSelected($event)"
+            [disabled]="uploadInProgress" />
+          <!-- Ensure the input is visually hidden but accessible -->
           <div *ngIf="uploadInProgress" class="loading-spinner"></div>
-        </div>
+        </div>        
       </div>
       <div class="col-md-9">
         <input type="file" id="fileInput" class="file-input" (change)="onFileSelected($event)"

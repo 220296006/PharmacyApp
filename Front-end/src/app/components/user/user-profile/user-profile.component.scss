@@ -1,104 +1,116 @@
-    /* Custom styling */
-    body {
-      background-color: #ffffff;
-      color: white;
-      margin-top: 140px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+/* Custom styling */
+body {
+  background-color: #ffffff;
+  color: white;
+  margin-top: 140px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    /* Style the container with rounded corners and a slight shadow */
-    .container {
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      padding: 20px;
-    }
+/* Style the container with rounded corners and a slight shadow */
+.container {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
 
-    .profile-image-container {
-      position: relative;
-      overflow: hidden;
-      border-radius: 50%;
-      width: 200px;
-      height: 200px;
-      margin: 0 auto;
-    }
-    
-    .profile-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+.profile-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
 
-    /* Style the upload icon with a blue color and hover effect */
-    .upload-icon {
-      position: absolute;
-      bottom: 0;
-      right: 0;
-      color: #007bff;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
+.profile-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .upload-icon:hover {
-      opacity: 0.8;
-    }
+/* Style the upload icon with a blue color and hover effect */
+.upload-icon {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: #007bff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
-    /* Style the navigation bar with a dark background and white text */
-    .nav {
-      background-color: #213b4b;
-      border-radius: 10px;
-    }
+.upload-icon:hover {
+  opacity: 0.8;
+}
 
-    .nav-link {
-      color: rgb(245, 245, 245);
-      padding: 10px 20px;
-      transition: all 0.3s ease;
-    }
+/* Style the navigation bar with a dark background and white text */
+.nav {
+  background-color: #213b4b;
+  border-radius: 10px;
+}
 
-    .nav-link:hover,
-    .nav-link.active {
-      background-color: #498577;
-      color: #f8f9fa;
-    }
+.nav-link {
+  color: rgb(245, 245, 245);
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+}
 
-    /* Style the buttons with a rounded border and hover effect */
-    .btn {
-      border-radius: 5px;
-      transition: all 0.3s ease;
-    }
+.nav-link:hover,
+.nav-link.active {
+  background-color: #498577;
+  color: #f8f9fa;
+}
 
-    .btn:hover {
-      opacity: 0.8;
-    }
+/* Style the buttons with a rounded border and hover effect */
+.btn {
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
 
-    /* Style the activity logs table with a dark background and white text */
-    .table {
-      background-color: #f9f9f9;
-      color: rgb(0, 0, 0);
-      border-radius: 10px;
-    }
+.btn:hover {
+  opacity: 0.8;
+}
 
-    .table thead th {
-      border-bottom: 1px solid #000000;
-    }
+/* Style the activity logs table with a dark background and white text */
+.table {
+  background-color: #f9f9f9;
+  color: rgb(0, 0, 0);
+  border-radius: 10px;
+}
 
-    .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #007bff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-    }
+.table thead th {
+  border-bottom: 1px solid #000000;
+}
 
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #007bff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Visually hide the file input */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
