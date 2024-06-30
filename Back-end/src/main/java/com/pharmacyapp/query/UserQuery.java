@@ -38,23 +38,8 @@ public class UserQuery {
              "WHERE id = :id";
 
      public static final String UPDATE_USER_PROFILE_IMAGE_SQL =
-             "UPDATE Users SET image_url = :imageUrl WHERE id = :userId\n";
+             "UPDATE Users SET image_url = :imageUrl WHERE id = :userId";
 
      public static final String SELECT_USER_COUNT_QUERY = "SELECT COUNT(*) as userCount FROM Users";
-
-
-     public static final String GET_USERS_BY_ROLE_QUERY =
-              "SELECT u.*, GROUP_CONCAT(r.name) as roles " +
-                      "FROM Users u " +
-                      "JOIN UserRoles ur ON u.id = ur.user_id " +
-                      "JOIN Roles r ON ur.role_id = r.id " +
-                      "WHERE r.name = :roleName " +
-                      "GROUP BY u.id";
-      public static final String ASSIGN_ROLE_QUERY =
-              "INSERT INTO UserRoles (user_id, role_id) " +
-                      "VALUES (:userId, (SELECT id FROM Roles WHERE name = :roleName))";
-      public static final String REVOKE_ROLE_QUERY =
-              "DELETE FROM UserRoles WHERE user_id = :userId AND role_id = (SELECT id FROM Roles WHERE " +
-                      "name = :roleName)";
 
  }

@@ -17,16 +17,16 @@ import java.util.Properties;
 @Configuration
 public class EmailConfig {
 
-    @Value("${email.id}")
+    @Value("${EMAIL_ID}")
     private String emailId;
 
-    @Value("${email.password}")
+    @Value("${EMAIL_PASSWORD}")
     private String emailPassword;
 
-    @Value("${email.host}")
+    @Value("${EMAIL_HOST}")
     private String emailHost;
 
-    @Value("${email.port}")
+    @Value("${EMAIL_PORT}")
     private int emailPort;
 
     @Bean

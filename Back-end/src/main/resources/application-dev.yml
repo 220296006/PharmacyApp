@@ -1,9 +1,9 @@
 # Database Configuration
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/pharmacyapp
-    username: root
-    password: Shaun@96
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   # CORS Configuration
@@ -58,13 +58,14 @@ thymeleaf:
         format_sql: true
         globally_quoted_identifiers: true
       format-sql: true
+      open-in-view: false
 
 # Email Configuration
   mail:
-    host: smtp.gmail.com # SMTP host for sending emails
-    port: 587 # SMTP port
-    username: thabisomatsaba96@gmail.com # Email account username
-    password: tlbvmyaryjrljzgi    # Email account password
+    host: ${EMAIL_HOST} # SMTP host for sending emails
+    port: ${EMAIL_PORT} # SMTP port
+    username: ${EMAIL_ID}$ # Email account username
+    password: ${EMAIL_PASSWORD}$   # Email account password
     default-encoding: UTF-8 # Default email encoding
     properties:
       mail:
@@ -78,15 +79,22 @@ thymeleaf:
           starttls:
             enable: true # Enable STARTTLS
             required: true # Require STARTTLS
-    from: thabisomatsaba96@gmail.com
+    from: ${EMAIL_ID} # Email account username
 
 # JWT Configuration
 jwt:
-  secret: 2a5e8b366478ea066487867ac03944b255efea2f32bee10fa44da1e93ade331e
+  secret: ${JWT_SECRET}
 
 # Server Configuration
 server:
-  port: 8080
+  port: ${SERVER_PORT} # Server port
   servlet:
     session:
       timeout: 1800 # Session timeout. If a duration suffix is not specified, seconds are used.
+
+ # Elasticsearch Configuration
+  elasticsearch:
+    username: ${ELASTICSEARCH_USERNAME}
+    password: ${ELASTICSEARCH_PASSWORD}
+    rest:
+      base-uris: http://${ELASTICSEARCH_HOST}:${ELASTICSEARCH_PORT}

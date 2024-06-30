@@ -19,13 +19,16 @@ RUN mvn clean package -DskipTests
 # Stage 2: Create the runtime image
 FROM eclipse-temurin:19-jdk
 ARG PROFILE=dev
-ARG APP_VERSION=1.0.1
+ARG APP_VERSION=1.0.2
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-COPY --from=build /build/target/PharmacyApp-1.0.1.jar ./PharmacyApp-1.0.1.jar
+COPY --from=build /build/target/PharmacyApp-1.0.2.jar ./PharmacyApp-1.0.2.jar
+
+# Copy the .env file to the application directory
+COPY .env /app/.env
 
 # Expose the port the application runs on
 EXPOSE 8080

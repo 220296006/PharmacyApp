@@ -9,10 +9,11 @@ import com.pharmacyapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-//import za.ac.cput.repository.ElasticsearchUserRepository;
+import com.pharmacyapp.repository.ElasticsearchUserRepository;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -26,19 +27,19 @@ import java.util.Collection;
 @Transactional
 public class UserServiceImp implements UserService {
     private final UserRepository<User> userRepository;
-//    private final ElasticsearchUserRepository elasticsearchUserRepository;
+    private final ElasticsearchUserRepository elasticsearchUserRepository;
 
 
     @Override
     public UserDTO createUser(User user) {
         User created = userRepository.save(UserDTOMapper.toUser(user));
-//        elasticsearchUserRepository.save(created);
+        elasticsearchUserRepository.save(created);
         return UserDTOMapper.fromUser(created);
     }
 
     @Override
     public Collection<User> getAllUsers(String name, int page, int pageSize) {
-//        elasticsearchUserRepository.findAll();
+        elasticsearchUserRepository.findAll();
         return userRepository.list("users", 1, 50);
     }
 
@@ -53,7 +54,7 @@ public class UserServiceImp implements UserService {
             user.setPhone(updatedUser.getPhone());
             user.setAddress(updatedUser.getAddress());
             User updated = userRepository.update(user);
-//            elasticsearchUserRepository.save(updated);
+            elasticsearchUserRepository.save(updated);
             return UserDTOMapper.fromUser(updated);
         } catch (Exception exception) {
             log.error(exception.getMessage());
@@ -63,7 +64,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User findUserById(Long id) {
-//        elasticsearchUserRepository.findById(id);
+       elasticsearchUserRepository.findById(id);
         return UserDTOMapper.toUser(userRepository.read(id));
     }
 
@@ -71,43 +72,43 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean deleteUser(Long id) {
         userRepository.delete(id);
-//        elasticsearchUserRepository.deleteById(id);
+        elasticsearchUserRepository.deleteById(id);
         return true;
     }
 
 
     @Override
     public User findUserByEmailIgnoreCase(String email) {
-//        elasticsearchUserRepository.findByEmail(email);
+        elasticsearchUserRepository.findByEmail(email);
         return userRepository.findUserByEmailIgnoreCase(email);
     }
 
-//    public List<User> searchByFirstName(String firstName) {
-//        return elasticsearchUserRepository.findByFirstName(firstName);
-//    }
-//
-//    public List<User> searchByMiddleName(String middleName) {
-//        return elasticsearchUserRepository.findByMiddleName(middleName);
-//    }
-//
-//    public List<User> searchByLastName(String lastName) {
-//
-//        return elasticsearchUserRepository.findByLastName(lastName);
-//    }
-//
-//    public List<User> searchByEmail(String email) {
-//        return elasticsearchUserRepository.findByEmail(email);
-//    }
-//
-//    public List<User> searchByAddress(String address) {
-//
-//        return elasticsearchUserRepository.findByAddress(address);
-//    }
-//
-//    public List<User> searchByPhone(String phone) {
-//
-//        return elasticsearchUserRepository.findByPhone(phone);
-//    }
+    public List<User> searchByFirstName(String firstName) {
+        return elasticsearchUserRepository.findByFirstName(firstName);
+    }
+
+    public List<User> searchByMiddleName(String middleName) {
+        return elasticsearchUserRepository.findByMiddleName(middleName);
+    }
+
+    public List<User> searchByLastName(String lastName) {
+
+        return elasticsearchUserRepository.findByLastName(lastName);
+    }
+
+    public List<User> searchByEmail(String email) {
+        return elasticsearchUserRepository.findByEmail(email);
+    }
+
+    public List<User> searchByAddress(String address) {
+
+        return elasticsearchUserRepository.findByAddress(address);
+    }
+
+    public List<User> searchByPhone(String phone) {
+
+        return elasticsearchUserRepository.findByPhone(phone);
+    }
 
     @Override
     public UserDTO getUserInfo(String username) {
