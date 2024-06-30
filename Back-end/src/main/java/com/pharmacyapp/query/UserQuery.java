@@ -17,9 +17,9 @@ public class UserQuery {
                      "FROM Users u " +
                      "JOIN UserRoles ur ON u.id = ur.user_id " +
                      "JOIN Roles r ON ur.role_id = r.id " +
-                     "LEFT JOIN imagedata i ON u.id = i.user_id " +
+                     "LEFT JOIN ImageData i ON u.id = i.user_id " +
                      "WHERE u.email = :email " +
-                     "GROUP BY u.id ";
+                     "GROUP BY u.id";
 
 
      public static final String INSERT_USER_QUERY = "INSERT INTO Users (first_name, middle_name, last_name, email, "

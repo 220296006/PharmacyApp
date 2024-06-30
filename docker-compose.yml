@@ -1,11 +1,11 @@
 # docker-compose.yml
-
 version: '3.8'
 
+# Define services
 services:
   mysql:
     container_name: mysql-pharmacyapp
-    image: mysql:8.0
+    image: mysql:8.1
     environment:
       MYSQL_ROOT_PASSWORD: Shaun@96
       MYSQL_DATABASE: PharmacyApp
@@ -20,8 +20,9 @@ services:
       timeout: 5s
       retries: 5
 
+# Define dependencies
   backend:
-    image: pharmacyapp/pharmacyapp:1.0.0
+    image: pharmacyapp/pharmacyapp:1.0.1
     depends_on:
       mysql:
         condition: service_healthy
@@ -38,11 +39,13 @@ services:
       - VERIFY_EMAIL_HOST=http://localhost:8080
     restart: unless-stopped
 
+# Define volumes
   angular-client:
     build:
       context: ./front-end
     ports:
       - "4200:80"
 
+# Volumes
 volumes:
   mysql_data:
