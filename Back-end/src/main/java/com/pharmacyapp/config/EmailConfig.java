@@ -17,13 +17,13 @@ import java.util.Properties;
 @Configuration
 public class EmailConfig {
 
-    @Value("${EMAIL_ID}")
+    @Value("${EMAIL_USER_NAME}")
     private String emailId;
 
     @Value("${EMAIL_PASSWORD}")
     private String emailPassword;
 
-    @Value("${EMAIL_HOST}")
+    @Value("${EMAIL_HOST_NAME")
     private String emailHost;
 
     @Value("${EMAIL_PORT}")

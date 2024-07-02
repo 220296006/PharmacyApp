@@ -62,9 +62,9 @@ thymeleaf:
 
 # Email Configuration
   mail:
-    host: ${EMAIL_HOST} # SMTP host for sending emails
+    host: ${EMAIL_HOST_NAME} # SMTP host for sending emails
     port: ${EMAIL_PORT} # SMTP port
-    username: ${EMAIL_ID}$ # Email account username
+    username: ${EMAIL_USER_NAME}$ # Email account username
     password: ${EMAIL_PASSWORD}$   # Email account password
     default-encoding: UTF-8 # Default email encoding
     properties:

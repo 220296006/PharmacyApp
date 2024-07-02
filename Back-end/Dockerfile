@@ -37,6 +37,10 @@ EXPOSE 8080
 ENV DB_URL=jdbc:mysql://mysql-pharmacyapp:3306/PharmacyApp
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
+ENV EMAIL_HOST_NAME=${EMAIL_HOST_NAME}
+ENV EMAIL_USERNAME=${EMAIL_USER_NAME}
+ENV EMAIL_PASSWORD=${EMAIL_PASSWORD}
+
 
 # Run the jar file
 CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${DB_URL} PharmacyApp-${JAR_VERSION}.jar
