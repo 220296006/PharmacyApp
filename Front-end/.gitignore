@@ -42,4 +42,6 @@ testem.log
 Thumbs.db
 .env
 
+# Ignore all .github directory
 .github/
+pipeline-backend.yml
