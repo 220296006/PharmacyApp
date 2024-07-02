@@ -1,10 +1,10 @@
 package com.pharmacyapp.repository;
 
-//import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
-//import org.springframework.stereotype.Repository;
-//import za.ac.cput.model.User;
-//
-//import java.util.List;
+import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.stereotype.Repository;
+import com.pharmacyapp.model.User;
+
+import java.util.List;
 
 /**
  * @author : Thabiso Matsaba
@@ -12,12 +12,13 @@ package com.pharmacyapp.repository;
  * @Date : 2024/06/13
  * @Time : 22:47
  **/
-//@Repository
-//public interface ElasticsearchUserRepository extends ElasticsearchRepository<User, Long> {
-//    List<User> findByFirstName(String firstName);
-//    List<User> findByMiddleName(String middleName);
-//    List<User> findByLastName(String lastName);
-//    List<User> findByEmail(String email);
-//    List<User> findByAddress(String address);
-//    List<User> findByPhone(String phone);
-//}
+
+@Repository
+public interface ElasticsearchUserRepository extends ElasticsearchRepository<User, Long> {
+    List<User> findByFirstName(String firstName);
+    List<User> findByMiddleName(String middleName);
+    List<User> findByLastName(String lastName);
+    List<User> findByEmail(String email);
+    List<User> findByAddress(String address);
+    List<User> findByPhone(String phone);
+}

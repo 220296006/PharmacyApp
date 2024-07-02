@@ -32,19 +32,11 @@ export class LoginComponent implements OnInit {
   togglePasswordVisibility() {
     this.hidePassword = !this.hidePassword;
   }
-
   onLogin() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password)
         .pipe(
-          tap(() => {
-            this.snackBar.open('Login Successful', 'Close', {
-              duration: 5000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-            });
-          }),
           catchError(error => {
             console.error('Login failed:', error);
             this.snackBar.open('Login failed. Please check your credentials and try again.', 'Close', {
@@ -52,18 +44,24 @@ export class LoginComponent implements OnInit {
               horizontalPosition: 'center',
               verticalPosition: 'top',
             });
-            return of(null);
+            throw error;
           }),
           finalize(() => {
             // This block will be executed on completion, whether successful or with an error
           })
         )
         .subscribe(response => {
-          if (response) {
-            // Only navigate if the login was successful
+          if (response && response.token && response.user) {
+            this.snackBar.open('Login Successful', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+            });
             this.router.navigate(['/home']);
           }
+        }, error => {
+          console.error('Login failed:', error); // Log any errors from the subscription
         });
     }
   }
-}
+  }

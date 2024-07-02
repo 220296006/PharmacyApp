@@ -36,7 +36,7 @@ public class EmailServiceImp implements EmailService {
     private final JavaMailSender emailSender;
     private final TemplateEngine templateEngine;
     private final String host;
-    private String fromEmail;
+    private final String fromEmail;
 
     // Default constructor required for Spring proxying
     public EmailServiceImp() {
@@ -109,5 +109,4 @@ public class EmailServiceImp implements EmailService {
             throw new ApiException("Failed to send password reset email to: " + email);
         }
     }
-
 }

@@ -1,7 +1,7 @@
 
 # PharmacyApp
 
-![Alt text](PharmacyApp.png);
+![Alt text](screenshots/PharmacyApp.png);
 
 Pharmacy App Software Documentation
 
@@ -18,16 +18,16 @@ Pharmacy App Software Documentation
 
 The Pharmacy App is a web-based application designed to streamline pharmacy operations and provide an efficient platform for managing customers, inventory, prescriptions, medications, and invoices. The app aims to simplify the process of managing pharmacy-related tasks, enhancing customer experience, and improving overall operational efficiency.
 
-![Alt text](PharmacyApp-System-Design.drawio.png);
-![Alt text](Home-PharmacyApp.png);
-![Alt text](Users.png);
-![Alt text](Customers.png);
-![Alt text](Prescriptions.png);
-![Alt text](Medications.png);
-![Alt text](Invoices.png);
-![Alt text](Inventory.png);
-![Alt text](Create-User.png);
-![Alt text](Update-User.png);
+![Alt text](screenshots/PharmacyApp-System-Design.drawio.png);
+![Alt text](screenshots/Home-PharmacyApp.png);
+![Alt text](screenshots/Users.png);
+![Alt text](screenshots/Customers.png);
+![Alt text](screenshots/Prescriptions.png);
+![Alt text](screenshots/Medications.png);
+![Alt text](screenshots/Invoices.png);
+![Alt text](screenshots/Inventory.png);
+![Alt text](screenshots/Create-User.png);
+![Alt text](screenshots/Update-User.png);
 
 ## 2. Technology Stack
 

@@ -60,8 +60,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RoleService } from './services/role-service/role-service.service';
 import { UserEventService } from './services/user-event-service/user-event.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [

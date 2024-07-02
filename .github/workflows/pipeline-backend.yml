@@ -1,0 +1,94 @@
+name: PharmacyApp Backend Pipeline
+
+on:
+  push:
+    branches:
+      - ci/pipeline
+    paths:
+      - Back-end/**
+      - .Dockerfile
+      - 'docker-compose,yml'
+      - .github/workflows/*-backend.yml
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    name: Compile Project
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-jdk@v4
+        with:
+          java-version: 19
+          distribution: 'eclipse-temurin:19-jdk'
+
+      - name: Compile Project
+        run: |
+          mvn clean compile
+
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    name: Unit tests
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-jdk@v7
+        with:
+          java-version: 19
+          distribution: 'eclipse-temurin:19-jdk'
+
+      - name: Running Unit tests
+        run: |
+          mvn clean test
+  
+
+  build:
+    run-on: ubuntu-latest
+    name: Build Backend
+    needs: [compile, unit-tests]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-java@v7
+        with:
+          java-version: 19
+          distribution: 'eclipse-temurin:19-jdk'
+
+      - name: Build Project
+        run: |
+          mvn clean package
+
+  build-image:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK
+        uses: actions/setup-jdk@v4
+        with:
+          java-version: 19
+          distribution: 'eclipse-temurin:19-jdk'
+      - name: Extract project version
+        id: extract_version
+        run: |
+          echo "VERSION=$(mvn -q -Dexec.executable='echo' -Dexec.args='${project.version}' --non-recursive exec:exec)" >> $GITHUB_OUTPUT
+          
+

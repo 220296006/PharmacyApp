@@ -17,8 +17,6 @@ import com.pharmacyapp.rowmapper.RoleRowMapper;
 
 import java.util.*;
 
-import static java.util.Objects.requireNonNull;
-
 /**
  * @author : Thabiso Matsaba
  * @Project : PharmacyApp
@@ -40,21 +38,17 @@ public Role save(Role role) {
                 .addValue("name", role.getName())
                 .addValue("permission", String.join(",", role.getPermissions()));
         jdbc.update(RoleQuery.INSERT_ROLE_TO_USER_QUERY, parameters, holder);
-        List<Map<String, Object>> keys = holder.getKeyList();
-        if (!keys.isEmpty()) {
-            // Assuming the first generated key is the one you need
-            Number key = (Number) keys.get(0).get("GENERATED_KEY");
-            role.setId(key.longValue());
+        if (holder.getKey() != null) {
+            role.setId(holder.getKey().longValue());
         } else {
             throw new ApiException("No generated key found after inserting Role.");
         }
-
         return role;
     } catch (Exception exception) {
         log.error(exception.getMessage());
         throw new ApiException("An error occurred while saving the role. Please try again.");
     }
-}
+ }
 
    @Override
 public Collection<Role> list(String name, int page, int pageSize) {
@@ -94,7 +88,7 @@ public Role update(Role role) {
     log.info("Updating role: {}", role);
     try {
         SqlParameterSource parameters = new MapSqlParameterSource()
-                .addValue("id", role.getId())
+                .addValue("roleId", role.getId())
                 .addValue("name", role.getName())
                 .addValue("permission", String.join(",", role.getPermissions()));
 

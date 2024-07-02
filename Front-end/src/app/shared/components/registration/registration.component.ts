@@ -37,7 +37,6 @@ export class RegistrationComponent implements OnInit {
   onRegister() {
     if (this.registrationForm.valid) {
       console.log('Form is valid. Proceeding with registration.'); // Add logging
-
       this.authService
         .registerUser(this.registrationForm.getRawValue())
         .subscribe({

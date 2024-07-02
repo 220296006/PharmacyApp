@@ -24,13 +24,13 @@ public class ImageDataRepository {
     }
 
     public Optional<ImageData> findByUserId(Long userId) {
-        String sql = "SELECT * FROM imagedata WHERE user_id = :userId";
+        String sql = "SELECT * FROM ImageData WHERE user_id = :userId";
         MapSqlParameterSource params = new MapSqlParameterSource().addValue("userId", userId);
         return jdbcTemplate.query(sql, params, new ImageDataRowMapper()).stream().findFirst();
     }
 
     public Optional<ImageData> findByNameAndUserId(String fileName, Long userId) {
-        String sql = "SELECT * FROM imagedata WHERE name = :fileName AND user_id = :userId";
+        String sql = "SELECT * FROM ImageData WHERE name = :fileName AND user_id = :userId";
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("fileName", fileName)
                 .addValue("userId", userId);
@@ -38,7 +38,7 @@ public class ImageDataRepository {
     }
 
     public void save(ImageData imageData) {
-        String sql = "INSERT INTO imagedata (name, type, image_data, user_id) VALUES (:name, :type, :imageData, :userId)";
+        String sql = "INSERT INTO ImageData (name, type, image_data, user_id) VALUES (:name, :type, :imageData, :userId)";
         MapSqlParameterSource params = new MapSqlParameterSource()
                 .addValue("name", imageData.getName())
                 .addValue("type", imageData.getType())
@@ -48,7 +48,7 @@ public class ImageDataRepository {
     }
 
     public void deleteById(Long id) {
-        String sql = "DELETE FROM imagedata WHERE id = :id";
+        String sql = "DELETE FROM ImageData WHERE id = :id";
         MapSqlParameterSource params = new MapSqlParameterSource().addValue("id", id);
         jdbcTemplate.update(sql, params);
     }

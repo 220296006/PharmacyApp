@@ -19,13 +19,16 @@ RUN mvn clean package -DskipTests
 # Stage 2: Create the runtime image
 FROM eclipse-temurin:19-jdk
 ARG PROFILE=dev
-ARG APP_VERSION=1.0.0
+ARG APP_VERSION=1.0.2
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the built JAR file from the build stage
-COPY --from=build /build/target/PharmacyApp-1.0.0.jar ./PharmacyApp-1.0.0.jar
+COPY --from=build /build/target/PharmacyApp-1.0.2.jar ./PharmacyApp-1.0.2.jar
+
+# Copy the .env file to the application directory
+COPY .env /app/.env
 
 # Expose the port the application runs on
 EXPOSE 8080
@@ -34,6 +37,10 @@ EXPOSE 8080
 ENV DB_URL=jdbc:mysql://mysql-pharmacyapp:3306/PharmacyApp
 ENV ACTIVE_PROFILE=${PROFILE}
 ENV JAR_VERSION=${APP_VERSION}
+ENV EMAIL_HOST_NAME=${EMAIL_HOST_NAME}
+ENV EMAIL_USERNAME=${EMAIL_USER_NAME}
+ENV EMAIL_PASSWORD=${EMAIL_PASSWORD}
+
 
 # Run the jar file
 CMD java -jar -Dspring.profiles.active=${ACTIVE_PROFILE} -Dspring.datasource.url=${DB_URL} PharmacyApp-${JAR_VERSION}.jar

@@ -7,6 +7,9 @@ import lombok.experimental.SuperBuilder;
 //import org.springframework.data.elasticsearch.annotations.Document;
 //import org.springframework.data.elasticsearch.annotations.Field;
 //import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,42 +39,42 @@ import static javax.persistence.CascadeType.ALL;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @NoArgsConstructor
-//@Document(indexName = "users")
+@Document(indexName = "users")
 public class User  implements UserDetails {
     @Id
     private Long id;
     @NotEmpty(message = "First Name cannot be empty ")
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private String firstName;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private String middleName;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     @NotEmpty(message = "Last Name cannot be empty ")
     private String lastName;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     @NotEmpty(message = "Email cannot be empty ")
     @Email(message = "Email Invalid !!. Please enter valid email ")
     @Column(unique = true)
     private String email;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     @NotEmpty(message = "Password cannot be empty ")
     @NotNull
     private String password;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private String address;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private String phone;
-//    @Field(type = FieldType.Text)
+   @Field(type = FieldType.Text)
     private String imageUrl;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private boolean accountNonExpired;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private boolean enabled;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private boolean isUsingMfa;
-//    @Field(type = FieldType.Date, format = {}, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @Field(type = FieldType.Date, format = {}, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdAt;
-//    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Text)
     private boolean isNotLocked;
     @ManyToMany(fetch = FetchType.EAGER, cascade = ALL)
     @JoinTable(
