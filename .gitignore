@@ -101,6 +101,7 @@ Thumbs.db
 .env
 
 # Ignore all .github directory
-pipeline-backend.yml!/.github/
 /.github/
-
+/.github/workflows
+/.github/workflows/pipeline-backend.yml
+/.github/.idea
