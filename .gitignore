@@ -105,3 +105,4 @@ Thumbs.db
 /.github/workflows
 /.github/workflows/pipeline-backend.yml
 /.github/.idea
+/push-images.sh
