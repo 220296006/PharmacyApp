@@ -5,18 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3b52e50f-0c23-48d6-b2b7-ef558fcfc291" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.scss" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/app/shared/navigation/navigation.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Front-end/pharmacyapp/src/assets/PharmacyApp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,34 +45,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Thabiso-Matsaba&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;72a5ea7c09b2b279169bb6a73ad7fde8&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "Thabiso-Matsaba",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/thabi/Desktop/PharmacyApp",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "spring.configuration.checksum": "72a5ea7c09b2b279169bb6a73ad7fde8",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mysql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected="Application.PharmacyApp">
     <configuration name="PharmacyApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="za.ac.cput.PharmacyApp" />
@@ -94,17 +85,6 @@
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -125,7 +105,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.PharmacyApp" />
-        <item itemvalue="Spring Boot.PharmacyApp" />
       </list>
     </recent_temporary>
   </component>
