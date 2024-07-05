@@ -21,6 +21,7 @@ services:
       retries: 5
 
   elasticsearch:
+    container_name: pharmacyapp-elasticsearch
     image: elasticsearch:7.17.7
     ports:
       - "9200:9200"
@@ -34,6 +35,7 @@ services:
       retries: 5
 
   backend:
+    container_name: pharmacyapp-backend
     image: pharmacyapp/pharmacyapp:1.0.2
     depends_on:
       mysql:

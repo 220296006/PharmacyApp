@@ -21,9 +21,9 @@ public class AppConfig {
     public static final String DB_PASSWORD = dotenv.get("DB_PASSWORD");
 
     // Email Configuration
-    public static final String EMAIL_HOST = dotenv.get("EMAIL_HOST");
+    public static final String EMAIL_HOST = dotenv.get("EMAIL_HOST_NAME");
     public static final int EMAIL_PORT = Integer.parseInt(Objects.requireNonNull(dotenv.get("EMAIL_PORT")));
-    public static final String EMAIL_ID = dotenv.get("EMAIL_ID");
+    public static final String EMAIL_ID = dotenv.get("EMAIL_USER_NAME");
     public static final String EMAIL_PASSWORD = dotenv.get("EMAIL_PASSWORD");
 
     // Application Configuration
