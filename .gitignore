@@ -101,8 +101,4 @@ Thumbs.db
 .env
 
 # Ignore all .github directory
-/.github/
-/.github/workflows
-/.github/workflows/pipeline-backend.yml
-/.github/.idea
 /push-images.sh
