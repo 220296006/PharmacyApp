@@ -18,16 +18,52 @@ Pharmacy App Software Documentation
 
 The Pharmacy App is a web-based application designed to streamline pharmacy operations and provide an efficient platform for managing customers, inventory, prescriptions, medications, and invoices. The app aims to simplify the process of managing pharmacy-related tasks, enhancing customer experience, and improving overall operational efficiency.
 
-![Alt text](screenshots/PharmacyApp-System-Design.drawio.png);
-![Alt text](screenshots/Home-PharmacyApp.png);
-![Alt text](screenshots/Users.png);
-![Alt text](screenshots/Customers.png);
-![Alt text](screenshots/Prescriptions.png);
-![Alt text](screenshots/Medications.png);
-![Alt text](screenshots/Invoices.png);
-![Alt text](screenshots/Inventory.png);
-![Alt text](screenshots/Create-User.png);
-![Alt text](screenshots/Update-User.png);
+## Screenshots
+
+### System Design and Architecture
+
+![Alt text](screenshots/PharmacyApp-System-Design.drawio.png)
+
+### Home Page
+
+![Alt text](screenshots/Home-PharmacyApp.png)
+
+### Users Table
+
+![Alt text](screenshots/Users.png)
+
+### Customer Health Information
+
+![Alt text](screenshots/Customers.png)
+
+### Prescriptions Table
+
+![Alt text](screenshots/Prescriptions.png)
+
+### Medications Table
+
+![Alt text](screenshots/Medications.png)
+
+### Invoices Table
+
+![Alt text](screenshots/Invoices.png)
+
+### Inventory Table
+
+![Alt text](screenshots/Inventory.png)
+
+### Create User
+
+![Alt text](screenshots/Create-User.png)
+
+### Update User
+
+![Alt text](screenshots/Update-User.png)
+
+### Update User Profile
+
+![Alt text](screenshots/Update-Profile.png)
+
 
 ## 2. Technology Stack
 
