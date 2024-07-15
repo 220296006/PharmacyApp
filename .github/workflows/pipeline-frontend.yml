@@ -49,7 +49,7 @@ jobs:
         run: "mkdir -p ci-cd"
 
       - name: Copy docker-compose file
-        run: scp Back-end/docker-compose.yml ci-cd/docker-compose.yml
+        run: scp Front-end/docker-compose.yml ci-cd/docker-compose.yml
 
       - name: Set ENV variable and deploy
         run: |
