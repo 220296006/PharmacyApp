@@ -188,6 +188,6 @@ INSERT INTO Roles (name, permission) VALUES
 
 
 -- Update Users
-UPDATE Users SET image_url = CONCAT('https://randomuser.me/api/portraits/',
+-- UPDATE Users SET image_url = CONCAT('https://randomuser.me/api/portraits/',
                       CASE WHEN RAND() < 0.5 THEN 'men/' ELSE 'women/' END,
                       FLOOR(RAND() * 100), '.jpg');
