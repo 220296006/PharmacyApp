@@ -20,7 +20,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-//import za.ac.cput.repository.ElasticsearchUserRepository;
+import com.pharmacyapp.repository.ElasticsearchUserRepository;
 import com.pharmacyapp.service.EmailService;
 
 import java.sql.SQLException;
@@ -45,7 +45,7 @@ public class UserRepositoryImp implements UserRepository<User> {
     private final EmailService emailService;
     private final ImageDataRowMapper imageDataRowMapper;
     private static final String UPDATE_USER_PROFILE_IMAGE_SQL = "UPDATE users SET image_url = :imageUrl WHERE id = :userId";
-//    private final ElasticsearchUserRepository elasticsearchUserRepository;
+    private final ElasticsearchUserRepository elasticsearchUserRepository;
 
 
     @Override
@@ -97,7 +97,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             user.setNotLocked(true);
 
             // Elasticsearch part
-//            elasticsearchUserRepository.save(user);
+            elasticsearchUserRepository.save(user);
            return user;
         } catch (Exception exception) {
             log.error(exception.getMessage());
@@ -185,7 +185,7 @@ public class UserRepositoryImp implements UserRepository<User> {
                     }); // Map basic user information
                 }
 
-//                elasticsearchUserRepository.findAll();
+              elasticsearchUserRepository.findAll();
 
                 // Return the collection of mapped users
                 return userMap.values();
@@ -221,7 +221,7 @@ public class UserRepositoryImp implements UserRepository<User> {
             SqlParameterSource parameters = getSqlParameterSource(user);
             jdbc.update(UserQuery.UPDATE_USER_QUERY, parameters);
             // Elasticsearch part
-//            elasticsearchUserRepository.save(user);
+           elasticsearchUserRepository.save(user);
             return user;
         } catch (EmptyResultDataAccessException exception) {
             return null;
@@ -237,7 +237,7 @@ public class UserRepositoryImp implements UserRepository<User> {
         try {
             jdbc.update(UserQuery.DELETE_USER_BY_ID_QUERY, Map.of("user_id", id));
             // Elasticsearch part
-//            elasticsearchUserRepository.deleteById(id);
+            elasticsearchUserRepository.deleteById(id);
         } catch (Exception exception) {
             log.error(exception.getMessage());
             throw new ApiException("An error occurred while deleting the user. Please try again.");

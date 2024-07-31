@@ -51,7 +51,7 @@ public class EmailServiceImp implements EmailService {
         this.emailSender = emailSender;
         this.templateEngine = templateEngine;
         this.host = env.getProperty("VERIFY_EMAIL_HOST");
-        this.fromEmail = env.getProperty("EMAIL_ID");
+        this.fromEmail = env.getProperty("EMAIL_USER_NAME");
     }
     @Override
     @Async

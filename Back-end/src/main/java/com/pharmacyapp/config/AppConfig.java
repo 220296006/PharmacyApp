@@ -23,7 +23,7 @@ public class AppConfig {
     // Email Configuration
     public static final String EMAIL_HOST = dotenv.get("EMAIL_HOST_NAME");
     public static final int EMAIL_PORT = Integer.parseInt(Objects.requireNonNull(dotenv.get("EMAIL_PORT")));
-    public static final String EMAIL_ID = dotenv.get("EMAIL_USER_NAME");
+    public static final String EMAIL_USER_NAME = dotenv.get("EMAIL_USER_NAME");
     public static final String EMAIL_PASSWORD = dotenv.get("EMAIL_PASSWORD");
 
     // Application Configuration

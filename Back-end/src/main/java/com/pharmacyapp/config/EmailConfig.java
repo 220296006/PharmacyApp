@@ -23,7 +23,7 @@ public class EmailConfig {
     @Value("${EMAIL_PASSWORD}")
     private String emailPassword;
 
-    @Value("${EMAIL_HOST_NAME")
+    @Value("${EMAIL_HOST_NAME}")
     private String emailHost;
 
     @Value("${EMAIL_PORT}")

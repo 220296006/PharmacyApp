@@ -79,7 +79,7 @@ thymeleaf:
           starttls:
             enable: true # Enable STARTTLS
             required: true # Require STARTTLS
-    from: ${EMAIL_ID} # Email account username
+    from: ${EMAIL_USER_NAME} # Email account username
 
 # JWT Configuration
 jwt:
