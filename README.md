@@ -26,13 +26,13 @@ The Pharmacy App is a web-based application designed to streamline pharmacy oper
 
 ### Registration
 
-![Alt text](screenshots/Create-Account.png)### Email  Verification
+![Alt text](screenshots/Create-Account.png)
 
 ### Login
 
 ![Alt text](screenshots/Login.png)
 
-### Email Vervication
+### Email Verification
 
 ![Alt text](screenshots/Email.png)
 
@@ -48,11 +48,9 @@ The Pharmacy App is a web-based application designed to streamline pharmacy oper
 
 ![Alt text](screenshots/Customers.png)
 
-
 ### Update User Profile
 
 ![Alt text](screenshots/Update-Profile.png)
-
 
 ### Prescriptions Table
 
@@ -77,7 +75,6 @@ The Pharmacy App is a web-based application designed to streamline pharmacy oper
 ### Update User
 
 ![Alt text](screenshots/Update-User.png)
-
 
 ## 2. Technology Stack
 
