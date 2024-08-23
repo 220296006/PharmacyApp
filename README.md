@@ -36,6 +36,10 @@ The Pharmacy App is a web-based application designed to streamline pharmacy oper
 
 ![Alt text](screenshots/Email.png)
 
+### Password Reset
+
+![Alt text](screenshots/Password-Reset.png)
+
 ### Home Page
 
 ![Alt text](screenshots/Home-PharmacyApp.png)
