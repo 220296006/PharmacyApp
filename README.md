@@ -102,7 +102,7 @@ The Pharmacy App utilizes the following technology stack:
 - Amazon EC2 for cloud hosting
 - Docker for containerization to ensure consistent execution environments
 
-## 3. Functional Requirements
+# 3. Functional Requirements
 
 The Pharmacy App includes the following functional requirements:
 
@@ -113,7 +113,7 @@ The Pharmacy App includes the following functional requirements:
 - Implement two-factor authentication for enhanced security
 - Manage user profiles and roles
 
-###Customer Management:
+### Customer Management:
 -  Create customer profiles with relevant information
 - Associate customers with users
   
@@ -134,7 +134,7 @@ The Pharmacy App includes the following functional requirements:
 - Clear and concise schema definition in schema.sql
 - Sample data included for initial testing
 
-## 4. Non-Functional Requirements
+# 4. Non-Functional Requirements
 
 The Pharmacy App includes the following non-functional requirements:
 
@@ -186,6 +186,6 @@ The Pharmacy App includes the following non-functional requirements:
 - Configure environment variables within the Docker containers to point to the database and other external resources.
 - Utilize tools like Docker Compose for streamlined multi-container deployments and management (optional).
 
-Conclusion
+# Conclusion
 
 This documentation provides a high-level overview of the PharmacyApp, its functionalities, technical choices, and deployment approach. By leveraging Docker containerization and AWS EC2 cloud hosting, you can ensure consistent execution environments and a scalable solution for your pharmacy management needs. Remember to stay updated with best practices and continuously refine your deployment strategy for an optimized and secure production environment.
