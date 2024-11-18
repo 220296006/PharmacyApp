@@ -20,65 +20,7 @@ The PharmacyApp is a full-stack web application designed to streamline pharmacy 
 
 ## Screenshots
 
-### System Design and Architecture
-
-![Alt text](screenshots/PharmacyApp-System-Design.drawio.png)
-
-### Registration
-
-![Alt text](screenshots/Create-Account.png)
-
-### Login
-
-![Alt text](screenshots/Login.png)
-
-### Email Verification
-
-![Alt text](screenshots/Email.png)
-
-### Password Reset
-
-![Alt text](screenshots/Password-Reset.png)
-
-### Home Page
-
-![Alt text](screenshots/Home-PharmacyApp.png)
-
-### Users Table
-
-![Alt text](screenshots/Users.png)
-
-### Customer Health Information
-
-![Alt text](screenshots/Customers.png)
-
-### Update User Profile
-
-![Alt text](screenshots/Update-Profile.png)
-
-### Prescriptions Table
-
-![Alt text](screenshots/Prescriptions.png)
-
-### Medications Table
-
-![Alt text](screenshots/Medications.png)
-
-### Invoices Table
-
-![Alt text](screenshots/Invoices.png)
-
-### Inventory Table
-
-![Alt text](screenshots/Inventory.png)
-
-### Create User
-
-![Alt text](screenshots/Create-User.png)
-
-### Update User
-
-![Alt text](screenshots/Update-User.png)
+[View Slideshow](<iframe src="https://docs.google.com/presentation/d/e/2PACX-1vSx_eLXkXLsAhjZKELLzqw6XpnLQnjN7jiVcbOaY_AnEytZeyylM6Vi7QzvAzNl7WbRqlCtx_ok1UnL/embed?start=true&loop=true&delayms=3000" frameborder="0" width="1440" height="839" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>)
 
 ## 2. Technology Stack
 
